@@ -1,0 +1,9 @@
+#!/bin/bash
+dir=$(dirname $BASH_SOURCE)
+path1="/env/bin/activate"
+path2="/nenv/bin/activate"
+com1="./${dir}${path1}"
+source $com1
+com2="./${dir}${path2}"
+source $com2
+
