@@ -1,4 +1,4 @@
-#!/home/pawelbatog/Dokumenty/Be.Vegan/env/bin/python
+#!/home/adamuss/zespolowka/Be.Vegan/env/bin/python
 
 import sys
 import getopt
