@@ -21,3 +21,13 @@ Aby uruchomić serwer Frontendowy
 - przejdź do katalogu ```wegamania-web```
 - użyj komendy ```npm start```
 
+
+# Virtualenv
+Ponieważ nasza aplikacja korzysta z wielu różnych bibliotek, korzystamy z virtualenv, aby ułatwić proces korzystania z aplikacji.
+Aktywacja środowiska:
+``` source env/bin/activate ```
+``` source nenv/bin/activate ```
+
+Po prawidłowym wykonaniu komend shell powinien wyglądać następująco:
+
+(nenv)(env) user@shell:~
