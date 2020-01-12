@@ -20,6 +20,7 @@ from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from rest_framework.views import APIView
 from django.http.response import HttpResponse
+from rest_framework.authtoken.views import obtain_auth_token
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -42,4 +43,5 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^my-own-view/$', MyOwnView.as_view()),
     #url(r'^api-auth/', include('rest_framework.urls'))
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth')
 ]
