@@ -88,11 +88,11 @@ WSGI_APPLICATION = 'be_vegan.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Veggies_db',
-        'USER': 'root',
-        'PASSWORD': 'Veggies1982xxf',
-        'HOST': '',
-        'PORT': '',
+        'NAME': 'acxEWTLu6c',
+        'USER': 'acxEWTLu6c',
+        'PASSWORD': 'M0uzvR9AoZ',
+        'HOST': 'remotemysql.com',
+        'PORT': '3306',
                 'OPTIONS': {
                     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
                 }

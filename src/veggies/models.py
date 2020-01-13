@@ -69,3 +69,7 @@ class Report_Res(models.Model):
     id_restaurant = models.ForeignKey(Restaurant, on_delete = models.CASCADE)
     id_user = models.ForeignKey(User, on_delete = models.CASCADE)
     description = models.TextField("description")
+
+class Post(models.Model):
+    description = models.TextField("description")
+    #Do the rest
