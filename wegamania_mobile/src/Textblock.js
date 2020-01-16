@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import axios from 'axios';
 
 const Textblock = () => {
@@ -16,7 +16,7 @@ const Textblock = () => {
     <View>
       {data && (
         <Text>
-          Witaj <Text>{data.users}</Text>
+          <Text>{data.users}</Text>
         </Text>
       )}
     </View>
