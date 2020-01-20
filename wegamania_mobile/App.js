@@ -1,7 +1,7 @@
 import React from 'react';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 import LoginPanel from './src/Register&Login/LoginPanel';
 import Profil from './src/Profil';
 import RegisterPanel from './src/Register&Login/RegisterPanel';
@@ -9,9 +9,31 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 
 const UserManagerTabNavigator = createBottomTabNavigator({
-  Posts: {screen: Profil},
-  Maps: {screen: Profil},
-  Recipies: {screen: Profil},
+  Posts: {
+    screen: Profil,
+    navigationOptions: {
+      tabBarIcon: ({focused, horizontal, tintColor}) => {
+        return <Icon name="users" size={26}></Icon>;
+      },
+    },
+  },
+  Maps: {
+    screen: Profil,
+    navigationOptions: {
+      tabBarIcon: ({focused, horizontal, tintColor}) => {
+        return <Icon name="map" size={26}></Icon>;
+      },
+    },
+  },
+
+  Recipies: {
+    screen: Profil,
+    navigationOptions: {
+      tabBarIcon: ({focused, horizontal, tintColor}) => {
+        return <Icon name="leaf" size={26}></Icon>;
+      },
+    },
+  },
 });
 
 const UserManagerDrawerNavigator = createDrawerNavigator({

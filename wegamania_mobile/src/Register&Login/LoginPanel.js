@@ -10,7 +10,6 @@ import {
   Dimensions,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-
 import background from '../../images/loginPanelBackgroud.png';
 
 const {width: WIDTH} = Dimensions.get('window');
@@ -28,7 +27,7 @@ class LoginPanel extends Component {
     try {
       const value = await AsyncStorage.getItem('@user');
       if (value != null) {
-        this.props.navigation.navigate('Profil');
+        this.props.navigation.navigate('UserPanel');
       }
     } catch (e) {}
   };
@@ -45,7 +44,7 @@ class LoginPanel extends Component {
             }}>
             <TextInput
               style={styles.textInput}
-              placeholder="E-mail"
+              placeholder="Login"
               placeholderTextColor="#e8e7e6"
               onChangeText={username => this.setState({login: username})}
               underlineColorAndroid="transparent"></TextInput>
