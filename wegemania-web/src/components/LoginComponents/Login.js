@@ -5,6 +5,7 @@ import { NewLoginInfo } from "../../context/LoginInfo";
 import BeVegan from "../../images/BeVeganIcon.png";
 import axios from "axios";
 import MD5 from "crypto-js/md5";
+import icon from "../../icons/ikona.ico"
 import {
   LoginPage,
   FormArea,
@@ -32,9 +33,9 @@ const Login = () => {
       password: event.target.value
     });
   };
-  const LoginUser = async() => {
-    console.log(tempLogin.login  + " " + tempLogin.password);
-     const fetchData = async () => {
+  const LoginUser = async () => {
+    console.log(tempLogin.login + " " + tempLogin.password);
+    const fetchData = async () => {
       const result = await axios.post(
         "http://127.0.0.1:8000/api-token-auth/",
         {
@@ -52,16 +53,18 @@ const Login = () => {
     //let passwd = MD5(tempLogin.password).toString();
     await fetchData().then(res => {
       console.log(res);
-      if(res.token){
+      if (res.token) {
         console.log("WWW");
         user.login(tempLogin.login);
         setError(false);
       }
-      else{
+      else {
+        console.log(res)
         setError(true);
       }
     }).catch(err => {
       console.log(err);
+      console.log(err.response)
       setError(true);
     });
 
@@ -78,7 +81,7 @@ const Login = () => {
       <LoginFlex>
         {user.username !== "" && <Redirect to="/wall" />}
         <FormArea>
-          <Image src={BeVegan} alt="be vegan logo" />
+          <Image src={icon} alt="be vegan logo" />
           {isError === true && (
             <p className="errorMessage">Login lub hasło nieprawidłowe</p>
           )}

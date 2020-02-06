@@ -1,20 +1,34 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Background from "../images/web2.png";
+export const UserActions = styled.div`
+  background:yellow;
+`
+
 export const MenuList = styled.li`
   cursor: pointer;
   box-sizing: border-box;
   color: black;
   text-decoration: none;
-  margin-right: 2em;
-  padding: 0 0 1em 0;
-
+  margin-right:1%;
   :hover {
     font-weight: bold;
   }
 `;
 export const MenuListLink = styled(Link)`
-  color: black;
+  color: white;
+  background:#2C8434;
+  display:inline-block;
+  font-size:15px;
+  width:140px;
+  margin: 0 0 0 0;
+  padding:8% 0 8% 0;
+  border-radius:20px;
+  text-align:center;
   text-decoration: none;
+  :hover,:focus{
+    background:#2E8438;
+  }
 `;
 export const MenuUnorderedList = styled.ul`
   display: flex;
@@ -36,7 +50,7 @@ export const NavOrderedList = styled.ol`
   left: 0;
   right: 0;
   width: 100%;
-  background: white;
+
 `;
 export const UserMenuList = styled.ul`
   list-style: none;
@@ -48,7 +62,7 @@ export const UserName = styled.p`
   padding: 1em;
   box-sizing: border-box;
   text-align: center;
-  background: #b5f4d2;
+  background: #2F8B2E;
   transition: border-radius 0.3s;
   :hover {
     border-radius: 20px;

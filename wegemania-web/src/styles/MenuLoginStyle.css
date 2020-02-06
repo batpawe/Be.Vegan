@@ -1,13 +1,23 @@
+@import url("https://fonts.googleapis.com/css?family=Merriweather+Sans&display=swap");
 .header {
   padding: 0.05em;
-  background: white;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.8),
+      rgba(0, 0, 0, 0.8)
+    ),
+    url("../images/web2.png");
   padding: 0 0 0.2em 0;
   border-bottom: 2px solid black;
   box-sizing: border-box;
-  display:flex;
+  display: flex;
   justify-content: space-between;
-  align-items:baseline;
-  height: 10%;
+  align-items: baseline;
+  font-family: "Merriweather Sans", sans-serif;
+
+  font-size: 18px;
+
+  min-height: 100px;
 }
 .TextFieldError {
   border-bottom: 1px solid red;

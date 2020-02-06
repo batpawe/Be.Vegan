@@ -1,17 +1,15 @@
 import styled from "styled-components";
-import Background from "../images/loginbackground.jpg";
+import Background from "../images/web2.png";
 import { Link } from "react-router-dom";
-
 export const FormArea = styled.div`
   background: rgba(255, 255, 255);
-  padding: 1em;
-  width: 500px;
-  border-radius: 10px;
+  padding: 3%;
+  border-radius: 1px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content:flex-start;
   flex-direction: column;
-  font-size: 20px;
+  font-size: 28px;
   margin-top: 1em;
 `;
 export const LoginForm = styled.form`
@@ -28,11 +26,11 @@ export const InputWrapper = styled.div`
 `;
 export const TextField = styled.input`
   font-family: "Titillium Web", sans-serif;
-  min-width: 300px;
-  height: 25px;
+  min-width: 500px;
+  height: 40px;
   outline-color: black;
   background: transparent;
-  font-size: 20px;
+  font-size: 26px;
   border: none;
   border-bottom: 1px solid black;
   line-height: 1.2px;
@@ -50,14 +48,14 @@ export const FormButton = styled.input`
   background: white;
   border: 1px solid black;
   border-radius: 10px;
-  padding: 0.2em;
-  width: 100%;
+  padding: 2%;
   cursor: pointer;
-  font-size: 25px;
+  font-size: 28px;
+  font-weight:bold;
   :hover,
   :focus {
     color: white;
-    background: black;
+    background: #44C14A;
     border: 1px solid white;
     transition: 0.2s;
   }
@@ -65,14 +63,14 @@ export const FormButton = styled.input`
 `;
 export const Image = styled.img`
   width: 100px;
-  margin-bottom: 0.5em;
+  padding-bottom:5%;
 `;
 
 export const StyleLink = styled(Link)`
   color: black;
   text-decoration: none;
   display: block;
-  margin-top: 100px;
+  margin-top: 10%;
   outline: none;
   :hover,
   :focus {
@@ -84,16 +82,13 @@ export const LoginPage = styled.div`
   background-image: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.6) 0%,
-      rgba(0, 0, 0, 0.6) 100%
+      rgba(0, 0, 0.6, 0.6) 100%
     ),
     url(${Background});
-  background-size: 100% 100%;
-  margin-top: 1px;
-  box-sizing: border-box;
-  height: 88vh;
-  @media (min-width: 1370px) {
-    height: 92vh;
-  }
+    background-size: cover;
+    height:100vh;
+    position:fixed;
+    width:100vw;
 `;
 export const LoginFlex = styled.div`
   display: flex;
@@ -101,6 +96,5 @@ export const LoginFlex = styled.div`
   justify-content: center;
 `;
 export const Container = styled.div`
-  box-sizing: border-box;
-  height: 100%;
+  display:block;
 `;

@@ -18,6 +18,7 @@ import { NewLoginInfo } from "../../context/LoginInfo";
 import "../../styles/MenuLoginStyle.css";
 import axios from "axios";
 import MD5 from "crypto-js/md5";
+import icon from "../../icons/ikona.ico"
 const GoLoginPage = () => {
   const [timeToRedirect, setTimeToRedirect] = useState(false);
 
@@ -48,11 +49,9 @@ const Register = () => {
   const addTempMail = event => {
     addTempRegister({ ...tempRegister, mail: event.target.value });
   };
-  const addTempName = event => {
-    addTempRegister({ ...tempRegister, name: event.target.value });
-  };
 
   const registerUser = () => {
+    setError(true);
     if (
       tempRegister.password === tempRegister.repassword &&
       validateEmail(tempRegister.mail) &&
@@ -81,16 +80,16 @@ const Register = () => {
       password: "",
       repassword: "",
       mail: "",
-      name: ""
     });
   };
   const user = useContext(NewLoginInfo);
   return (
     <LoginPage>
+      {console.log(user.username === "")}
       {user.username !== "" && <Redirect to="/page" />}
       <LoginFlex>
         <FormArea>
-          <Image src={BeVegan} alt="be vegan logo" />
+          <Image src={icon} alt="be vegan logo" />
           <link
             href="https://fonts.googleapis.com/css?family=Titillium+Web:300,400,700"
             rel="stylesheet"
@@ -138,17 +137,6 @@ const Register = () => {
                 id="repassword"
                 onChange={addTempRePassword}
                 value={tempRegister.repassword}
-              />
-            </InputWrapper>
-            <InputWrapper>
-              <label for="name">Imię:</label>
-              <TextField
-                className={isError && "TextFieldError"}
-                placeholder="Wpisz swoje imię"
-                type="text"
-                id="name"
-                onChange={addTempName}
-                value={tempRegister.name}
               />
             </InputWrapper>
             <InputWrapper>

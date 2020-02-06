@@ -6,11 +6,12 @@ import {
   NavOrderedList,
   UserMenuList,
   UserName,
-  UserOption
+  UserOption,
+  UserActions
 } from "../../styles/MenuLoginStyle";
 import { NewLoginInfo } from "../../context/LoginInfo";
-import {Redirect} from "react-router-dom"
-import icon from "../../icons/ikona.ico"
+import { Redirect } from "react-router-dom";
+import icon from "../../icons/ikona.ico";
 const Test = ({ click }) => {
   const user = useContext(NewLoginInfo);
   const [clicked, setClicked] = useState(click);
@@ -20,72 +21,77 @@ const Test = ({ click }) => {
   };
   const userLogout = () => {
     user.logout();
-    return <Redirect to="/register"/>
+    return <Redirect to="/register" />;
   };
 
   return (
     <UserMenuList>
       <UserName onClick={userSettings}>{user.username}</UserName>
       {clicked === true && (
-        <div>
+        <UserActions>
           <UserOption> Profil</UserOption>
           <UserOption onClick={userLogout}>Wyloguj</UserOption>
-        </div>
-      )}
-    </UserMenuList>
+        </UserActions>
+      )
+      }
+    </UserMenuList >
   );
 };
 const Header = () => {
   const user = useContext(NewLoginInfo);
 
   return (
-    <header className="header">
-    <img style={{width:25,height:25}} src={icon}/>
+    <div>
       {user.username === "" ? (
-        <nav>
-          <MenuUnorderedList>
-            <MenuList>
-              <MenuListLink to="/">Zaloguj</MenuListLink>
-            </MenuList>
-            <MenuList>
-              <MenuListLink to="/register">Zarejestruj</MenuListLink>
-            </MenuList>
-            <MenuList>
-              <MenuListLink to="/about">O nas</MenuListLink>
-            </MenuList>
-          </MenuUnorderedList>
-        </nav>
-      ) : (
-        <nav>
-          <NavOrderedList>
-            <Test click={false} />
+        <header className="header">
+          <img style={{ width: 50, height: 50 }} src={icon} />
+          <nav>
             <MenuUnorderedList>
               <MenuList>
-                <MenuListLink to="/wall">Tablica</MenuListLink>
+                <MenuListLink to="/">Zaloguj</MenuListLink>
               </MenuList>
               <MenuList>
-                <MenuListLink to="/posts">Posty</MenuListLink>
+                <MenuListLink to="/register">Zarejestruj</MenuListLink>
               </MenuList>
               <MenuList>
-                <MenuListLink to="/restaurants">Restauracje</MenuListLink>
-              </MenuList>
-              <MenuList>
-                <MenuListLink to="/products">Produkty</MenuListLink>
-              </MenuList>
-              <MenuList>
-                <MenuListLink to="/recipes">Przepisy</MenuListLink>
-              </MenuList>
-              <MenuList>
-                <MenuListLink to="/replacements">Zamienniki</MenuListLink>
-              </MenuList>
-              <MenuList>
-                <MenuListLink to="/about">O weganizmie</MenuListLink>
+                <MenuListLink to="/about">O nas</MenuListLink>
               </MenuList>
             </MenuUnorderedList>
-          </NavOrderedList>
-        </nav>
-      )}
-    </header>
+          </nav>
+        </header>
+      ) : (
+          <header className="header">
+            <nav>
+              <NavOrderedList>
+                <Test click={false} />
+                <MenuUnorderedList>
+                  <MenuList>
+                    <MenuListLink to="/wall">Tablica</MenuListLink>
+                  </MenuList>
+                  <MenuList>
+                    <MenuListLink to="/posts">Posty</MenuListLink>
+                  </MenuList>
+                  <MenuList>
+                    <MenuListLink to="/restaurants">Restauracje</MenuListLink>
+                  </MenuList>
+                  <MenuList>
+                    <MenuListLink to="/products">Produkty</MenuListLink>
+                  </MenuList>
+                  <MenuList>
+                    <MenuListLink to="/recipes">Przepisy</MenuListLink>
+                  </MenuList>
+                  <MenuList>
+                    <MenuListLink to="/replacements">Zamienniki</MenuListLink>
+                  </MenuList>
+                  <MenuList>
+                    <MenuListLink to="/about">O weganizmie</MenuListLink>
+                  </MenuList>
+                </MenuUnorderedList>
+              </NavOrderedList>
+            </nav>
+          </header>
+        )}
+    </div>
   );
 };
 export default Header;
