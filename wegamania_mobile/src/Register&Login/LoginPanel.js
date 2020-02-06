@@ -11,12 +11,14 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import background from '../../images/loginPanelBackgroud.png';
+import Axios from 'axios';
 
 const {width: WIDTH} = Dimensions.get('window');
 class LoginPanel extends Component {
   state = {
     login: '',
     haslo: '',
+    token: '',
   };
 
   componentDidMount() {
@@ -63,7 +65,7 @@ class LoginPanel extends Component {
               secureTextEntry={true}></TextInput>
           </View>
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <TouchableOpacity style={styles.loginButton} onPress={this.login}>
+            <TouchableOpacity style={styles.loginButton} onPress={this.Login}>
               <Text style={styles.textButton}>Zaloguj</Text>
             </TouchableOpacity>
           </View>
@@ -88,19 +90,56 @@ class LoginPanel extends Component {
     );
   }
 
-  login = () => {
-    if (this.state.login == 'admin' && this.state.haslo == 'admin') {
-      this.storeData();
-      this.props.navigation.navigate('UserPanel');
-    } else {
-      alert('Błędny login lub hasło!');
-    }
+  Login = async () => {
+    const fetchData = async () => {
+      console.log(this.state.login);
+      console.log(this.state.haslo);
+      const result = await Axios.post(
+        'http://192.168.100.46:8000/api-token-auth',
+        {
+          username: this.state.login,
+          password: this.state.haslo,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        },
+      );
+      //console.log(result.data);
+      return result.data;
+    };
+    await fetchData()
+      .then(res => {
+        // console.log(res);
+        if (res.token) {
+          this.setState({token: res.token});
+          this.storeData();
+          this.props.navigation.navigate('UserPanel');
+        } else {
+          alert('Bledny login lub haslo!');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
+
+  // Login = async () => {
+  //   if (this.state.login == 'sebek' && this.state.haslo == '123frytki') {
+  //     this.storeData();
+  //     this.props.navigation.navigate('UserPanel');
+  //   } else {
+  //     alert('Błędny login lub hasło!');
+  //   }
+  // };
 
   storeData = async () => {
     try {
       AsyncStorage.removeItem('@user');
+      AsyncStorage.removeItem('@token');
       await AsyncStorage.setItem('@user', this.state.login);
+      await AsyncStorage.setItem('@token', this.state.token);
     } catch (e) {}
   };
 }
