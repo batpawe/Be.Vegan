@@ -94,8 +94,10 @@ class LoginPanel extends Component {
     const fetchData = async () => {
       console.log(this.state.login);
       console.log(this.state.haslo);
+      const result2 = await Axios.get('http://158.75.40.61:8000/users');
+      console.log(result2);
       const result = await Axios.post(
-        'http://192.168.100.46:8000/api-token-auth',
+        'http://158.75.40.61:8000/api-token-auth/',
         {
           username: this.state.login,
           password: this.state.haslo,
@@ -106,12 +108,10 @@ class LoginPanel extends Component {
           },
         },
       );
-      //console.log(result.data);
       return result.data;
     };
     await fetchData()
       .then(res => {
-        // console.log(res);
         if (res.token) {
           this.setState({token: res.token});
           this.storeData();
@@ -121,7 +121,7 @@ class LoginPanel extends Component {
         }
       })
       .catch(err => {
-        console.log(err);
+        console.log(err.response);
       });
   };
 

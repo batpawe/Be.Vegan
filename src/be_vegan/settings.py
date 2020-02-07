@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders'
+    'rest_framework.authtoken',
+    'corsheaders',
+    'veggies.apps.VeggiesConfig'
 ]
 
 MIDDLEWARE = [
@@ -52,6 +54,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+    ],
+}
 
 ROOT_URLCONF = 'be_vegan.urls'
 
@@ -79,8 +87,23 @@ WSGI_APPLICATION = 'be_vegan.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'acxEWTLu6c',
+        'USER': 'acxEWTLu6c',
+        'PASSWORD': 'M0uzvR9AoZ',
+        'HOST': 'remotemysql.com',
+        'PORT': '3306',
+                'OPTIONS': {
+                    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+                }
+    },
+    'posts': {
+        'ENGINE': 'djongo',
+        'NAME': 'Posts_db',
+        'USER': 'root',
+        'PASSWORD': 'Veggies1982xxf',
+        'HOST': '',
+        'PORT': '27017'
     }
 }
 
