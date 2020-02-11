@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 export const Image = styled.img`
-  width: 100px;
+  width: 50px;
 `;
 export const StyleLink = styled(Link)`
   color: black;
@@ -16,15 +16,13 @@ export const StyleLink = styled(Link)`
 `;
 export const FormArea = styled.div`
   background: rgba(255, 255, 255);
-  padding: 0.5em;
   display: flex;
-  height:82vh;
-  padding:0% 8% 0% 8%;
+  padding:0% 2% 0% 2%;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  font-size: 25px;
-  margin-top: .5em;
+  font-size: 22px;
+  margin-top: 4em;
 `;
 export const TextField = styled.input`
   font-family: "Titillium Web", sans-serif;

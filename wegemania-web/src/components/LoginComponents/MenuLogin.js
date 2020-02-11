@@ -26,10 +26,10 @@ const Test = ({ click }) => {
 
   return (
     <UserMenuList>
-      <UserName onClick={userSettings}>{user.username}</UserName>
+      <li><UserName onClick={userSettings}>{user.username}</UserName></li>
       {clicked === true && (
         <UserActions>
-          <UserOption> Profil</UserOption>
+          <UserOption> Profil2</UserOption>
           <UserOption onClick={userLogout}>Wyloguj</UserOption>
         </UserActions>
       )

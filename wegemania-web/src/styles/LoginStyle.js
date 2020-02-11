@@ -9,8 +9,8 @@ export const FormArea = styled.div`
   align-items: center;
   justify-content:flex-start;
   flex-direction: column;
-  font-size: 28px;
-  margin-top: 1em;
+  font-size: 26px;
+  margin-top: 3.5em;
 `;
 export const LoginForm = styled.form`
   display: flex;
@@ -62,7 +62,7 @@ export const FormButton = styled.input`
   outline: none;
 `;
 export const Image = styled.img`
-  width: 100px;
+  width: 50px;
   padding-bottom:5%;
 `;
 
@@ -85,6 +85,7 @@ export const LoginPage = styled.div`
       rgba(0, 0, 0.6, 0.6) 100%
     ),
     url(${Background});
+    background-position:center;
     background-size: cover;
     height:100vh;
     position:fixed;

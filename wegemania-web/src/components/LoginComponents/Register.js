@@ -18,7 +18,7 @@ import { NewLoginInfo } from "../../context/LoginInfo";
 import "../../styles/MenuLoginStyle.css";
 import axios from "axios";
 import MD5 from "crypto-js/md5";
-import icon from "../../icons/ikona.ico"
+import icon from "../../icons/ikona.ico";
 const GoLoginPage = () => {
   const [timeToRedirect, setTimeToRedirect] = useState(false);
 
@@ -50,8 +50,7 @@ const Register = () => {
     addTempRegister({ ...tempRegister, mail: event.target.value });
   };
 
-  const registerUser = () => {
-    setError(true);
+  const registerUser = async () => {
     if (
       tempRegister.password === tempRegister.repassword &&
       validateEmail(tempRegister.mail) &&
@@ -59,27 +58,27 @@ const Register = () => {
       tempRegister.password.length > 4
     ) {
       const newUser = {
-        idusers: 0,
-        imie: tempRegister.login,
-        wynik: 0,
-        password: MD5(tempRegister.password).toString()
+        username: tempRegister.login,
+        email: tempRegister.mail,
+        password: tempRegister.password
       };
 
-      axios
-        .post("http://localhost:3001/users", newUser)
+      await axios
+        .post("http://localhost:8000/users/", newUser)
         .then(res => {
           setError(false);
         })
         .catch(error => {
+          console.log(error);
+          console.log(error.response);
           setError(true);
         });
     }
 
     addTempRegister({
-      login: "",
-      password: "",
-      repassword: "",
-      mail: "",
+      username: "",
+      email: "",
+      password: ""
     });
   };
   const user = useContext(NewLoginInfo);

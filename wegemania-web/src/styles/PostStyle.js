@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Background from "../images/web2.png";
 export const ContainerPosts = styled.div`
   width: 80%;
   margin: auto;
@@ -60,10 +61,17 @@ export const Image = styled.img`
   */
 `;
 export const ContentContainer = styled.div`
-  padding: 1em;
-  margin: 10em 0 0 0;
   display: flex;
   justify-content: space-between;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0.6, 0.6) 100%
+    ),
+    url(${Background});
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
 `;
 
 export const UsersRankingStyled = styled.ul`
@@ -81,9 +89,10 @@ export const UsersItem = styled.li`
   font-weight: bold;
 `;
 export const OrderedUsersList = styled.ol`
-  padding: 0;
-  margin: 0;
-  width: 22em;
+  padding: 2em;
+  margin: 10em 2em 0 0;
+  max-height:200px;
+  background:white;
 `;
 export const UnorderedPost = styled.ul`
   font-family: "Nunito", sans-serif;

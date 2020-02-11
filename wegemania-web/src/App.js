@@ -16,7 +16,11 @@ import { Container } from "./styles/LoginStyle";
 import { createGlobalStyle } from "styled-components";
 import { ContentContainer } from "./styles/PostStyle";
 import { NewLoginInfo } from "./context/LoginInfo";
-import { UsersRanking } from "./components/PostsComponents/UsersRanking";
+import { RecommendedRestauration } from "./components/GlobalComponents/RecommendedRestauration";
+import { RecommendedEvent } from './components/GlobalComponents/RecommendedEvent';
+import { RecommendedPlace } from './components/GlobalComponents/RecommendedPlace';
+import { RecommendedRecipt } from './components/GlobalComponents/RecommendedRecipt';
+import { RecommendedTip } from './components/GlobalComponents/RecommendedTip';
 import { NewNotifyContext } from "./context/Notify";
 import Notify from "./components/Notify";
 const GlobalStyle = createGlobalStyle`
@@ -39,8 +43,6 @@ const App = () => {
         <Notify val={notify.val} />
         {user.username !== "" ? (
           <ContentContainer>
-            <div>Hello</div>
-
             <Route path="/about" component={About} />
 
             <Route path="/wall" component={Wall} />
@@ -58,12 +60,17 @@ const App = () => {
             <Route path="/users/:id" component={Users} />
 
             <Route path="/addpost" component={AddPost} />
-
-            <UsersRanking />
+            <div>
+              <RecommendedRestauration />
+              <RecommendedEvent />
+              <RecommendedPlace />
+              <RecommendedRecipt />
+              <RecommendedTip />
+            </div>
           </ContentContainer>
-        ):(
-          <Redirect to="/"/>
-        )}
+        ) : (
+            <Redirect to="/" />
+          )}
       </Router>
     </Container>
   );
