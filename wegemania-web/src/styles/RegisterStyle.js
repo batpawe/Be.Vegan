@@ -17,7 +17,7 @@ export const StyleLink = styled(Link)`
 export const FormArea = styled.div`
   background: rgba(255, 255, 255);
   display: flex;
-  padding:0% 2% 0% 2%;
+  padding: 0% 2% 0% 2%;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -29,7 +29,7 @@ export const TextField = styled.input`
   min-width: 500px;
   height: 40px;
   outline-color: black;
-  background: transparent;
+  background: white;
   font-size: 20px;
   border: none;
   border-bottom: 1px solid black;
@@ -49,13 +49,13 @@ export const FormButton = styled.input`
   border: 1px solid black;
   border-radius: 10px;
   padding: 4%;
-  font-weight:bold;
+  font-weight: bold;
   cursor: pointer;
   font-size: 15px;
   :hover,
   :focus {
     color: white;
-    background: #44C14A;
+    background: #44c14a;
     border: 1px solid white;
     transition: 0.2s;
   }

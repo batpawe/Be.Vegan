@@ -1,21 +1,83 @@
-import { users } from "../../temp/users";
 import React from "react";
 import {
-  UsersRankingStyled,
-  UsersItem
-} from "../../styles/PostStyle";
-import { LocalContainer } from '../../styles/GlobalStyle'
+  LocalContainer,
+  UnorderedList,
+  HeaderText,
+  HyperLink,
+  Image,
+  BoldText,
+  Item
+} from "../../styles/GlobalStyle";
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import RestaurantImage from "../../images/restaurant.jpg";
 export const RecommendedRestauration = () => {
-  const usersSorted = users.sort((a, b) => (a.score < b.score ? 1 : -1));
-  const listUsers = usersSorted.slice(0, 4).map(({ id, name, score }) => (
-    <UsersRankingStyled>
-      <li>{name}</li>
-      <UsersItem>{score}</UsersItem>
-    </UsersRankingStyled>
-  ));
   return (
     <LocalContainer>
-      Polecana Restauracje :{listUsers}
+      <HeaderText> Polecane Restauracje :</HeaderText>
+      <UnorderedList>
+        <HyperLink to="/posts">
+          <Item>
+            <BoldText>Nazwa:</BoldText>Restauracja1
+          </Item>
+          <Item>
+            <BoldText>Lokalizacja:</BoldText>
+            <Map
+              id="mapid"
+              center={[53.009794, 18.591649]}
+              zoom={12}
+              style={{ width: 300, height: 200, "z-index": 0 }}
+            >
+              <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[53.009794, 18.591649]}>
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>
+            </Map>
+          </Item>
+          <Item>
+            <BoldText>Godziny otwarcia:</BoldText>8:00 - 20:00
+          </Item>
+          <Item>
+            <Image src={RestaurantImage}></Image>
+          </Item>
+        </HyperLink>
+      </UnorderedList>
+      <UnorderedList>
+        <HyperLink to="/posts">
+          <Item>
+            <BoldText>Nazwa:</BoldText>Restauracja1
+          </Item>
+          <Item>
+            <BoldText>Lokalizacja:</BoldText>
+            <Map
+              id="mapid"
+              center={[53.009794, 18.591649]}
+              zoom={12}
+              style={{ width: 300, height: 200, "z-index": 0 }}
+            >
+              <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[53.009794, 18.591649]}>
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>
+            </Map>
+          </Item>
+          <Item>
+            <BoldText>Godziny otwarcia:</BoldText>8:00 - 20:00
+          </Item>
+          <Item>
+            <Image src={RestaurantImage}></Image>
+          </Item>
+        </HyperLink>
+      </UnorderedList>
     </LocalContainer>
   );
 };

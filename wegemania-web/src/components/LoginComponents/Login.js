@@ -5,7 +5,7 @@ import { NewLoginInfo } from "../../context/LoginInfo";
 import BeVegan from "../../images/BeVeganIcon.png";
 import axios from "axios";
 import MD5 from "crypto-js/md5";
-import icon from "../../icons/ikona.ico"
+import icon from "../../icons/ikona.ico";
 import {
   LoginPage,
   FormArea,
@@ -51,22 +51,23 @@ const Login = () => {
       return result.data;
     };
     //let passwd = MD5(tempLogin.password).toString();
-    await fetchData().then(res => {
-      console.log(res);
-      if (res.token) {
-        console.log("WWW");
-        user.login(tempLogin.login);
-        setError(false);
-      }
-      else {
-        console.log(res)
+    await fetchData()
+      .then(res => {
+        console.log(res);
+        if (res.token) {
+          console.log("WWW");
+          user.login(tempLogin.login);
+          setError(false);
+        } else {
+          console.log(res);
+          setError(true);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        console.log(err.response);
         setError(true);
-      }
-    }).catch(err => {
-      console.log(err);
-      console.log(err.response)
-      setError(true);
-    });
+      });
 
     await addTempLogin({
       login: "",
@@ -89,6 +90,7 @@ const Login = () => {
             <InputWrapper>
               <label for="username">Login:</label>
               <TextField
+                autoComplete="off"
                 className={isError && "TextFieldError"}
                 placeholder="Wpisz swoją nazwę użytkownika"
                 type="text"

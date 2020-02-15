@@ -15,7 +15,7 @@ export const RecommendedRecipt = () => {
       <UnorderedList>
         <HyperLink to="/posts">
           <li>
-            <BoldText>nazwa:</BoldText>WEGAŃSKA RYBA PO GRECKU
+            <BoldText>Nazwa:</BoldText>WEGAŃSKA RYBA PO GRECKU
           </li>
           <li>
             <BoldText>Czas przygotowania:</BoldText>45minut
@@ -28,7 +28,7 @@ export const RecommendedRecipt = () => {
       <UnorderedList>
         <HyperLink to="/posts">
           <li>
-            <BoldText>nazwa:</BoldText>WEGAŃSKA RYBA PO GRECKU
+            <BoldText>Nazwa:</BoldText>WEGAŃSKA RYBA PO GRECKU
           </li>
           <li>
             <BoldText>Czas przygotowania:</BoldText>

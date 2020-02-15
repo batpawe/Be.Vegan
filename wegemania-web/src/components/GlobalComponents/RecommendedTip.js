@@ -1,21 +1,44 @@
 import { users } from "../../temp/users";
 import React from "react";
 import {
-    UsersRankingStyled,
-    UsersItem
-} from "../../styles/PostStyle";
-import { LocalContainer } from '../../styles/GlobalStyle'
+  LocalContainer,
+  UnorderedList,
+  HeaderText,
+  BoldItem,
+  Item
+} from "../../styles/GlobalStyle";
 export const RecommendedTip = () => {
-    const usersSorted = users.sort((a, b) => (a.score < b.score ? 1 : -1));
-    const listUsers = usersSorted.slice(0, 4).map(({ id, name, score }) => (
-        <UsersRankingStyled>
-            <li>{name}</li>
-            <UsersItem>{score}</UsersItem>
-        </UsersRankingStyled>
-    ));
-    return (
-        <LocalContainer>
-            Ciekawostka Dnia :{listUsers}
-        </LocalContainer>
-    );
+  return (
+    <LocalContainer>
+      <HeaderText>Dzisiejsze Ciekawostki :</HeaderText>
+      <UnorderedList>
+        <BoldItem>Tytuł 1</BoldItem>
+        <Item>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum.
+        </Item>
+      </UnorderedList>
+      <UnorderedList>
+        <BoldItem>Tytuł 1</BoldItem>
+        <Item>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum.
+        </Item>
+      </UnorderedList>
+    </LocalContainer>
+  );
 };

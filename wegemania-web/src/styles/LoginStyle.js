@@ -7,7 +7,7 @@ export const FormArea = styled.div`
   border-radius: 1px;
   display: flex;
   align-items: center;
-  justify-content:flex-start;
+  justify-content: flex-start;
   flex-direction: column;
   font-size: 26px;
   margin-top: 3.5em;
@@ -29,7 +29,7 @@ export const TextField = styled.input`
   min-width: 500px;
   height: 40px;
   outline-color: black;
-  background: transparent;
+  background: white;
   font-size: 26px;
   border: none;
   border-bottom: 1px solid black;
@@ -42,6 +42,10 @@ export const TextField = styled.input`
   }
   :focus {
     padding: 0 0 0.4em 0;
+    background: #e2e9e2;
+  }
+  ::selection {
+    background: white;
   }
 `;
 export const FormButton = styled.input`
@@ -51,11 +55,11 @@ export const FormButton = styled.input`
   padding: 2%;
   cursor: pointer;
   font-size: 28px;
-  font-weight:bold;
+  font-weight: bold;
   :hover,
   :focus {
     color: white;
-    background: #44C14A;
+    background: #44c14a;
     border: 1px solid white;
     transition: 0.2s;
   }
@@ -63,7 +67,7 @@ export const FormButton = styled.input`
 `;
 export const Image = styled.img`
   width: 50px;
-  padding-bottom:5%;
+  padding-bottom: 5%;
 `;
 
 export const StyleLink = styled(Link)`
@@ -74,6 +78,8 @@ export const StyleLink = styled(Link)`
   outline: none;
   :hover,
   :focus {
+    color: black;
+    text-decoration: none;
     text-decoration: underline;
     transition: 1s;
   }
@@ -85,11 +91,11 @@ export const LoginPage = styled.div`
       rgba(0, 0, 0.6, 0.6) 100%
     ),
     url(${Background});
-    background-position:center;
-    background-size: cover;
-    height:100vh;
-    position:fixed;
-    width:100vw;
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+  position: fixed;
+  width: 100vw;
 `;
 export const LoginFlex = styled.div`
   display: flex;
@@ -97,5 +103,5 @@ export const LoginFlex = styled.div`
   justify-content: center;
 `;
 export const Container = styled.div`
-  display:block;
+  display: block;
 `;

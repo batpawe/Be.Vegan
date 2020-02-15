@@ -1,107 +1,78 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  PostForm,
-  FormButton,
-  InputWrapper,
-  TextField,
-  TextArea
-} from "../../styles/PostStyle";
 import { Redirect } from "react-router-dom";
 import { NewLoginInfo } from "../../context/LoginInfo";
 import axios from "axios";
-const GoPostsPage = () => {
-  const [timeToRedirect, setTimeToRedirect] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => setTimeToRedirect(true), 1200);
-  }, []);
-
-  return <div>{timeToRedirect && <Redirect to="/wall" />}</div>;
-};
+import {
+  Container,
+  Button,
+  TextInput,
+  InputLabel,
+  TextArea,
+  Image,
+  ImagesContainer
+} from "../../styles/AddForms";
+import UploadImage from "../../images/upload.png";
+import "../../App.css";
 const AddPost = () => {
   const user = useContext(NewLoginInfo);
-  const [userid, setUserId] = useState();
-  const [tempPost, setPost] = useState([]);
-  const [isError, setError] = useState(undefined);
-
-  const publicPost = () => {
-    const newPost = {
-      idposts: 0,
-      tytul: tempPost.subject,
-      content: tempPost.content,
-      wynik: 100,
-      autor: userid
-    };
-
-    axios
-      .post("http://localhost:3001/posts", newPost)
-      .then(res => {
-        setError(false);
-      })
-      .catch(error => {
-        setError(true);
-      });
-
-    console.log(newPost);
+  let temp = [UploadImage, UploadImage, UploadImage, UploadImage];
+  const [file, setFile] = useState(temp);
+  const handleChange = (i, event) => {
+    console.log(i);
+    let temp = file;
+    temp[i] = URL.createObjectURL(event.target.files[0]);
+    setFile([...temp]);
   };
-  const newSubject = event => {
-    setPost({
-      subject: event.target.value
-    });
-  };
-  const newContent = event => {
-    setPost({
-      ...tempPost,
-      content: event.target.value
-    });
-  };
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        `http://localhost:3001/users/${user.username}`
-      );
-      return result.data;
-    };
-    fetchData().then(res => {
-      setUserId(res[0].idusers);
-    });
-  }, [user.username]);
   return (
-    <PostForm>
-      {isError === false && (
-        <div>
-          <p className="successMessage">Udało się dodać post</p>
-          <GoPostsPage />
+    <Container>
+      <InputLabel for="title">Tytuł:</InputLabel>
+      <TextInput type="text" id="title" placeholder="Wprowadź tytuł posta" />
+      <InputLabel for="content">Treść:</InputLabel>
+      <TextArea id="content" placeholder="Wprowadź treść posta" />
+      <ImagesContainer>
+        <div class="image-upload">
+          <label for="file-input-0">
+            <Image src={file[0]} />
+          </label>
+          <input
+            id="file-input-0"
+            type="file"
+            onChange={e => handleChange(0, e)}
+          />
         </div>
-      )}
-      {isError === true && (
-        <p className="errorMessage">Nie udało się dodać postu.</p>
-      )}
-      <InputWrapper>
-        <label for="subject">Temat:</label>
-        <TextField
-          className={isError === true && "TextFieldError"}
-          placeholder="Wpisz temat posta"
-          type="text"
-          id="subject"
-          onChange={newSubject}
-          defaultValue=""
-          value={tempPost.subject}
-        />
-      </InputWrapper>
-      <InputWrapper>
-        <label for="content">Treść:</label>
-        <TextArea
-          className={isError === true && "TextFieldError"}
-          placeholder="Wpisz treść posta"
-          type="text"
-          id="content"
-          onChange={newContent}
-          value={tempPost.content}
-        />
-      </InputWrapper>
-      <FormButton type="button" value="Opublikuj" onClick={publicPost} />
-    </PostForm>
+        <div class="image-upload">
+          <label for="file-input-1">
+            <Image src={file[1]} />
+          </label>
+          <input
+            id="file-input-1"
+            type="file"
+            onChange={e => handleChange(1, e)}
+          />
+        </div>
+        <div class="image-upload">
+          <label for="file-input-2">
+            <Image src={file[2]} />
+          </label>
+          <input
+            id="file-input-2"
+            type="file"
+            onChange={e => handleChange(2, e)}
+          />
+        </div>
+        <div class="image-upload">
+          <label for="file-input-3">
+            <Image src={file[3]} />
+          </label>
+          <input
+            id="file-input-3"
+            type="file"
+            onChange={e => handleChange(3, e)}
+          />
+        </div>
+      </ImagesContainer>
+      <Button>Dodaj post</Button>
+    </Container>
   );
 };
 export default AddPost;

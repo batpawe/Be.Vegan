@@ -3,7 +3,7 @@ export const NotifyStyle = styled.div`
   width: 100%;
   font-size: 1.2em;
   text-align: center;
-  background: #01ff70;
+  background: #27ae60;
   position: fixed;
   top: 3.7em;
   margin: auto;

@@ -8,6 +8,7 @@ import Restaurants from "./components/RestaurantsComponents/Restaurants";
 import Products from "./components/ProductsComponents/Products";
 import Replacements from "./components/ReplacementsComponents/Replacements";
 import Users from "./components/UsersComponents/Users";
+import EditUser from "./components/UsersComponents/EditUser";
 import Posts from "./components/PostsComponents/Posts";
 import About from "./components/About";
 import Header from "./components/LoginComponents/MenuLogin";
@@ -16,12 +17,21 @@ import { Container } from "./styles/LoginStyle";
 import { createGlobalStyle } from "styled-components";
 import { ContentContainer } from "./styles/PostStyle";
 import { NewLoginInfo } from "./context/LoginInfo";
-import { RecommendedRestauration } from "./components/GlobalComponents/RecommendedRestauration";
-import { RecommendedEvent } from './components/GlobalComponents/RecommendedEvent';
-import { RecommendedPlace } from './components/GlobalComponents/RecommendedPlace';
-import { RecommendedRecipt } from './components/GlobalComponents/RecommendedRecipt';
-import { RecommendedTip } from './components/GlobalComponents/RecommendedTip';
 import { NewNotifyContext } from "./context/Notify";
+import AcceptProducts from "./components/AdminComponents/AcceptProducts";
+import AcceptReplacements from "./components/AdminComponents/AcceptReplacements";
+import AcceptRestaurations from "./components/AdminComponents/AcceptRestaurations";
+import AdminComponent from "./components/AdminComponents/AdminComponent";
+import NotificationPosts from "./components/AdminComponents/NotificationPosts";
+import NotificationProducts from "./components/AdminComponents/NotificationProducts";
+import NotificationReciptes from "./components/AdminComponents/NotificationReciptes";
+import NotificationReplacements from "./components/AdminComponents/NotificationReplacements";
+import NotificationRestaurations from "./components/AdminComponents/NotificationRestaurations";
+import AddProduct from "./components/ProductsComponents/AddProduct";
+import AddRecipt from "./components/ReciptesComponents/AddRecipt";
+import AddReplacement from "./components/ReplacementsComponents/AddReplacement";
+import AddRestaurant from "./components/RestaurantsComponents/AddRestaurant";
+import "bootstrap/dist/css/bootstrap.min.css";
 import Notify from "./components/Notify";
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Titillium+Web&display=swap');
@@ -31,7 +41,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const App = () => {
+const App = props => {
   const notify = useContext(NewNotifyContext);
   const user = useContext(NewLoginInfo);
   return (
@@ -44,33 +54,47 @@ const App = () => {
         {user.username !== "" ? (
           <ContentContainer>
             <Route path="/about" component={About} />
-
             <Route path="/wall" component={Wall} />
-
             <Route path="/posts" component={Posts} />
-
             <Route path="/restaurants" component={Restaurants} />
-
             <Route path="/products" component={Products} />
-
             <Route path="/reciptes" component={Reciptes} />
-
             <Route path="/replacements" component={Replacements} />
-
             <Route path="/users/:id" component={Users} />
-
+            <Route path="/edituser/:id" component={EditUser} />
             <Route path="/addpost" component={AddPost} />
-            <div>
-              <RecommendedRestauration />
-              <RecommendedEvent />
-              <RecommendedPlace />
-              <RecommendedRecipt />
-              <RecommendedTip />
-            </div>
+            <Route path="/addproduct" component={AddProduct} />
+            <Route path="/addrecipt" component={AddRecipt} />
+            <Route path="/addreplacement" component={AddReplacement} />
+            <Route path="/addrestaurant" component={AddRestaurant} />
+            <Route path="/acceptproducts" component={AcceptProducts} />
+            <Route path="/acceptreplacements" component={AcceptReplacements} />
+            <Route
+              path="/acceptrestaurations"
+              component={AcceptRestaurations}
+            />
+            <Route path="/admincomponent" component={AdminComponent} />
+            <Route path="/notificationposts" component={NotificationPosts} />
+            <Route
+              path="/notificationproducts"
+              component={NotificationProducts}
+            />
+            <Route
+              path="/notificationreciptes"
+              component={NotificationReciptes}
+            />
+            <Route
+              path="/notificationreplacements"
+              component={NotificationReplacements}
+            />
+            <Route
+              path="/notificationrestaurations"
+              component={NotificationRestaurations}
+            />
           </ContentContainer>
         ) : (
-            <Redirect to="/" />
-          )}
+          <Redirect to="/" />
+        )}
       </Router>
     </Container>
   );

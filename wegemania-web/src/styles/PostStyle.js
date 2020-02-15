@@ -72,6 +72,8 @@ export const ContentContainer = styled.div`
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
+  min-height: 100vh;
+  align-items: flex-start;
 `;
 
 export const UsersRankingStyled = styled.ul`
@@ -89,10 +91,9 @@ export const UsersItem = styled.li`
   font-weight: bold;
 `;
 export const OrderedUsersList = styled.ol`
-  padding: 2em;
-  margin: 10em 2em 0 0;
-  max-height:200px;
-  background:white;
+  margin: 2em 0 0 0;
+  max-height: 200px;
+  background: white;
 `;
 export const UnorderedPost = styled.ul`
   font-family: "Nunito", sans-serif;
@@ -224,4 +225,27 @@ export const FormButton = styled.input`
 `;
 export const UserControl = styled.div`
   padding: 0 0 0 0.1em;
+`;
+export const AddPostPageContainer = styled.div`
+  background: white;
+  padding: 2%;
+  align-items: center;
+  margin: auto auto 5% auto;
+  display: flex;
+  justify-content: center;
+`;
+export const AddPostPageLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  background: #27ae60;
+  padding: 2%;
+  display: block;
+  min-width: 200px;
+  text-align: center;
+  :hover {
+    color: white;
+    text-decoration: none;
+    background: #2ecc71;
+    text-shadow: 0 0 1px white, 0 0 1px white;
+  }
 `;

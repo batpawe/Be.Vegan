@@ -33,6 +33,8 @@ export const MenuListLink = styled(Link)`
   :focus {
     background: #2e8438;
     opacity: 1;
+    color: white;
+    text-decoration: none;
   }
 `;
 export const MenuUnorderedList = styled.ul`
@@ -82,14 +84,24 @@ export const UserName = styled.p`
   padding: 1em;
   box-sizing: border-box;
   text-align: center;
-  background: #2f8b2e;
+  color: white;
+  background: #27752e;
   transition: border-radius 0.3s;
   :hover {
     border-radius: 20px;
   }
 `;
+export const HyperLink = styled(Link)`
+  color: black;
+  text-decoration: none;
+  :hover {
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+  }
+`;
 export const UserOption = styled.li`
-  color: white;
+  color: #EBF5EF;
   animation-name: example;
   animation-duration: 1.1s;
   animation-fill-mode: forwards;
