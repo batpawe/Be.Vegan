@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
+from .config import SecretVariables
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'j&&7yaef2s85&afuk)3^to)da23uqflh%3g2$imp(89*@hgs6j'
+SECRET_KEY = SecretVariables.secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -84,13 +84,13 @@ WSGI_APPLICATION = 'be_vegan.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
+#
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'acxEWTLu6c',
-        'USER': 'acxEWTLu6c',
-        'PASSWORD': 'M0uzvR9AoZ',
+        'NAME': SecretVariables.database_name,
+        'USER': SecretVariables.database_user,
+        'PASSWORD': SecretVariables.database_password,
         'HOST': 'remotemysql.com',
         'PORT': '3306',
                 'OPTIONS': {
@@ -99,15 +99,16 @@ DATABASES = {
     },
     'posts': {
         'ENGINE': 'djongo',
-        'NAME': 'Posts_db',
-        'USER': 'root',
-        'PASSWORD': 'Veggies1982xxf',
+        'NAME': SecretVariables.database_posts_name,
+        'USER': SecretVariables.database_posts_user,
+        'PASSWORD': SecretVariables.database_posts_password,
         'HOST': '',
         'PORT': '27017'
     }
 }
 
 
+AUTH_USER_MODEL="veggies.User"
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 

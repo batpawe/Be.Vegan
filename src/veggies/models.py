@@ -1,15 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 
 
-class User(models.Model):
-    login = models.CharField("login", unique=True, blank=True, max_length = 120)
-    email = models.CharField("email", unique=True, blank=True, max_length = 120)
-    created_at = models.DateField("created_at")
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
     height = models.PositiveIntegerField("height", null=True, blank=True)
     weight = models.DecimalField("weight", null=True, blank=True, max_digits = 4, decimal_places = 2)
     age = models.PositiveIntegerField("age", null=True, blank=True)
     activity = models.PositiveIntegerField("activity", null=True, blank=True)
-
+User  = get_user_model()
 
 class Ingredient(models.Model):
     name = models.CharField("name", unique=True, max_length = 120)
