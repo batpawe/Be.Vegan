@@ -51,7 +51,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -82,12 +81,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'be_vegan.wsgi.application'
 
-#DATABASE_ROUTERS = ['modules.mongodb_router.MongoDBRouter']
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 #
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -105,13 +102,10 @@ DATABASES = {
         'NAME': SecretVariables.database_posts_name,
         'USER': SecretVariables.database_posts_user,
         'PASSWORD': SecretVariables.database_posts_password,
-        'HOST': 'bexw8am2pix0hsa-mongodb.services.clever-cloud.com',
-        'PORT': 27017,
-        'AUTH_SOURCE': SecretVariables.database_posts_name
+        'HOST': '',
+        'PORT': '27017'
     }
 }
-
-
 
 
 AUTH_USER_MODEL="veggies.User"
