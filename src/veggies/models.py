@@ -12,9 +12,13 @@ class User(AbstractUser):
 User  = get_user_model()
 
 class Ingredient(models.Model):
-    name = models.CharField("name", unique=True, max_length = 120)
-    calories = models.PositiveIntegerField("calories", null=True, blank=True)
-
+    name = models.CharField("Nazwa", unique=True, max_length = 120)
+    kcal = models.FloatField("Kcal", null=True, blank=True)
+    protein = models.FloatField("Białko", null=True, blank=True)
+    fat = models.FloatField("Tłuszcz", null=True, blank=True)
+    carbs = models.FloatField("Węglowodany", null=True, blank=True)
+    cellulose = models.FloatField("Błonnik", null=True, blank=True)
+    category = models.CharField("Kategoria", null=True, blank=True, max_length = 120)
 
 class Recipe(models.Model):
     recipe_decryption = models.TextField("recipe_descyption")
