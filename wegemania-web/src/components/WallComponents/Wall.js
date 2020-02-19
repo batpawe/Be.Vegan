@@ -24,7 +24,9 @@ import {
   MainContainer,
   PreparingMethod,
   ItemHeaderRecipte,
-  HiglightItemHeaderRecipte
+  HiglightItemHeaderRecipte,
+  HeaderItem,
+  HeaderList
 } from "../../styles/WallStyle";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import DinnerImage from "../../images/dinner.jpg";
@@ -40,18 +42,15 @@ const Wall = () => {
         {user.username == "" && <Redirect to="/" />}
         <OrderedList>
           <UnorderedList>
-            <HeaderRecipte>
-              <ItemHeaderRecipte>
-                <BorderText>Nazwa: </BorderText>
-                <HiglightItemHeaderRecipte>
-                  ZUPA KREM Z TOPINAMBURU
-                </HiglightItemHeaderRecipte>
-              </ItemHeaderRecipte>
+            <HeaderList>
+              <HeaderItem>ZUPA KREM Z TOPINAMBURU</HeaderItem>
+            </HeaderList>
+            <HeaderList>
               <ItemHeaderRecipte>
                 <BorderText>Czas przygotowania: </BorderText>
                 <HiglightItemHeaderRecipte>45minut</HiglightItemHeaderRecipte>
               </ItemHeaderRecipte>
-            </HeaderRecipte>
+            </HeaderList>
             <ColumnContainer>
               <div>
                 <Item>

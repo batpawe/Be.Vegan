@@ -179,3 +179,15 @@ export const HiglightItemHeaderRecipte = styled.span`
   text-align: center;
   font-weight: bold;
 `;
+export const HeaderList = styled.ul`
+  text-align: center;
+  width: 100%;
+  list-style-type: none;
+`;
+export const HeaderItem = styled.li`
+  margin: 0;
+  padding: 0;
+  color: green;
+  font-size: 24px;
+  text-align: center;
+`;
