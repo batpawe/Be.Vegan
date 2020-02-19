@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
 from rest_framework import routers, serializers, viewsets
 from rest_framework.views import APIView
@@ -24,13 +25,10 @@ from django.http.response import HttpResponse
 from rest_framework.authtoken.views import obtain_auth_token
 
 
-
-
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     password = serializers.CharField(write_only=True)
 
     def create(self, validated_data):
-
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email']
@@ -39,27 +37,30 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         user.save()
 
         return user
+
     class Meta:
         model = User
         fields = ['url', 'username', 'email', 'password']
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class MyOwnView(APIView):
     def get(self, request):
         return HttpResponse('some')
 
+
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
-
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^', include(router.urls)),
     url(r'^my-own-view/$', MyOwnView.as_view()),
-    #url(r'^api-auth/', include('rest_framework.urls'))
-    path(r'api-token-auth/', obtain_auth_token, name='api_token_auth')
+    # url(r'^api-auth/', include('rest_framework.urls'))
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('', include('veggies.urls'))
 ]
