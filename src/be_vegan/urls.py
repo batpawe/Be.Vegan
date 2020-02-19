@@ -22,8 +22,8 @@ User = get_user_model()
 from rest_framework import routers, serializers, viewsets
 from rest_framework.views import APIView
 from django.http.response import HttpResponse
-from rest_framework.authtoken.views import obtain_auth_token
-
+#from rest_framework.authtoken.views import obtain_auth_token
+from veggies.views import CustomObtainAuthToken
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -48,19 +48,13 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class MyOwnView(APIView):
-    def get(self, request):
-        return HttpResponse('some')
-
-
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^', include(router.urls)),
-    url(r'^my-own-view/$', MyOwnView.as_view()),
     # url(r'^api-auth/', include('rest_framework.urls'))
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('api-token-auth/', CustomObtainAuthToken.as_view(), name='api_token_auth'),
     path('', include('veggies.urls'))
 ]
