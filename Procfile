@@ -1,1 +1,1 @@
-web: gunicorn veggies:wsgi --log-file --chdir src/
+web: gunicorn src/be_vegan/veggies:wsgi --log-file
