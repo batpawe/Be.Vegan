@@ -1,1 +1,1 @@
-web: gunicorn veggies:wsgi --log-file
+web: gunicorn veggies:wsgi --log-file -
