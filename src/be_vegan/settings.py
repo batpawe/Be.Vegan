@@ -90,17 +90,17 @@ WSGI_APPLICATION = 'be_vegan.wsgi.application'
 #
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': SecretVariables.database_name,
-        'USER': SecretVariables.database_user,
-        'PASSWORD': SecretVariables.database_password,
-        'HOST': 'remotemysql.com',
-        'PORT': '3306',
-                'OPTIONS': {
-                    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-                }
-    },
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': SecretVariables.database_name,
+#        'USER': SecretVariables.database_user,
+#        'PASSWORD': SecretVariables.database_password,
+#        'HOST': 'remotemysql.com',
+#        'PORT': '3306',
+#                'OPTIONS': {
+#                    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#                }
+#    },
     'posts': {
         'ENGINE': 'djongo',
         'NAME': SecretVariables.database_posts_name,
