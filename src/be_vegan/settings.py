@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'veggies.apps.VeggiesConfig',
-    'veggies'
 ]
 
 MIDDLEWARE = [
