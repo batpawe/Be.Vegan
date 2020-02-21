@@ -34,10 +34,9 @@ const Login = () => {
     });
   };
   const LoginUser = async () => {
-    console.log(tempLogin.login + " " + tempLogin.password);
     const fetchData = async () => {
       const result = await axios.post(
-        "http://127.0.0.1:8000/api-token-auth/",
+        "https://veggiesapp.herokuapp.com/api-token-auth/",
         {
           username: tempLogin.login,
           password: tempLogin.password
@@ -50,13 +49,15 @@ const Login = () => {
       );
       return result.data;
     };
-    //let passwd = MD5(tempLogin.password).toString();
     await fetchData()
       .then(res => {
         console.log(res);
         if (res.token) {
-          console.log("WWW");
-          user.login(tempLogin.login);
+          let temp = {};
+          temp.id = res.id;
+          temp.token = res.token;
+          temp.name = tempLogin.login;
+          user.login(temp);
           setError(false);
         } else {
           console.log(res);
@@ -80,7 +81,7 @@ const Login = () => {
   return (
     <LoginPage>
       <LoginFlex>
-        {user.username !== "" && <Redirect to="/wall" />}
+        {user.userInfo !== undefined && <Redirect to="/wall" />}
         <FormArea>
           <Image src={icon} alt="be vegan logo" />
           {isError === true && (

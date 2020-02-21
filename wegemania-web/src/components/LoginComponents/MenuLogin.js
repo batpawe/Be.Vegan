@@ -14,7 +14,7 @@ import { NewLoginInfo } from "../../context/LoginInfo";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import icon from "../../icons/ikona.ico";
-const Test = ({ click }) => {
+const UserPanel = ({ click }) => {
   const user = useContext(NewLoginInfo);
   const [clicked, setClicked] = useState(click);
 
@@ -29,7 +29,8 @@ const Test = ({ click }) => {
   return (
     <UserMenuList>
       <li>
-        <UserName onClick={userSettings}>{user.username}</UserName>
+        {console.log("USER USER")}
+        <UserName onClick={userSettings}>{user.userInfo.name}</UserName>
       </li>
       {clicked === true && (
         <UserActions>
@@ -47,7 +48,7 @@ const Header = () => {
 
   return (
     <div>
-      {user.username === "" ? (
+      {user.userInfo === undefined ? (
         <header className="header">
           <img style={{ width: 50, height: 50 }} src={icon} />
           <nav>
@@ -68,7 +69,7 @@ const Header = () => {
         <header className="header">
           <nav>
             <NavOrderedList>
-              <Test click={false} />
+              <UserPanel click={false} />
               <MenuUnorderedList>
                 <MenuList>
                   <MenuListLink to="/wall">Tablica</MenuListLink>

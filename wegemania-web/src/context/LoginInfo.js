@@ -1,24 +1,57 @@
 import React, { useState, useEffect, createContext } from "react";
 import { Redirect } from "react-router";
 const LoginInfo = createContext();
+/*
 const useStateWithLocalStorage = localStorageKey => {
-  const [username, setUsername] = useState(
-    localStorage.getItem(localStorageKey) || ""
-  );
-
+  /*
+  var temp;
+  console.log("TEST");
+  console.log(localStorage.getItem(localStorageKey));
+  if (
+    localStorage.getItem(localStorageKey) == null ||
+    localStorage.getItem(localStorageKey) == undefined
+  ) {
+    localStorage.removeItem(localStorageKey);
+  } else {
+    temp = localStorage.getItem(localStorageKey);
+  }
+  const [userInfo, setUserInfo] = useState(temp);
   useEffect(() => {
-    localStorage.setItem(localStorageKey, username);
+    if (temp) {
+      localStorage.setItem(localStorageKey, userInfo);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username]);
-  return [username, setUsername];
+  }, [userInfo]);
+
+  return [userInfo, setUserInfo];
+  var temp;
+  if (localStorage.getItem(localStorageKey) !== undefined) {
+    temp = localStorage.getItem(localStorageKey);
+  } else {
+    localStorage.removeItem(localStorageKey);
+  }
+  const [userInfo, setUserInfo] = useState(temp);
+  localStorage.setItem(localStorageKey, userInfo);
+  return [userInfo, setUserInfo];
 };
+*/
 export const LoginInfoProvider = props => {
-  const [username, setUsername] = useStateWithLocalStorage("loginState");
-  const login = name => {
-    setUsername(name);
+  let tempInfo;
+  if (localStorage.getItem("loginState")) {
+    tempInfo = JSON.parse(localStorage.getItem("loginState"));
+  } else {
+    tempInfo = undefined;
+  }
+  const [userInfo, setUserInfo] = useState(tempInfo);
+  console.log("-------");
+  console.log(userInfo);
+  const login = info => {
+    localStorage.setItem("loginState", JSON.stringify(info));
+    setUserInfo(info);
   };
   const logout = () => {
-    setUsername("");
+    localStorage.removeItem("loginState");
+    setUserInfo(undefined);
   };
   const { children } = props;
   return (
@@ -26,7 +59,7 @@ export const LoginInfoProvider = props => {
       value={{
         login: login,
         logout: logout,
-        username: username
+        userInfo: userInfo
       }}
     >
       {children}

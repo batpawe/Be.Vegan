@@ -51,7 +51,8 @@ const App = props => {
         <Header /> <Route exact path="/" component={Login} />
         <Route path="/register" component={Register} />
         <Notify val={notify.val} />
-        {user.username !== "" ? (
+        {console.log(user.userInfo)}
+        {user.userInfo !== undefined ? (
           <ContentContainer>
             <Route path="/about" component={About} />
             <Route path="/wall" component={Wall} />
