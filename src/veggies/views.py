@@ -9,8 +9,11 @@ from rest_framework import viewsets
 from rest_framework.authtoken.models import Token
 from django.core.exceptions import PermissionDenied
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
+from rest_framework.viewsets import ViewSet
+
 from .models import Food_To_Substitute, Food_Substitute, Ingredient
-from .serializers import ProfileSerializer, SubstituteSerializer
+from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer
 from django.contrib.auth import get_user_model, get_user
 from django.core import serializers
 
@@ -66,13 +69,50 @@ class SubstituteNVeganView(APIView):
         food = SubstituteSerializer(food, many=True)
         return Response(food.data)
 
+    def put(self, request, format=None):
+        if "start" in request.data:
+            start = str(request.data["start"])
+            if Food_To_Substitute.objects.filter(food_name__regex=r'^{}'.format(start)):
+                food = Food_To_Substitute.objects.get(food_name__regex=r'^{}'.format(start))
+                food = SubstituteSerializer(food, many=True)
+                return Response(food)
+            else:
+                return Response(status=400)
+        else:
+            return Response(status=400)
 
-class SubstituteVeganView(APIView):
+
+class SubstituteVeganView(ViewSet):
+    queryset = Ingredient.objects.all()
+    serializer_class = IngredientSerializer
+
+    def retrieve(self, request, pk=None):
+        food_substitute = Food_Substitute.objects.filter(id_food_to_substitute=pk).values_list('id_vegan', flat=True)
+        #vegan_id_list = []
+        #for i in food_substitute:
+        #    vegan_id_list.append(i.vegan_id)
+        if Ingredient.objects.filter(id__in=food_substitute):
+            queryset = Ingredient.objects.get(id__in=food_substitute)
+            serializer = IngredientSerializer(queryset)
+            return Response(serializer.data)
+        else:
+            return Response(status=404)
+
+
+class IngredientsView(APIView):
     def get(self, request, format=None):
-        nvegan = request.data['id']
-        id_list = Food_Substitute.objects.get(id_food_to_substitute=nvegan)
-        vegan_id_list = []
-        for i in id_list:
-            vegan_id_list.append(id_list.vegan_id)
-        food = Ingredient.objects.get(id=vegan_id_list)
+        food = Ingredient.objects.all()
+        food = IngredientSerializer(food, many=True)
         return Response(food.data)
+
+    def put(self, request, format=None):
+        if "start" in request.data:
+            start = str(request.data["start"])
+            if Ingredient.objects.filter(name__regex=r'^{}'.format(start)):
+                food = Ingredient.objects.get(name__regex=r'^{}'.format(start))
+                food = IngredientSerializer(food, many=True)
+                return Response(food)
+            else:
+                return Response(status=400)
+        else:
+            return Response(status=400)

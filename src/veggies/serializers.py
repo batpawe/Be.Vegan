@@ -16,11 +16,11 @@ class SubstituteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Food_To_Substitute
         fields = '__all__'
-        read_only_fields = fields
+        editable = False
 
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = '__all__'
-        read_only_fields = fields
+        editable = False

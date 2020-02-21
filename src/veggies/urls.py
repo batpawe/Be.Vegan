@@ -1,8 +1,14 @@
 from django.urls import path
-from .views import ProfileView, SubstituteNVeganView, SubstituteVeganView
+from rest_framework import routers
+from .views import ProfileView, SubstituteNVeganView, SubstituteVeganView, IngredientsView
 
-urlpatterns = [
+router = routers.SimpleRouter()
+router.register(r'substitute/veg', SubstituteVeganView)
+urlpatterns = router.urls
+
+urlpatterns += [
     path('me/', ProfileView.as_view(), name='profile'),
     path('substitute/nveg/', SubstituteNVeganView.as_view(), name='substitute'),
-    path('substitute/veg/', SubstituteVeganView.as_view(), name='substitute')
+    path('ingredients/', IngredientsView.as_view())
+    # path('substitute/veg/', SubstituteVeganView, name='substitute')
 ]

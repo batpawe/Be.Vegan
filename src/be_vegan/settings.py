@@ -94,8 +94,8 @@ DATABASES = {
         'NAME': SecretVariables.database_name,
         'USER': SecretVariables.database_user,
         'PASSWORD': SecretVariables.database_password,
-        'HOST': 'remotemysql.com',
-        'PORT': '3306',
+        'HOST': SecretVariables.database_host,
+        'PORT': SecretVariables.database_port,
                 'OPTIONS': {
                     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
                 }
