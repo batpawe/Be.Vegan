@@ -11,9 +11,9 @@ from django.core.exceptions import PermissionDenied
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ViewSet
-
-from .models import Food_To_Substitute, Food_Substitute, Ingredient
-from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer
+from .map import get_restaurants
+from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant
+from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer
 from django.contrib.auth import get_user_model, get_user
 from django.core import serializers
 
@@ -88,8 +88,8 @@ class SubstituteVeganView(ViewSet):
 
     def retrieve(self, request, pk=None):
         food_substitute = Food_Substitute.objects.filter(id_food_to_substitute=pk).values_list('id_vegan', flat=True)
-        #vegan_id_list = []
-        #for i in food_substitute:
+        # vegan_id_list = []
+        # for i in food_substitute:
         #    vegan_id_list.append(i.vegan_id)
         if Ingredient.objects.filter(id__in=food_substitute):
             queryset = Ingredient.objects.get(id__in=food_substitute)
@@ -114,5 +114,25 @@ class IngredientsView(APIView):
                 return Response(food)
             else:
                 return Response(status=400)
+        else:
+            return Response(status=400)
+
+
+class RestaurantView(APIView):
+    def put(self, request, format=None):
+        if "city" in request.data:
+            start = str(request.data["city"])
+            if Restaurant.objects.filter(name__regex=r'^{}'.format(start)):
+                res = Restaurant.objects.get(name__regex=r'^{}'.format(start))
+                res = RestaurantSerializer(res, many=True)
+                return Response(res)
+            else:
+                return Response(status=400)
+        elif 'latX' in request.data & 'longY' in request.data:
+            lat = request.data["latX"]
+            long = request.data['longY']
+            res = get_restaurants(lat, long)
+            RestaurantSerializer(res, many=True)
+            return Response(res)
         else:
             return Response(status=400)

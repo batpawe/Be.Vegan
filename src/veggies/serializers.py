@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Food_To_Substitute, Ingredient
+from .models import Food_To_Substitute, Ingredient, Restaurant
 
 User = get_user_model()
 
@@ -22,5 +22,13 @@ class SubstituteSerializer(serializers.ModelSerializer):
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = '__all__'
+        fields = ['name', 'kcal', 'protein', 'fat', 'carbs', 'cellulose', 'category']
         editable = False
+
+
+class RestaurantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = ['id_moderator', 'name', 'city', 'foto', 'street', 'street_number', 'latX', 'longY', 'hours', 'rating',
+                  'description']
+        read_only_fields = ['id_moderator', 'rating', 'street', 'street_number', 'latX', 'longY']

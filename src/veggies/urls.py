@@ -10,5 +10,4 @@ urlpatterns += [
     path('me/', ProfileView.as_view(), name='profile'),
     path('substitute/nveg/', SubstituteNVeganView.as_view(), name='substitute'),
     path('ingredients/', IngredientsView.as_view())
-    # path('substitute/veg/', SubstituteVeganView, name='substitute')
 ]
