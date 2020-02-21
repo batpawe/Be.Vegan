@@ -95,7 +95,7 @@ DATABASES = {
         'NAME': SecretVariables.database_name,
         'USER': SecretVariables.database_user,
         'PASSWORD': SecretVariables.database_password,
-        'HOST': 'remotemysql.com',
+        'HOST': 'mysql://b43932362239f2:3fb4041a@eu-cdbr-west-02.cleardb.net/heroku_e754e79cc447d4a?reconnect=true',
         'PORT': '3306',
                 'OPTIONS': {
                     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
