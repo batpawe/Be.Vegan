@@ -27,7 +27,7 @@ from veggies.views import CustomObtainAuthToken
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     password = serializers.CharField(write_only=True)
-
+    email = serializers.CharField(write_only=True)
     def create(self, validated_data):
         user = User.objects.create(
             username=validated_data['username'],

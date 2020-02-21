@@ -1,2 +1,4 @@
 *.pyc
 .idea
+src/be_vegan/config.py
+env*

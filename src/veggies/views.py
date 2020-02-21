@@ -9,8 +9,8 @@ from rest_framework import viewsets
 from rest_framework.authtoken.models import Token
 from django.core.exceptions import PermissionDenied
 from rest_framework.views import APIView
-
-from .serializers import ProfileSerializer
+from .models import Food_To_Substitute, Food_Substitute, Ingredient
+from .serializers import ProfileSerializer, SubstituteSerializer
 from django.contrib.auth import get_user_model, get_user
 from django.core import serializers
 
@@ -30,7 +30,7 @@ def ProfileView(request):
         return Response(status=401)
 
 
-class profile_view(APIView):
+class ProfileView(APIView):
     def get(self, request, format=None):
         us = get_user(request)
         message = ProfileSerializer(us)
@@ -58,3 +58,21 @@ class CustomObtainAuthToken(ObtainAuthToken):
         response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
         token = Token.objects.get(key=response.data['token'])
         return Response({'token': token.key, 'id': token.user_id})
+
+
+class SubstituteNVeganView(APIView):
+    def get(self, request, format=None):
+        food = Food_To_Substitute.objects.all()
+        food = SubstituteSerializer(food, many=True)
+        return Response(food.data)
+
+
+class SubstituteVeganView(APIView):
+    def get(self, request, format=None):
+        nvegan = request.data['id']
+        id_list = Food_Substitute.objects.get(id_food_to_substitute=nvegan)
+        vegan_id_list = []
+        for i in id_list:
+            vegan_id_list.append(id_list.vegan_id)
+        food = Ingredient.objects.get(id=vegan_id_list)
+        return Response(food.data)
