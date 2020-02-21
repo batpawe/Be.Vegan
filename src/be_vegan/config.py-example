@@ -5,4 +5,4 @@ def SecretVerables():
     database_posts_name = 'Posts_db'
     database_posts_user = 'user'
     database_posts_password = 'haslo'
-    secret_key = 'blabla'
+    secret_key = 'blabla' 
