@@ -9,6 +9,7 @@ class User(AbstractUser):
     weight = models.DecimalField("weight", null=True, blank=True, max_digits = 4, decimal_places = 2)
     age = models.PositiveIntegerField("age", null=True, blank=True)
     activity = models.PositiveIntegerField("activity", null=True, blank=True)
+
 User  = get_user_model()
 
 class Ingredient(models.Model):
@@ -21,7 +22,7 @@ class Ingredient(models.Model):
     category = models.CharField("Kategoria", null=True, blank=True, max_length = 120)
 
     def __str__(self):
-	return self.name
+	       return self.name
 
 class Recipe(models.Model):
     recipe_name = models.TextField(max_length = 120)
@@ -30,7 +31,7 @@ class Recipe(models.Model):
     id_user = models.ForeignKey(User, on_delete = models.CASCADE)
 
     def __str__(self):
-	return self.recipe_name
+	       return self.recipe_name
 
 
 class Rating_Recipe(models.Model):
