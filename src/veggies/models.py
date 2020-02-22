@@ -30,7 +30,7 @@ class Recipe(models.Model):
     id_user = models.ForeignKey(User, on_delete = models.CASCADE)
 
     def __str__(self):
-	return self.name
+	return self.recipe_name
 
 
 class Rating_Recipe(models.Model):
