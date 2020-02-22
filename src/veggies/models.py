@@ -53,9 +53,13 @@ class Food_To_Substitute(models.Model):
     food_name = models.CharField("food_name", unique=True, max_length = 120)
     description = models.TextField("decription", null=True, blank=True)
 
+    def __str__(self):
+        return self.food_name
+
 class Food_Substitute(models.Model):
     id_vegan = models.ForeignKey(Ingredient, on_delete = models.CASCADE)
     id_food_to_substitute = models.ForeignKey(Food_To_Substitute, on_delete = models.CASCADE)
+
 
 class Restaurant(models.Model):
     id_moderator = models.ForeignKey(User, on_delete = models.CASCADE)
@@ -69,6 +73,9 @@ class Restaurant(models.Model):
     hours = models.TextField("hours",null=True, blank=True)
     rating = models.DecimalField("rating", max_digits = 4, decimal_places = 2)
     description = models.TextField("description")
+
+    def __str__(self):
+        return self.name
 
 class Rating_Restaurant(models.Model):
     id_user = models.ForeignKey(User, on_delete = models.CASCADE)
