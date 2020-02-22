@@ -2,21 +2,15 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import NotAuthenticated
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from rest_framework import viewsets
 from rest_framework.authtoken.models import Token
-from django.core.exceptions import PermissionDenied
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ViewSet
 from .map import get_restaurants
 from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer
-from django.contrib.auth import get_user_model, get_user
-from django.core import serializers
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -25,7 +19,7 @@ User = get_user_model()
 
 @api_view(['GET', 'UPDATE'])
 def ProfileViewGet(request):
-    us = get_user(request)
+    us = request.user
     message = ProfileSerializer(us)
 
     if us.is_authenticated:
@@ -44,7 +38,7 @@ class ProfileView(APIView):
 
 
     def put(self, request, format=None):
-        us = get_user(request)
+        us = request.user
         serializer = ProfileSerializer(us, data=request.data, partial=True)
         if us.is_authenticated:
             if serializer.is_valid():
