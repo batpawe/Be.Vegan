@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -23,7 +24,7 @@ User = get_user_model()
 # Create your views here.
 
 @api_view(['GET', 'UPDATE'])
-def ProfileView(request):
+def ProfileViewGet(request):
     us = get_user(request)
     message = ProfileSerializer(us)
 
@@ -34,14 +35,13 @@ def ProfileView(request):
 
 
 class ProfileView(APIView):
+    permission_classes = (IsAuthenticated,)
     def get(self, request, format=None):
-        us = get_user(request)
-        message = ProfileSerializer(us)
+        us = request.user
+        message = ProfileSerializer(us, partial=True)
+        return Response(message.data)
 
-        if us.is_authenticated:
-            return Response(message.data)
-        else:
-            return Response(status=401)
+
 
     def put(self, request, format=None):
         us = get_user(request)
