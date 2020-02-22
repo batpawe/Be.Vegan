@@ -95,7 +95,7 @@ DATABASES = {
         'NAME': SecretVariables.database_name,
         'USER': SecretVariables.database_user,
         'PASSWORD': SecretVariables.database_password,
-        'HOST': 'SecretVariables.database_host,
+        'HOST': SecretVariables.database_host,
         'PORT': '3306',
                 'OPTIONS': {
                     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
