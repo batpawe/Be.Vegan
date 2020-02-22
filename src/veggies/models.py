@@ -20,10 +20,17 @@ class Ingredient(models.Model):
     cellulose = models.FloatField("Błonnik", null=True, blank=True)
     category = models.CharField("Kategoria", null=True, blank=True, max_length = 120)
 
+    def __str__(self):
+	return self.name
+
 class Recipe(models.Model):
-    recipe_decryption = models.TextField("recipe_descyption")
+    recipe_name = models.TextField(max_length = 120)
+    recipe_decription = models.TextField("recipe_description")
     recipe_foto = models.ImageField("recipe_foto")
     id_user = models.ForeignKey(User, on_delete = models.CASCADE)
+
+    def __str__(self):
+	return self.name
 
 
 class Rating_Recipe(models.Model):
