@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'veggies.apps.VeggiesConfig',
 <<<<<<< HEAD
     'sslserver'
-    =======
+=======
 >>>>>>> 10e223c204bb8293cabf170729c16a238584cc48
 ]
 

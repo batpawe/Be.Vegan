@@ -41,10 +41,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'veggies.apps.VeggiesConfig',
-<<<<<<< HEAD
-    'sslserver'
-    =======
->>>>>>> 10e223c204bb8293cabf170729c16a238584cc48
 ]
 
 MIDDLEWARE = [
@@ -56,6 +52,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -64,9 +61,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',  # <-- And here
     ],
-'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
 }
 
 ROOT_URLCONF = 'be_vegan.urls'
@@ -101,13 +95,8 @@ DATABASES = {
         'NAME': SecretVariables.database_name,
         'USER': SecretVariables.database_user,
         'PASSWORD': SecretVariables.database_password,
-<<<<<<< HEAD
-        'HOST': SecretVariables.database_host,
-        'PORT': SecretVariables.database_port,
-=======
         'HOST': 'eu-cdbr-west-02.cleardb.net',
         'PORT': '3306',
->>>>>>> 10e223c204bb8293cabf170729c16a238584cc48
                 'OPTIONS': {
                     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
                 }
@@ -148,8 +137,6 @@ AUTH_PASSWORD_VALIDATORS = [
 CORS_ORIGIN_ALLOW_ALL = True
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
-
-SECURE_SSL_REDIRECT = False
 
 LANGUAGE_CODE = 'pl'
 
