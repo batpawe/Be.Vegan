@@ -23,6 +23,15 @@ import {
   TagItem,
   RatingComponent
 } from "../../styles/WallStyle";
+import {
+  HeaderPostsContainer,
+  HeaderPostsItem,
+  HeaderPostsText,
+  TagsPostsHeader,
+  TagsPostsHeaderContainer,
+  TagsPostsContainer,
+  TagsItems
+} from "../../styles/PostsWallStyle";
 import PostImage from "../../images/postimage.jpg";
 import RightPanel from "../GlobalComponents/RightPanel";
 import "../../styles/MenuLoginStyle.css";
@@ -39,19 +48,25 @@ const Posts = () => {
         </AddPostPageContainer>
         <OrderedList>
           <UnorderedList>
-            <Item>
-              <BorderText>Autor: </BorderText>
-              <HighlightItem>Sklep1</HighlightItem>
-            </Item>
-            <Item>
-              <BorderText>Tagi: </BorderText>
-              <TagContainer>
-                <TagItem>Tytuł</TagItem>
-                <TagItem>Tytuł</TagItem>
-                <TagItem>Tytuł</TagItem>
-                <TagItem>Tytuł</TagItem>
-              </TagContainer>
-            </Item>
+            <HeaderPostsContainer>
+              <HeaderPostsItem>
+                <HeaderPostsText>Post1</HeaderPostsText>
+              </HeaderPostsItem>
+              <HeaderPostsItem>Autor</HeaderPostsItem>
+            </HeaderPostsContainer>
+            <TagsPostsHeaderContainer>
+              <li>
+                <TagsPostsHeader>Tagi:</TagsPostsHeader>
+              </li>
+            </TagsPostsHeaderContainer>
+            <TagsPostsContainer>
+              <TagsItems>tag</TagsItems>
+              <TagsItems>tag</TagsItems>
+              <TagsItems>tag</TagsItems>
+              <TagsItems>tag</TagsItems>
+              <TagsItems>tag</TagsItems>
+              <TagsItems>tag</TagsItems>
+            </TagsPostsContainer>
             <ColumnContainer>
               <div>
                 Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -106,12 +121,12 @@ const Posts = () => {
             </UnorderedListComments>
           </UnorderedList>
           <UnorderedList>
-            <Item>
-              <BorderText>Autor: </BorderText>Sklep1
-            </Item>
-            <Item>
-              <BorderText>Tytuł: </BorderText>Tytuł
-            </Item>
+            <HeaderPostsContainer>
+              <HeaderPostsItem>
+                <HeaderPostsText>Post1</HeaderPostsText>
+              </HeaderPostsItem>
+              <HeaderPostsItem>Autor</HeaderPostsItem>
+            </HeaderPostsContainer>
             <ColumnContainer>
               <div>
                 Lorem Ipsum is simply dummy text of the printing and typesetting

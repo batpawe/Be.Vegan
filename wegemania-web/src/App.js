@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Login from "./components/LoginComponents/Login";
 import Register from "./components/LoginComponents/Register";
 import Wall from "./components/WallComponents/Wall";
-import Reciptes from "./components/ReciptesComponents/Reciptes";
+import Recipes from "./components/RecipesComponents/Recipes";
 import Restaurants from "./components/RestaurantsComponents/Restaurants";
 import Products from "./components/ProductsComponents/Products";
 import Replacements from "./components/ReplacementsComponents/Replacements";
@@ -24,11 +24,11 @@ import AcceptRestaurations from "./components/AdminComponents/AcceptRestauration
 import AdminComponent from "./components/AdminComponents/AdminComponent";
 import NotificationPosts from "./components/AdminComponents/NotificationPosts";
 import NotificationProducts from "./components/AdminComponents/NotificationProducts";
-import NotificationReciptes from "./components/AdminComponents/NotificationReciptes";
+import NotificationRecipes from "./components/AdminComponents/NotificationRecipes";
 import NotificationReplacements from "./components/AdminComponents/NotificationReplacements";
 import NotificationRestaurations from "./components/AdminComponents/NotificationRestaurations";
 import AddProduct from "./components/ProductsComponents/AddProduct";
-import AddRecipt from "./components/ReciptesComponents/AddRecipt";
+import AddRecipt from "./components/RecipesComponents/AddRecip";
 import AddReplacement from "./components/ReplacementsComponents/AddReplacement";
 import AddRestaurant from "./components/RestaurantsComponents/AddRestaurant";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -59,7 +59,7 @@ const App = props => {
             <Route path="/posts" component={Posts} />
             <Route path="/restaurants" component={Restaurants} />
             <Route path="/products" component={Products} />
-            <Route path="/reciptes" component={Reciptes} />
+            <Route path="/recipes" component={Recipes} />
             <Route path="/replacements" component={Replacements} />
             <Route path="/users/:id" component={Users} />
             <Route path="/edituser/:id" component={EditUser} />
@@ -81,8 +81,8 @@ const App = props => {
               component={NotificationProducts}
             />
             <Route
-              path="/notificationreciptes"
-              component={NotificationReciptes}
+              path="/notificationrecipes"
+              component={NotificationRecipes}
             />
             <Route
               path="/notificationreplacements"
@@ -94,7 +94,7 @@ const App = props => {
             />
           </ContentContainer>
         ) : (
-          <Redirect to="/" />
+          <Redirect path="/" />
         )}
       </Router>
     </Container>

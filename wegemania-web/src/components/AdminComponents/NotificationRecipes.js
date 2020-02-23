@@ -38,7 +38,7 @@ import DiscardImage from "../../images/discard.svg";
 import BinImage from "../../images/bin.svg";
 import ProductImage from "../../images/product.jpg";
 import DinnerImage from "../../images/dinner.jpg";
-const NotificationProducts = () => {
+const NotificationRecipes = () => {
   let temp = [2];
   const [rating, setRating] = useState(temp);
   const changeRating = val => {
@@ -258,4 +258,4 @@ const NotificationProducts = () => {
     </Container>
   );
 };
-export default NotificationProducts;
+export default NotificationRecipes;

@@ -12,7 +12,15 @@ import {
   ImagesContainer
 } from "../../styles/AddForms";
 import UploadImage from "../../images/upload.png";
+import { TagInput, TagButton } from "../../styles/PostsWallStyle";
 import "../../App.css";
+import TrashImg from "../../icons/trash.svg";
+import {
+  AddHeader,
+  OrderedList,
+  DeleteIcon,
+  UnorderedList
+} from "../../styles/PostsWallStyle";
 const AddPost = () => {
   const user = useContext(NewLoginInfo);
   let temp = [UploadImage, UploadImage, UploadImage, UploadImage];
@@ -23,10 +31,62 @@ const AddPost = () => {
     temp[i] = URL.createObjectURL(event.target.files[0]);
     setFile([...temp]);
   };
+  const handleAdd = () => {
+    let temp = tags;
+    temp.push(currentTag);
+    setCurrentTag("");
+    setTags(temp);
+  };
+  const handleRemove = event => {
+    let temp = tags;
+    temp.splice(event.target.id, 1);
+    setTags([...temp]);
+  };
+  const [currentTag, setCurrentTag] = useState("");
+  const [tags, setTags] = useState(["mateusz", "adam", "kacper", "filip"]);
+  const TagsContent = tags.map((tag, index) => {
+    return (
+      <UnorderedList>
+        <li>{tag}</li>
+        <li>
+          <DeleteIcon
+            src={TrashImg}
+            id={index}
+            onClick={event => {
+              handleRemove(event);
+            }}
+          />
+        </li>
+      </UnorderedList>
+    );
+  });
   return (
     <Container>
       <InputLabel for="title">Tytuł:</InputLabel>
       <TextInput type="text" id="title" placeholder="Wprowadź tytuł posta" />
+      <InputLabel for="tag">Dodaj tagi:</InputLabel>
+      <div>
+        <TagInput
+          value={currentTag}
+          onChange={e => {
+            setCurrentTag(e.target.value);
+          }}
+          type="text"
+          id="tag"
+          placeholder="Wprowadź tag"
+        />
+        <TagButton
+          onClick={() => {
+            handleAdd();
+          }}
+        >
+          Dodaj tag
+        </TagButton>
+      </div>
+      <div>
+        <AddHeader>Tagi:</AddHeader>
+        <OrderedList>{TagsContent}</OrderedList>
+      </div>
       <InputLabel for="content">Treść:</InputLabel>
       <TextArea id="content" placeholder="Wprowadź treść posta" />
       <ImagesContainer>

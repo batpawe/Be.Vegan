@@ -38,7 +38,7 @@ const Header = () => {
             <HyperLink to="notificationproducts">Zgłoszone produkty</HyperLink>
           </HeaderItem>
           <HeaderItem>
-            <HyperLink to="notificationreciptes">Zgłoszone przepisy</HyperLink>
+            <HyperLink to="notificationrecipes">Zgłoszone przepisy</HyperLink>
           </HeaderItem>
           <HeaderItem>
             <HyperLink to="notificationreplacements">

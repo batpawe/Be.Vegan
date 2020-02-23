@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NewLoginInfo } from "../../context/LoginInfo";
 import "../../styles/MenuLoginStyle.css";
 import { Redirect } from "react-router";
@@ -19,12 +19,12 @@ import {
   HyperLink,
   TextInput,
   SubmitCommentButton,
-  HeaderRecipte,
+  HeaderRecipe,
   CommentContainer,
   MainContainer,
   PreparingMethod,
-  ItemHeaderRecipte,
-  HiglightItemHeaderRecipte,
+  ItemHeaderRecipe,
+  HiglightItemHeaderRecipe,
   HeaderItem,
   HeaderList
 } from "../../styles/WallStyle";
@@ -34,7 +34,43 @@ import RestaurantImage from "../../images/restaurant.jpg";
 import ShopImage from "../../images/shop.jpg";
 import PostImage from "../../images/postimage.jpg";
 import RightPanel from "../GlobalComponents/RightPanel";
+import {
+  HeaderRecipeContainer,
+  RecipeTimeContainer,
+  HeaderRecipeText,
+  RecipeTime,
+  IngredientsList,
+  IngredientsItem,
+  PreparationItem,
+  RecipeImage
+} from "../../styles/RecipeStyle";
+import {
+  HeaderRestaurantContainer,
+  HeaderRestaurantText,
+  FirstRestaurantRow,
+  FirstRestaurantItem,
+  RestaurantImageComponent,
+  RestaurantOpenItem,
+  MenuList,
+  MenuItem,
+  HeaderColumn
+} from "../../styles/RestaurantStyle";
+import {
+  HeaderPostsContainer,
+  HeaderPostsItem,
+  HeaderPostsText,
+  TagsPostsHeader,
+  TagsPostsHeaderContainer,
+  TagsPostsContainer,
+  TagsItems,
+  RateContainer,
+  RateItem,
+  RateStars,
+  RateHeader
+} from "../../styles/PostsWallStyle";
+import ReactStars from "react-stars";
 const Wall = () => {
+  const [rating, setRating] = useState(1);
   const user = useContext(NewLoginInfo);
   return (
     <MainContainer>
@@ -42,44 +78,84 @@ const Wall = () => {
         {user.username == "" && <Redirect to="/" />}
         <OrderedList>
           <UnorderedList>
-            <HeaderList>
-              <HeaderItem>ZUPA KREM Z TOPINAMBURU</HeaderItem>
-            </HeaderList>
-            <HeaderList>
-              <ItemHeaderRecipte>
+            <HeaderRecipeContainer>
+              <HeaderRecipeText>ZUPA KREM Z TOPINAMBURU</HeaderRecipeText>
+            </HeaderRecipeContainer>
+            <HeaderRecipeContainer>
+              <RecipeTimeContainer>
                 <BorderText>Czas przygotowania: </BorderText>
-                <HiglightItemHeaderRecipte>45minut</HiglightItemHeaderRecipte>
-              </ItemHeaderRecipte>
-            </HeaderList>
+                <RecipeTime>45minut</RecipeTime>
+              </RecipeTimeContainer>
+            </HeaderRecipeContainer>
             <ColumnContainer>
               <div>
                 <Item>
                   <BorderText>Składniki: </BorderText>
                 </Item>
-                <UnorderedListIn>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                </UnorderedListIn>
+                <IngredientsList>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                </IngredientsList>
               </div>
               <PreparingMethod>
                 <Item>
                   <BorderText>Sposób przygotowania: </BorderText>
                 </Item>
                 <UnorderedListIn>
-                  <Item>Sposób przygotowania</Item>
-                  <Item>Sposób przygotowania</Item>
-                  <Item>Sposób przygotowania</Item>
-                  <Item>Sposób przygotowania</Item>
+                  <PreparationItem>
+                    Flexbox was designed as a single dimensional layout, meaning
+                    that it deals with laying out items as a row or as a column
+                    — but not both at once. There is however the ability to wrap
+                    flex items onto new lines, creating new rows if
+                    flex-direction is row and new columns if flex-direction is
+                    column. I
+                  </PreparationItem>
+                  <PreparationItem>
+                    Flexbox was designed as a single dimensional layout, meaning
+                    that it deals with laying out items as a row or as a column
+                    — but not both at once. There is however the ability to wrap
+                    flex items onto new lines, creating new rows if
+                    flex-direction is row and new columns if flex-direction is
+                    column. I
+                  </PreparationItem>
+                  <PreparationItem>
+                    Flexbox was designed as a single dimensional layout, meaning
+                    that it deals with laying out items as a row or as a column
+                    — but not both at once. There is however the ability to wrap
+                    flex items onto new lines, creating new rows if
+                    flex-direction is row and new columns if flex-direction is
+                    column. I
+                  </PreparationItem>
+                  <PreparationItem>
+                    Flexbox was designed as a single dimensional layout, meaning
+                    that it deals with laying out items as a row or as a column
+                    — but not both at once. There is however the ability to wrap
+                    flex items onto new lines, creating new rows if
+                    flex-direction is row and new columns if flex-direction is
+                    column. I
+                  </PreparationItem>
                 </UnorderedListIn>
               </PreparingMethod>
             </ColumnContainer>
-            <Image src={DinnerImage} />
+            <RecipeImage src={DinnerImage} />
+            <RateContainer>
+              <RateHeader>Oceń</RateHeader>
+              <RateStars>
+                <ReactStars
+                  style={{ left: "45%" }}
+                  count={5}
+                  onChange={setRating}
+                  size={24}
+                  color2={"#4CAF50"}
+                />
+              </RateStars>
+            </RateContainer>
             <HeaderText>Komentarze:</HeaderText>
             <UnorderedListComments>
               <UnorderedListCommentsIn>
@@ -119,42 +195,84 @@ const Wall = () => {
             </UnorderedListComments>
           </UnorderedList>
           <UnorderedList>
-            <Item>
-              <BorderText>Nazwa : </BorderText>
-              <HighlightItem>ZUPA KREM Z TOPINAMBURU</HighlightItem>
-            </Item>
-            <Item>
-              <BorderText>Czas przygotowania : </BorderText>45minut
-            </Item>
+            <HeaderRecipeContainer>
+              <HeaderRecipeText>ZUPA KREM Z TOPINAMBURU</HeaderRecipeText>
+            </HeaderRecipeContainer>
+            <HeaderRecipeContainer>
+              <RecipeTimeContainer>
+                <BorderText>Czas przygotowania: </BorderText>
+                <RecipeTime>45minut</RecipeTime>
+              </RecipeTimeContainer>
+            </HeaderRecipeContainer>
             <ColumnContainer>
               <div>
                 <Item>
-                  <BorderText>Składniki </BorderText>
+                  <BorderText>Składniki: </BorderText>
                 </Item>
-                <UnorderedListIn>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                  <Item>Składniki</Item>
-                </UnorderedListIn>
+                <IngredientsList>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                  <IngredientsItem>Składniki</IngredientsItem>
+                </IngredientsList>
               </div>
               <PreparingMethod>
                 <Item>
                   <BorderText>Sposób przygotowania: </BorderText>
                 </Item>
                 <UnorderedListIn>
-                  <Item>Sposób przygotowania:</Item>
-                  <Item>Sposób przygotowania:</Item>
-                  <Item>Sposób przygotowania:</Item>
-                  <Item>Sposób przygotowania:</Item>
+                  <PreparationItem>
+                    Flexbox was designed as a single dimensional layout, meaning
+                    that it deals with laying out items as a row or as a column
+                    — but not both at once. There is however the ability to wrap
+                    flex items onto new lines, creating new rows if
+                    flex-direction is row and new columns if flex-direction is
+                    column. I
+                  </PreparationItem>
+                  <PreparationItem>
+                    Flexbox was designed as a single dimensional layout, meaning
+                    that it deals with laying out items as a row or as a column
+                    — but not both at once. There is however the ability to wrap
+                    flex items onto new lines, creating new rows if
+                    flex-direction is row and new columns if flex-direction is
+                    column. I
+                  </PreparationItem>
+                  <PreparationItem>
+                    Flexbox was designed as a single dimensional layout, meaning
+                    that it deals with laying out items as a row or as a column
+                    — but not both at once. There is however the ability to wrap
+                    flex items onto new lines, creating new rows if
+                    flex-direction is row and new columns if flex-direction is
+                    column. I
+                  </PreparationItem>
+                  <PreparationItem>
+                    Flexbox was designed as a single dimensional layout, meaning
+                    that it deals with laying out items as a row or as a column
+                    — but not both at once. There is however the ability to wrap
+                    flex items onto new lines, creating new rows if
+                    flex-direction is row and new columns if flex-direction is
+                    column. I
+                  </PreparationItem>
                 </UnorderedListIn>
               </PreparingMethod>
             </ColumnContainer>
-            <Image src={DinnerImage} />
+            <RecipeImage src={DinnerImage} />
+            <RateContainer>
+              <RateHeader>Oceń</RateHeader>
+              <RateStars>
+                <ReactStars
+                  style={{ left: "45%" }}
+                  count={5}
+                  onChange={setRating}
+                  size={24}
+                  color2={"#4CAF50"}
+                />
+              </RateStars>
+            </RateContainer>
             <HeaderText>Komentarze:</HeaderText>
             <UnorderedListComments>
               <UnorderedListCommentsIn>
@@ -194,65 +312,94 @@ const Wall = () => {
             </UnorderedListComments>
           </UnorderedList>
           <UnorderedList>
-            <Item>
-              <BorderText>Nazwa : </BorderText>
-              <HighlightItem>Restauracja1</HighlightItem>
-            </Item>
-            <Item>
-              <BorderText>Lokalizacja : </BorderText>
-              <Map
-                id="mapid"
-                center={[53.009794, 18.591649]}
-                zoom={12}
-                style={{
-                  width: 400,
-                  height: 300,
-                  "z-index": 0,
-                  display: "block",
-                  margin: "auto"
-                }}
-              >
-                <TileLayer
-                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={[53.009794, 18.591649]}>
-                  <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                  </Popup>
-                </Marker>
-              </Map>
-            </Item>
+            <HeaderRestaurantContainer>
+              <HeaderRestaurantText>Restauracja1</HeaderRestaurantText>
+            </HeaderRestaurantContainer>
+            <FirstRestaurantRow>
+              <FirstRestaurantItem>
+                <RestaurantImageComponent src={RestaurantImage} />
+              </FirstRestaurantItem>
+              <FirstRestaurantItem>
+                <BorderText>Lokalizacja : </BorderText>
+                <Map
+                  id="mapid"
+                  center={[53.009794, 18.591649]}
+                  zoom={12}
+                  style={{
+                    width: 400,
+                    height: 300,
+                    "z-index": 0,
+                    display: "block",
+                    margin: "auto"
+                  }}
+                >
+                  <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker position={[53.009794, 18.591649]}>
+                    <Popup>
+                      A pretty CSS3 popup. <br /> Easily customizable.
+                    </Popup>
+                  </Marker>
+                </Map>
+              </FirstRestaurantItem>
+            </FirstRestaurantRow>
             <ColumnContainer>
               <div>
                 <Item>
                   <BorderText>Godziny otwarcia:</BorderText>
                 </Item>
                 <UnorderedListIn>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
                 </UnorderedListIn>
               </div>
               <PreparingMethod>
-                <Item>
+                <HeaderColumn>
                   <BorderText>Menu: </BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                </UnorderedListIn>
+                </HeaderColumn>
+                <MenuList>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                </MenuList>
               </PreparingMethod>
             </ColumnContainer>
-            <Image src={RestaurantImage} />
+            <RateContainer>
+              <RateHeader>Oceń</RateHeader>
+              <RateStars>
+                <ReactStars
+                  style={{ left: "45%" }}
+                  count={5}
+                  onChange={setRating}
+                  size={24}
+                  color2={"#4CAF50"}
+                />
+              </RateStars>
+            </RateContainer>
             <HeaderText>Komentarze:</HeaderText>
             <UnorderedListComments>
               <UnorderedListCommentsIn>
@@ -292,308 +439,25 @@ const Wall = () => {
             </UnorderedListComments>
           </UnorderedList>
           <UnorderedList>
-            <Item>
-              <BorderText>Nazwa : </BorderText>
-              <HighlightItem>Restauracja1</HighlightItem>
-            </Item>
-            <Item>
-              <BorderText>Lokalizacja : </BorderText>
-              <Map
-                id="mapid"
-                center={[53.009794, 18.591649]}
-                zoom={12}
-                style={{
-                  width: 400,
-                  height: 300,
-                  "z-index": 0,
-                  display: "block",
-                  margin: "auto"
-                }}
-              >
-                <TileLayer
-                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={[53.009794, 18.591649]}>
-                  <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                  </Popup>
-                </Marker>
-              </Map>
-            </Item>
-            <ColumnContainer>
-              <div>
-                <Item>
-                  <BorderText>Godziny otwarcia:</BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                </UnorderedListIn>
-              </div>
-              <PreparingMethod>
-                <Item>
-                  <BorderText>Menu: </BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                </UnorderedListIn>
-              </PreparingMethod>
-            </ColumnContainer>
-            <Image src={RestaurantImage} />
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-          <UnorderedList>
-            <Item>
-              <BorderText>Nazwa : </BorderText>
-              <HighlightItem>Sklep1</HighlightItem>
-            </Item>
-            <Item>
-              <BorderText>Lokalizacja : </BorderText>
-              <Map
-                id="mapid"
-                center={[53.009794, 18.591649]}
-                zoom={12}
-                style={{
-                  width: 400,
-                  height: 300,
-                  "z-index": 0,
-                  display: "block",
-                  margin: "auto"
-                }}
-              >
-                <TileLayer
-                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={[53.009794, 18.591649]}>
-                  <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                  </Popup>
-                </Marker>
-              </Map>
-            </Item>
-            <ColumnContainer>
-              <div>
-                <Item>
-                  <BorderText>Godziny otwarcia:</BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                </UnorderedListIn>
-              </div>
-              <PreparingMethod>
-                <Item>
-                  <BorderText>Najpopularniejsze produkty: </BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <Item>Produkt 4zł</Item>
-                  <Item>Produkt 4zł</Item>
-                  <Item>Produkt 4zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                </UnorderedListIn>
-              </PreparingMethod>
-            </ColumnContainer>
-            <Image src={ShopImage} />
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-          <UnorderedList>
-            <Item>
-              <BorderText>Nazwa : </BorderText>
-              <HighlightItem>Sklep1</HighlightItem>
-            </Item>
-            <Item>
-              <BorderText>Lokalizacja : </BorderText>
-              <Map
-                id="mapid"
-                center={[53.009794, 18.591649]}
-                zoom={12}
-                style={{
-                  width: 400,
-                  height: 300,
-                  "z-index": 0,
-                  display: "block",
-                  margin: "auto"
-                }}
-              >
-                <TileLayer
-                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={[53.009794, 18.591649]}>
-                  <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                  </Popup>
-                </Marker>
-              </Map>
-            </Item>
-            <ColumnContainer>
-              <div>
-                <Item>
-                  <BorderText>Godziny otwarcia:</BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                </UnorderedListIn>
-              </div>
-              <div>
-                <Item>
-                  <BorderText>Najpopularniejsze produkty: </BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <Item>Produkt 4zł</Item>
-                  <Item>Produkt 4zł</Item>
-                  <Item>Produkt 4zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                </UnorderedListIn>
-              </div>
-            </ColumnContainer>
-            <Image src={ShopImage} />
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-          <UnorderedList>
-            <Item>
-              <BorderText>Autor: </BorderText>
-              <HighlightItem>Sklep1</HighlightItem>
-            </Item>
-            <Item>
-              <BorderText>Tytuł: </BorderText>
-              <HighlightItem>Tytuł</HighlightItem>
-            </Item>
+            <HeaderPostsContainer>
+              <HeaderPostsItem>
+                <HeaderPostsText>Post1</HeaderPostsText>
+              </HeaderPostsItem>
+              <HeaderPostsItem>Autor</HeaderPostsItem>
+            </HeaderPostsContainer>
+            <TagsPostsHeaderContainer>
+              <li>
+                <TagsPostsHeader>Tagi:</TagsPostsHeader>
+              </li>
+            </TagsPostsHeaderContainer>
+            <TagsPostsContainer>
+              <TagsItems>tag</TagsItems>
+              <TagsItems>tag</TagsItems>
+              <TagsItems>tag</TagsItems>
+              <TagsItems>tag</TagsItems>
+              <TagsItems>tag</TagsItems>
+              <TagsItems>tag</TagsItems>
+            </TagsPostsContainer>
             <ColumnContainer>
               <div>
                 Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -648,14 +512,12 @@ const Wall = () => {
             </UnorderedListComments>
           </UnorderedList>
           <UnorderedList>
-            <Item>
-              <BorderText>Autor: </BorderText>
-              <HighlightItem>Sklep1</HighlightItem>
-            </Item>
-            <Item>
-              <BorderText>Tytuł: </BorderText>
-              <HighlightItem>Tytuł</HighlightItem>
-            </Item>
+            <HeaderPostsContainer>
+              <HeaderPostsItem>
+                <HeaderPostsText>Post1</HeaderPostsText>
+              </HeaderPostsItem>
+              <HeaderPostsItem>Autor</HeaderPostsItem>
+            </HeaderPostsContainer>
             <ColumnContainer>
               <div>
                 Lorem Ipsum is simply dummy text of the printing and typesetting

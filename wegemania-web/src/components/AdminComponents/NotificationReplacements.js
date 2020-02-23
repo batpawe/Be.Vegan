@@ -36,7 +36,7 @@ import AcceptImage from "../../images/tick.svg";
 import DiscardImage from "../../images/discard.svg";
 import ProductImage from "../../images/product.jpg";
 import BinImage from "../../images/bin.svg";
-const NotifyReplacements = () => {
+const NotificationReplacements = () => {
   let temp = [2];
   const [rating, setRating] = useState(temp);
   const changeRating = val => {
@@ -209,4 +209,4 @@ const NotifyReplacements = () => {
     </Container>
   );
 };
-export default NotifyReplacements;
+export default NotificationReplacements;

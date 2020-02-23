@@ -21,7 +21,7 @@ export const ColumnContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 5% 0 0 0;
-  align-items: flex-start;
+  align-items: baseline;
 `;
 export const BorderText = styled.span`
   font-weight: bold;
@@ -156,14 +156,14 @@ export const AttributeItem = styled.li`
   background: #27ae60;
 `;
 
-export const HeaderRecipte = styled.ul`
+export const HeaderRecipe = styled.ul`
   display: flex;
   list-style-type: none;
   margin: 0;
   padding: 0;
   justify-content: space-between;
 `;
-export const ItemHeaderRecipte = styled.li`
+export const ItemHeaderRecipe = styled.li`
   justify-content: space-between;
   width: 400px;
   font-size: 20px;
@@ -171,7 +171,7 @@ export const ItemHeaderRecipte = styled.li`
   align-items: center;
   display: flex;
 `;
-export const HiglightItemHeaderRecipte = styled.span`
+export const HiglightItemHeaderRecipe = styled.span`
   color: white;
   background: #00a835;
   padding: 1%;

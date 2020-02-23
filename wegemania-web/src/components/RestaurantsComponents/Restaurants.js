@@ -20,8 +20,23 @@ import {
   CommentContainer,
   MainContainer,
   RatingComponent,
-  RatingHeader
+  RatingHeader,
+  PreparingMethod
 } from "../../styles/WallStyle";
+import {
+  HeaderRestaurantContainer,
+  HeaderRestaurantText,
+  FirstRestaurantRow,
+  FirstRestaurantItem,
+  RestaurantImageComponent,
+  RestaurantOpenItem,
+  MenuList,
+  MenuItem,
+  HeaderColumn,
+  RateContainer,
+  RateHeader,
+  RateStars
+} from "../../styles/RestaurantStyle";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import RestaurantImage from "../../images/restaurant.jpg";
 import RightPanel from "../GlobalComponents/RightPanel";
@@ -47,76 +62,94 @@ const Restaurants = () => {
         </AddPostPageContainer>
         <OrderedList>
           <UnorderedList>
-            <Item>
-              <BorderText>Nazwa : </BorderText>
-              <HighlightItem>Restauracja1</HighlightItem>
-            </Item>
-            <Item>
-              <BorderText>Lokalizacja : </BorderText>
-              <Map
-                id="mapid"
-                center={[53.009794, 18.591649]}
-                zoom={12}
-                style={{
-                  width: 400,
-                  height: 300,
-                  "z-index": 0,
-                  display: "block",
-                  margin: "auto"
-                }}
-              >
-                <TileLayer
-                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={[53.009794, 18.591649]}>
-                  <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                  </Popup>
-                </Marker>
-              </Map>
-            </Item>
+            <HeaderRestaurantContainer>
+              <HeaderRestaurantText>Restauracja1</HeaderRestaurantText>
+            </HeaderRestaurantContainer>
+            <FirstRestaurantRow>
+              <FirstRestaurantItem>
+                <RestaurantImageComponent src={RestaurantImage} />
+              </FirstRestaurantItem>
+              <FirstRestaurantItem>
+                <BorderText>Lokalizacja : </BorderText>
+                <Map
+                  id="mapid"
+                  center={[53.009794, 18.591649]}
+                  zoom={12}
+                  style={{
+                    width: 400,
+                    height: 300,
+                    "z-index": 0,
+                    display: "block",
+                    margin: "auto"
+                  }}
+                >
+                  <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker position={[53.009794, 18.591649]}>
+                    <Popup>
+                      A pretty CSS3 popup. <br /> Easily customizable.
+                    </Popup>
+                  </Marker>
+                </Map>
+              </FirstRestaurantItem>
+            </FirstRestaurantRow>
             <ColumnContainer>
               <div>
                 <Item>
                   <BorderText>Godziny otwarcia:</BorderText>
                 </Item>
                 <UnorderedListIn>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
                 </UnorderedListIn>
               </div>
-              <div>
-                <Item>
+              <PreparingMethod>
+                <HeaderColumn>
                   <BorderText>Menu: </BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                </UnorderedListIn>
-              </div>
+                </HeaderColumn>
+                <MenuList>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                </MenuList>
+              </PreparingMethod>
             </ColumnContainer>
-
-            <Image src={RestaurantImage} />
-            <RatingComponent>
-              <RatingHeader>Oceń:</RatingHeader>
-              <ReactStars
-                count={5}
-                onStarClick={val => changeRating(val)}
-                value={rating[0]}
-                size={24}
-                color2={"#8BC34A"}
-              />
-            </RatingComponent>
+            <RateContainer>
+              <RateHeader>Oceń</RateHeader>
+              <RateStars>
+                <ReactStars
+                  style={{ left: "45%" }}
+                  count={5}
+                  onChange={setRating}
+                  size={24}
+                  color2={"#4CAF50"}
+                />
+              </RateStars>
+            </RateContainer>
             <HeaderText>Komentarze:</HeaderText>
             <UnorderedListComments>
               <UnorderedListCommentsIn>
@@ -156,64 +189,94 @@ const Restaurants = () => {
             </UnorderedListComments>
           </UnorderedList>
           <UnorderedList>
-            <Item>
-              <BorderText>Nazwa : </BorderText>Restauracja1
-            </Item>
-            <Item>
-              <BorderText>Lokalizacja : </BorderText>
-              <Map
-                id="mapid"
-                center={[53.009794, 18.591649]}
-                zoom={12}
-                style={{
-                  width: 400,
-                  height: 300,
-                  "z-index": 0,
-                  display: "block",
-                  margin: "auto"
-                }}
-              >
-                <TileLayer
-                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={[53.009794, 18.591649]}>
-                  <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                  </Popup>
-                </Marker>
-              </Map>
-            </Item>
+            <HeaderRestaurantContainer>
+              <HeaderRestaurantText>Restauracja1</HeaderRestaurantText>
+            </HeaderRestaurantContainer>
+            <FirstRestaurantRow>
+              <FirstRestaurantItem>
+                <RestaurantImageComponent src={RestaurantImage} />
+              </FirstRestaurantItem>
+              <FirstRestaurantItem>
+                <BorderText>Lokalizacja : </BorderText>
+                <Map
+                  id="mapid"
+                  center={[53.009794, 18.591649]}
+                  zoom={12}
+                  style={{
+                    width: 400,
+                    height: 300,
+                    "z-index": 0,
+                    display: "block",
+                    margin: "auto"
+                  }}
+                >
+                  <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker position={[53.009794, 18.591649]}>
+                    <Popup>
+                      A pretty CSS3 popup. <br /> Easily customizable.
+                    </Popup>
+                  </Marker>
+                </Map>
+              </FirstRestaurantItem>
+            </FirstRestaurantRow>
             <ColumnContainer>
               <div>
                 <Item>
                   <BorderText>Godziny otwarcia:</BorderText>
                 </Item>
                 <UnorderedListIn>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
-                  <Item>Poniedziałek 8:00 - 20:00</Item>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
+                  <RestaurantOpenItem>
+                    Poniedziałek 8:00 - 20:00
+                  </RestaurantOpenItem>
                 </UnorderedListIn>
               </div>
-              <div>
-                <Item>
+              <PreparingMethod>
+                <HeaderColumn>
                   <BorderText>Menu: </BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                  <Item>Produkt 8zł</Item>
-                </UnorderedListIn>
-              </div>
+                </HeaderColumn>
+                <MenuList>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                  <MenuItem>Produkt 8zł</MenuItem>
+                </MenuList>
+              </PreparingMethod>
             </ColumnContainer>
-            <Image src={RestaurantImage} />
+            <RateContainer>
+              <RateHeader>Oceń</RateHeader>
+              <RateStars>
+                <ReactStars
+                  style={{ left: "45%" }}
+                  count={5}
+                  onChange={setRating}
+                  size={24}
+                  color2={"#4CAF50"}
+                />
+              </RateStars>
+            </RateContainer>
             <HeaderText>Komentarze:</HeaderText>
             <UnorderedListComments>
               <UnorderedListCommentsIn>

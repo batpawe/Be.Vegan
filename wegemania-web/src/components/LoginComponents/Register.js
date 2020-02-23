@@ -64,7 +64,7 @@ const Register = () => {
       };
 
       await axios
-        .post("http://localhost:8000/users/", newUser)
+        .post("https://veggiesapp.herokuapp.com/users/", newUser)
         .then(res => {
           setError(false);
         })
@@ -85,7 +85,7 @@ const Register = () => {
   return (
     <LoginPage>
       {console.log(user.username === "")}
-      {user.username !== "" && <Redirect to="/page" />}
+      {user.userInfo !== undefined && <Redirect to="/wall" />}
       <LoginFlex>
         <FormArea>
           <Image src={icon} alt="be vegan logo" />

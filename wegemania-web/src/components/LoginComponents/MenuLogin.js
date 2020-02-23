@@ -35,7 +35,7 @@ const UserPanel = ({ click }) => {
       {clicked === true && (
         <UserActions>
           <UserOption>
-            <HyperLink to="/users/1">Profil</HyperLink>
+            <HyperLink to={`users/${user.userInfo.id}`}>Profil</HyperLink>
           </UserOption>
           <UserOption onClick={userLogout}>Wyloguj</UserOption>
         </UserActions>
@@ -80,11 +80,13 @@ const Header = () => {
                 <MenuList>
                   <MenuListLink to="/restaurants">Restauracje</MenuListLink>
                 </MenuList>
+                {/*}
                 <MenuList>
                   <MenuListLink to="/products">Produkty</MenuListLink>
                 </MenuList>
+                {*/}
                 <MenuList>
-                  <MenuListLink to="/reciptes">Przepisy</MenuListLink>
+                  <MenuListLink to="/recipes">Przepisy</MenuListLink>
                 </MenuList>
                 <MenuList>
                   <MenuListLink to="/replacements">Zamienniki</MenuListLink>
