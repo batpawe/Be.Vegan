@@ -1,15 +1,15 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import QueryDict
+from rest_framework import viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
-from rest_framework.viewsets import ViewSet
 from .map import get_restaurants
-from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant
-from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer
+from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant
+from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
+    RatingRestaurantSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -64,7 +64,7 @@ class SubstituteNVeganView(APIView):
             return Response(status=404)
 
 
-class SubstituteVeganView(ViewSet):
+class SubstituteVeganView(viewsets.ViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
 
@@ -111,3 +111,62 @@ class RestaurantView(APIView):
             res = Restaurant.objects.all()
             res = RestaurantSerializer(res, many=True)
             return Response(res.data)
+
+
+class RestaurantChangeView(APIView):
+    def get(self, request, format=None):
+        if Restaurant.objects.filter(id_moderator=request.user.id):
+            res = Restaurant.objects.get(id_moderator=request.user.id)
+            serializer = RestaurantSerializer(res, many=False)
+            return Response(serializer.data)
+        else:
+            return Response(status=404)
+
+    def put(self, request, format=None):
+        if Restaurant.objects.filter(id_moderator=request.user.id):
+            res = Restaurant.objects.get(id_moderator=request.user.id)
+            serializer = RestaurantSerializer(res, data=request.data, many=False, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(status=400)
+        else:
+            return Response(status=404)
+
+
+class RestaurantRatingView(viewsets.ViewSet):
+    serializer_class = RatingRestaurantSerializer
+    queryset = Restaurant.objects.all()
+
+    def list(self, request):
+        rating = Rating_Restaurant.objects.filter(id_user=request.user)
+        serializer = RatingRestaurantSerializer(rating, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        if Rating_Restaurant.objects.filter(id_user=request.user, id_restaurant=pk):
+            rating = Rating_Restaurant.objects.get(id_user=request.user, id_restaurant=pk)
+            serializer = RatingRestaurantSerializer(rating, many=False)
+            return Response(serializer.data)
+        else:
+            return Response(status=404)
+
+    def create(self, request):
+        req = QueryDict.copy(request.data)
+        req['id_user'] = request.user.id
+        serializer = RatingRestaurantSerializer(data=req, many=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(status=400)
+
+    def partial_update(self, request, pk=None):
+        rating = Rating_Restaurant.objects.get(id_user=request.user, id_restaurant=pk)
+        serializer = RatingRestaurantSerializer(rating, data=request.data, many=False, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(status=400)
