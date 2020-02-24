@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Food_To_Substitute, Ingredient, Restaurant
+from .models import Food_To_Substitute, Ingredient, Restaurant, Rating_Restaurant
 
 User = get_user_model()
 
@@ -32,3 +32,9 @@ class RestaurantSerializer(serializers.ModelSerializer):
         fields = ['id_moderator', 'name', 'city', 'foto', 'street', 'street_number', 'latX', 'longY', 'hours', 'rating',
                   'description']
         read_only_fields = ['id_moderator', 'rating', 'street', 'street_number', 'latX', 'longY']
+
+
+class RatingRestaurantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating_Restaurant
+        fields = "__all__"

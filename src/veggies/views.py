@@ -1,15 +1,15 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import QueryDict
+from rest_framework import viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
-from rest_framework.viewsets import ViewSet
 from .map import get_restaurants
-from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant
-from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer
+from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant
+from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
+    RatingRestaurantSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -30,24 +30,20 @@ def ProfileViewGet(request):
 
 class ProfileView(APIView):
     permission_classes = (IsAuthenticated,)
+
     def get(self, request, format=None):
         us = request.user
         message = ProfileSerializer(us, partial=True)
         return Response(message.data)
 
-
-
     def put(self, request, format=None):
         us = request.user
         serializer = ProfileSerializer(us, data=request.data, partial=True)
-        if us.is_authenticated:
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            else:
-                return Response(status=400)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
         else:
-            return Response(status=401)
+            return Response(status=400)
 
 
 class CustomObtainAuthToken(ObtainAuthToken):
@@ -59,35 +55,24 @@ class CustomObtainAuthToken(ObtainAuthToken):
 
 class SubstituteNVeganView(APIView):
     def get(self, request, format=None):
-        food = Food_To_Substitute.objects.all()
-        food = SubstituteSerializer(food, many=True)
-        return Response(food.data)
-
-    def put(self, request, format=None):
-        if "start" in request.data:
-            start = str(request.data["start"])
-            if Food_To_Substitute.objects.filter(food_name__regex=r'^{}'.format(start)):
-                food = Food_To_Substitute.objects.get(food_name__regex=r'^{}'.format(start))
-                food = SubstituteSerializer(food, many=True)
-                return Response(food)
-            else:
-                return Response(status=400)
+        prefix = request.GET.get('prefix', '')
+        food = Food_To_Substitute.objects.filter(food_name__regex=r'^{}'.format(prefix))
+        if food:
+            serializer = SubstituteSerializer(food, many=True)
+            return Response(serializer.data)
         else:
-            return Response(status=400)
+            return Response(status=404)
 
 
-class SubstituteVeganView(ViewSet):
+class SubstituteVeganView(viewsets.ViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
 
     def retrieve(self, request, pk=None):
         food_substitute = Food_Substitute.objects.filter(id_food_to_substitute=pk).values_list('id_vegan', flat=True)
-        # vegan_id_list = []
-        # for i in food_substitute:
-        #    vegan_id_list.append(i.vegan_id)
-        if Ingredient.objects.filter(id__in=food_substitute):
-            queryset = Ingredient.objects.get(id__in=food_substitute)
-            serializer = IngredientSerializer(queryset)
+        queryset = Ingredient.objects.filter(id__in=food_substitute)
+        if queryset:
+            serializer = IngredientSerializer(queryset, many=True)
             return Response(serializer.data)
         else:
             return Response(status=404)
@@ -95,38 +80,93 @@ class SubstituteVeganView(ViewSet):
 
 class IngredientsView(APIView):
     def get(self, request, format=None):
-        food = Ingredient.objects.all()
-        food = IngredientSerializer(food, many=True)
-        return Response(food.data)
-
-    def put(self, request, format=None):
-        if "start" in request.data:
-            start = str(request.data["start"])
-            if Ingredient.objects.filter(name__regex=r'^{}'.format(start)):
-                food = Ingredient.objects.get(name__regex=r'^{}'.format(start))
-                food = IngredientSerializer(food, many=True)
-                return Response(food)
-            else:
-                return Response(status=400)
+        prefix = request.GET.get('prefix', '')
+        food = Ingredient.objects.filter(name__regex=r'^{}'.format(prefix))
+        if food:
+            food = IngredientSerializer(food, many=True)
+            return Response(food.data)
         else:
-            return Response(status=400)
+            return Response(status=404)
 
 
 class RestaurantView(APIView):
-    def put(self, request, format=None):
-        if "city" in request.data:
-            start = str(request.data["city"])
-            if Restaurant.objects.filter(name__regex=r'^{}'.format(start)):
-                res = Restaurant.objects.get(name__regex=r'^{}'.format(start))
+
+    def get(self, request, format=None):
+        if "city" in request.GET:
+            prefix = str(request.GET.get("city", ''))
+            if Restaurant.objects.filter(city__regex=r'^{}'.format(prefix)):
+                res = Restaurant.objects.filter(city__regex=r'^{}'.format(prefix))
                 res = RestaurantSerializer(res, many=True)
-                return Response(res)
+                return Response(res.data)
+            else:
+                return Response(status=404)
+        elif 'latX' in request.GET and 'longY' in request.GET:
+            lat = float(request.GET.get("latX", 0.2))
+            long = float(request.GET.get("longY", 0.1))
+            r = float(request.GET.get("r", 0.1))
+            res = get_restaurants(lat, long, r)
+            res = RestaurantSerializer(res, many=True)
+            return Response(res.data)
+        else:
+            res = Restaurant.objects.all()
+            res = RestaurantSerializer(res, many=True)
+            return Response(res.data)
+
+
+class RestaurantChangeView(APIView):
+    def get(self, request, format=None):
+        if Restaurant.objects.filter(id_moderator=request.user.id):
+            res = Restaurant.objects.get(id_moderator=request.user.id)
+            serializer = RestaurantSerializer(res, many=False)
+            return Response(serializer.data)
+        else:
+            return Response(status=404)
+
+    def put(self, request, format=None):
+        if Restaurant.objects.filter(id_moderator=request.user.id):
+            res = Restaurant.objects.get(id_moderator=request.user.id)
+            serializer = RestaurantSerializer(res, data=request.data, many=False, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
             else:
                 return Response(status=400)
-        elif 'latX' in request.data & 'longY' in request.data:
-            lat = request.data["latX"]
-            long = request.data['longY']
-            res = get_restaurants(lat, long)
-            RestaurantSerializer(res, many=True)
-            return Response(res)
+        else:
+            return Response(status=404)
+
+
+class RestaurantRatingView(viewsets.ViewSet):
+    serializer_class = RatingRestaurantSerializer
+    queryset = Restaurant.objects.all()
+
+    def list(self, request):
+        rating = Rating_Restaurant.objects.filter(id_user=request.user)
+        serializer = RatingRestaurantSerializer(rating, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        if Rating_Restaurant.objects.filter(id_user=request.user, id_restaurant=pk):
+            rating = Rating_Restaurant.objects.get(id_user=request.user, id_restaurant=pk)
+            serializer = RatingRestaurantSerializer(rating, many=False)
+            return Response(serializer.data)
+        else:
+            return Response(status=404)
+
+    def create(self, request):
+        req = QueryDict.copy(request.data)
+        req['id_user'] = request.user.id
+        serializer = RatingRestaurantSerializer(data=req, many=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(status=400)
+
+    def partial_update(self, request, pk=None):
+        rating = Rating_Restaurant.objects.get(id_user=request.user, id_restaurant=pk)
+        serializer = RatingRestaurantSerializer(rating, data=request.data, many=False, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
         else:
             return Response(status=400)
