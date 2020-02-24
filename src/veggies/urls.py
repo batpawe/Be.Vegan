@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework import routers
-from .views import ProfileView, SubstituteNVeganView, SubstituteVeganView, IngredientsView
+from .views import ProfileView, SubstituteNVeganView, SubstituteVeganView, IngredientsView, RestaurantView
 
 router = routers.SimpleRouter()
 router.register(r'substitute/veg', SubstituteVeganView)
@@ -9,5 +9,6 @@ urlpatterns = router.urls
 urlpatterns += [
     path('me/', ProfileView.as_view(), name='profile'),
     path('substitute/nveg/', SubstituteNVeganView.as_view(), name='substitute'),
-    path('ingredients/', IngredientsView.as_view())
+    path('ingredients/', IngredientsView.as_view()),
+    path('restaurant/', RestaurantView.as_view())
 ]
