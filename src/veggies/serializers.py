@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Food_To_Substitute, Ingredient, Restaurant, Rating_Restaurant
+from .models import Food_To_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, Ingredient_List
 
 User = get_user_model()
 
@@ -31,10 +31,28 @@ class RestaurantSerializer(serializers.ModelSerializer):
         model = Restaurant
         fields = ['id_moderator', 'name', 'city', 'foto', 'street', 'street_number', 'latX', 'longY', 'hours', 'rating',
                   'description']
-        read_only_fields = ['id_moderator', 'rating', 'street', 'street_number', 'latX', 'longY']
+        read_only_fields = ['id', 'id_moderator', 'rating', 'street', 'street_number', 'latX', 'longY']
 
 
 class RatingRestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating_Restaurant
         fields = "__all__"
+
+
+class RecipeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = "__all__"
+        read_only_fields = ['id']
+
+
+# Ingredient_List(models.Model):
+#    id_ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+#    id_recipes = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+
+class IngredientListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredient_List
+        fields = "__all__"
+        editable = False

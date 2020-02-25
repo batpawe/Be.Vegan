@@ -61,6 +61,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',  # <-- And here
     ],
+
 }
 
 ROOT_URLCONF = 'be_vegan.urls'

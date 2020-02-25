@@ -7,9 +7,9 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from .map import get_restaurants
-from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant
+from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, Ingredient_List
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
-    RatingRestaurantSerializer
+    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -170,3 +170,70 @@ class RestaurantRatingView(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response(status=400)
+
+
+class RecipeView(viewsets.ViewSet):
+    serializer_class = RecipeSerializer
+    queryset = Recipe.objects.all()
+
+    def list(self, request):
+        recipes = Recipe.objects.all()
+        serializer = RecipeSerializer(recipes, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        if Recipe.objects.filter(id=pk):
+            recipe = Recipe.objects.get(id=pk)
+            serializer = RecipeSerializer(recipe, many=False)
+            return Response(serializer.data)
+        else:
+            return Response(status=404)
+
+    def create(self, request):
+        req = QueryDict.copy(request.data)
+        req['id_user'] = request.user.id
+        serializer = RecipeSerializer(data=req, many=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(status=400)
+
+    def partial_update(self, request, pk=None):
+        recipe = Recipe.objects.get(id=pk)
+        if request.user.id == recipe.id_user_id:
+            serializer = RecipeSerializer(recipe, data=request.data, many=False, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(status=400)
+        else:
+            return Response(status=401)
+
+
+class RecipeListView(viewsets.ViewSet):
+    serializer_class = IngredientListSerializer
+    queryset = Recipe.objects.all()
+
+    def retrieve(self, request, pk=None):
+        if Recipe.objects.filter(id=pk):
+            list_id = Ingredient_List.objects.filter(id_recipes_id=pk).values_list('id_ingredient_id', flat=True)
+            ingredient_list = Ingredient.objects.filter(id__in=list_id)
+            serializer = IngredientSerializer(ingredient_list, many=True)
+            return Response(serializer.data)
+        else:
+            return Response(status=404)
+
+    def update(self, request, pk=None):
+        if Recipe.objects.filter(id=pk):
+            data = QueryDict.copy(request.data)
+            data['id_recipes'] = pk
+            serializer = IngredientListSerializer(data=data, many=False)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(status=400)
+        else:
+            return Response(status=404)
