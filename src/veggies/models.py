@@ -88,7 +88,7 @@ class Restaurant(models.Model):
 class Rating_Restaurant(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
     id_restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    comment = models.TextField("commet", null=True, blank=True)
+    user_comment = models.TextField("user_comment", null=True, blank=True)
     rating = models.DecimalField("rating", max_digits=4, decimal_places=2)
 
 

@@ -7,9 +7,10 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from .map import get_restaurants
-from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, Ingredient_List
+from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, \
+    Ingredient_List, Rating_Recipe
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
-    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer
+    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -138,6 +139,7 @@ class RestaurantChangeView(APIView):
 class RestaurantRatingView(viewsets.ViewSet):
     serializer_class = RatingRestaurantSerializer
     queryset = Restaurant.objects.all()
+    permission_classes = (IsAuthenticated,)
 
     def list(self, request):
         rating = Rating_Restaurant.objects.filter(id_user=request.user)
@@ -237,3 +239,41 @@ class RecipeListView(viewsets.ViewSet):
                 return Response(status=400)
         else:
             return Response(status=404)
+
+
+class RecipeRatingView(viewsets.ViewSet):
+    serializer_class = RatingRecipeSerializer
+    queryset = Recipe.objects.all()
+    permission_classes = (IsAuthenticated,)
+
+    def list(self, request):
+        rating = Rating_Recipe.objects.filter(id_user=request.user)
+        serializer = RatingRestaurantSerializer(rating, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        if Rating_Recipe.objects.filter(id_user=request.user, id_recipe=pk):
+            rating = Rating_Recipe.objects.get(id_user=request.user, id_recipe=pk)
+            serializer = RatingRecipeSerializer(rating, many=False)
+            return Response(serializer.data)
+        else:
+            return Response(status=404)
+
+    def create(self, request):
+        req = QueryDict.copy(request.data)
+        req['id_user'] = request.user.id
+        serializer = RatingRecipeSerializer(data=req, many=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(status=400)
+
+    def partial_update(self, request, pk=None):
+        rating = Rating_Recipe.objects.get(id_user=request.user, id_recipe=pk)
+        serializer = RatingRecipeSerializer(rating, data=request.data, many=False, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(status=400)

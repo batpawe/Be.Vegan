@@ -22,12 +22,13 @@ User = get_user_model()
 from rest_framework import routers, serializers, viewsets
 from rest_framework.views import APIView
 from django.http.response import HttpResponse
-#from rest_framework.authtoken.views import obtain_auth_token
 from veggies.views import CustomObtainAuthToken
+
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     password = serializers.CharField(write_only=True)
     email = serializers.CharField(write_only=True)
+
     def create(self, validated_data):
         user = User.objects.create(
             username=validated_data['username'],
@@ -40,7 +41,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'password']
+        fields = ['url', "id", 'username', 'email', 'password']
+        editable = False
 
 
 class UserViewSet(viewsets.ModelViewSet):
