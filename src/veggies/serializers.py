@@ -7,9 +7,20 @@ User = get_user_model()
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    def update(self, instance, validated_data):
+        user = User.objects.get(
+            id=validated_data['id']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'height', 'weight', 'age', 'activity']
+        fields = ['id', 'username', 'email', 'height', 'weight', 'age', 'activity', 'password']
         read_only_fields = ['id', 'username', ]
 
 
