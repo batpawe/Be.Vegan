@@ -10,13 +10,10 @@ class ProfileSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
     def update(self, instance, validated_data):
-        user = User.objects.get(
-            id=validated_data['id']
-        )
-        user.set_password(validated_data['password'])
-        user.save()
+        instance.set_password(validated_data['password'])
+        instance.save()
 
-        return user
+        return instance
 
     class Meta:
         model = User
