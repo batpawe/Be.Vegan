@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import Food_To_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, Ingredient_List, \
-    Rating_Recipe
+    Rating_Recipe, Preference
 
 User = get_user_model()
 
@@ -72,4 +72,11 @@ class RatingRecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating_Recipe
         fields = "__all__"
-        read_only_fields = ['id_user', 'id_recipe']
+        read_only_fields = ['id']
+
+
+class PreferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Preference
+        fields = "__all__"
+        read_only_fields = ['id']

@@ -8,9 +8,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from .map import get_restaurants
 from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, \
-    Ingredient_List, Rating_Recipe
+    Ingredient_List, Rating_Recipe, Preference
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
-    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer
+    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -157,12 +157,21 @@ class RestaurantRatingView(viewsets.ViewSet):
     def create(self, request):
         req = QueryDict.copy(request.data)
         req['id_user'] = request.user.id
-        serializer = RatingRestaurantSerializer(data=req, many=False)
+        serializer = RatingRestaurantSerializer(data=req, many=False, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         else:
             return Response(status=400)
+
+    def destroy(self, request, pk=None):
+        user = User.objects.get(id=pk)
+        rating = Rating_Restaurant.objects.get(id_user=user.id, id_restaurant=pk)
+        if request.user.id == rating.id_user_id:
+            rating.delete()
+            return Response("Deleted")
+        else:
+            return Response(status=401)
 
     def partial_update(self, request, pk=None):
         rating = Rating_Restaurant.objects.get(id_user=request.user, id_restaurant=pk)
@@ -200,6 +209,14 @@ class RecipeView(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response(status=400)
+
+    def destroy(self, request, pk=None):
+        recipe = Recipe.objects.get(id=pk)
+        if request.user.id == recipe.id_user_id:
+            recipe.delete()
+            return Response("Deleted")
+        else:
+            return Response(status=401)
 
     def partial_update(self, request, pk=None):
         recipe = Recipe.objects.get(id=pk)
@@ -262,12 +279,21 @@ class RecipeRatingView(viewsets.ViewSet):
     def create(self, request):
         req = QueryDict.copy(request.data)
         req['id_user'] = request.user.id
-        serializer = RatingRecipeSerializer(data=req, many=False)
+        serializer = RatingRecipeSerializer(data=req, many=False, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         else:
             return Response(status=400)
+
+    def destroy(self, request, pk=None):
+        user = User.objects.get(id=pk)
+        rating = Rating_Recipe.objects.get(id_user=user.id, id_recipe=pk)
+        if request.user.id == rating.id_user_id:
+            rating.delete()
+            return Response("Deleted")
+        else:
+            return Response(status=401)
 
     def partial_update(self, request, pk=None):
         rating = Rating_Recipe.objects.get(id_user=request.user, id_recipe=pk)
@@ -277,3 +303,38 @@ class RecipeRatingView(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response(status=400)
+
+
+# class Preference(models.Model):
+#    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
+#    id_ingredients = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+#    like = models.IntegerField('like')
+
+
+class PreferenceView(APIView):
+    def get(self, request, format=None):
+        if Preference.objects.filter(id_user_id=request.user.id):
+            preference = Preference.objects.filter(id_user_id=request.user.id)
+            serializer = PreferenceSerializer(preference, many=True)
+            return Response(serializer.data)
+        else:
+            return Response(status=404)
+
+    def post(self, request, format=None):
+        req = request.data.copy()
+        req['id_user'] = request.user.id
+        serializer = PreferenceSerializer(data=req, many=False, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(status=400)
+
+    def delete(self, request, format=None):
+        i = int(request.GET.get('id'))
+        if Preference.objects.get(id=i):
+            preference = Preference.objects.get(id=i)
+            preference.delete()
+            return Response("Deleted")
+        else:
+            return Response(status=404)

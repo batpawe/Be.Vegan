@@ -30,7 +30,7 @@ class Ingredient(models.Model):
 class Recipe(models.Model):
     recipe_name = models.TextField(max_length=120)
     recipe_decription = models.TextField("recipe_description")
-    recipe_foto = models.ImageField("recipe_foto",null=True)
+    recipe_foto = models.ImageField("recipe_foto", null=True)
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -43,10 +43,17 @@ class Rating_Recipe(models.Model):
     user_comment = models.TextField("user_comment", null=True, blank=True)
     rating = models.PositiveSmallIntegerField()
 
+    class Meta:
+        unique_together = (("id_user", "id_recipe"),)
+
 
 class Ingredient_List(models.Model):
     id_ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     id_recipes = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (("id_ingredient", "id_recipes"),)
+
 
 
 class Preference(models.Model):
@@ -90,6 +97,9 @@ class Rating_Restaurant(models.Model):
     id_restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     user_comment = models.TextField("user_comment", null=True, blank=True)
     rating = models.DecimalField("rating", max_digits=4, decimal_places=2)
+
+    class Meta:
+        unique_together = (("id_user", "id_restaurant"),)
 
 
 class Report_Res(models.Model):
