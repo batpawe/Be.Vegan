@@ -188,7 +188,13 @@ class RecipeView(viewsets.ViewSet):
     queryset = Recipe.objects.all()
 
     def list(self, request):
-        recipes = Recipe.objects.all()
+        prefix = request.GET.get('prefix','')
+        ingredients = request.GET.get('ingredients', False)
+        ingredients = ingredients.split(',')
+        recipes = Recipe.objects.filter(recipe_name__regex=r'^{}'.format(prefix))
+        if ingredients:
+            recipes_list = Ingredient_List.objects.filter(id_ingredient__name__in=ingredients)
+            recipes = recipes.filter(id__in=recipes_list.values('id_recipes_id'))
         serializer = RecipeSerializer(recipes, many=True)
         return Response(serializer.data)
 
