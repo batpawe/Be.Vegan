@@ -93,7 +93,7 @@ class PostView(APIView):
     def get(self, request, format = None):
         prefix = request.GET.get('prefix', '')
         if prefix:
-            post = Post.objects.using('posts').filter(pk=prefix)
+            post = Post.objects.using('posts').filter(id__regex=r'^{}'.format(prefix))
         else:
             post = Post.objects.using('posts').all()
         if post:
