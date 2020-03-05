@@ -80,6 +80,7 @@ class SubstituteVeganView(viewsets.ViewSet):
 
 # !!! ! ! ! ! ! ! !
 class PostIdView(viewsets.ViewSet):
+    queryset = Post.objects.using('posts').all()
     def retrieve(self, request, pk=None):
         post = Post.objects.using('posts').filter(pk=pk)
         if post:
