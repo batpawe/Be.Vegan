@@ -91,7 +91,7 @@ class IngredientsView(APIView):
 
 class PostView(APIView):
     def get(self, request, format = None):
-        post = Post.objects.all()
+        post = Post.objects.using('posts').all()
         if post:
             post = PostSerializer(post, many=True)
             return Response(post.data)
