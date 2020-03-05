@@ -91,15 +91,16 @@ class IngredientsView(APIView):
 
 class PostView(APIView):
     def get(self, request, format = None):
-        post = Post.objects.using('posts').all()
+        prefix = request.GET.get('prefix', '')
+        if prefix:
+            post = Post.objects.using('posts').filter(pk=prefix)
+        else:
+            post = Post.objects.using('posts').all()
         if post:
             post = PostSerializer(post, many=True)
             return Response(post.data)
         else:
             return Response(status=404)
-#    def get(self, request, format = None):
-#        prefix = request.GET.get('prefix', '')
-#        post = Post.objects.using('posts').filter(pk = prefix)
 
 class RestaurantView(APIView):
 
