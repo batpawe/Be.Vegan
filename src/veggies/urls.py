@@ -9,7 +9,7 @@ router.register(r'restaurants/rating', RestaurantRatingView)
 router.register(r'recipes', RecipeView)
 router.register(r'recipes/list', RecipeListView)
 router.register(r'recipe/rating', RecipeRatingView)
-router.register(r'posts/', PostIdView, base_name='PostIdView') #!!!!
+router.register(r'posts', PostIdView, base_name='PostIdView') #!!!!
 urlpatterns = router.urls
 
 urlpatterns += [
