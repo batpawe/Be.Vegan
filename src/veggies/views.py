@@ -81,11 +81,13 @@ class SubstituteVeganView(viewsets.ViewSet):
 # !!! ! ! ! ! ! ! !
 class PostIdView(viewsets.ViewSet):
     queryset = Post.objects.using('posts').all()
+    serializer_class = PostSerializer
+
     def retrieve(self, request, pk=None):
-        post = Post.objects.using('posts').filter(pk=pk)
-        if post:
-            post = PostSerializer(post, many=False)
-            return Response(post.data)
+        queryset = queryset.filter(pk=pk)
+        if queryset:
+            serializer = IngredientSerializer(queryset, many=True)
+            return Response(serializer.data)
         else:
             return Response(status=404)
 # !!! ! ! ! ! ! ! !
