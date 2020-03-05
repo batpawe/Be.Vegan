@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils.timezone import now
 
 
 class User(AbstractUser):
@@ -8,7 +10,7 @@ class User(AbstractUser):
     height = models.PositiveIntegerField("height", null=True, blank=True)
     weight = models.DecimalField("weight", null=True, blank=True, max_digits=4, decimal_places=2)
     age = models.PositiveIntegerField("age", null=True, blank=True)
-    activity = models.PositiveIntegerField("activity", null=True, blank=True)
+    activity = models.PositiveIntegerField(default=1, validators = [MaxValueValidator(5), MinValueValidator(1)])
 
 
 User = get_user_model()
@@ -32,6 +34,7 @@ class Recipe(models.Model):
     recipe_decription = models.TextField("recipe_description")
     recipe_foto = models.ImageField("recipe_foto", null=True)
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    time = models.PositiveIntegerField()
 
     def __str__(self):
         return self.recipe_name
@@ -41,7 +44,7 @@ class Rating_Recipe(models.Model):
     id_recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
     user_comment = models.TextField("user_comment", null=True, blank=True)
-    rating = models.PositiveSmallIntegerField()
+    rating = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
 
     class Meta:
         unique_together = (("id_user", "id_recipe"),)
@@ -53,8 +56,6 @@ class Ingredient_List(models.Model):
 
     class Meta:
         unique_together = (("id_ingredient", "id_recipes"),)
-
-
 
 class Preference(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -109,5 +110,13 @@ class Report_Res(models.Model):
 
 
 class Post(models.Model):
+    title = models.TextField("title")
     description = models.TextField("description")
-    # Do the rest
+    foto = models.ImageField("foto", null=True, blank=True)
+    data_stamp = models.DateTimeField(default = now, blank=True)
+
+class Post_reply(models.Model):
+    description = models.TextField("description")
+    foto = models.ImageField("foto", null=True, blank=True)
+    data_stamp = models.DateField(default = now)
+    id_post = models.ForeignKey(Post, on_delete=models.CASCADE)

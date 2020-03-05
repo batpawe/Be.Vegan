@@ -8,9 +8,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from .map import get_restaurants
 from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, \
-    Ingredient_List, Rating_Recipe, Preference
+    Ingredient_List, Rating_Recipe, Preference, Post, Post_reply
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
-    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer
+    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer, PostSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -89,6 +89,16 @@ class IngredientsView(APIView):
         else:
             return Response(status=404)
 
+class PostView(APIView):
+    def get(self, request, format = None):
+        prefix = request.GET.get('prefix', '')
+        post = Post.objects.filter(name__regex=r'^{}'.format(prefix))
+        if post:
+            post = PostSerializer(post, many=True)
+            return Response(post.data)
+        else:
+            return Response(status=404)
+
 
 class RestaurantView(APIView):
 
@@ -112,7 +122,6 @@ class RestaurantView(APIView):
             res = Restaurant.objects.all()
             res = RestaurantSerializer(res, many=True)
             return Response(res.data)
-
 
 class RestaurantChangeView(APIView):
     def get(self, request, format=None):
@@ -181,7 +190,6 @@ class RestaurantRatingView(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response(status=400)
-
 
 class RecipeView(viewsets.ViewSet):
     serializer_class = RecipeSerializer

@@ -1,10 +1,17 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import Food_To_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, Ingredient_List, \
-    Rating_Recipe, Preference
+    Rating_Recipe, Preference, Post, Post_reply
 
 User = get_user_model()
 
+# i do
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = '__all__'
+        read_only_fields = ['data_stamp']
+# i did
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
