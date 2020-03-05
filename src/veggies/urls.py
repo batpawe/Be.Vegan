@@ -19,5 +19,5 @@ urlpatterns += [
     path('restaurants/', RestaurantView.as_view()),
     path('restaurants/change/', RestaurantChangeView.as_view()),
     path('preference/', PreferenceView.as_view()),
-    path('post/', PostView.as_view())
+    path('posts/', PostView.as_view())
 ]

@@ -91,8 +91,7 @@ class IngredientsView(APIView):
 
 class PostView(APIView):
     def get(self, request, format = None):
-        prefix = request.GET.get('prefix', '')
-        post = Post.objects.filter(title__regex=r'^{}'.format(prefix))
+        post = Post.objects.get()
         if post:
             post = PostSerializer(post, many=True)
             return Response(post.data)
