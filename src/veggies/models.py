@@ -114,6 +114,7 @@ class Post(models.Model):
     description = models.TextField("description")
     foto = models.ImageField("foto", null=True, blank=True)
     data_stamp = models.DateTimeField(default = now, blank=True)
+    
 
 class Post_reply(models.Model):
     description = models.TextField("description")
