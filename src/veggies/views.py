@@ -78,6 +78,15 @@ class SubstituteVeganView(viewsets.ViewSet):
         else:
             return Response(status=404)
 
+class PostIdView(viewsets.Viewset):
+    def get(self, request, pk=None):
+        post = Post.objects.using('posts').filter(request.data)
+        if post:
+            post = PostSerializer(post, many=False)
+            return Response(post.data)
+        else:
+            return Response(status=404)
+
 
 class IngredientsView(APIView):
     def get(self, request, format=None):
@@ -91,11 +100,7 @@ class IngredientsView(APIView):
 
 class PostView(APIView):
     def get(self, request, format = None):
-        prefix = request.GET.get('prefix', '')
-        if prefix:
-            post = Post.objects.using('posts').filter(id__regex=r'^{}'.format(prefix))
-        else:
-            post = Post.objects.using('posts').all()
+        post = Post.objects.using('posts').all()
         if post:
             post = PostSerializer(post, many=True)
             return Response(post.data)
@@ -103,7 +108,6 @@ class PostView(APIView):
             return Response(status=404)
 
 class RestaurantView(APIView):
-
     def get(self, request, format=None):
         if "city" in request.GET:
             prefix = str(request.GET.get("city", ''))

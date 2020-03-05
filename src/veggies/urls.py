@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework import routers
-from .views import ProfileView, SubstituteNVeganView, SubstituteVeganView, IngredientsView, RestaurantView, RestaurantRatingView, RestaurantChangeView, RecipeView, RecipeListView, RecipeRatingView, PreferenceView, PostView
+from .views import ProfileView, SubstituteNVeganView, SubstituteVeganView, IngredientsView, RestaurantView, RestaurantRatingView, RestaurantChangeView, RecipeView, RecipeListView, RecipeRatingView, PreferenceView, PostView, PostIdView
 #profile view added
 
 router = routers.SimpleRouter()
@@ -9,7 +9,7 @@ router.register(r'restaurants/rating', RestaurantRatingView)
 router.register(r'recipes', RecipeView)
 router.register(r'recipes/list', RecipeListView)
 router.register(r'recipe/rating', RecipeRatingView)
-router.register(r'post/id_post', PostView) #!!!!
+router.register(r'post/id_post', PostIdView) #!!!!
 urlpatterns = router.urls
 
 urlpatterns += [
