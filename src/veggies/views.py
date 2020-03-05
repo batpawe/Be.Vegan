@@ -78,15 +78,16 @@ class SubstituteVeganView(viewsets.ViewSet):
         else:
             return Response(status=404)
 
+# !!! ! ! ! ! ! ! !
 class PostIdView(viewsets.Viewset):
-    def get(self, request, pk=None):
-        post = Post.objects.using('posts').filter(request.data)
+    def retrieve(self, request, pk=None):
+        post = Post.objects.using('posts').filter(pk=pk)
         if post:
             post = PostSerializer(post, many=False)
             return Response(post.data)
         else:
             return Response(status=404)
-
+# !!! ! ! ! ! ! ! !
 
 class IngredientsView(APIView):
     def get(self, request, format=None):
