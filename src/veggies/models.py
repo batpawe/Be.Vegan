@@ -94,18 +94,25 @@ class Restaurant(models.Model):
 
 class Main_Post(models.Model):
     title = models.TextField("title")
-    author = models.ForeignKey(User, on_delete=models.CASCADE).username
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField("description")
     foto = models.ImageField("foto", null=True, blank=True)
     #data_stamp = models.DateTimeField(default = timezone.now)
 
+    def __init__(self):
+        author = author.username
+
 class Reply_Post(models.Model):
     title = models.TextField(default = 'null')
     description = models.TextField("description")
-    author = models.ForeignKey(User, on_delete=models.CASCADE).username
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     foto = models.ImageField("foto", null=True, blank=True)
     #data_stamp = models.DateTimeField(default = timezone.now)
     id_post_int = models.PositiveIntegerField()
+
+
+    def __init__(self):
+        author = author.username
 
 class Rating_Restaurant(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
