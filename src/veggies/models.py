@@ -92,6 +92,20 @@ class Restaurant(models.Model):
     def __str__(self):
         return self.name
 
+class Post(models.Model):
+    title = models.TextField("title")
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.TextField("description")
+    foto = models.ImageField("foto", null=True, blank=True)
+    data_stamp = models.DateTimeField(default = now, blank=True)
+
+class Post_reply(models.Model):
+    description = models.TextField("description")
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    foto = models.ImageField("foto", null=True, blank=True)
+    data_stamp = models.DateField(default = now)
+    id_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
 
 class Rating_Restaurant(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -107,22 +121,3 @@ class Report_Res(models.Model):
     id_restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField("description")
-
-
-class Post(models.Model):
-    title = models.TextField("title")
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    description = models.TextField("description")
-    foto = models.ImageField("foto", null=True, blank=True)
-    data_stamp = models.DateTimeField(default = now, blank=True)
-    class Meta:
-        managed = False
-
-class Post_reply(models.Model):
-    description = models.TextField("description")
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    foto = models.ImageField("foto", null=True, blank=True)
-    data_stamp = models.DateField(default = now)
-    id_post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    class Meta:
-        managed = False

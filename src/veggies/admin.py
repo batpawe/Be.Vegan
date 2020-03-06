@@ -20,10 +20,20 @@ class MultiDBModelAdmin(admin.ModelAdmin):
         obj.save(using=self.using)
 
     def delete_model(self, request, obj):
+        print("self:")
+        print(self)
+        print("request:")
+        print(request)
+        print("obj")
+        print(obj)
         # Tell Django to delete objects from the 'other' database
         obj.delete(using=self.using)
 
     def get_queryset(self, request):
+        print("self:")
+        print(self)
+        print("request:")
+        print(request)
         # Tell Django to look for objects on the 'other' database.
         return super().get_queryset(request).using(self.using)
 
