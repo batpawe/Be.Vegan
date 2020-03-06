@@ -100,6 +100,7 @@ class Main_Post(models.Model):
     data_stamp = models.DateTimeField(default = now, blank=True)
 
 class Reply_Post(models.Model):
+    title = 'null'
     description = models.TextField("description")
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     foto = models.ImageField("foto", null=True, blank=True)
