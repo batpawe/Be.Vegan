@@ -8,11 +8,13 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from .map import get_restaurants
 from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, \
-    Ingredient_List, Rating_Recipe, Preference, Post, Post_reply
+    Ingredient_List, Rating_Recipe, Preference
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
-    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer, PostSerializer
+    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer
 from django.contrib.auth import get_user_model
 from itertools import chain
+#from .models import Post, Post_reply
+#from .serializers import PostSerializer
 
 User = get_user_model()
 
