@@ -12,6 +12,7 @@ from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant,
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
     IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer, PostSerializer
 from django.contrib.auth import get_user_model
+from itertools import chain
 
 User = get_user_model()
 
@@ -86,9 +87,9 @@ class PostIdView(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         queryset = Post.objects.using('posts').filter(pk=pk)
         reply_set = Post_reply.objects.using('posts').filter(id_post=pk)
-        if queryset:
-            queryset = queryset + reply_set
-            serializer = PostSerializer(queryset, many=True)
+        result_list = list(chain(queryset, reply_set))
+        if result_list:
+            serializer = PostSerializer(result_list, many=True)
             return Response(serializer.data)
         else:
             return Response(status=404)
