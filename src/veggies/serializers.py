@@ -8,6 +8,9 @@ from .models import Main_Post, Reply_Post
 User = get_user_model()
 
 class PostSerializer(serializers.ModelSerializer):
+
+    author = serializers.ReadOnlyField(source='author.username')
+
     class Meta:
         model = Main_Post
         fields = '__all__'
