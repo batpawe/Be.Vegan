@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.utils.timezone import now
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -97,14 +97,14 @@ class Main_Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField("description")
     foto = models.ImageField("foto", null=True, blank=True)
-    data_stamp = models.DateTimeField(default = now, blank=True)
+    #data_stamp = models.DateTimeField(default = timezone.now)
 
 class Reply_Post(models.Model):
-    title = 'null'
+    title = models.TextField(default = 'null')
     description = models.TextField("description")
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     foto = models.ImageField("foto", null=True, blank=True)
-    data_stamp = models.DateField(default = now)
+    #data_stamp = models.DateTimeField(default = timezone.now)
     id_post_int = models.PositiveIntegerField()
 
 class Rating_Restaurant(models.Model):
