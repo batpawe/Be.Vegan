@@ -84,7 +84,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'be_vegan.wsgi.application'
 
-#DATABASE_ROUTERS = ['modules.mongodb_router.MongoDBRouter']
+DATABASE_ROUTERS = ['modules.mongodb_router.MongoDBRouter']
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
