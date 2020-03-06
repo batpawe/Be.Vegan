@@ -85,7 +85,9 @@ class PostIdView(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         queryset = Post.objects.using('posts').filter(pk=pk)
+        reply_set = Post_reply.objects.using('posts').filter(id_post=pk)
         if queryset:
+            queryset = queryset + reply_set
             serializer = PostSerializer(queryset, many=True)
             return Response(serializer.data)
         else:
