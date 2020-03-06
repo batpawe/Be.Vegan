@@ -115,7 +115,8 @@ class Post(models.Model):
     description = models.TextField("description")
     foto = models.ImageField("foto", null=True, blank=True)
     data_stamp = models.DateTimeField(default = now, blank=True)
-
+    class Meta:
+        managed = False
 
 class Post_reply(models.Model):
     description = models.TextField("description")
@@ -123,3 +124,5 @@ class Post_reply(models.Model):
     foto = models.ImageField("foto", null=True, blank=True)
     data_stamp = models.DateField(default = now)
     id_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    class Meta:
+        managed = False
