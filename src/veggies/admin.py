@@ -13,6 +13,9 @@ class MultiDBModelAdmin(admin.ModelAdmin):
         # Tell Django to delete objects from the 'other' database
         obj.delete(using=self.using)
 
+    def allow_relation(self, obj1, obj2, **hints):
+        return True
+
     def get_queryset(self, request):
         # Tell Django to look for objects on the 'other' database.
         return super().get_queryset(request).using(self.using)
