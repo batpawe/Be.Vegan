@@ -14,7 +14,6 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Main_Post
         fields = '__all__'
-        fields[author] = author.username
 
 
 class ProfileSerializer(serializers.ModelSerializer):
