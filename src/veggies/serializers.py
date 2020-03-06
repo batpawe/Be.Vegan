@@ -11,7 +11,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Main_Post
         fields = '__all__'
-        #fields = ['title', 'description', 'foto', 'data_stamp']
+        fields[author] = author.username
 
 
 class ProfileSerializer(serializers.ModelSerializer):
