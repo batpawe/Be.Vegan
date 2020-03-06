@@ -94,7 +94,7 @@ class Restaurant(models.Model):
 
 class Main_Post(models.Model):
     title = models.TextField("title")
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE).username
     description = models.TextField("description")
     foto = models.ImageField("foto", null=True, blank=True)
     #data_stamp = models.DateTimeField(default = timezone.now)
@@ -102,7 +102,7 @@ class Main_Post(models.Model):
 class Reply_Post(models.Model):
     title = models.TextField(default = 'null')
     description = models.TextField("description")
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE).username
     foto = models.ImageField("foto", null=True, blank=True)
     #data_stamp = models.DateTimeField(default = timezone.now)
     id_post_int = models.PositiveIntegerField()
