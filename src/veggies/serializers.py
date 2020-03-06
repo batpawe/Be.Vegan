@@ -3,15 +3,20 @@ from django.contrib.auth import get_user_model
 from .models import Food_To_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, Ingredient_List, \
     Rating_Recipe, Preference
 
-#from .models import Post, Post_reply
+from .models import Main_Post, Reply_Post
 
 User = get_user_model()
 
-#class PostSerializer(serializers.ModelSerializer):
-#    class Meta:
-#        model = Post
-#        fields = '__all__'
+class MainPostsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Main_Post
+        fields = '__all__'
         #fields = ['title', 'description', 'foto', 'data_stamp']
+class ReplyPostsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply_Post
+        fields = '__all__'
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
