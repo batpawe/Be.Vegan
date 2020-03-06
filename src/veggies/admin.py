@@ -7,6 +7,16 @@ class MultiDBModelAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         # Tell Django to save objects to the 'other' database.
+        print("self:")
+        print(self)
+        print("request:")
+        print(request)
+        print("obj")
+        print(obj)
+        print("form")
+        print(form)
+        print("change")
+        print(change)
         obj.save(using=self.using)
 
     def delete_model(self, request, obj):
