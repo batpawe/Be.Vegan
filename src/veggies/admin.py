@@ -20,9 +20,9 @@ class MultiDBModelAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         # Tell Django to populate ForeignKey widgets using a query
         # on the 'other' database.
-        if db_field == veggies.Post_reply.author:
+        if str(db_field) == 'veggies.Post_reply.author':
             db_name = 'default'
-        elif db_field == veggies.Post_reply.id_post:
+        elif str(db_field) == 'veggies.Post_reply.id_post':
             db_name = 'posts'
         else:
             db_name = 'posts'
@@ -31,9 +31,9 @@ class MultiDBModelAdmin(admin.ModelAdmin):
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         # Tell Django to populate ManyToMany widgets using a query
         # on the 'other' database.
-        if db_field == veggies.Post_reply.author:
+        if str(db_field) == 'veggies.Post_reply.author':
             db_name = 'default'
-        elif db_field == veggies.Post_reply.id_post:
+        elif str(db_field) == 'veggies.Post_reply.id_post':
             db_name = 'posts'
         else:
             db_name = 'posts'
