@@ -104,7 +104,7 @@ class Reply_Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     foto = models.ImageField("foto", null=True, blank=True)
     data_stamp = models.DateField(default = now)
-    id_post = models.ForeignKey(Main_Post, on_delete=models.CASCADE)
+    id_post_int = models.PositiveIntegerField()
 
 class Rating_Restaurant(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)

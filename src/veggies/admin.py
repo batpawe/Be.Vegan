@@ -13,9 +13,6 @@ class MultiDBModelAdmin(admin.ModelAdmin):
         # Tell Django to delete objects from the 'other' database
         obj.delete(using=self.using)
 
-    def allow_relation(self, obj1, obj2, **hints):
-        return True
-
     def get_queryset(self, request):
         # Tell Django to look for objects on the 'other' database.
         return super().get_queryset(request).using(self.using)
@@ -25,8 +22,8 @@ class MultiDBModelAdmin(admin.ModelAdmin):
         # on the 'other' database.
         if db_field.name == 'author':
             db_name = 'default'
-        elif db_field.name == 'id_post':
-            db_name = 'posts'
+        #elif db_field.name == 'id_post':
+        #    db_name = 'posts'
         else:
             db_name = 'posts'
         return super().formfield_for_foreignkey(db_field, request, using=db_name, **kwargs)
@@ -36,8 +33,8 @@ class MultiDBModelAdmin(admin.ModelAdmin):
         # on the 'other' database.
         if db_field.name == 'author':
             db_name = 'default'
-        elif db_field.name == 'id_post':
-            db_name = 'posts'
+        #elif db_field.name == 'id_post':
+        #    db_name = 'posts'
         else:
             db_name = 'posts'
         return super().formfield_for_manytomany(db_field, request, using=db_name, **kwargs)
