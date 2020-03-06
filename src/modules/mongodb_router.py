@@ -1,11 +1,11 @@
 class MongoDBRouter:
     def db_for_read(self, model, **hints):
-        if model._meta.app_label == 'veggies':
+        if model._meta.app_label == 'post':
             return 'posts'
         return 'default'
 
     def db_for_write(self, model, **hints):
-        if model._meta.app_label == 'veggies':
+        if model._meta.app_label == 'post':
             return 'posts'
         return 'default'
 
@@ -15,6 +15,6 @@ class MongoDBRouter:
         #return False
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
-        if app_label == 'veggies':
+        if app_label == 'post':
             return db == 'posts'
         return 'default'
