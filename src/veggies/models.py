@@ -98,8 +98,6 @@ class Main_Post(models.Model):
     description = models.TextField("description")
     foto = models.ImageField("foto", null=True, blank=True)
     data_stamp = models.DateTimeField(default = now, blank=True)
-    class Meta:
-        app_label = 'post'
 
 class Reply_Post(models.Model):
     description = models.TextField("description")
@@ -107,8 +105,6 @@ class Reply_Post(models.Model):
     foto = models.ImageField("foto", null=True, blank=True)
     data_stamp = models.DateField(default = now)
     id_post = models.ForeignKey(Main_Post, on_delete=models.CASCADE)
-    class Meta:
-        app_label = 'post'
 
 class Rating_Restaurant(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
