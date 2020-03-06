@@ -7,15 +7,11 @@ from .models import Main_Post, Reply_Post
 
 User = get_user_model()
 
-class MainPostsSerializer(serializers.ModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Main_Post
         fields = '__all__'
         #fields = ['title', 'description', 'foto', 'data_stamp']
-class ReplyPostsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reply_Post
-        fields = '__all__'
 
 
 class ProfileSerializer(serializers.ModelSerializer):
