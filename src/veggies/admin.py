@@ -26,7 +26,7 @@ class MultiDBModelAdmin(admin.ModelAdmin):
             db_name = 'posts'
         else:
             db_name = 'posts'
-        return super().formfield_for_foreignkey(db_field, request, using=self.using, **kwargs)
+        return super().formfield_for_foreignkey(db_field, request, using=db_name, **kwargs)
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         # Tell Django to populate ManyToMany widgets using a query
@@ -37,7 +37,7 @@ class MultiDBModelAdmin(admin.ModelAdmin):
             db_name = 'posts'
         else:
             db_name = 'posts'
-        return super().formfield_for_manytomany(db_field, request, using=self.using, **kwargs)
+        return super().formfield_for_manytomany(db_field, request, using=db_name, **kwargs)
 
 admin.site.register(User)
 admin.site.register(Ingredient)
