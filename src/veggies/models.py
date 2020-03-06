@@ -99,8 +99,8 @@ class Main_Post(models.Model):
     foto = models.ImageField("foto", null=True, blank=True)
     #data_stamp = models.DateTimeField(default = timezone.now)
 
-    def __init__(self):
-        author = author.username
+    def __str__(self):
+        return self.author.username
 
 class Reply_Post(models.Model):
     title = models.TextField(default = 'null')
@@ -110,9 +110,8 @@ class Reply_Post(models.Model):
     #data_stamp = models.DateTimeField(default = timezone.now)
     id_post_int = models.PositiveIntegerField()
 
-
-    def __init__(self):
-        author = author.username
+    def __str__(self):
+        return self.author.username
 
 class Rating_Restaurant(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
