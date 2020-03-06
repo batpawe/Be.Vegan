@@ -5,10 +5,10 @@ from .models import Food_To_Substitute, Ingredient, Restaurant, Rating_Restauran
 
 User = get_user_model()
 
-class PostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Post
-        fields = '__all__'
+#class PostSerializer(serializers.ModelSerializer):
+#    class Meta:
+#        model = Post
+#        fields = '__all__'
         #fields = ['title', 'description', 'foto', 'data_stamp']
 
 class ProfileSerializer(serializers.ModelSerializer):

@@ -80,19 +80,19 @@ class SubstituteVeganView(viewsets.ViewSet):
             return Response(status=404)
 
 # !!! ! ! ! ! ! ! !
-class PostIdView(viewsets.ViewSet):
-    queryset = Post.objects.using('posts').all()
-    serializer_class = PostSerializer
-
-    def retrieve(self, request, pk=None):
-        queryset = Post.objects.using('posts').filter(pk=pk)
-        reply_set = Post_reply.objects.using('posts').filter(id_post=pk)
-        result_list = list(chain(queryset, reply_set))
-        if result_list:
-            serializer = PostSerializer(result_list, many=True)
-            return Response(serializer.data)
-        else:
-            return Response(status=404)
+#class PostIdView(viewsets.ViewSet):
+#    queryset = Post.objects.using('posts').all()
+#    serializer_class = PostSerializer
+#
+#    def retrieve(self, request, pk=None):
+#        queryset = Post.objects.using('posts').filter(pk=pk)
+#        reply_set = Post_reply.objects.using('posts').filter(id_post=pk)
+#        result_list = list(chain(queryset, reply_set))
+#        if result_list:
+#            serializer = PostSerializer(result_list, many=True)
+#            return Response(serializer.data)
+#        else:
+#            return Response(status=404)
 # !!! ! ! ! ! ! ! !
 
 class IngredientsView(APIView):
@@ -105,14 +105,14 @@ class IngredientsView(APIView):
         else:
             return Response(status=404)
 
-class PostView(APIView):
-    def get(self, request, format = None):
-        post = Post.objects.using('posts').all()
-        if post:
-            post = PostSerializer(post, many=True)
-            return Response(post.data)
-        else:
-            return Response(status=404)
+#class PostView(APIView):
+#    def get(self, request, format = None):
+#        post = Post.objects.using('posts').all()
+#        if post:
+#            post = PostSerializer(post, many=True)
+#            return Response(post.data)
+#        else:
+#            return Response(status=404)
 
 class RestaurantView(APIView):
     def get(self, request, format=None):
