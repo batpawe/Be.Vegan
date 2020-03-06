@@ -20,13 +20,24 @@ class MultiDBModelAdmin(admin.ModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         # Tell Django to populate ForeignKey widgets using a query
         # on the 'other' database.
-        print(db_field)
-        return super().formfield_for_foreignkey(db_field, request, using=self.using, **kwargs)
+        if db_field == veggies.Post_reply.author:
+            db_name = 'default'
+        elif db_field == veggies.Post_reply.id_post:
+            db_name = 'posts'
+        else:
+            db_name = 'posts'
+        return super().formfield_for_foreignkey(db_field, request, using=db_name, **kwargs)
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         # Tell Django to populate ManyToMany widgets using a query
         # on the 'other' database.
-        return super().formfield_for_manytomany(db_field, request, using=self.using, **kwargs)
+        if db_field == veggies.Post_reply.author:
+            db_name = 'default'
+        elif db_field == veggies.Post_reply.id_post:
+            db_name = 'posts'
+        else:
+            db_name = 'posts'
+        return super().formfield_for_manytomany(db_field, request, using=db_name, **kwargs)
 
 admin.site.register(User)
 admin.site.register(Ingredient)
