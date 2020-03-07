@@ -9,7 +9,7 @@ User = get_user_model()
 
 class PostSerializer(serializers.ModelSerializer):
 
-    author = serializers.ReadOnlyField(source='author.username')
+    author = ProfileSerializer()
 
     class Meta:
         model = Main_Post
