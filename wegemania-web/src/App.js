@@ -3,13 +3,13 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Login from "./components/LoginComponents/Login";
 import Register from "./components/LoginComponents/Register";
 import Wall from "./components/WallComponents/Wall";
-import Recipes from "./components/RecipesComponents/Recipes";
-import Restaurants from "./components/RestaurantsComponents/Restaurants";
+import Recipe from "./components/RecipesComponents/Recipe";
+import Restaurant from "./components/RestaurantsComponents/Restaurant";
+import Replacement from "./components/ReplacementsComponents/Replacement";
+import Post from "./components/PostsComponents/Post";
 import Products from "./components/ProductsComponents/Products";
-import Replacements from "./components/ReplacementsComponents/Replacements";
 import Users from "./components/UsersComponents/Users";
 import EditUser from "./components/UsersComponents/EditUser";
-import Posts from "./components/PostsComponents/Posts";
 import About from "./components/About";
 import Header from "./components/LoginComponents/MenuLogin";
 import AddPost from "./components/PostsComponents/AddPost";
@@ -33,6 +33,10 @@ import AddReplacement from "./components/ReplacementsComponents/AddReplacement";
 import AddRestaurant from "./components/RestaurantsComponents/AddRestaurant";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Notify from "./components/Notify";
+import Recipes from "./components/RecipesComponents/Recipes";
+import Restaurants from "./components/RestaurantsComponents/Restaurants";
+import Replacements from "./components/ReplacementsComponents/Replacements";
+import Posts from "./components/PostsComponents/Posts";
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Titillium+Web&display=swap');
   @import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
@@ -58,14 +62,18 @@ const App = props => {
             <Route path="/wall" component={Wall} />
             <Route path="/posts" component={Posts} />
             <Route path="/restaurants" component={Restaurants} />
-            <Route path="/products" component={Products} />
-            <Route path="/recipes" component={Recipes} />
             <Route path="/replacements" component={Replacements} />
+            <Route path="/recipes" component={Recipes} />
+            <Route path="/post" component={Post} />
+            <Route path="/restaurant" component={Restaurant} />
+            <Route path="/replacement" component={Replacement} />
+            <Route path="/recipe" component={Recipe} />
+            <Route path="/products" component={Products} />
             <Route path="/users/:id" component={Users} />
             <Route path="/edituser/:id" component={EditUser} />
             <Route path="/addpost" component={AddPost} />
             <Route path="/addproduct" component={AddProduct} />
-            <Route path="/addrecipt" component={AddRecipt} />
+            <Route path="/addrecipe" component={AddRecipt} />
             <Route path="/addreplacement" component={AddReplacement} />
             <Route path="/addrestaurant" component={AddRestaurant} />
             <Route path="/acceptproducts" component={AcceptProducts} />

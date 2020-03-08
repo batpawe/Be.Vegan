@@ -84,6 +84,7 @@ export const UserName = styled.p`
   padding: 1em;
   box-sizing: border-box;
   text-align: center;
+  border-radius: 5px;
   color: white;
   background: #27752e;
   transition: border-radius 0.3s;

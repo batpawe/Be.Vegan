@@ -37,8 +37,7 @@ export const TextArea = styled.textarea`
   padding: 1%;
 `;
 export const Image = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 110px;
   display: block;
   cursor: pointer;
 `;
@@ -146,4 +145,9 @@ export const ProductsContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: 2% 0 0 0;
+`;
+export const HighlightText = styled.div`
+  border: 1px solid black;
+  padding: 1%;
+  margin: 1% 0 0 0;
 `;

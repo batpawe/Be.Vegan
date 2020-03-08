@@ -1,189 +1,84 @@
-import React, { useContext } from "react";
-import { NewLoginInfo } from "../../context/LoginInfo";
-import {
-  Container,
-  UnorderedList,
-  ColumnContainer,
-  OrderedList,
-  BorderText,
-  Image,
-  UnorderedListIn,
-  Item,
-  UnorderedListComments,
-  HighlightItem,
-  CommentContent,
-  HeaderText,
-  UnorderedListCommentsIn,
-  HyperLink,
-  TextInput,
-  SubmitCommentButton,
-  CommentContainer,
-  MainContainer,
-  TagContainer,
-  TagItem,
-  RatingComponent
-} from "../../styles/WallStyle";
-import {
-  HeaderPostsContainer,
-  HeaderPostsItem,
-  HeaderPostsText,
-  TagsPostsHeader,
-  TagsPostsHeaderContainer,
-  TagsPostsContainer,
-  TagsItems
-} from "../../styles/PostsWallStyle";
-import PostImage from "../../images/postimage.jpg";
+import React, { useState } from "react";
+import { MainContainer } from "../../styles/WallStyle";
 import RightPanel from "../GlobalComponents/RightPanel";
-import "../../styles/MenuLoginStyle.css";
-import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
-import { Link } from "react-router-dom";
-const Posts = () => {
-  const user = useContext(NewLoginInfo);
-
+import Image from "../../images/restaurant.jpg";
+import {
+  ImageComponent,
+  ElementContainer,
+  Icon,
+  Container,
+  HoverContainer,
+  HoverHeader,
+  HoverText,
+  ImageHoverComponent
+} from "../../styles/TempStyle";
+import PinIcon from "../../icons/VeganAppIcons/pin.svg";
+import PostsIcon from "../../icons/VeganAppIcons/posts.svg";
+import RecipesIcon from "../../icons/VeganAppIcons/recipes.svg";
+import ReplacementsIcon from "../../icons/VeganAppIcons/replacements.svg";
+import RestaurantsIcon from "../../icons/VeganAppIcons/restaurants.svg";
+import { withRouter } from "react-router";
+import {
+  AddPostPageContainer,
+  AddPostPageLink,
+  SearchInput,
+  SearchButton,
+  SearchContainer
+} from "../../styles/PostStyle";
+const Element = props => {
+  const [isHover, setIsHover] = useState(false);
+  return (
+    <ElementContainer
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
+    >
+      <HoverContainer onClick={() => props.historyProps.push("/post")}>
+        {isHover ? (
+          <div>
+            <ImageHoverComponent src={Image} />
+            <HoverHeader>Witaj</HoverHeader>
+            <HoverText>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley
+            </HoverText>
+            <Icon src={PostsIcon} />
+          </div>
+        ) : (
+          <div>
+            <ImageComponent src={Image} />
+            <Icon src={PostsIcon} />
+          </div>
+        )}
+      </HoverContainer>
+    </ElementContainer>
+  );
+};
+const Posts = props => {
   return (
     <MainContainer>
       <Container>
+        {" "}
         <AddPostPageContainer>
+          <SearchContainer>
+            <SearchInput placeholder="Wpisz tytuł lub tag"></SearchInput>
+            <SearchButton>Wyszukaj</SearchButton>
+          </SearchContainer>
           <AddPostPageLink to="/addpost">Dodaj post</AddPostPageLink>
         </AddPostPageContainer>
-        <OrderedList>
-          <UnorderedList>
-            <HeaderPostsContainer>
-              <HeaderPostsItem>
-                <HeaderPostsText>Post1</HeaderPostsText>
-              </HeaderPostsItem>
-              <HeaderPostsItem>Autor</HeaderPostsItem>
-            </HeaderPostsContainer>
-            <TagsPostsHeaderContainer>
-              <li>
-                <TagsPostsHeader>Tagi:</TagsPostsHeader>
-              </li>
-            </TagsPostsHeaderContainer>
-            <TagsPostsContainer>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-            </TagsPostsContainer>
-            <ColumnContainer>
-              <div>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
-              </div>
-            </ColumnContainer>
-            <Image src={PostImage} />
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-          <UnorderedList>
-            <HeaderPostsContainer>
-              <HeaderPostsItem>
-                <HeaderPostsText>Post1</HeaderPostsText>
-              </HeaderPostsItem>
-              <HeaderPostsItem>Autor</HeaderPostsItem>
-            </HeaderPostsContainer>
-            <ColumnContainer>
-              <div>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
-              </div>
-            </ColumnContainer>
-            <Image src={PostImage} />
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-        </OrderedList>
+        <Element key={1} historyProps={props.history} />
+        <Element key={1} />
+        <Element key={1} />
+        <Element key={1} />
+        <Element key={1} />
+        <Element key={1} />
       </Container>
       <RightPanel />
     </MainContainer>
   );
 };
-export default Posts;
+export default withRouter(Posts);

@@ -19,7 +19,8 @@ import {
   SelectType,
   TextAreaMethod,
   MethodContainer,
-  ProductsContainer
+  ProductsContainer,
+  HighlightText
 } from "../../styles/AddForms";
 import UploadImage from "../../images/upload.png";
 import "../../App.css";
@@ -33,17 +34,12 @@ const AddRecipt = () => {
   const [numberProducts, setNumberProducts] = useState(1);
   const [numberMethods, setNumberMethods] = useState(1);
   const tempArray = [""];
-  const [methodsArray, setMethodsArray] = useState([]);
+  const [methods, setMethods] = useState("");
   const [productsArray, setProductsArray] = useState([[], [], []]);
   const handleMethods = e => {
-    let temp = methodsArray;
-    for (var i = 0; i < numberMethods; i++) {
-      if (temp[i] === undefined) {
-        temp[i] = "";
-      }
-    }
-    temp[e.target.id] = e.target.value;
-    setMethodsArray(temp);
+    let temp = methods;
+    temp = e.target.value;
+    setMethods(temp);
   };
   const handleProducts = e => {
     let temp = productsArray;
@@ -71,20 +67,7 @@ const AddRecipt = () => {
     temp[i] = URL.createObjectURL(event.target.files[0]);
     setFile([...temp]);
   };
-  const addMarker = e => {
-    let temp = [e.latlng.lat, e.latlng.lng];
-    setMarkers(temp);
-  };
-  const handleType = e => {
-    let temp = productsArray;
-    for (var i = 0; i < numberProducts; i++) {
-      if (temp[i] === undefined) {
-        temp[i][0] = "";
-      }
-    }
-    temp[e.target.id][2] = e.target.value;
-    setProductsArray(temp);
-  };
+
   const ProductFields = () => {
     const temp = [];
     console.log(productsArray[0]);
@@ -109,16 +92,7 @@ const AddRecipt = () => {
               handleQuanity(e);
             }}
           />
-          <SelectType
-            id={i}
-            onChange={val => handleType(val)}
-            value={productsArray[i][2]}
-          >
-            <option value="łyżeczka">łyżeczka</option>
-            <option value="łyżka">łyżka</option>
-            <option value="kubek">kubek</option>
-            <option value="gramów">gramów</option>
-          </SelectType>
+          <HighlightText>gram</HighlightText>
           <img
             style={{ width: 25 }}
             src={CloseImage}
@@ -137,31 +111,25 @@ const AddRecipt = () => {
     );
   };
   const MethodFields = () => {
-    const temp = [];
-    for (var i = 0; i < numberMethods; i++) {
-      temp.push(
-        <MethodContainer>
-          <TextAreaMethod
-            type="text"
-            id={i}
-            value={methodsArray[i]}
-            onChange={e => {
-              handleMethods(e);
-            }}
-          />
-          <img
-            style={{ width: 25 }}
-            src={CloseImage}
-            onClick={() => prevMethodField()}
-          />
-        </MethodContainer>
-      );
-    }
     return (
       <div>
         <ReciptLabel for="products">
-          Sposób przygotowania:{temp}
-          <AddItem onClick={() => nextMethodField()}>Dodaj pole</AddItem>
+          Sposób przygotowania:
+          <MethodContainer>
+            <TextAreaMethod
+              type="text"
+              id={1}
+              value={methods}
+              onChange={e => {
+                handleMethods(e);
+              }}
+            />
+            <img
+              style={{ width: 25 }}
+              src={CloseImage}
+              onClick={() => prevMethodField()}
+            />
+          </MethodContainer>
         </ReciptLabel>
       </div>
     );
@@ -232,7 +200,7 @@ const AddRecipt = () => {
           />
         </div>
       </ImagesContainer>
-      <Button>Dodaj post</Button>
+      <Button>Dodaj przepis</Button>
     </Container>
   );
 };

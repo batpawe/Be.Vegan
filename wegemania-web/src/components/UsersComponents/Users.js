@@ -6,7 +6,9 @@ import {
   UserProfileItem,
   UserProfileItemRow,
   UnorderedFlexList,
-  EditProfileButton
+  EditProfileButton,
+  UserName,
+  Header
 } from "../../styles/UserProfile";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import {
@@ -64,7 +66,10 @@ const Users = props => {
               margin: "3% 0 0 0"
             }}
           >
-            <HelloMessage>Profil {userData.username}</HelloMessage>
+            <Header>
+              <HelloMessage>Profil: </HelloMessage>
+              <UserName>{userData.username}</UserName>
+            </Header>
 
             {props.match.params.id == user.userInfo.id && (
               <EditProfileButton to={`/edituser/${user.userInfo.id}`}>

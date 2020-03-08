@@ -2,8 +2,9 @@ import styled from "styled-components";
 export const HeaderRecipeContainer = styled.ul`
   list-style-type: none;
   margin: auto;
-  padding: auto;
+  padding: 0;
   text-align: center;
+  background: rgba(255, 255, 255, 0.6);
 `;
 export const HeaderRecipeText = styled.li`
   font-size: 24px;
@@ -26,6 +27,7 @@ export const RecipeTime = styled.li`
 `;
 export const IngredientsList = styled.ul`
   list-style-type: none;
+  padding: 0;
   margin: 5px 0 0 0;
   display: flex;
   flex-direction: row;
@@ -46,14 +48,14 @@ export const IngredientsItem = styled.li`
 `;
 export const PreparationItem = styled.li`
   margin: 5px 10px 2px 10px;
-  padding: 0;
+  border-radius: 10px;
   color: white;
   text-align: justify;
   text-justify: inter-word;
   border: 1px solid black;
   cursor: pointer;
   background: #00a835;
-  padding: 1%;
+  padding: 3%;
 `;
 export const RecipeImage = styled.img`
   width: 250px;
@@ -62,14 +64,19 @@ export const RecipeImage = styled.img`
 `;
 export const RateContainer = styled.ul`
   list-style-type: none;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.6);
   text-align: center;
   margin: 5% auto 0 auto;
 `;
 export const RateHeader = styled.li`
   font-size: 20px;
+  padding: 0;
+  margin: 0;
   font-weight: bold;
 `;
 export const RateStars = styled.li`
   position: relative;
-  left: 45%;
+  left: 43%;
+  padding: 0;
 `;

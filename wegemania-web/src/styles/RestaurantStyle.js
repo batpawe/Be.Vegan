@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 export const HeaderRestaurantContainer = styled.ul`
   list-style-type: none;
   margin: 0;
@@ -9,11 +10,11 @@ export const HeaderRestaurantText = styled.li`
   font-size: 24px;
   color: #00a835;
   font-weight: bold;
+  background: rgba(255, 255, 255, 0.6);
 `;
-export const FirstRestaurantRow = styled.ul`
-  list-style-type: none;
-  display: flex;
-  align-items: flex-start;
+export const FirstRestaurantRow = styled.div`
+  display: block;
+  text-align: center;
 `;
 export const FirstRestaurantItem = styled.li`
   margin: 10px;
@@ -21,15 +22,16 @@ export const FirstRestaurantItem = styled.li`
   padding: 0;
 `;
 export const RestaurantImageComponent = styled.img`
-  margin: 25px;
+  margin: 20px auto 0 auto;
+  display: block;
   padding: 0;
-  width: 300px;
+  width: 400px;
 `;
 export const RestaurantOpenItem = styled.li`
-  margin: 20px 10px 20px 10px;
+  margin: 20px 0 0 0;
   padding: 0;
+  width: 250px;
   color: white;
-  width: 300px;
   text-align: justify;
   text-justify: inter-word;
   border: 1px solid black;
@@ -63,13 +65,69 @@ export const HeaderColumn = styled.li`
 export const RateContainer = styled.ul`
   list-style-type: none;
   text-align: center;
+  background: rgba(255, 255, 255, 0.6);
   margin: 5% auto 0 auto;
 `;
 export const RateHeader = styled.li`
   font-size: 20px;
   font-weight: bold;
+  padding: 0;
+  margin: 0;
 `;
 export const RateStars = styled.li`
   position: relative;
-  left: 45%;
+  left: 42.5%;
+`;
+export const LocationContainer = styled.div`
+  margin: 25px 0 0 0;
+`;
+export const BorderHeader = styled.p`
+  text-align: center;
+  font-weight: bold;
+`;
+export const SearchContainer = styled.div`
+  display: flex;
+`;
+export const SearchInput = styled.input`
+  padding: 1%;
+  font-size: 14px;
+  width: 220px;
+  height: 60px;
+`;
+export const SearchButton = styled.button`
+  color: white;
+  font-size: 14px;
+  border: none;
+  background: #27ae60;
+  opacity: none;
+  width: 150px;
+  height: 60px;
+  padding: 2%;
+  :hover {
+    color: white;
+    text-decoration: none;
+    background: #2ecc71;
+    text-shadow: 0 0 1px white, 0 0 1px white;
+  }
+`;
+export const RadiusContainer = styled.div`
+  display: flex;
+`;
+export const AddRestaurantLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  background: #27ae60;
+  padding: 2%;
+  font-size: 14px;
+  display: block;
+  min-width: 100px;
+  height: 60px;
+  text-align: center;
+  width: 200px;
+  :hover {
+    color: white;
+    text-decoration: none;
+    background: #2ecc71;
+    text-shadow: 0 0 1px white, 0 0 1px white;
+  }
 `;

@@ -4,8 +4,9 @@ export const HeaderPostsContainer = styled.ul`
   margin: auto;
   text-align: center;
   display: block;
+  background: rgba(255, 255, 255, 0.6);
   width: 100%;
-  padding: auto;
+  padding: 0;
 `;
 export const HeaderPostsItem = styled.li`
   text-align: center;
@@ -23,12 +24,13 @@ export const HeaderPostsText = styled.h1`
 export const TagsPostsHeaderContainer = styled.ul`
   list-style-type: none;
   margin: 5% 0 0 0;
+  padding: 0;
 `;
 export const TagsPostsHeader = styled.h1`
   text-align: center;
   font-size: 18px;
   margin: auto;
-  padding: auto;
+  padding: 0;
   font-weight: bold;
 `;
 export const TagsPostsContainer = styled.ul`
@@ -79,7 +81,6 @@ export const AddHeader = styled.h1`
 `;
 export const OrderedList = styled.ol`
   list-style-type: none;
-  width: 600px;
   display: flex;
   flex-wrap: wrap;
   margin: auto;

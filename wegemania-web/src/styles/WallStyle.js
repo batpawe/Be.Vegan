@@ -8,13 +8,13 @@ export const OrderedList = styled.ol`
 export const Container = styled.div`
   padding: 0 2% 2% 2%;
   font-size: 17px;
-  margin: 10vw 0 0 0;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 10vw 0 0 1%;
+  width: 55%;
 `;
 export const UnorderedList = styled.ul`
   margin: 0 0 2% 0;
-  background: white;
   list-style-type: none;
-  min-width: 800px;
   padding: 1%;
 `;
 export const ColumnContainer = styled.div`
@@ -43,13 +43,13 @@ export const Item = styled.li`
   align-items: center;
 `;
 export const UnorderedListComments = styled.ul`
-  width: 500px;
   list-style-type: none;
   margin: 3% 0 3% 0;
 `;
 export const UnorderedListCommentsIn = styled.ul`
-  margin: 2% 0 0 0;
+  padding: 1%;
   list-style-type: none;
+  background: rgba(255, 255, 255, 0.6);
   margin: 3% 0 3% 0;
 `;
 export const HighlightItem = styled.li`
@@ -62,6 +62,9 @@ export const CommentContent = styled.li`
 `;
 export const HeaderText = styled.h1`
   font-size: 18px;
+  font-weight: bold;
+  border-top: 1px solid black;
+  width: 100%;
 `;
 export const HyperLink = styled(Link)`
   display: block;
@@ -84,8 +87,8 @@ export const HyperLink = styled(Link)`
 `;
 export const TextInput = styled.textarea`
   margin: 3% 0 0 0;
-  height: 300px;
-  min-width: 350px;
+  height: 100px;
+  min-width: 250px;
   line-height: 20px;
   font-size: 14px;
   outline: none;
@@ -106,10 +109,13 @@ export const SubmitCommentButton = styled.button`
 `;
 export const CommentContainer = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: flex-end;
 `;
 export const MainContainer = styled.div`
   display: flex;
+  justify-content: space-between;
+  width: 100vw;
 `;
 export const PreparingMethod = styled.div`
   max-width: 400px;

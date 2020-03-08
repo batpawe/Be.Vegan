@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Background from "../images/web2.png";
 export const ContainerPosts = styled.div`
   width: 80%;
+  background: rgba(255, 255, 255, 0.3);
   margin: auto;
 `;
 export const SortPost = styled.select`
@@ -227,25 +228,52 @@ export const UserControl = styled.div`
   padding: 0 0 0 0.1em;
 `;
 export const AddPostPageContainer = styled.div`
-  background: white;
+  background: rgba(255, 255, 255, 0.6);
   padding: 2%;
   align-items: center;
   margin: auto auto 5% auto;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 `;
 export const AddPostPageLink = styled(Link)`
   color: white;
   text-decoration: none;
   background: #27ae60;
   padding: 2%;
+  font-size: 14px;
   display: block;
-  min-width: 200px;
+  min-width: 100px;
   text-align: center;
+  width: 200px;
   :hover {
     color: white;
     text-decoration: none;
     background: #2ecc71;
     text-shadow: 0 0 1px white, 0 0 1px white;
   }
+`;
+export const SearchInput = styled.input`
+  font-size: 14px;
+  padding: 4%;
+  width: 200px;
+  opacity: none;
+`;
+export const SearchButton = styled.button`
+  color: white;
+  font-size: 14px;
+  border: none;
+  background: #27ae60;
+  opacity: none;
+  width: 100px;
+  padding: 2%;
+  :hover {
+    color: white;
+    text-decoration: none;
+    background: #2ecc71;
+    text-shadow: 0 0 1px white, 0 0 1px white;
+  }
+`;
+export const SearchContainer = styled.div`
+  display: flex;
+  width: 300px;
 `;

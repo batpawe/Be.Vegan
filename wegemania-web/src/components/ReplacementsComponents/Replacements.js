@@ -1,37 +1,205 @@
-import React, { useContext } from "react";
-import ProductImage from "../../images/product.jpg";
-import { NewLoginInfo } from "../../context/LoginInfo";
+import React, { useState } from "react";
+import { MainContainer } from "../../styles/WallStyle";
 import {
   Container,
-  UnorderedList,
-  ColumnContainer,
-  OrderedList,
-  BorderText,
-  UnorderedListIn,
-  Item,
-  UnorderedListComments,
-  HighlightItem,
-  CommentContent,
+  ReplacementsName,
   HeaderText,
-  UnorderedListCommentsIn,
-  HyperLink,
-  TextInput,
-  SubmitCommentButton,
-  CommentContainer,
-  MainContainer
-} from "../../styles/WallStyle";
-import { Image } from "../../styles/ReplacementsStyle";
-import { Map, Marker, Popup, TileLayer } from "react-leaflet";
-import RestaurantImage from "../../images/restaurant.jpg";
+  ContainerReplacements,
+  ImageReplacements,
+  ContentContainer,
+  UnorderedList,
+  PagginationContainer,
+  PagginationItem,
+  Item,
+  WayItem,
+  ReplacementsImage,
+  OuterUnorderedList,
+  InnerUnorderedList
+} from "../../styles/TempReplacements";
+import { Scrollbars } from "react-custom-scrollbars";
 import RightPanel from "../GlobalComponents/RightPanel";
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import Image from "../../images/dinner.jpg";
+import { withRouter } from "react-router";
 import {
   SearchPanel,
   SearchInput,
   SearchButton
 } from "../../styles/GlobalStyle";
-import "../../styles/MenuLoginStyle.css";
 import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
-const Replacements = () => {
+const Replacements = props => {
+  let temp = [0, 0, 0];
+  const [page, setPage] = useState(temp);
+  const Paggination = props => {
+    let no = props.no || 2;
+    const handlePage = k => {
+      let tmp = page;
+      console.log(k);
+      if (k == 1) {
+        tmp[props.index] = 1;
+      } else {
+        tmp[props.index] = 0;
+      }
+      setPage([...tmp]);
+    };
+    const paggin = Array.from({ length: no }, (_, k) =>
+      k == page[props.index] ? (
+        <PagginationItem
+          key={k}
+          active={true}
+          onClick={() => {
+            handlePage(k);
+          }}
+        >
+          {k + 1}
+        </PagginationItem>
+      ) : (
+        <PagginationItem
+          key={k}
+          onClick={() => {
+            handlePage(k);
+          }}
+        >
+          {k + 1}
+        </PagginationItem>
+      )
+    );
+    return <PagginationContainer>{paggin}</PagginationContainer>;
+  };
+  const ContentController = props => {
+    return (
+      <ContainerReplacements>
+        <ImageReplacements
+          src={Image}
+          style={{ width: "60%", cursor: "pointer" }}
+          onClick={() => props.historyProps.push("/replacement")}
+        />
+        <ContentContainer style={{ width: "38%", background: "white" }}>
+          <ReplacementsName>Przepis</ReplacementsName>
+          {console.log(page[props.index])}
+          {page[props.index] == 0 ? (
+            <div>
+              <HeaderText>Zamienniki:</HeaderText>
+              <Scrollbars style={{ width: 165, height: 200 }}>
+                <UnorderedList>
+                  <OuterUnorderedList>
+                    <InnerUnorderedList>
+                      <WayItem>Zamiennik1</WayItem>
+                      <WayItem>kaloryczność:</WayItem>
+                      <WayItem>proteiny:</WayItem>
+                      <WayItem>tłuszcz:</WayItem>
+                      <WayItem>węglowodany</WayItem>
+                      <WayItem>celuluoza</WayItem>
+                    </InnerUnorderedList>
+                    <ReplacementsImage src={Image} />
+                  </OuterUnorderedList>
+                </UnorderedList>
+                <UnorderedList>
+                  <OuterUnorderedList>
+                    <InnerUnorderedList>
+                      <WayItem>Zamiennik1</WayItem>
+                      <WayItem>kaloryczność:</WayItem>
+                      <WayItem>proteiny:</WayItem>
+                      <WayItem>tłuszcz:</WayItem>
+                      <WayItem>węglowodany</WayItem>
+                      <WayItem>celuluoza</WayItem>
+                    </InnerUnorderedList>
+                    <ReplacementsImage src={Image} />
+                  </OuterUnorderedList>
+                </UnorderedList>
+                <UnorderedList>
+                  <OuterUnorderedList>
+                    <InnerUnorderedList>
+                      <WayItem>Zamiennik1</WayItem>
+                      <WayItem>kaloryczność:</WayItem>
+                      <WayItem>proteiny:</WayItem>
+                      <WayItem>tłuszcz:</WayItem>
+                      <WayItem>węglowodany</WayItem>
+                      <WayItem>celuluoza</WayItem>
+                    </InnerUnorderedList>
+                    <ReplacementsImage src={Image} />
+                  </OuterUnorderedList>
+                </UnorderedList>
+                <UnorderedList>
+                  <OuterUnorderedList>
+                    <InnerUnorderedList>
+                      <WayItem>Zamiennik1</WayItem>
+                      <WayItem>kaloryczność:</WayItem>
+                      <WayItem>proteiny:</WayItem>
+                      <WayItem>tłuszcz:</WayItem>
+                      <WayItem>węglowodany</WayItem>
+                      <WayItem>celuluoza</WayItem>
+                    </InnerUnorderedList>
+                    <ReplacementsImage src={Image} />
+                  </OuterUnorderedList>
+                </UnorderedList>
+              </Scrollbars>
+            </div>
+          ) : (
+            <div>
+              <HeaderText>Zamienniki:</HeaderText>
+              <Scrollbars style={{ width: 165, height: 200 }}>
+                <UnorderedList>
+                  <OuterUnorderedList>
+                    <InnerUnorderedList>
+                      <WayItem>Zamiennik1</WayItem>
+                      <WayItem>kaloryczność:</WayItem>
+                      <WayItem>proteiny:</WayItem>
+                      <WayItem>tłuszcz:</WayItem>
+                      <WayItem>węglowodany</WayItem>
+                      <WayItem>celuluoza</WayItem>
+                    </InnerUnorderedList>
+                    <ReplacementsImage src={Image} />
+                  </OuterUnorderedList>
+                </UnorderedList>
+                <UnorderedList>
+                  <OuterUnorderedList>
+                    <InnerUnorderedList>
+                      <WayItem>Zamiennik1</WayItem>
+                      <WayItem>kaloryczność:</WayItem>
+                      <WayItem>proteiny:</WayItem>
+                      <WayItem>tłuszcz:</WayItem>
+                      <WayItem>węglowodany</WayItem>
+                      <WayItem>celuluoza</WayItem>
+                    </InnerUnorderedList>
+                    <ReplacementsImage src={Image} />
+                  </OuterUnorderedList>
+                </UnorderedList>
+                <UnorderedList>
+                  <OuterUnorderedList>
+                    <InnerUnorderedList>
+                      <WayItem>Zamiennik1</WayItem>
+                      <WayItem>kaloryczność:</WayItem>
+                      <WayItem>proteiny:</WayItem>
+                      <WayItem>tłuszcz:</WayItem>
+                      <WayItem>węglowodany</WayItem>
+                      <WayItem>celuluoza</WayItem>
+                    </InnerUnorderedList>
+                    <ReplacementsImage src={Image} />
+                  </OuterUnorderedList>
+                </UnorderedList>
+                <UnorderedList>
+                  <OuterUnorderedList>
+                    <InnerUnorderedList>
+                      <WayItem>Zamiennik1</WayItem>
+                      <WayItem>kaloryczność:</WayItem>
+                      <WayItem>proteiny:</WayItem>
+                      <WayItem>tłuszcz:</WayItem>
+                      <WayItem>węglowodany</WayItem>
+                      <WayItem>celuluoza</WayItem>
+                    </InnerUnorderedList>
+                    <ReplacementsImage src={Image} />
+                  </OuterUnorderedList>
+                </UnorderedList>
+              </Scrollbars>
+            </div>
+          )}
+
+          <Paggination index={props.index} />
+        </ContentContainer>
+      </ContainerReplacements>
+    );
+  };
   return (
     <MainContainer>
       <Container>
@@ -63,159 +231,12 @@ const Replacements = () => {
             Dodaj zamiennik
           </AddPostPageLink>
         </SearchPanel>
-        <OrderedList>
-          <UnorderedList>
-            <ColumnContainer>
-              <div>
-                <UnorderedListIn>
-                  <Item>
-                    <HighlightItem>Produkt2</HighlightItem>
-                  </Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                </UnorderedListIn>
-              </div>
-              <div>
-                <UnorderedListIn>
-                  <Item>Produkt2</Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                  <Item>Produkt2</Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                  <Item>Produkt2</Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                  <Item>Produkt2</Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                  <Item>Produkt2</Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                </UnorderedListIn>
-              </div>
-            </ColumnContainer>
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-          <UnorderedList>
-            <ColumnContainer>
-              <div>
-                <UnorderedListIn>
-                  <Item>Produkt2</Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                </UnorderedListIn>
-              </div>
-              <div>
-                <UnorderedListIn>
-                  <Item>Produkt2</Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                  <Item>Produkt2</Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                  <Item>Produkt2</Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                  <Item>Produkt2</Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                  <Item>Produkt2</Item>
-                  <Item>
-                    <Image src={ProductImage} />
-                  </Item>
-                </UnorderedListIn>
-              </div>
-            </ColumnContainer>
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-        </OrderedList>
+        <ContentController index={0} historyProps={props.history} />
+        <ContentController index={1} historyProps={props.history} />
+        <ContentController index={2} historyProps={props.history} />
       </Container>
       <RightPanel />
     </MainContainer>
   );
 };
-export default Replacements;
+export default withRouter(Replacements);

@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 export const LocalContainer = styled.ol`
   padding: 2em;
-  background: white;
+  background: rgba(255, 255, 255, 0.3);
   max-width: 400px;
 `;
 export const UnorderedList = styled.ul`
   list-style-type: none;
+  color: black;
   margin-top: 2em;
   font-size: 18px;
 `;
@@ -38,17 +39,19 @@ export const Item = styled.li`
 `;
 export const GlobalContainer = styled.div`
   margin: 10vw 2% 0 0;
+  background: rgba(255, 255, 255, 0.3);
 `;
 export const SearchPanel = styled.div`
   padding: 1%;
   margin: auto auto 1% auto;
   justify-content: space-between;
   display: flex;
-  background: white;
+  background: rgba(255, 255, 255, 0.6);
 `;
 export const SearchInput = styled.input`
-  min-width: 400px;
-  min-height: 60px;
+  min-height: 50px;
+  width: 180px;
+  font-size: 12px;
   display: block;
   outline: none;
   padding: 1%;
@@ -60,6 +63,7 @@ export const SearchButton = styled(Link)`
   color: white;
   background: #27ae60;
   font-size: 14px;
+  width: 120px;
   text-align: center;
   padding: 2%;
   :hover {

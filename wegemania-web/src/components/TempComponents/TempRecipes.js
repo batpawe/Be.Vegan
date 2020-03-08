@@ -17,13 +17,8 @@ import {
 import RightPanel from "../GlobalComponents/RightPanel";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Image from "../../images/dinner.jpg";
-import { withRouter } from "react-router";
-import {
-  SearchPanel,
-  SearchInput,
-  SearchButton
-} from "../../styles/GlobalStyle";
-const Recipes = props => {
+
+const TempRecipes = props => {
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
   const Paggination = props => {
@@ -65,11 +60,7 @@ const Recipes = props => {
   const ContentController = props => {
     return (
       <ContainerRecipes>
-        <ImageRecipes
-          src={Image}
-          style={{ width: "60%", cursor: "pointer" }}
-          onClick={() => props.historyProps.push("/recipe")}
-        />
+        <ImageRecipes src={Image} style={{ width: "60%" }} />
         <ContentContainer style={{ width: "38%", background: "white" }}>
           <RecipesName>Przepis</RecipesName>
           {console.log(page[props.index])}
@@ -110,38 +101,12 @@ const Recipes = props => {
   return (
     <MainContainer>
       <Container>
-        <SearchPanel>
-          <div>
-            <SearchInput
-              type="text"
-              id="ajax"
-              list="json-datalist"
-              placeholder="Wprowadź nazwę produktu"
-            />
-            <datalist id="json-datalist">
-              <option value="HTML" />
-              <option value="CSS" />
-              <option value="JavaScript" />
-              <option value="Java" />
-              <option value="Ruby" />
-              <option value="PHP" />
-              <option value="Go" />
-              <option value="Erlang" />
-              <option value="Python" />
-              <option value="C" />
-              <option value="C#" />
-              <option value="C++" />
-            </datalist>
-          </div>
-          <SearchButton>Wyszukaj</SearchButton>
-          <SearchButton to="/addrecipe">Dodaj przepis</SearchButton>
-        </SearchPanel>
-        <ContentController index={0} historyProps={props.history} />
-        <ContentController index={1} historyProps={props.history} />
-        <ContentController index={2} historyProps={props.history} />
+        <ContentController index={0} />
+        <ContentController index={1} />
+        <ContentController index={2} />
       </Container>
       <RightPanel />
     </MainContainer>
   );
 };
-export default withRouter(Recipes);
+export default TempRecipes;
