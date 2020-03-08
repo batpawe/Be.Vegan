@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework import routers
 from .views import ProfileView, SubstituteNVeganView, SubstituteVeganView, IngredientsView, RestaurantView, RestaurantRatingView, RestaurantChangeView, RecipeView, RecipeListView, RecipeRatingView, PreferenceView
-from .views import PostIdView, PostView
+from .views import PostIdView
 #profile view added
 
 
@@ -21,5 +21,4 @@ urlpatterns += [
     path('restaurants/', RestaurantView.as_view()),
     path('restaurants/change/', RestaurantChangeView.as_view()),
     path('preference/', PreferenceView.as_view()),
-    path('posts/', PostView.as_view())
 ]

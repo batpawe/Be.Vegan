@@ -33,8 +33,8 @@ class Recipe(models.Model):
     recipe_name = models.TextField(max_length=120)
     recipe_decription = models.TextField("recipe_description")
     recipe_foto = models.ImageField("recipe_foto", null=True)
-    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
     time = models.PositiveIntegerField()
+    id_user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.recipe_name
@@ -52,10 +52,11 @@ class Rating_Recipe(models.Model):
 
 class Ingredient_List(models.Model):
     id_ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    id_recipes = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    id_recipes = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (("id_ingredient", "id_recipes"),)
+
 
 class Preference(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -92,20 +93,6 @@ class Restaurant(models.Model):
     def __str__(self):
         return self.name
 
-class Main_Post(models.Model):
-    title = models.TextField("title")
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    description = models.TextField("description")
-    foto = models.ImageField("foto", null=True, blank=True)
-    #data_stamp = models.DateTimeField(default = timezone.now)
-
-class Reply_Post(models.Model):
-    title = models.TextField(default = 'null')
-    description = models.TextField("description")
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    foto = models.ImageField("foto", null=True, blank=True)
-    #data_stamp = models.DateTimeField(default = timezone.now)
-    id_post_int = models.PositiveIntegerField()
 
 class Rating_Restaurant(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -121,3 +108,19 @@ class Report_Res(models.Model):
     id_restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField("description")
+
+class Main_Post(models.Model):
+    title = models.TextField("title")
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.TextField("description")
+    foto = models.ImageField("foto", null=True, blank=True)
+    data_stamp = models.DateTimeField(default = timezone.now)
+
+
+class Reply_Post(models.Model):
+    title = models.TextField(blank=True)
+    description = models.TextField("description")
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    foto = models.ImageField("foto", null=True, blank=True)
+    data_stamp = models.DateTimeField(default = timezone.now)
+    id_post_int = models.PositiveIntegerField()

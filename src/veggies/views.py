@@ -10,11 +10,11 @@ from .map import get_restaurants
 from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, \
     Ingredient_List, Rating_Recipe, Preference
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
-    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer
+    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer, UserSerializer
 from django.contrib.auth import get_user_model
 from itertools import chain
 from .models import Main_Post, Reply_Post
-from .serializers import PostSerializer
+from .serializers import PostSerializer, PostReplySerializer
 
 User = get_user_model()
 
@@ -30,6 +30,11 @@ def ProfileViewGet(request):
         return Response(message.data)
     else:
         return Response(status=401)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class ProfileView(APIView):
@@ -81,21 +86,49 @@ class SubstituteVeganView(viewsets.ViewSet):
         else:
             return Response(status=404)
 
-# !!! ! ! ! ! ! ! !
-class PostIdView(viewsets.ViewSet):
-    queryset = Main_Post.objects.using('posts').all()
+class PostIdView(viewsets.GenericViewSet):
+    queryset = Main_Post.objects.all()
     serializer_class = PostSerializer
 
     def retrieve(self, request, pk=None):
-        queryset = Main_Post.objects.using('posts').filter(pk=pk)
-        reply_set = Reply_Post.objects.using('posts').filter(id_post_int=pk)
-        result_list = list(chain(queryset, reply_set))
-        if result_list:
-            serializer = PostSerializer(result_list, many=True)
-            return Response(serializer.data)
+        post = Main_Post.objects.get(id = pk)
+        reply_set = Reply_Post.objects.filter(id_post_int=pk)
+        if post:
+            serializer = PostSerializer(post)
+            serializer_2 = PostReplySerializer(reply_set, many=True)
+            ser = []
+            ser.append(serializer.data)
+            ser.append(serializer_2.data)
+            return Response(ser)
         else:
             return Response(status=404)
-# !!! ! ! ! ! ! ! !
+
+    def list(self, request):
+        post = Main_Post.objects.all()
+        if post:
+            post = PostSerializer(post, many=True)
+            return Response(post.data)
+        else:
+            return Response(status=404)
+
+    def update(self, request, pk):
+        req = QueryDict.copy(request.data)
+        req['id_post_int'] = pk
+        serializer = PostReplySerializer(data=req, many=False, partial=True)
+        if serializer.is_valid():
+            serializer.save(author_id=request.user.id)
+            return Response(serializer.data)
+        else:
+            return Response(status=400)
+
+    def create(self, request):
+        req = QueryDict.copy(request.data)
+        serializer = PostSerializer(data = req, many = False)
+        if serializer.is_valid():
+            serializer.save(author_id=request.user.id)
+            return Response(serializer.data)
+        else:
+            return Response(status=400)
 
 class IngredientsView(APIView):
     def get(self, request, format=None):
@@ -107,14 +140,6 @@ class IngredientsView(APIView):
         else:
             return Response(status=404)
 
-class PostView(APIView):
-    def get(self, request, format = None):
-        post = Main_Post.objects.using('posts').all()
-        if post:
-            post = PostSerializer(post, many=True)
-            return Response(post.data)
-        else:
-            return Response(status=404)
 
 class RestaurantView(APIView):
     def get(self, request, format=None):
@@ -211,11 +236,11 @@ class RecipeView(viewsets.ViewSet):
     queryset = Recipe.objects.all()
 
     def list(self, request):
-        prefix = request.GET.get('prefix','')
+        prefix = request.GET.get('prefix', '')
         ingredients = request.GET.get('ingredients', False)
-        ingredients = ingredients.split(',')
         recipes = Recipe.objects.filter(recipe_name__regex=r'^{}'.format(prefix))
         if ingredients:
+            ingredients = ingredients.split(',')
             recipes_list = Ingredient_List.objects.filter(id_ingredient__name__in=ingredients)
             recipes = recipes.filter(id__in=recipes_list.values('id_recipes_id'))
         serializer = RecipeSerializer(recipes, many=True)
