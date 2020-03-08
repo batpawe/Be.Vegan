@@ -4,8 +4,10 @@ from .models import Food_To_Substitute, Ingredient, Restaurant, Rating_Restauran
     Rating_Recipe, Preference
 from django.db import models
 
-User = get_user_model()
 
+from .models import Main_Post, Reply_Post
+
+User = get_user_model()
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -27,11 +29,31 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         editable = False
 
 
-class UserSerializer_2(serializers.HyperlinkedModelSerializer):
+class UserName(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", 'username']
-        read_only = True
+        fields = ['username', 'id']
+        editable = False
+
+class PostSerializer(serializers.ModelSerializer):
+
+    author = UserName(read_only=True)
+
+    class Meta:
+        model = Main_Post
+        fields = ['author','description','title', 'foto', 'data_stamp']
+        read_only_fields = ['data_stamp', 'author']
+
+
+class PostReplySerializer(serializers.ModelSerializer):
+
+    author = UserName(read_only=True)
+
+    class Meta:
+        model = Reply_Post
+        fields = ['author','description', 'foto', 'data_stamp', 'id_post_int']
+        read_only_fields = ['data_stamp', 'author']
+
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -80,13 +102,9 @@ class IngredientListSerializer(serializers.ModelSerializer):
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-    # ingredient = serializers.CharField(source='ingredients.id_ingredient_id')
     ingredients = IngredientSerializer(many=True, read_only=True)
-    id_user = UserSerializer_2(read_only=True)
 
-    # def create(self, validated_data):
-    #    user = validated_data.pop('id_user')
-    #    Recipe.objects.create(**validated_data)
+    id_user = UserSerializer(read_only=True)
 
     class Meta:
         model = Recipe
@@ -94,10 +112,6 @@ class RecipeSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
         # validators = []
 
-
-# Ingredient_List(models.Model):
-#    id_ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-#    id_recipes = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
 
 class RatingRecipeSerializer(serializers.ModelSerializer):

@@ -58,9 +58,9 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-#    'DEFAULT_AUTHENTICATION_CLASSES': [
-#        'rest_framework.authentication.TokenAuthentication',  # <-- And here
-#    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+    ],
 
 }
 
@@ -102,15 +102,6 @@ DATABASES = {
                     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
                 }
     },
-    'posts': {
-        'ENGINE': 'djongo',
-        'NAME': SecretVariables.database_posts_name,
-        'USER': SecretVariables.database_posts_user,
-        'PASSWORD': SecretVariables.database_posts_password,
-        'HOST': 'bexw8am2pix0hsa-mongodb.services.clever-cloud.com',
-        'PORT': 27017,
-        'AUTH_SOURCE': SecretVariables.database_posts_name
-    }
 }
 
 

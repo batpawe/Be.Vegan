@@ -12,6 +12,9 @@ from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant,
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
     IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer, UserSerializer
 from django.contrib.auth import get_user_model
+from itertools import chain
+from .models import Main_Post, Reply_Post
+from .serializers import PostSerializer, PostReplySerializer
 
 User = get_user_model()
 
@@ -83,6 +86,49 @@ class SubstituteVeganView(viewsets.ViewSet):
         else:
             return Response(status=404)
 
+class PostIdView(viewsets.GenericViewSet):
+    queryset = Main_Post.objects.all()
+    serializer_class = PostSerializer
+
+    def retrieve(self, request, pk=None):
+        post = Main_Post.objects.get(id = pk)
+        reply_set = Reply_Post.objects.filter(id_post_int=pk)
+        if post:
+            serializer = PostSerializer(post)
+            serializer_2 = PostReplySerializer(reply_set, many=True)
+            ser = []
+            ser.append(serializer.data)
+            ser.append(serializer_2.data)
+            return Response(ser)
+        else:
+            return Response(status=404)
+
+    def list(self, request):
+        post = Main_Post.objects.all()
+        if post:
+            post = PostSerializer(post, many=True)
+            return Response(post.data)
+        else:
+            return Response(status=404)
+
+    def update(self, request, pk):
+        req = QueryDict.copy(request.data)
+        req['id_post_int'] = pk
+        serializer = PostReplySerializer(data=req, many=False, partial=True)
+        if serializer.is_valid():
+            serializer.save(author_id=request.user.id)
+            return Response(serializer.data)
+        else:
+            return Response(status=400)
+
+    def create(self, request):
+        req = QueryDict.copy(request.data)
+        serializer = PostSerializer(data = req, many = False)
+        if serializer.is_valid():
+            serializer.save(author_id=request.user.id)
+            return Response(serializer.data)
+        else:
+            return Response(status=400)
 
 class IngredientsView(APIView):
     def get(self, request, format=None):
@@ -96,7 +142,6 @@ class IngredientsView(APIView):
 
 
 class RestaurantView(APIView):
-
     def get(self, request, format=None):
         if "city" in request.GET:
             prefix = str(request.GET.get("city", ''))
@@ -117,7 +162,6 @@ class RestaurantView(APIView):
             res = Restaurant.objects.all()
             res = RestaurantSerializer(res, many=True)
             return Response(res.data)
-
 
 class RestaurantChangeView(APIView):
     def get(self, request, format=None):
@@ -186,7 +230,6 @@ class RestaurantRatingView(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response(status=400)
-
 
 class RecipeView(viewsets.ViewSet):
     serializer_class = RecipeSerializer
