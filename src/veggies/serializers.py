@@ -27,6 +27,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         editable = False
 
 
+class UserSerializer_2(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", 'username']
+        read_only = True
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -65,6 +72,7 @@ class RatingRestaurantSerializer(serializers.ModelSerializer):
 
 class IngredientListSerializer(serializers.ModelSerializer):
     id_ingredient = IngredientSerializer()
+
     class Meta:
         model = Ingredient_List
         fields = "__all__"
@@ -73,13 +81,18 @@ class IngredientListSerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
     # ingredient = serializers.CharField(source='ingredients.id_ingredient_id')
-    # ingredients = IngredientListSerializer(read_only=True, many=True)
-    id_user = UserSerializer(read_only=True)
+    ingredients = IngredientSerializer(many=True, read_only=True)
+    id_user = UserSerializer_2(read_only=True)
+
+    # def create(self, validated_data):
+    #    user = validated_data.pop('id_user')
+    #    Recipe.objects.create(**validated_data)
 
     class Meta:
         model = Recipe
         fields = "__all__"
         read_only_fields = ['id']
+        # validators = []
 
 
 # Ingredient_List(models.Model):

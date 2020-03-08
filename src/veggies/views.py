@@ -212,11 +212,9 @@ class RecipeView(viewsets.ViewSet):
             return Response(status=404)
 
     def create(self, request):
-        req = QueryDict.copy(request.data)
-        req['id_user'] = request.user.id
-        serializer = RecipeSerializer(data=req, many=False)
+        serializer = RecipeSerializer(data=request.data, many=False, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(id_user=request.user, ingredients=request.data['ingredients'])
             return Response(serializer.data)
         else:
             return Response(status=400)
@@ -267,6 +265,8 @@ class RecipeListView(viewsets.ViewSet):
                 return Response(status=400)
         else:
             return Response(status=404)
+
+
 
 
 class RecipeRatingView(viewsets.ViewSet):
