@@ -10,7 +10,7 @@ from .map import get_restaurants
 from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, \
     Ingredient_List, Rating_Recipe, Preference
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
-    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer
+    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer, UserSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -27,6 +27,11 @@ def ProfileViewGet(request):
         return Response(message.data)
     else:
         return Response(status=401)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class ProfileView(APIView):
@@ -188,11 +193,11 @@ class RecipeView(viewsets.ViewSet):
     queryset = Recipe.objects.all()
 
     def list(self, request):
-        prefix = request.GET.get('prefix','')
+        prefix = request.GET.get('prefix', '')
         ingredients = request.GET.get('ingredients', False)
-        ingredients = ingredients.split(',')
         recipes = Recipe.objects.filter(recipe_name__regex=r'^{}'.format(prefix))
         if ingredients:
+            ingredients = ingredients.split(',')
             recipes_list = Ingredient_List.objects.filter(id_ingredient__name__in=ingredients)
             recipes = recipes.filter(id__in=recipes_list.values('id_recipes_id'))
         serializer = RecipeSerializer(recipes, many=True)

@@ -31,7 +31,7 @@ class Recipe(models.Model):
     recipe_name = models.TextField(max_length=120)
     recipe_decription = models.TextField("recipe_description")
     recipe_foto = models.ImageField("recipe_foto", null=True)
-    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    id_user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.recipe_name
@@ -49,11 +49,10 @@ class Rating_Recipe(models.Model):
 
 class Ingredient_List(models.Model):
     id_ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    id_recipes = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    id_recipes = models.ForeignKey(Recipe, related_name='ingredients', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (("id_ingredient", "id_recipes"),)
-
 
 
 class Preference(models.Model):
