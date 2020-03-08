@@ -9,7 +9,7 @@ User = get_user_model()
 
 class PostSerializer(serializers.ModelSerializer):
 
-    author = ProfileSerializer()
+    #author = UserSerializer()
 
     class Meta:
         model = Main_Post
