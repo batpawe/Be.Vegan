@@ -10,7 +10,8 @@ from .map import get_restaurants
 from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, \
     Ingredient_List, Rating_Recipe, Preference
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
-    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, PreferenceSerializer, UserSerializer
+    IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, \
+    PreferenceSerializer, UserSerializer
 from django.contrib.auth import get_user_model
 from itertools import chain
 from .models import Main_Post, Reply_Post
@@ -35,6 +36,9 @@ def ProfileViewGet(request):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        return Response(status=400)
 
 
 class ProfileView(APIView):
@@ -86,12 +90,13 @@ class SubstituteVeganView(viewsets.ViewSet):
         else:
             return Response(status=404)
 
+
 class PostIdView(viewsets.GenericViewSet):
     queryset = Main_Post.objects.all()
     serializer_class = PostSerializer
 
     def retrieve(self, request, pk=None):
-        post = Main_Post.objects.get(id = pk)
+        post = Main_Post.objects.get(id=pk)
         reply_set = Reply_Post.objects.filter(id_post_int=pk)
         if post:
             serializer = PostSerializer(post)
@@ -123,12 +128,13 @@ class PostIdView(viewsets.GenericViewSet):
 
     def create(self, request):
         req = QueryDict.copy(request.data)
-        serializer = PostSerializer(data = req, many = False)
+        serializer = PostSerializer(data=req, many=False)
         if serializer.is_valid():
             serializer.save(author_id=request.user.id)
             return Response(serializer.data)
         else:
             return Response(status=400)
+
 
 class IngredientsView(APIView):
     def get(self, request, format=None):
@@ -162,6 +168,7 @@ class RestaurantView(APIView):
             res = Restaurant.objects.all()
             res = RestaurantSerializer(res, many=True)
             return Response(res.data)
+
 
 class RestaurantChangeView(APIView):
     def get(self, request, format=None):
@@ -230,6 +237,7 @@ class RestaurantRatingView(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response(status=400)
+
 
 class RecipeView(viewsets.ViewSet):
     serializer_class = RecipeSerializer
@@ -308,8 +316,6 @@ class RecipeListView(viewsets.ViewSet):
                 return Response(status=400)
         else:
             return Response(status=404)
-
-
 
 
 class RecipeRatingView(viewsets.ViewSet):

@@ -4,10 +4,10 @@ from .models import Food_To_Substitute, Ingredient, Restaurant, Rating_Restauran
     Rating_Recipe, Preference
 from django.db import models
 
-
 from .models import Main_Post, Reply_Post
 
 User = get_user_model()
+
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -35,25 +35,23 @@ class UserName(serializers.ModelSerializer):
         fields = ['username', 'id']
         editable = False
 
-class PostSerializer(serializers.ModelSerializer):
 
+class PostSerializer(serializers.ModelSerializer):
     author = UserName(read_only=True)
 
     class Meta:
         model = Main_Post
-        fields = ['author','description','title', 'foto', 'data_stamp']
+        fields = ['author', 'description', 'title', 'foto', 'data_stamp']
         read_only_fields = ['data_stamp', 'author']
 
 
 class PostReplySerializer(serializers.ModelSerializer):
-
     author = UserName(read_only=True)
 
     class Meta:
         model = Reply_Post
-        fields = ['author','description', 'foto', 'data_stamp', 'id_post_int']
+        fields = ['author', 'description', 'foto', 'data_stamp', 'id_post_int']
         read_only_fields = ['data_stamp', 'author']
-
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -89,7 +87,7 @@ class RatingRestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating_Restaurant
         fields = "__all__"
-        read_only_fields = ['id_user', 'id_restaurant']
+        read_only_fields = ['id']
 
 
 class IngredientListSerializer(serializers.ModelSerializer):
@@ -111,7 +109,6 @@ class RecipeSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ['id']
         # validators = []
-
 
 
 class RatingRecipeSerializer(serializers.ModelSerializer):

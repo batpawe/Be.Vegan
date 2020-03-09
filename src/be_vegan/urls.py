@@ -22,33 +22,7 @@ User = get_user_model()
 from rest_framework import routers, serializers, viewsets
 from rest_framework.views import APIView
 from django.http.response import HttpResponse
-from veggies.views import CustomObtainAuthToken
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    password = serializers.CharField(write_only=True)
-    email = serializers.CharField(write_only=True)
-
-    def create(self, validated_data):
-        user = User.objects.create(
-            username=validated_data['username'],
-            email=validated_data['email']
-        )
-        user.set_password(validated_data['password'])
-        user.save()
-
-        return user
-
-    class Meta:
-        model = User
-        fields = ['url', "id", 'username', 'email', 'password']
-        editable = False
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
+from ..veggies.views import CustomObtainAuthToken, UserViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
