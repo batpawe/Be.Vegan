@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from django.db import models
 from rest_framework.views import APIView
 from .map import get_restaurants
 from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant, Rating_Restaurant, Recipe, \
@@ -15,7 +16,8 @@ from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSeri
 from django.contrib.auth import get_user_model
 from itertools import chain
 from .models import Main_Post, Reply_Post
-from .serializers import PostSerializer, PostReplySerializer
+from .serializers import PostSerializer, PostReplySerializer, AmountSerializer
+from django.db.models import Value
 
 User = get_user_model()
 
@@ -265,9 +267,11 @@ class RecipeView(viewsets.ViewSet):
     def create(self, request):
         serializer = RecipeSerializer(data=request.data, many=False, partial=True)
         if serializer.is_valid():
-            serializer.save(id_user=request.user, ingredients=request.data['ingredients'])
+            #serializer.save(id_user=request.user, ingredients=request.data['ingredients'])
+            serializer.save(id_user=request.user)
             return Response(serializer.data)
         else:
+            print(serializer.errors)
             return Response(status=400)
 
     def destroy(self, request, pk=None):
@@ -298,8 +302,15 @@ class RecipeListView(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         if Recipe.objects.filter(id=pk):
             list_id = Ingredient_List.objects.filter(id_recipes_id=pk).values_list('id_ingredient_id', flat=True)
+            amount_id = Ingredient_List.objects.filter(id_recipes_id=pk)
             ingredient_list = Ingredient.objects.filter(id__in=list_id)
+            serializer_amount = AmountSerializer(amount_id, many=True)
             serializer = IngredientSerializer(ingredient_list, many=True)
+            i = 0
+            for obj in serializer_amount.data:
+                serializer.data[i]['amount'] = serializer_amount.data[i]['amount']
+                i = i + 1
+            print(serializer.data)
             return Response(serializer.data)
         else:
             return Response(status=404)
@@ -313,6 +324,7 @@ class RecipeListView(viewsets.ViewSet):
                 serializer.save()
                 return Response(serializer.data)
             else:
+                print(serializer.errors)
                 return Response(status=400)
         else:
             return Response(status=404)

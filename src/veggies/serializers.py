@@ -67,6 +67,11 @@ class SubstituteSerializer(serializers.ModelSerializer):
         fields = '__all__'
         editable = False
 
+class AmountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredient_List
+        fields = ['amount']
+
 
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -89,14 +94,12 @@ class RatingRestaurantSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ['id']
 
-
 class IngredientListSerializer(serializers.ModelSerializer):
-    id_ingredient = IngredientSerializer()
+    #id_ingredient = IngredientSerializer(read_only=True)
 
     class Meta:
         model = Ingredient_List
-        fields = "__all__"
-        editable = False
+        fields = '__all__'
 
 
 class RecipeSerializer(serializers.ModelSerializer):

@@ -22,7 +22,8 @@ User = get_user_model()
 from rest_framework import routers, serializers, viewsets
 from rest_framework.views import APIView
 from django.http.response import HttpResponse
-from ..veggies.views import CustomObtainAuthToken, UserViewSet
+from veggies import views 
+from veggies.views import CustomObtainAuthToken, UserViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)

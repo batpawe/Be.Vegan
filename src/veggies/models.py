@@ -32,10 +32,10 @@ class Ingredient(models.Model):
 class Recipe(models.Model):
     recipe_name = models.TextField(max_length=120)
     recipe_decription = models.TextField("recipe_description")
-    recipe_foto = models.ImageField("recipe_foto", null=True)
+    recipe_foto = models.ImageField("recipe_foto",upload_to='images/recipe_fotos', null=True)
     time = models.PositiveIntegerField()
     id_user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
-    ingredients = models.ManyToManyField(Ingredient)
+    ingredients = models.ManyToManyField(Ingredient, through='Ingredient_List', default = False)
 
     def __str__(self):
         return self.recipe_name
@@ -54,6 +54,7 @@ class Rating_Recipe(models.Model):
 class Ingredient_List(models.Model):
     id_ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     id_recipes = models.ForeignKey(Recipe, related_name='ing', on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField()
 
     class Meta:
         unique_together = (("id_ingredient", "id_recipes"),)
@@ -82,7 +83,7 @@ class Restaurant(models.Model):
     id_moderator = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField("name", unique=True, max_length=120)
     city = models.CharField("city", max_length=120)
-    foto = models.ImageField("foto", null=True, blank=True)
+    foto = models.ImageField("foto",upload_to='images/restaurants', null=True, blank=True)
     street = models.CharField("street", max_length=120)
     street_number = models.PositiveIntegerField("street_number")
     latX = models.DecimalField("latX", max_digits=12, decimal_places=10)
@@ -114,7 +115,7 @@ class Main_Post(models.Model):
     title = models.TextField("title")
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField("description")
-    foto = models.ImageField("foto", null=True, blank=True)
+    foto = models.ImageField("foto",upload_to='images/main_posts', null=True, blank=True)
     data_stamp = models.DateTimeField(default = timezone.now)
 
 
@@ -122,6 +123,6 @@ class Reply_Post(models.Model):
     title = models.TextField(blank=True)
     description = models.TextField("description")
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    foto = models.ImageField("foto", null=True, blank=True)
+    foto = models.ImageField("foto",upload_to='images/post_replies', null=True, blank=True)
     data_stamp = models.DateTimeField(default = timezone.now)
     id_post_int = models.PositiveIntegerField()
