@@ -42,6 +42,12 @@ class UserViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         return Response(status=400)
 
+    def create(self, request, *args, **kwargs):
+        if User.objects.filter(email=request.data['email']):
+            return Response("{ email:[ 'taki emial już istnieje' ] }", status=400)
+        super().create(request)
+
+
 
 class ProfileView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -130,7 +136,7 @@ class PostIdView(viewsets.GenericViewSet):
 
     def create(self, request):
         req = QueryDict.copy(request.data)
-        serializer = PostSerializer(data=req, many=False)
+        serializer = PostSerializer(data=req, many=False, partial=True)
         if serializer.is_valid():
             serializer.save(author_id=request.user.id)
             return Response(serializer.data)
@@ -165,6 +171,12 @@ class RestaurantView(APIView):
             r = float(request.GET.get("r", 0.1))
             res = get_restaurants(lat, long, r)
             res = RestaurantSerializer(res, many=True)
+            return Response(res.data)
+        elif 'prefix' in request.GET:
+            prefix = str(request.GET.get("prefix", ''))
+            if Restaurant.objects.filter(name__regex=r'^{}'.format(prefix)):
+                res = Restaurant.objects.filter(name__regex=r'^{}'.format(prefix))
+                res = RestaurantSerializer(res, many=True)
             return Response(res.data)
         else:
             res = Restaurant.objects.all()
@@ -267,7 +279,7 @@ class RecipeView(viewsets.ViewSet):
     def create(self, request):
         serializer = RecipeSerializer(data=request.data, many=False, partial=True)
         if serializer.is_valid():
-            #serializer.save(id_user=request.user, ingredients=request.data['ingredients'])
+            # serializer.save(id_user=request.user, ingredients=request.data['ingredients'])
             serializer.save(id_user=request.user)
             return Response(serializer.data)
         else:

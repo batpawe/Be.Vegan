@@ -65,6 +65,9 @@ class Preference(models.Model):
     id_ingredients = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     like = models.IntegerField('like')
 
+    class Meta:
+        unique_together = (("id_user", "id_ingredients"),)
+
 
 class Food_To_Substitute(models.Model):
     food_name = models.CharField("food_name", unique=True, max_length=120)
@@ -100,7 +103,7 @@ class Rating_Restaurant(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
     id_restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     user_comment = models.TextField("user_comment", null=True, blank=True)
-    rating = models.DecimalField("rating", max_digits=4, decimal_places=2)
+    rating = models.DecimalField("rating", max_digits=4, decimal_places=2,validators = [MaxValueValidator(5), MinValueValidator(1)])
 
     class Meta:
         unique_together = (("id_user", "id_restaurant"),)
