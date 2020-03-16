@@ -136,7 +136,7 @@ class PostIdView(viewsets.GenericViewSet):
 
     def create(self, request):
         req = QueryDict.copy(request.data)
-        serializer = PostSerializer(data=req, many=False)
+        serializer = PostSerializer(data=req, many=False, partial=True)
         if serializer.is_valid():
             serializer.save(author_id=request.user.id)
             return Response(serializer.data)
