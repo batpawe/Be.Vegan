@@ -45,7 +45,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         if User.objects.filter(email=request.data['email']):
             return Response("{ email:[ 'taki emial już istnieje' ] }", status=400)
-        super().create(request)
+        return super().create(request)
 
 
 
