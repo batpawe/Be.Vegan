@@ -26,7 +26,7 @@ SECRET_KEY = SecretVariables.secret_key
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
+CSFR_TRUSTED_ORIGINS = ["*"]
 
 # Application definition
 
