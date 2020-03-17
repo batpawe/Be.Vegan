@@ -64,6 +64,7 @@ const AddPost = () => {
     <Container>
       <InputLabel for="title">Tytuł:</InputLabel>
       <TextInput type="text" id="title" placeholder="Wprowadź tytuł posta" />
+      {/*}
       <InputLabel for="tag">Dodaj tagi:</InputLabel>
       <div>
         <TagInput
@@ -83,13 +84,15 @@ const AddPost = () => {
           Dodaj tag
         </TagButton>
       </div>
+     
       <div>
         <AddHeader>Tagi:</AddHeader>
         <OrderedList>{TagsContent}</OrderedList>
-      </div>
+      </div> {*/}
       <InputLabel for="content">Treść:</InputLabel>
       <TextArea id="content" placeholder="Wprowadź treść posta" />
       <ImagesContainer>
+        <p>Dodaj zdjęcie:</p>
         <div class="image-upload">
           <label for="file-input-0">
             <Image src={file[0]} />
@@ -98,36 +101,6 @@ const AddPost = () => {
             id="file-input-0"
             type="file"
             onChange={e => handleChange(0, e)}
-          />
-        </div>
-        <div class="image-upload">
-          <label for="file-input-1">
-            <Image src={file[1]} />
-          </label>
-          <input
-            id="file-input-1"
-            type="file"
-            onChange={e => handleChange(1, e)}
-          />
-        </div>
-        <div class="image-upload">
-          <label for="file-input-2">
-            <Image src={file[2]} />
-          </label>
-          <input
-            id="file-input-2"
-            type="file"
-            onChange={e => handleChange(2, e)}
-          />
-        </div>
-        <div class="image-upload">
-          <label for="file-input-3">
-            <Image src={file[3]} />
-          </label>
-          <input
-            id="file-input-3"
-            type="file"
-            onChange={e => handleChange(3, e)}
           />
         </div>
       </ImagesContainer>

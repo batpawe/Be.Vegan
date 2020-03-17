@@ -13,8 +13,7 @@ export const Container = styled.div`
 export const ElementContainer = styled.div`
   background: white;
   margin: 1% 0 0 0;
-  padding: 0.1%;
-  height: 4%;
+  padding: 0.2%;
   align-items: flex-start;
   width: 46%;
   border: 1px solid black;

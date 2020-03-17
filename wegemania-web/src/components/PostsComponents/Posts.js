@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MainContainer } from "../../styles/WallStyle";
 import RightPanel from "../GlobalComponents/RightPanel";
 import Image from "../../images/restaurant.jpg";
@@ -25,8 +25,12 @@ import {
   SearchButton,
   SearchContainer
 } from "../../styles/PostStyle";
+import axios from "axios";
+import AutoSuggest from "react-autosuggest";
+import "../../styles/SuggestStyle.css";
 const Element = props => {
   const [isHover, setIsHover] = useState(false);
+
   return (
     <ElementContainer
       onMouseEnter={() => {
@@ -39,18 +43,18 @@ const Element = props => {
       <HoverContainer onClick={() => props.historyProps.push("/post")}>
         {isHover ? (
           <div>
-            <ImageHoverComponent src={Image} />
-            <HoverHeader>Witaj</HoverHeader>
-            <HoverText>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley
-            </HoverText>
+            <ImageHoverComponent
+              src={`https://veggiesapp.herokuapp.com/` + `${props.post.foto}`}
+            />
+            <HoverHeader> {props.post.title}</HoverHeader>
+            <HoverText>{props.post.description}</HoverText>
             <Icon src={PostsIcon} />
           </div>
         ) : (
           <div>
-            <ImageComponent src={Image} />
+            <ImageComponent
+              src={`https://veggiesapp.herokuapp.com/` + `${props.post.foto}`}
+            />
             <Icon src={PostsIcon} />
           </div>
         )}
@@ -59,23 +63,77 @@ const Element = props => {
   );
 };
 const Posts = props => {
+  const [suggestions, setSuggestions] = useState([]);
+  const [value, setValue] = useState("");
+  const [data, setData] = useState([]);
+
+  const titleName = data.map(date => {
+    return date;
+  });
+  const getSuggestions = value => {
+    return titleName.filter(title => title.title.includes(value.trim()));
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios("https://veggiesapp.herokuapp.com/posts/")
+        .then(res => {
+          console.log(res.data);
+          setData(res.data);
+          setSuggestions(res.data.map(date => date.title));
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(err.response);
+        });
+    };
+    fetchData();
+  }, []);
   return (
     <MainContainer>
       <Container>
-        {" "}
         <AddPostPageContainer>
           <SearchContainer>
-            <SearchInput placeholder="Wpisz tytuł lub tag"></SearchInput>
-            <SearchButton>Wyszukaj</SearchButton>
+            <AutoSuggest
+              suggestions={suggestions}
+              onSuggestionsClearRequested={() => setSuggestions([])}
+              onSuggestionsFetchRequested={({ value }) => {
+                console.log(value);
+                setValue(value);
+                setSuggestions(getSuggestions(value));
+              }}
+              onSuggestionSelected={(_, { suggestionValue }) =>
+                console.log("Wybrany: " + suggestionValue)
+              }
+              getSuggestionValue={suggestion => suggestion.title}
+              renderSuggestion={suggestion => <span>{suggestion.title}</span>}
+              inputProps={{
+                placeholder: "Wprowadź tytuł",
+                value: value,
+                onChange: (_, { newValue, method }) => {
+                  setValue(newValue);
+                }
+              }}
+              highlightFirstSuggestion={true}
+            />
+            {/*<SearchInput placeholder="Wpisz tytuł lub tag"></SearchInput>*/}
+            {/* <SearchButton>Wyszukaj</SearchButton> */}
           </SearchContainer>
           <AddPostPageLink to="/addpost">Dodaj post</AddPostPageLink>
         </AddPostPageContainer>
-        <Element key={1} historyProps={props.history} />
+        {data.map((date, index) => {
+          if (date.title.includes(value))
+            return (
+              <Element key={index} post={date} historyProps={props.history} />
+            );
+        })}
+        {/*}
         <Element key={1} />
         <Element key={1} />
         <Element key={1} />
         <Element key={1} />
         <Element key={1} />
+        {*/}
       </Container>
       <RightPanel />
     </MainContainer>

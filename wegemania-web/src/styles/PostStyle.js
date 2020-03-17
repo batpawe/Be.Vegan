@@ -239,12 +239,11 @@ export const AddPostPageLink = styled(Link)`
   color: white;
   text-decoration: none;
   background: #27ae60;
-  padding: 2%;
+  padding: 1.6%;
+  box-sizing: border-box;
   font-size: 14px;
   display: block;
-  min-width: 100px;
   text-align: center;
-  width: 200px;
   :hover {
     color: white;
     text-decoration: none;
@@ -256,6 +255,7 @@ export const SearchInput = styled.input`
   font-size: 14px;
   padding: 4%;
   width: 200px;
+  outline: none;
   opacity: none;
 `;
 export const SearchButton = styled.button`
@@ -264,7 +264,6 @@ export const SearchButton = styled.button`
   border: none;
   background: #27ae60;
   opacity: none;
-  width: 100px;
   padding: 2%;
   :hover {
     color: white;

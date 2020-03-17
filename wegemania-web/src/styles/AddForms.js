@@ -37,14 +37,17 @@ export const TextArea = styled.textarea`
   padding: 1%;
 `;
 export const Image = styled.img`
-  width: 110px;
+  width: 150px;
   display: block;
   cursor: pointer;
 `;
 export const ImagesContainer = styled.div`
-  margin: 5% 0 0 0;
+  margin: 5% auto 0 auto;
   display: flex;
-  justify-content: space-between;
+  font-size: 20px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 `;
 export const ColumnContainer = styled.div`
   display: flex;
