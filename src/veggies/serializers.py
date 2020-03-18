@@ -41,7 +41,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Main_Post
-        fields = ['author', 'description', 'title', 'foto', 'data_stamp']
+        fields = ['id', 'author', 'description', 'title', 'foto', 'data_stamp']
         read_only_fields = ['data_stamp', 'author']
 
 
@@ -50,7 +50,7 @@ class PostReplySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reply_Post
-        fields = ['author', 'description', 'foto', 'data_stamp', 'id_post_int']
+        fields = ['id', 'author', 'description', 'foto', 'data_stamp', 'id_post_int']
         read_only_fields = ['data_stamp', 'author']
 
 
@@ -83,7 +83,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
-        fields = ['id_moderator', 'name', 'city', 'foto', 'street', 'street_number', 'latX', 'longY', 'hours', 'rating',
+        fields = ['id', 'id_moderator', 'name', 'city', 'foto', 'street', 'street_number', 'latX', 'longY', 'hours', 'rating',
                   'description']
         read_only_fields = ['id', "name", "city",  'id_moderator', 'rating', 'street', 'street_number', 'latX', 'longY']
 
