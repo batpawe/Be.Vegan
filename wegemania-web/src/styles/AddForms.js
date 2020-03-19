@@ -15,6 +15,11 @@ export const Button = styled.button`
   border: 1px solid black;
   min-width: 40%;
   margin: 5% auto auto auto;
+  margin: 1% auto auto auto;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
   background: #2c8434;
   cursor: pointer;
   :hover {
@@ -28,16 +33,20 @@ export const InputLabel = styled.label`
 `;
 export const TextInput = styled.input`
   border: 1px solid black;
+  outline: none;
   padding: 1%;
+  width: 300px;
 `;
 export const TextArea = styled.textarea`
   outline: none;
+
   resize: none;
   border: 1px solid black;
   padding: 1%;
+  width: 300px;
 `;
 export const Image = styled.img`
-  width: 150px;
+  width: 250px;
   display: block;
   cursor: pointer;
 `;
@@ -153,4 +162,17 @@ export const HighlightText = styled.div`
   border: 1px solid black;
   padding: 1%;
   margin: 1% 0 0 0;
+`;
+export const FormContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 1% 0 0 0;
+`;
+export const TextContainer = styled.div`
+  width: 300px;
+`;
+export const ErrorText = styled.div`
+  color: red;
 `;

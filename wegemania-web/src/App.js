@@ -37,6 +37,7 @@ import Recipes from "./components/RecipesComponents/Recipes";
 import Restaurants from "./components/RestaurantsComponents/Restaurants";
 import Replacements from "./components/ReplacementsComponents/Replacements";
 import Posts from "./components/PostsComponents/Posts";
+import ScrollTop from "./components/ScrollTop";
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Titillium+Web&display=swap');
   @import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
@@ -52,6 +53,7 @@ const App = props => {
     <Container>
       <GlobalStyle />
       <Router>
+        <ScrollTop />
         <Header /> <Route exact path="/" component={Login} />
         <Route path="/register" component={Register} />
         <Notify val={notify.val} />
@@ -64,10 +66,10 @@ const App = props => {
             <Route path="/restaurants" component={Restaurants} />
             <Route path="/replacements" component={Replacements} />
             <Route path="/recipes" component={Recipes} />
-            <Route path="/post" component={Post} />
-            <Route path="/restaurant" component={Restaurant} />
+            <Route path="/post/:id" component={Post} />
+            <Route path="/restaurant/:id" component={Restaurant} />
             <Route path="/replacement" component={Replacement} />
-            <Route path="/recipe" component={Recipe} />
+            <Route path="/recipe/:id" component={Recipe} />
             <Route path="/products" component={Products} />
             <Route path="/users/:id" component={Users} />
             <Route path="/edituser/:id" component={EditUser} />

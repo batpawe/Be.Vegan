@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NewLoginInfo } from "../../context/LoginInfo";
 import {
   Container,
@@ -30,7 +30,8 @@ import {
   TagsPostsHeader,
   TagsPostsHeaderContainer,
   TagsPostsContainer,
-  TagsItems
+  TagsItems,
+  ImageForUpload
 } from "../../styles/PostsWallStyle";
 import PostImage from "../../images/postimage.jpg";
 import RightPanel from "../GlobalComponents/RightPanel";
@@ -42,96 +43,147 @@ import {
   SearchButton,
   SearchContainer
 } from "../../styles/PostStyle";
-import { Link } from "react-router-dom";
-const Post = () => {
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
+import UploadImage from "../../images/upload.png";
+import "../../App.css";
+import { NewNotifyContext } from "../../context/Notify";
+const Post = props => {
+  const notify = useContext(NewNotifyContext);
   const user = useContext(NewLoginInfo);
+  const [post, setPost] = useState({});
+  let temp = [UploadImage, UploadImage, UploadImage, UploadImage];
+  const [file, setFile] = useState(temp);
+  const [deleyedRedirect, setDeleyedRedirect] = useState(false);
+  const [tempContent, setTempContent] = useState("");
+  const AddComment = async () => {
+    const data = new FormData();
+    data.append("title", "");
+    data.append("description", tempContent);
+    data.append("foto", file[0]);
+    const config = {
+      method: "POST",
+      headers: {
+        Accept: "application/json; charset=UTF-8",
+        Authorization: `Token ${user.userInfo.token}`
+      },
+      body: data
+    };
+    await fetch(
+      `https://veggiesapp.herokuapp.com/posts/${props.match.params.id}/`,
+      config
+    )
+      .then(res => {
+        res.text().then(text => {
+          let json = JSON.parse(text);
+          if (json.author) {
+            notify.set("Pomyślnie dodano komentarz.");
+            setTimeout(() => {
+              setDeleyedRedirect(true);
+            }, 2000);
+          } else {
+            console.log(res);
+            console.log(res.response);
+            notify.set("Wystąpił nieoczekiwany błąd!");
+          }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        console.log(err.response);
+        notify.set("Wystąpił nieoczekiwany błąd!");
+      });
+  };
+  useEffect(() => {
+    console.log(props.match.params);
+    const fetchData = async () => {
+      await axios(
+        `https://veggiesapp.herokuapp.com/posts/${props.match.params.id}`
+      )
+        .then(res => {
+          console.log(res.data);
+          setPost({ ...res.data });
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(err.response);
+        });
+    };
+    fetchData();
+  }, [props.match.params.id]);
 
   return (
     <MainContainer>
+      {deleyedRedirect && <Redirect to={`/posts`} />}
       <Container>
-        <AddPostPageContainer>
-          <SearchContainer>
-            <SearchInput placeholder="Wpisz tytuł lub tag"></SearchInput>
-            <SearchButton>Wyszukaj</SearchButton>
-          </SearchContainer>
-          <AddPostPageLink to="/addpost">Dodaj post</AddPostPageLink>
-        </AddPostPageContainer>
-        <OrderedList>
-          <UnorderedList>
-            <HeaderPostsContainer>
-              <HeaderPostsItem>
-                <HeaderPostsText>Post1</HeaderPostsText>
-              </HeaderPostsItem>
-              <HeaderPostsItem>Autor</HeaderPostsItem>
-            </HeaderPostsContainer>
-            <TagsPostsHeaderContainer>
-              <li>
-                <TagsPostsHeader>Tagi:</TagsPostsHeader>
-              </li>
-            </TagsPostsHeaderContainer>
-            <TagsPostsContainer>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-            </TagsPostsContainer>
-            <ColumnContainer>
-              <div>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
-              </div>
-            </ColumnContainer>
-            <Image src={PostImage} />
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
+        {post[0] && (
+          <OrderedList>
+            <UnorderedList>
+              <HeaderPostsContainer>
+                <HeaderPostsItem>
+                  <HeaderPostsText>{post[0] && post[0].title}</HeaderPostsText>
+                </HeaderPostsItem>
+                <HeaderPostsItem>
+                  {post[0] && post[0].author.username}
+                </HeaderPostsItem>
+              </HeaderPostsContainer>
+              <ColumnContainer>
+                <div>{post[0] && post[0].description}</div>
+              </ColumnContainer>
+              <Image src={post[0] && post[0].foto} />
 
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-        </OrderedList>
+              <HeaderText>Komentarze:</HeaderText>
+
+              <UnorderedListComments>
+                {post[1].map(comment => {
+                  return (
+                    <UnorderedListCommentsIn>
+                      <HighlightItem>{comment.author.username}</HighlightItem>
+                      <CommentContent>{comment.description}</CommentContent>
+                      <img
+                        style={{ width: 120, margin: "1% 0 0 0" }}
+                        src={comment.foto}
+                      />
+                    </UnorderedListCommentsIn>
+                  );
+                })}
+
+                <CommentContainer>
+                  <TextInput
+                    type="text"
+                    placeholder="Wprowadź treść komentarza"
+                    onChange={e => {
+                      setTempContent(e.target.value);
+                    }}
+                  />
+                  <div class="image-upload">
+                    <label for="file-input-0">
+                      <ImageForUpload
+                        src={
+                          file[0].name ? URL.createObjectURL(file[0]) : file[0]
+                        }
+                      />
+                    </label>
+                    <input
+                      id="file-input-0"
+                      type="file"
+                      onChange={e => setFile([e.target.files[0]])}
+                    />
+                  </div>
+                  <SubmitCommentButton
+                    onClick={() => {
+                      AddComment();
+                    }}
+                  >
+                    Dodaj komentarz
+                  </SubmitCommentButton>
+                </CommentContainer>
+              </UnorderedListComments>
+            </UnorderedList>
+          </OrderedList>
+        )}
       </Container>
+
       <RightPanel />
     </MainContainer>
   );

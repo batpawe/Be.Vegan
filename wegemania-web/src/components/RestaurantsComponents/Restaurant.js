@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { NewLoginInfo } from "../../context/LoginInfo";
 import {
   Container,
@@ -59,7 +59,9 @@ import { FormControl } from "@material-ui/core";
 import FormLabel from "@material-ui/core/FormLabel";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { green, orange } from "@material-ui/core/colors";
-const Restaurant = () => {
+import axios from "axios";
+const Restaurant = props => {
+  const [restaurant, setRestaurant] = useState({});
   let temp = {
     restaurant: "",
     city: ""
@@ -95,6 +97,22 @@ const Restaurant = () => {
     temp.city = e;
     setSearchInfo({ ...temp });
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios(
+        `https://veggiesapp.herokuapp.com/posts/${props.match.params.id}`
+      )
+        .then(res => {
+          console.log(res.data);
+          setRestaurant({ ...res.data });
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(err.response);
+        });
+    };
+    fetchData();
+  }, [props.match.params.id]);
   return (
     <MainContainer>
       <Container>
@@ -182,6 +200,7 @@ const Restaurant = () => {
             </AddRestaurantLink>
           </div>
         </AddPostPageContainer>
+
         <OrderedList>
           <UnorderedList>
             <HeaderRestaurantContainer>

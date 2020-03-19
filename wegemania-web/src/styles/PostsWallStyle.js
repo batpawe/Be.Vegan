@@ -103,3 +103,7 @@ export const DeleteIcon = styled.img`
   color: white;
   width: 25px;
 `;
+export const ImageForUpload = styled.img`
+  width: 120px;
+  cursor: pointer;
+`;

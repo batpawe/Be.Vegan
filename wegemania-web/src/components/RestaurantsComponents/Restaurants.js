@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { MainContainer } from "../../styles/WallStyle";
 import {
   Container,
@@ -44,12 +44,15 @@ import { green, orange } from "@material-ui/core/colors";
 import { NewLoginInfo } from "../../context/LoginInfo";
 
 import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
-
+import axios from "axios";
 import RightPanel from "../GlobalComponents/RightPanel";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Image from "../../images/restaurant.jpg";
 import { withRouter } from "react-router";
+import AutoSuggest from "react-autosuggest";
+import "../../styles/SuggestStyle.css";
 const Restaurants = props => {
+  const [restaurants, setRestaurants] = useState([]);
   let tempSearch = {
     restaurant: "",
     city: ""
@@ -85,8 +88,9 @@ const Restaurants = props => {
     temp.city = e;
     setSearchInfo({ ...temp });
   };
-  let temp = [0, 0, 0];
+  let temp = [];
   const [page, setPage] = useState(temp);
+
   const Paggination = props => {
     let no = props.no || 2;
     const handlePage = k => {
@@ -123,28 +127,50 @@ const Restaurants = props => {
     );
     return <PagginationContainer>{paggin}</PagginationContainer>;
   };
+
   const ContentController = props => {
+    console.log("|||");
+    console.log(props.number);
+    const tempTime = props.data.hours.split("\r\n");
+    const time = tempTime.map(time => {
+      return [
+        time.split(":", 1).toString(),
+        time
+          .split(":")
+          .slice(1)
+          .join(":")
+      ];
+    });
     return (
       <ContainerRestaurant>
         <ImageRestaurant
-          src={Image}
+          src={props.data.foto}
           style={{ width: "60%", cursor: "pointer" }}
-          onClick={() => props.historyProps.push("/restaurant")}
+          onClick={() => props.historyProps.push(`/restaurant/${props.index}`)}
         />
         <ContentContainer style={{ width: "38%", background: "white" }}>
-          <RestaurantName>Kolorowy Piec</RestaurantName>
+          <RestaurantName>{props.data.name}</RestaurantName>
           {console.log(page[props.index])}
-          {page[props.index] == 0 ? (
+          {page[props.number] == 0 || page[props.number] == undefined ? (
             <div>
               <HeaderText>Godziny otwarcia:</HeaderText>
               <UnorderedList>
+                {time.map(t => {
+                  return (
+                    <Item>
+                      <p style={{ margin: 0 }}>{t[0]}</p>
+                      <p style={{ margin: 0 }}>{t[1]}</p>
+                    </Item>
+                  );
+                })}
+                {/*}
                 <Item>Poniedziałek: 10:00 - 20:00</Item>
                 <Item>Poniedziałek: 10:00 - 20:00</Item>
                 <Item>Poniedziałek: 10:00 - 20:00</Item>
                 <Item>Poniedziałek: 10:00 - 20:00</Item>
                 <Item>Poniedziałek: 10:00 - 20:00</Item>
                 <Item>Poniedziałek: 10:00 - 20:00</Item>
-                <Item>Poniedziałek: 10:00 - 20:00</Item>
+                {*/}
               </UnorderedList>
             </div>
           ) : (
@@ -152,8 +178,8 @@ const Restaurants = props => {
               <HeaderText>Lokalizacja:</HeaderText>
               <Map
                 id="mapid"
-                center={[53.009794, 18.591649]}
-                zoom={12}
+                center={[props.data.latX, props.data.longY]}
+                zoom={17}
                 style={{
                   width: 130,
                   height: 150,
@@ -166,7 +192,7 @@ const Restaurants = props => {
                   attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={[53.009794, 18.591649]}>
+                <Marker position={[props.data.latX, props.data.longY]}>
                   <Popup>
                     A pretty CSS3 popup. <br /> Easily customizable.
                   </Popup>
@@ -175,15 +201,58 @@ const Restaurants = props => {
             </div>
           )}
 
-          <Paggination index={props.index} />
+          <Paggination index={props.number} />
         </ContentContainer>
       </ContainerRestaurant>
     );
   };
+  const [valueRestaurant, setValueRestaurant] = useState("");
+  const [valueCity, setValueCity] = useState("");
+  const [suggestionsRestaurants, setSuggestionsRestaurants] = useState([]);
+  const restaurantsName = restaurants.map(restaurant => {
+    return restaurant;
+  });
+  const getSuggestionsRestaurants = value => {
+    return restaurantsName.filter(name => name.name.includes(value.trim()));
+  };
+  const [suggestionsCity, setSuggestionsCity] = useState([]);
+  const restaurantsCity = restaurants.map(restaurant => {
+    return restaurant;
+  });
+  const getSuggestionsCity = value => {
+    const temp = restaurantsCity.reduce((acc, current) => {
+      const x = acc.find(item => item.city === current.city);
+      if (!x) {
+        return acc.concat([current]);
+      } else {
+        return acc;
+      }
+    }, []);
+    return temp.filter(city => city.city.includes(value.trim()));
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios("https://veggiesapp.herokuapp.com/restaurants/")
+        .then(res => {
+          console.log(res.data);
+          setRestaurants(res.data);
+          setSuggestionsRestaurants([
+            ...new Map(res.data.map(item => [item["name"], item])).values()
+          ]);
+          setSuggestionsCity([
+            ...new Map(res.data.map(item => [item["city"], item])).values()
+          ]);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(err.response);
+        });
+    };
+    fetchData();
+  }, []);
   return (
     <MainContainer>
       <Container>
-        {" "}
         <AddPostPageContainer>
           <div
             style={{
@@ -195,20 +264,59 @@ const Restaurants = props => {
             <div>
               <div style={{ display: "flex" }}>
                 {radio == "restaurant" ? (
-                  <SearchInput
-                    placeholder="wpisz nazwę restauracji."
-                    onChange={e => {
-                      handleRestaurantChange(e.target.value);
+                  <AutoSuggest
+                    style={{ "font-size": 10 }}
+                    suggestions={suggestionsRestaurants}
+                    onSuggestionsClearRequested={() =>
+                      setSuggestionsRestaurants([])
+                    }
+                    onSuggestionsFetchRequested={({ value }) => {
+                      console.log(value);
+                      setValueRestaurant(value);
+                      setSuggestionsRestaurants(
+                        getSuggestionsRestaurants(value)
+                      );
                     }}
-                    value={searchInfo.restaurant}
+                    onSuggestionSelected={(_, { suggestionValue }) =>
+                      console.log("Wybrany: " + suggestionValue)
+                    }
+                    getSuggestionValue={suggestion => suggestion.name}
+                    renderSuggestion={suggestion => (
+                      <span>{suggestion.name}</span>
+                    )}
+                    inputProps={{
+                      placeholder: "Wprowadź nazwę restauracji",
+                      value: valueRestaurant,
+                      onChange: (_, { newValue, method }) => {
+                        setValueRestaurant(newValue);
+                      }
+                    }}
+                    highlightFirstSuggestion={true}
                   />
                 ) : (
-                  <SearchInput
-                    placeholder="wpisz nazwę miasta."
-                    onChange={e => {
-                      handleCityChange(e.target.value);
+                  <AutoSuggest
+                    suggestions={suggestionsCity}
+                    onSuggestionsClearRequested={() => setSuggestionsCity([])}
+                    onSuggestionsFetchRequested={({ value }) => {
+                      console.log(value);
+                      setValueCity(value);
+                      setSuggestionsCity(getSuggestionsCity(value));
                     }}
-                    value={searchInfo.city}
+                    onSuggestionSelected={(_, { suggestionValue }) =>
+                      console.log("Wybrany: " + suggestionValue)
+                    }
+                    getSuggestionValue={suggestion => suggestion.city}
+                    renderSuggestion={suggestion => (
+                      <span>{suggestion.city}</span>
+                    )}
+                    inputProps={{
+                      placeholder: "Wprowadź miasto",
+                      value: valueCity,
+                      onChange: (_, { newValue, method }) => {
+                        setValueCity(newValue);
+                      }
+                    }}
+                    highlightFirstSuggestion={true}
                   />
                 )}
               </div>
@@ -248,7 +356,7 @@ const Restaurants = props => {
                   }}
                 >
                   <p>Miasto:</p>
-                  <p style={{ "font-weight": "bold" }}>{searchInfo.city}</p>
+                  <p style={{ "font-weight": "bold" }}>{valueCity}</p>
                 </div>
                 <div
                   style={{
@@ -257,9 +365,7 @@ const Restaurants = props => {
                   }}
                 >
                   <p>Restauracja:</p>
-                  <p style={{ "font-weight": "bold" }}>
-                    {searchInfo.restaurant}
-                  </p>
+                  <p style={{ "font-weight": "bold" }}>{valueRestaurant}</p>
                 </div>
               </div>
             </div>
@@ -268,9 +374,21 @@ const Restaurants = props => {
             </AddRestaurantLink>
           </div>
         </AddPostPageContainer>
-        <ContentController index={0} historyProps={props.history} />
-        <ContentController index={1} historyProps={props.history} />
-        <ContentController index={2} historyProps={props.history} />
+        {restaurants.length &&
+          restaurants.map((restaurant, index) => {
+            if (
+              restaurant.city.includes(valueCity) &&
+              restaurant.name.includes(valueRestaurant)
+            )
+              return (
+                <ContentController
+                  index={restaurant.id}
+                  number={index}
+                  data={restaurant}
+                  historyProps={props.history}
+                />
+              );
+          })}
       </Container>
       <RightPanel />
     </MainContainer>

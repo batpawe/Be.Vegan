@@ -63,7 +63,9 @@ export const PagginationItem = styled.li`
 `;
 export const Item = styled.li`
   background: #00a835;
-  margin: 1% 0 0 0;
+  margin: auto;
   border: 1px solid black;
   color: white;
+  display: flex;
+  justify-content: space-between;
 `;

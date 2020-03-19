@@ -16,20 +16,29 @@ export const ElementContainer = styled.div`
   padding: 0.2%;
   align-items: flex-start;
   width: 46%;
+  justify-content: center;
   border: 1px solid black;
   text-align: center;
   display: flex;
   cursor: pointer;
 `;
 export const ImageComponent = styled.img`
-  width: 96%;
+  @media only screen and (min-width: 1400px) {
+    width: 400px;
+  }
+  @media only screen and (max-width: 1400px) {
+    width: 300px;
+  }
 `;
 export const Icon = styled.img`
-  width: 26px;
+  width: 25px;
+  background: green;
   position: absolute;
   top: 0;
-  left: 92%;
-  z-index: 100;
+  right: 0;
+  align-content: center;
+  padding: 1%;
+  z-index: 2;
   filter: brightness(100%);
 `;
 
@@ -56,5 +65,10 @@ export const HoverText = styled.span`
 `;
 export const ImageHoverComponent = styled.img`
   filter: brightness(50%);
-  width: 96%;
+  @media only screen and (min-width: 1400px) {
+    width: 400px;
+  }
+  @media only screen and (max-width: 1400px) {
+    width: 300px;
+  }
 `;

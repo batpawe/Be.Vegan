@@ -30,7 +30,8 @@ import AutoSuggest from "react-autosuggest";
 import "../../styles/SuggestStyle.css";
 const Element = props => {
   const [isHover, setIsHover] = useState(false);
-
+  console.log("||||||||||||||");
+  console.log(props.index);
   return (
     <ElementContainer
       onMouseEnter={() => {
@@ -39,22 +40,19 @@ const Element = props => {
       onMouseLeave={() => {
         setIsHover(false);
       }}
+      onClick={() => props.historyProps.push(`/post/${props.index}`)}
     >
-      <HoverContainer onClick={() => props.historyProps.push("/post")}>
+      <HoverContainer>
         {isHover ? (
           <div>
-            <ImageHoverComponent
-              src={`https://veggiesapp.herokuapp.com/` + `${props.post.foto}`}
-            />
+            <ImageHoverComponent src={`${props.post.foto}`} />
             <HoverHeader> {props.post.title}</HoverHeader>
             <HoverText>{props.post.description}</HoverText>
             <Icon src={PostsIcon} />
           </div>
         ) : (
           <div>
-            <ImageComponent
-              src={`https://veggiesapp.herokuapp.com/` + `${props.post.foto}`}
-            />
+            <ImageComponent src={`${props.post.foto}`} />
             <Icon src={PostsIcon} />
           </div>
         )}
@@ -124,7 +122,12 @@ const Posts = props => {
         {data.map((date, index) => {
           if (date.title.includes(value))
             return (
-              <Element key={index} post={date} historyProps={props.history} />
+              <Element
+                key={date.id}
+                index={date.id}
+                post={date}
+                historyProps={props.history}
+              />
             );
         })}
         {/*}

@@ -86,11 +86,12 @@ export const HyperLink = styled(Link)`
   cursor: pointer;
 `;
 export const TextInput = styled.textarea`
-  margin: 3% 0 0 0;
   height: 100px;
   min-width: 250px;
+  margin: auto 0 auto 0;
   line-height: 20px;
   font-size: 14px;
+  display: block;
   outline: none;
   border: 1px solid black;
   resize: none;
@@ -98,6 +99,7 @@ export const TextInput = styled.textarea`
 export const SubmitCommentButton = styled.button`
   border: 1px solid black;
   color: white;
+  box-sizing: border-box;
   background: #27ae60;
   font-size: 14px;
   height: 100px;
@@ -109,8 +111,9 @@ export const SubmitCommentButton = styled.button`
 `;
 export const CommentContainer = styled.div`
   display: flex;
+  margin: 3% 0 0 0;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: baseline;
 `;
 export const MainContainer = styled.div`
   display: flex;

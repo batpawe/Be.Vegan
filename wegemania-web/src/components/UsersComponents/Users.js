@@ -30,7 +30,26 @@ import {
 import PostImage from "../../images/postimage.jpg";
 import axios from "axios";
 import { NewLoginInfo } from "../../context/LoginInfo";
-
+const ActivityText = props => {
+  let temp;
+  if (props.activity == 0) {
+    temp =
+      "Brak aktywności, nie wykonuje żadnej aktywności sportowej, pracuje w pracy na stanowisku siedzącym, dojeżdżam do niej samochodem";
+  } else if (props.activity == 1) {
+    temp =
+      "Mała aktywność, aktywności sportowe zdarzają się bardzo rzadko, do pracy chodzę pieszo, w pracy wykonuję lekką aktywność fizyczną";
+  } else if (props.activity == 2) {
+    temp =
+      "Średnia aktywność, aktywność sportowa co najmniej raz w tygodniu, staram się być aktywnym przy codziennych obowiązkach (praca, sklep), w pracy wykonuje lekką aktywność fizyczną,";
+  } else if (props.activity == 3) {
+    temp =
+      "Duża aktywność, aktywność sportowa co najmniej 3 razy w tygodniu, aktywny przy codziennych obowiązkach, w pracy przerwy na rozciąganie i rozgrzewanie ciała";
+  } else if (props.activity == 4) {
+    temp =
+      "Bardzo duża aktywność, aktywność sportowa codziennie, aktywny przy każdej możliwej okazji, w trakcie pracy aktywny lub robi przerwy na aktywność fizyczną";
+  }
+  return <p>{temp}</p>;
+};
 const Users = props => {
   const user = useContext(NewLoginInfo);
   const [userData, setUserData] = useState();
@@ -98,7 +117,8 @@ const Users = props => {
                 {userData.activity ? (
                   <UserProfileItemRow>
                     <BorderText>Aktywność:</BorderText>
-                    <ProgressBar striped variant="success" now={60} />
+                    <ActivityText activity={userData.activity} />
+                    {/*<ProgressBar striped variant="success" now={60} />{*/}
                   </UserProfileItemRow>
                 ) : (
                   <UserProfileItemRow>

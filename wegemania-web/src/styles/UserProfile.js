@@ -6,6 +6,7 @@ export const Container = styled.div`
   margin: 10% auto 0 auto;
   max-width: 80vw;
   padding: 2%;
+  color: black;
 `;
 export const HelloMessage = styled.h1`
   font-size: 18px;
@@ -57,12 +58,13 @@ export const EditProfileButton = styled(Link)`
   }
 `;
 export const EditProfileContainer = styled.div`
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.4);
   margin: 8% auto auto auto;
   width: 90%;
   font-size: 18px;
   padding: 5%;
   display: flex;
+  color: black;
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
