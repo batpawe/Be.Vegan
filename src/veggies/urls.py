@@ -14,8 +14,12 @@ router.register(r'restaurants/rating', RestaurantRatingView)
 router.register(r'recipes', RecipeView)
 router.register(r'recipes/list', RecipeListView)
 router.register(r'recipe/rating', RecipeRatingView)
-router.register(r'posts', PostIdView, base_name='PostIdView') #!!!!
 urlpatterns = router.urls
+router.routes[2].mapping['post'] = 'update'
+router.register(r'posts', PostIdView, base_name='PostIdView') #!!!!
+
+
+urlpatterns += router.urls
 
 urlpatterns += [
     path('me/', ProfileView.as_view(), name='profile'),
