@@ -230,8 +230,9 @@ export const UserControl = styled.div`
 export const AddPostPageContainer = styled.div`
   background: rgba(255, 255, 255, 0.6);
   padding: 2%;
+  width: 100%;
   align-items: center;
-  margin: auto auto 5% auto;
+  margin: 1% auto 5% auto;
   display: flex;
   justify-content: space-between;
 `;
@@ -239,7 +240,8 @@ export const AddPostPageLink = styled(Link)`
   color: white;
   text-decoration: none;
   background: #27ae60;
-  padding: 1.6%;
+  padding: 1%;
+  width: 200px;
   box-sizing: border-box;
   font-size: 14px;
   display: block;
