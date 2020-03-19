@@ -9,6 +9,14 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
+AWS_ACCESS_KEY_ID = 'AKIA37SVVXBH5AHE4UFA'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_URL = 'https://cloud-cube-eu.s3.amazonaws.com/ctig8ylotxru'
+AWS_S3_REGION_NAME = 'eu-west-1'
+#AWS_STORAGE_BUCKET_NAME = 'ctig8ylotxru'
+AWS_STORAGE_BUCKET_NAME = 'cloud-cube-eu'
+
+
 
 import os
 from .config import SecretVariables
@@ -41,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'veggies.apps.VeggiesConfig',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -104,7 +113,9 @@ DATABASES = {
     },
 }
 
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 AUTH_USER_MODEL="veggies.User"
@@ -153,7 +164,7 @@ STATICFILES_DIRS = (
 	os.path.join(PROJECT_ROOT, 'static'),
 )
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 #import dj_database_url
 #prod_db = dj_database_url.config(conn_max_age=500, ssl_require = True)
