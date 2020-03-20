@@ -14,6 +14,7 @@ router.register(r'restaurants/rating', RestaurantRatingView)
 router.register(r'recipes', RecipeView)
 router.register(r'recipes/list', RecipeListView)
 router.register(r'recipe/rating', RecipeRatingView)
+router.register(r'restaurants', RestaurantView,basename='restaurants')
 urlpatterns = router.urls
 router.routes[2].mapping['post'] = 'update'
 router.register(r'posts', PostIdView, base_name='PostIdView') #!!!!
@@ -25,7 +26,7 @@ urlpatterns += [
     path('me/', ProfileView.as_view(), name='profile'),
     path('substitute/nveg/', SubstituteNVeganView.as_view(), name='substitute'),
     path('ingredients/', IngredientsView.as_view()),
-    path('restaurants/', RestaurantView.as_view()),
+  #  path('restaurants/', RestaurantView.as_view()),
     path('restaurants/change/', RestaurantChangeView.as_view()),
     path('preference/', PreferenceView.as_view()),
 #    url(r'^(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,})

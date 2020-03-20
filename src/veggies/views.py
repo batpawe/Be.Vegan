@@ -48,7 +48,6 @@ class UserViewSet(viewsets.ModelViewSet):
         return super().create(request)
 
 
-
 class ProfileView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -155,8 +154,9 @@ class IngredientsView(APIView):
             return Response(status=404)
 
 
-class RestaurantView(APIView):
-    def get(self, request, format=None):
+class RestaurantView(viewsets.ViewSet):
+
+    def list(self, request, format=None):
         if "city" in request.GET:
             prefix = str(request.GET.get("city", ''))
             if Restaurant.objects.filter(city__regex=r'^{}'.format(prefix)):
@@ -182,6 +182,19 @@ class RestaurantView(APIView):
             res = Restaurant.objects.all()
             res = RestaurantSerializer(res, many=True)
             return Response(res.data)
+
+    def retrieve(self, request, pk=None):
+        if Restaurant.objects.filter(id=pk):
+            res = Restaurant.objects.get(id=pk)
+            rating = Rating_Restaurant.objects.filter(id_restaurant_id=pk)
+            serializerRestaurant = RestaurantSerializer(res, many=False)
+            serializerRating = RatingRestaurantSerializer(rating, many= True)
+            ser = {}
+            ser['restaurant'] = serializerRestaurant.data
+            ser['rating'] = serializerRating.data
+            return Response(ser)
+        else:
+            return Response(status=404)
 
 
 class RestaurantChangeView(APIView):
@@ -220,6 +233,7 @@ class RestaurantRatingView(viewsets.ViewSet):
         if Rating_Restaurant.objects.filter(id_user=request.user, id_restaurant=pk):
             rating = Rating_Restaurant.objects.get(id_user=request.user, id_restaurant=pk)
             serializer = RatingRestaurantSerializer(rating, many=False)
+            ser = {}
             return Response(serializer.data)
         else:
             return Response(status=404)
@@ -271,8 +285,13 @@ class RecipeView(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         if Recipe.objects.filter(id=pk):
             recipe = Recipe.objects.get(id=pk)
-            serializer = RecipeSerializer(recipe, many=False)
-            return Response(serializer.data)
+            serializerRecipe = RecipeSerializer(recipe, many=False)
+            rating = Rating_Recipe.objects.filter(id_recipe_id=pk)
+            serializerRating = RatingRecipeSerializer(rating, many=True)
+            ser = {}
+            ser['recipe'] = serializerRecipe.data
+            ser['rating'] = serializerRating.data
+            return Response(ser)
         else:
             return Response(status=404)
 
