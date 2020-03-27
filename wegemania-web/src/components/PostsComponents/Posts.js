@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { MainContainer } from "../../styles/WallStyle";
+import { MainContainer, Container } from "../../styles/WallStyle";
 import RightPanel from "../GlobalComponents/RightPanel";
 import Image from "../../images/restaurant.jpg";
 import {
   ImageComponent,
   ElementContainer,
   Icon,
-  Container,
   HoverContainer,
   HoverHeader,
   HoverText,

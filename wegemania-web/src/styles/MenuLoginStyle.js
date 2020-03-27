@@ -7,42 +7,45 @@ export const UserActions = styled.div`
 `;
 
 export const MenuList = styled.li`
+  display: inherit;
+  align-items: center;
+  justify-content: center
   cursor: pointer;
-  box-sizing: border-box;
   color: black;
   text-decoration: none;
   margin-right: 1%;
   :hover {
-    font-weight: bold;
+    font-weight: ;
   }
 `;
 export const MenuListLink = styled(Link)`
+  display: block;
+  padding: 3%;
   color: white;
-  background: #2c8434;
-  display: inline-block;
-  font-size: 15px;
+  background: #0;
+  font-size: 25px;
   color: white;
-  width: 140px;
   opacity: 0.7;
-  margin: 0 0 0 0;
-  padding: 8% 0 8% 0;
   border-radius: 20px;
   text-align: center;
   text-decoration: none;
   :hover,
   :focus {
     background: #2e8438;
-    opacity: 1;
+    opacity: 0.8;
     color: white;
     text-decoration: none;
   }
 `;
 export const MenuUnorderedList = styled.ul`
-  display: flex;
+  display: block ruby;
+  margin-bottom: 0;
+  padding-left: 20px;
   list-style: none;
    {
     /*}
   display: flex;
+  margin-top: auto;
   list-style: none;
   align-items: center;
   justify-content: flex-end;
@@ -50,13 +53,13 @@ export const MenuUnorderedList = styled.ul`
   {*/
   }
 `;
-export const NavOrderedList = styled.ol`
+export const NavOrderedList = styled.div`
   list-style: none;
   display: flex;
   margin: auto;
   justify-content: space-between;
-  align-items: baseline;
-  width: 90vw;
+  align-items: flex-end;
+  width 1400px;
    {
     /*
   }
@@ -66,7 +69,6 @@ export const NavOrderedList = styled.ol`
   padding: 0;
   margin: 0;
   position: fixed;
-  top: 0;
   margin: auto;
   left: 0;
   right: 0;
@@ -75,6 +77,8 @@ export const NavOrderedList = styled.ol`
   }
 `;
 export const UserMenuList = styled.ul`
+  margin-left: auto;
+  margin-bottom: 0;
   list-style: none;
   cursor: pointer;
   padding: 0;

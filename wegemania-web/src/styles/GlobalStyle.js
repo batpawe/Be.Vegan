@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 export const LocalContainer = styled.ol`
-  padding: 2em;
+  padding: 0.2em;
   background: rgba(255, 255, 255, 0.3);
-  max-width: 400px;
+  max-width: 360px;
+  border-radius: 2px;
 `;
 export const UnorderedList = styled.ul`
   list-style-type: none;
@@ -38,8 +39,8 @@ export const Item = styled.li`
   margin: 4% 0 0 0;
 `;
 export const GlobalContainer = styled.div`
-  margin: 10vw 2% 0 0;
-  background: rgba(255, 255, 255, 0.3);
+  margin: 100px 1% 0 1%;
+  
 `;
 export const SearchPanel = styled.div`
   padding: 1%;
@@ -47,6 +48,7 @@ export const SearchPanel = styled.div`
   justify-content: space-between;
   display: flex;
   background: rgba(255, 255, 255, 0.6);
+  
 `;
 export const SearchInput = styled.input`
   min-height: 50px;

@@ -1,8 +1,7 @@
 //props.match.params
 import React, { useState } from "react";
-import { MainContainer } from "../../styles/WallStyle";
+import { MainContainer, Container } from "../../styles/WallStyle";
 import {
-  Container,
   RecipesName,
   HeaderText,
   ContainerRecipes,

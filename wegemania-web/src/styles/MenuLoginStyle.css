@@ -15,13 +15,13 @@
   border-bottom: 1px solid black;
   box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  justify-content: center;
+  align-items: center;
   font-family: "Merriweather Sans", sans-serif;
 
   font-size: 18px;
 
-  min-height: 80px;
+  min-height: 50px;
 }
 .TextFieldError {
   border-bottom: 1px solid red;

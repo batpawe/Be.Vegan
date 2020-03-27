@@ -69,7 +69,6 @@ const Header = () => {
         <header className="header">
           <nav>
             <NavOrderedList>
-              <UserPanel click={false} />
               <MenuUnorderedList>
                 <MenuList>
                   <MenuListLink to="/wall">Tablica</MenuListLink>
@@ -95,6 +94,7 @@ const Header = () => {
                   <MenuListLink to="/about">O weganizmie</MenuListLink>
                 </MenuList>
               </MenuUnorderedList>
+              <UserPanel click={false} />
             </NavOrderedList>
           </nav>
         </header>

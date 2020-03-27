@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import { MainContainer } from "../../styles/WallStyle";
+import { MainContainer,Container } from "../../styles/WallStyle";
 import {
-  Container,
   RestaurantName,
   HeaderText,
   ContainerRestaurant,

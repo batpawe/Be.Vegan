@@ -62,6 +62,7 @@ export const Image = styled.img`
   */
 `;
 export const ContentContainer = styled.div`
+  margin: 0;
   display: flex;
   justify-content: space-between;
   background-image: linear-gradient(

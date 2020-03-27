@@ -5,12 +5,19 @@ export const OrderedList = styled.ol`
   color: black;
   margin: 0;
 `;
+export const MainContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  
+`;
 export const Container = styled.div`
-  padding: 0 2% 2% 2%;
+  padding: 0.5% 2% 2% 2%;
   font-size: 17px;
   background: rgba(255, 255, 255, 0.3);
-  margin: 10vw 0 0 1%;
-  width: 55%;
+  margin: 100px 0 0 1%;
+  width: 1000px;
+  border-radius: 2px;
 `;
 export const UnorderedList = styled.ul`
   margin: 0 0 2% 0;
@@ -114,11 +121,6 @@ export const CommentContainer = styled.div`
   margin: 3% 0 0 0;
   justify-content: space-between;
   align-items: baseline;
-`;
-export const MainContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100vw;
 `;
 export const PreparingMethod = styled.div`
   max-width: 400px;
