@@ -95,7 +95,6 @@ export const NavOrderedList = styled.div`
   margin: auto;
   justify-content: space-between;
   align-items: baseline;
-  width 1400px;
    {
     /*
   }

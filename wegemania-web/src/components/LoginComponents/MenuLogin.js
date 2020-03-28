@@ -54,7 +54,7 @@ const Header = () => {
       {user.userInfo === undefined ? (
         <header className="header">
           <img style={{ width: 50, height: 50 }} src={icon} />
-          <nav>
+          <nav style={{ width: "100%" }}>
             <MenuUnorderedList>
               <MenuList>
                 <MenuListLink to="/">Zaloguj</MenuListLink>
@@ -70,7 +70,8 @@ const Header = () => {
         </header>
       ) : (
         <header className="header">
-          <nav>
+          <nav style={{ width: "100%" }}>
+            >
             <NavOrderedList>
               <MenuUnorderedList>
                 <MenuList>
