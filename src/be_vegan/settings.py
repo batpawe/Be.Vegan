@@ -9,8 +9,8 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-AWS_ACCESS_KEY_ID = 'AKIA37SVVXBH5AHE4UFA'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = 'AKIA37SVVXBHXFXVSQS2'
+AWS_SECRET_ACCESS_KEY = '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'
 AWS_URL = 'https://cloud-cube-eu.s3.amazonaws.com/ctig8ylotxru'
 AWS_S3_REGION_NAME = 'eu-west-1'
 #AWS_STORAGE_BUCKET_NAME = 'ctig8ylotxru'
