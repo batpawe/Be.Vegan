@@ -3,6 +3,8 @@ export const Container = styled.div`
   background: white;
   padding: 1%;
   min-width: 90%;
+  border-radius: 25px;
+  border: 1px solid black;
   margin: 10% auto auto auto;
   display: flex;
   flex-direction: column;
@@ -35,18 +37,19 @@ export const TextInput = styled.input`
   border: 1px solid black;
   outline: none;
   padding: 1%;
-  width: 300px;
+  width: 400px;
+  font-size: 22px;
 `;
 export const TextArea = styled.textarea`
   outline: none;
-
+  width: 80%;
+  font-size: 22px;
   resize: none;
   border: 1px solid black;
   padding: 1%;
-  width: 300px;
 `;
 export const Image = styled.img`
-  width: 250px;
+  width: 180px;
   display: block;
   cursor: pointer;
 `;
@@ -150,6 +153,7 @@ export const TextAreaMethod = styled.textarea`
   resize: none;
   border: 1px solid black;
   padding: 1%;
+
   min-width: 500px;
 `;
 export const ProductsContainer = styled.div`
@@ -169,6 +173,8 @@ export const FormContainer = styled.div`
   justify-content: space-evenly;
   align-items: center;
   margin: 1% 0 0 0;
+  flex-direction: column;
+  text-align: center;
 `;
 export const TextContainer = styled.div`
   width: 300px;

@@ -13,6 +13,8 @@
     "formik": "^2.1.4",
     "git": "^0.1.5",
     "leaflet": "^1.6.0",
+    "moment": "^2.24.0",
+    "moments": "0.0.2",
     "pretty-checkbox-react": "^2.0.0-rc.1",
     "react": "^16.11.0",
     "react-autosuggest": "^9.4.3",

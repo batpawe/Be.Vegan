@@ -14,12 +14,15 @@ import { NewLoginInfo } from "../../context/LoginInfo";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import icon from "../../icons/ikona.ico";
+import { NewNotifyContext } from "../../context/Notify";
 const UserPanel = ({ click }) => {
+  const notify = useContext(NewNotifyContext);
   const user = useContext(NewLoginInfo);
   const [clicked, setClicked] = useState(click);
 
   const userSettings = () => {
     setClicked(prev => !prev);
+    notify.changeMargin();
   };
   const userLogout = () => {
     user.logout();
@@ -35,7 +38,7 @@ const UserPanel = ({ click }) => {
       {clicked === true && (
         <UserActions>
           <UserOption>
-            <HyperLink to={`users/${user.userInfo.id}`}>Profil</HyperLink>
+            <HyperLink to={`/users/${user.userInfo.id}`}>Profil</HyperLink>
           </UserOption>
           <UserOption onClick={userLogout}>Wyloguj</UserOption>
         </UserActions>

@@ -3,13 +3,13 @@
 }
 
 .react-autosuggest__input {
-  height: 30px;
+  height: 35px;
   padding: 5px 5px;
   width: 220px;
   font-family: Helvetica, sans-serif;
   font-weight: 300;
-  font-size: 12px;
-  border: 1px solid #aaa;
+  font-size: 22px;
+  border: 1px solid black;
   border-radius: 4px;
 }
 

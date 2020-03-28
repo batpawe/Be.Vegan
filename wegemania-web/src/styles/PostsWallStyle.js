@@ -4,7 +4,6 @@ export const HeaderPostsContainer = styled.ul`
   margin: auto;
   text-align: center;
   display: block;
-  background: rgba(255, 255, 255, 0.6);
   width: 100%;
   padding: 0;
 `;
@@ -16,10 +15,14 @@ export const HeaderPostsItem = styled.li`
 `;
 export const HeaderPostsText = styled.h1`
   font-size: 24px;
-  color: #00a835;
+  width: 30%;
+  display: block;
+  border-radius: 25px;
+  background: #43a047;
+  margin: 1% auto 1% auto;
+  padding: 0.2%;
+  color: white;
   font-weight: bold;
-  margin: 0;
-  padding: 0;
 `;
 export const TagsPostsHeaderContainer = styled.ul`
   list-style-type: none;

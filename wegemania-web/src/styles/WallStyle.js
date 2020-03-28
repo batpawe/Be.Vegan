@@ -8,8 +8,8 @@ export const OrderedList = styled.ol`
 export const MainContainer = styled.div`
   display: flex;
   justify-content: center;
+ {/*} margin: ${props => (props.margin ? "2% 0 0 1%" : "1% 0 0 1%")}; {*/}
   width: 100vw;
-  
 `;
 export const Container = styled.div`
   padding: 0.5% 2% 2% 2%;
@@ -27,7 +27,6 @@ export const UnorderedList = styled.ul`
 export const ColumnContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 5% 0 0 0;
   align-items: baseline;
 `;
 export const BorderText = styled.span`
@@ -59,10 +58,16 @@ export const UnorderedListCommentsIn = styled.ul`
   background: rgba(255, 255, 255, 0.6);
   margin: 3% 0 3% 0;
 `;
-export const HighlightItem = styled.li`
+export const HighlightItem = styled(Link)`
   color: green;
   font-size: 16px;
   font-weight: bold;
+  text-decoration: none;
+  :hover,
+  :active {
+    color: green;
+    text-decoration: none;
+  }
 `;
 export const CommentContent = styled.li`
   font-size: 12px;
@@ -121,6 +126,7 @@ export const CommentContainer = styled.div`
   margin: 3% 0 0 0;
   justify-content: space-between;
   align-items: baseline;
+  border-top: 1px solid black;
 `;
 export const PreparingMethod = styled.div`
   max-width: 400px;

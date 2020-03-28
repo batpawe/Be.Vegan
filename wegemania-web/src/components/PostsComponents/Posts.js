@@ -27,6 +27,7 @@ import {
 import axios from "axios";
 import AutoSuggest from "react-autosuggest";
 import "../../styles/SuggestStyle.css";
+import ImageRestaurant from "../../images/restaurant.jpg";
 const Element = props => {
   const [isHover, setIsHover] = useState(false);
   console.log("||||||||||||||");
@@ -91,44 +92,57 @@ const Posts = props => {
       <Container>
         <AddPostPageContainer>
           <SearchContainer>
-            <AutoSuggest
-              suggestions={suggestions}
-              onSuggestionsClearRequested={() => setSuggestions([])}
-              onSuggestionsFetchRequested={({ value }) => {
-                console.log(value);
-                setValue(value);
-                setSuggestions(getSuggestions(value));
-              }}
-              onSuggestionSelected={(_, { suggestionValue }) =>
-                console.log("Wybrany: " + suggestionValue)
-              }
-              getSuggestionValue={suggestion => suggestion.title}
-              renderSuggestion={suggestion => <span>{suggestion.title}</span>}
-              inputProps={{
-                placeholder: "Wprowadź tytuł",
-                value: value,
-                onChange: (_, { newValue, method }) => {
-                  setValue(newValue);
+            <div>
+              <p style={{ margin: 0, padding: 0, "font-weight": "bold" }}>
+                Filtruj:
+              </p>
+              <AutoSuggest
+                suggestions={suggestions}
+                onSuggestionsClearRequested={() => setSuggestions([])}
+                onSuggestionsFetchRequested={({ value }) => {
+                  console.log(value);
+                  setValue(value);
+                  setSuggestions(getSuggestions(value));
+                }}
+                onSuggestionSelected={(_, { suggestionValue }) =>
+                  console.log("Wybrany: " + suggestionValue)
                 }
-              }}
-              highlightFirstSuggestion={true}
-            />
+                getSuggestionValue={suggestion => suggestion.title}
+                renderSuggestion={suggestion => <span>{suggestion.title}</span>}
+                inputProps={{
+                  placeholder: "Wprowadź tytuł",
+                  value: value,
+                  onChange: (_, { newValue, method }) => {
+                    setValue(newValue);
+                  }
+                }}
+                highlightFirstSuggestion={true}
+              />
+            </div>
             {/*<SearchInput placeholder="Wpisz tytuł lub tag"></SearchInput>*/}
             {/* <SearchButton>Wyszukaj</SearchButton> */}
           </SearchContainer>
           <AddPostPageLink to="/addpost">Dodaj post</AddPostPageLink>
         </AddPostPageContainer>
-        {data.map((date, index) => {
-          if (date.title.includes(value))
-            return (
-              <Element
-                key={date.id}
-                index={date.id}
-                post={date}
-                historyProps={props.history}
-              />
-            );
-        })}
+        <div
+          style={{
+            display: "flex",
+            "flex-wrap": "wrap",
+            "justify-content": "space-between"
+          }}
+        >
+          {data.map((date, index) => {
+            if (date.title.includes(value))
+              return (
+                <Element
+                  key={date.id}
+                  index={date.id}
+                  post={date}
+                  historyProps={props.history}
+                />
+              );
+          })}
+        </div>
         {/*}
         <Element key={1} />
         <Element key={1} />

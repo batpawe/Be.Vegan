@@ -151,7 +151,9 @@ const AddPost = () => {
             <div>
               <FormContainer>
                 <TextContainer>
-                  <InputLabel for="title">Tytuł:</InputLabel>
+                  <InputLabel for="title">
+                    <p style={{ margin: 0, "font-size": "26px" }}>Tytuł:</p>
+                  </InputLabel>
                   <ErrorText>{errors.title}</ErrorText>
                 </TextContainer>
                 <TextInput
@@ -196,7 +198,9 @@ const AddPost = () => {
       </div> {*/}
               <FormContainer>
                 <TextContainer>
-                  <InputLabel for="content">Treść:</InputLabel>
+                  <InputLabel for="content">
+                    <p style={{ margin: 0, "font-size": "26px" }}>Treść:</p>
+                  </InputLabel>
                   <ErrorText>{errors.content}</ErrorText>
                 </TextContainer>
                 <TextArea
@@ -214,7 +218,15 @@ const AddPost = () => {
                 />
               </FormContainer>
               <ImagesContainer>
-                <p>Dodaj zdjęcie:</p>
+                <p
+                  style={{
+                    margin: 0,
+                    "font-size": "26px",
+                    "font-weight": "bold"
+                  }}
+                >
+                  Dodaj zdjęcie:
+                </p>
                 <div class="image-upload">
                   <label for="file-input-0">
                     <Image

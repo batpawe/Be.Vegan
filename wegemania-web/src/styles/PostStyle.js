@@ -67,7 +67,7 @@ export const ContentContainer = styled.div`
   justify-content: space-between;
   background-image: linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0.6) 0%,
+      rgba(250, 250, 250, 0.6) 0%,
       rgba(0, 0, 0.6, 0.6) 100%
     ),
     url(${Background});
@@ -229,10 +229,11 @@ export const UserControl = styled.div`
   padding: 0 0 0 0.1em;
 `;
 export const AddPostPageContainer = styled.div`
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.5);
   padding: 2%;
   width: 100%;
   align-items: center;
+  border-radius: 5px;
   margin: 1% auto 5% auto;
   display: flex;
   justify-content: space-between;

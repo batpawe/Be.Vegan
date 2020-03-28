@@ -47,7 +47,9 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import UploadImage from "../../images/upload.png";
 import "../../App.css";
+import ImageRestaurant from "../../images/restaurant.jpg";
 import { NewNotifyContext } from "../../context/Notify";
+var moment = require("moment");
 const Post = props => {
   const notify = useContext(NewNotifyContext);
   const user = useContext(NewLoginInfo);
@@ -113,7 +115,7 @@ const Post = props => {
   }, [props.match.params.id]);
 
   return (
-    <MainContainer>
+    <MainContainer margin={notify.onMargin}>
       {deleyedRedirect && <Redirect to={`/posts`} />}
       <Container>
         {post[0] && (
@@ -123,23 +125,51 @@ const Post = props => {
                 <HeaderPostsItem>
                   <HeaderPostsText>{post[0] && post[0].title}</HeaderPostsText>
                 </HeaderPostsItem>
-                <HeaderPostsItem>
-                  {post[0] && post[0].author.username}
-                </HeaderPostsItem>
+                <div style={{ "text-align": "left" }}>
+                  <p style={{ margin: 0, padding: 0 }}>
+                    {post[0] &&
+                      moment(post[0].data_stamp).format("YYYY-MM-D HH:mm:ss")}
+                  </p>
+                  <HighlightItem to={`/users/${post[0].author.id}`}>
+                    {post[0].author.username}
+                  </HighlightItem>
+                </div>
               </HeaderPostsContainer>
-              <ColumnContainer>
-                <div>{post[0] && post[0].description}</div>
-              </ColumnContainer>
-              <Image src={post[0] && post[0].foto} />
+              <div
+                style={{
+                  background: "rgba(255,255,255,0.6)",
+                  "border-radius": "5px",
+                  margin: "1% 0 1% 0",
+                  border: "1px solid black",
+                  padding: "1%",
+                  "font-size": "20px"
+                }}
+              >
+                <ColumnContainer>
+                  <div>{post[0] && post[0].description}</div>
+                </ColumnContainer>
 
+                <Image src={post[0] && post[0].foto} />
+              </div>
               <HeaderText>Komentarze:</HeaderText>
 
               <UnorderedListComments>
                 {post[1].map(comment => {
                   return (
                     <UnorderedListCommentsIn>
-                      <HighlightItem>{comment.author.username}</HighlightItem>
-                      <CommentContent>{comment.description}</CommentContent>
+                      <HighlightItem to={`/users/${comment.author.id}`}>
+                        {comment.author.username}
+                      </HighlightItem>
+
+                      <p style={{ "font-size": 12 }}>
+                        {post[0] &&
+                          moment(comment.data_stamp).format(
+                            "YYYY-MM-D HH:mm:ss"
+                          )}
+                      </p>
+                      <CommentContent style={{ "font-size": 14 }}>
+                        {comment.description}
+                      </CommentContent>
                       <img
                         style={{ width: 120, margin: "1% 0 0 0" }}
                         src={comment.foto}
