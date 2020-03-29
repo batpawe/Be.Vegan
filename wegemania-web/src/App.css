@@ -23,3 +23,12 @@
 .image-upload > input {
   display: none;
 }
+.test {
+  background: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  width: 100%;
+  padding: 2%;
+  border-radius: 20px;
+  margin: 0;
+  text-align: center;
+}

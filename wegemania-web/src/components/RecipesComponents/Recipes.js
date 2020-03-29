@@ -59,7 +59,13 @@ const Recipes = props => {
         </PagginationItem>
       )
     );
-    return <PagginationContainer>{paggin}</PagginationContainer>;
+    return (
+      <PagginationContainer
+        style={{ padding: "4% 0 1% 0", "border-top": "1px solid black" }}
+      >
+        {paggin}
+      </PagginationContainer>
+    );
   };
   const ContentController = props => {
     return (
@@ -69,21 +75,63 @@ const Recipes = props => {
           style={{ width: "60%", cursor: "pointer" }}
           onClick={() => props.historyProps.push("/recipe")}
         />
-        <ContentContainer style={{ width: "38%", background: "white" }}>
-          <RecipesName>Przepis</RecipesName>
+        <ContentContainer
+          style={{ width: "38%", background: "rgba(255,255,255,0.6)" }}
+        >
+          <RecipesName style={{ "font-size": "19px" }}>Przepis</RecipesName>
           {console.log(page[props.index])}
           {page[props.index] == 0 ? (
             <div>
               <HeaderText>Składniki:</HeaderText>
               <UnorderedList>
-                <Item>Jakiś produkt</Item>
-                <Item>10g</Item>
-                <Item>Jakiś produkt</Item>
-                <Item>10g</Item>
-                <Item>Jakiś produkt</Item>
-                <Item>10g</Item>
-                <Item>Jakiś produkt</Item>
-                <Item>10g</Item>
+                <ul
+                  style={{
+                    margin: 0,
+                    padding: 0,
+                    width: "100%",
+                    display: "flex",
+                    "justify-content": "space-between"
+                  }}
+                >
+                  <Item>Jakiś produkt</Item>
+                  <Item>10g</Item>
+                </ul>
+                <ul
+                  style={{
+                    margin: 0,
+                    padding: 0,
+                    width: "100%",
+                    display: "flex",
+                    "justify-content": "space-between"
+                  }}
+                >
+                  <Item>Jakiś produkt</Item>
+                  <Item>10g</Item>
+                </ul>
+                <ul
+                  style={{
+                    margin: 0,
+                    padding: 0,
+                    width: "100%",
+                    display: "flex",
+                    "justify-content": "space-between"
+                  }}
+                >
+                  <Item>Jakiś produkt</Item>
+                  <Item>10g</Item>
+                </ul>
+                <ul
+                  style={{
+                    margin: 0,
+                    padding: 0,
+                    width: "100%",
+                    display: "flex",
+                    "justify-content": "space-between"
+                  }}
+                >
+                  <Item>Jakiś produkt</Item>
+                  <Item>10g</Item>
+                </ul>
               </UnorderedList>
             </div>
           ) : (
@@ -93,9 +141,7 @@ const Recipes = props => {
                 <WayItem>
                   Lorem Ipsum is simply dummy text of the printing and
                   typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book...
+                  standard dummy text ever since the 1500s...
                 </WayItem>
               </UnorderedList>
             </div>
@@ -110,34 +156,38 @@ const Recipes = props => {
     <MainContainer>
       <Container>
         <SearchPanel>
-          <div>
-            <SearchInput
-              type="text"
-              id="ajax"
-              list="json-datalist"
-              placeholder="Wprowadź nazwę produktu"
-            />
-            <datalist id="json-datalist">
-              <option value="HTML" />
-              <option value="CSS" />
-              <option value="JavaScript" />
-              <option value="Java" />
-              <option value="Ruby" />
-              <option value="PHP" />
-              <option value="Go" />
-              <option value="Erlang" />
-              <option value="Python" />
-              <option value="C" />
-              <option value="C#" />
-              <option value="C++" />
-            </datalist>
+          <div style={{ display: "flex", "flex-direction": "column" }}>
+            <div>
+              <SearchInput
+                type="text"
+                id="ajax"
+                list="json-datalist"
+                placeholder="Wprowadź nazwę produktu"
+              />
+              <datalist id="json-datalist">
+                <option value="HTML" />
+                <option value="CSS" />
+                <option value="JavaScript" />
+                <option value="Java" />
+                <option value="Ruby" />
+                <option value="PHP" />
+                <option value="Go" />
+                <option value="Erlang" />
+                <option value="Python" />
+                <option value="C" />
+                <option value="C#" />
+                <option value="C++" />
+              </datalist>
+            </div>
+            <SearchButton>Wyszukaj</SearchButton>
           </div>
-          <SearchButton>Wyszukaj</SearchButton>
           <SearchButton to="/addrecipe">Dodaj przepis</SearchButton>
         </SearchPanel>
-        <ContentController index={0} historyProps={props.history} />
-        <ContentController index={1} historyProps={props.history} />
-        <ContentController index={2} historyProps={props.history} />
+        <div style={{ display: "flex", "flex-wrap": "wrap" }}>
+          <ContentController index={0} historyProps={props.history} />
+          <ContentController index={1} historyProps={props.history} />
+          <ContentController index={2} historyProps={props.history} />
+        </div>
       </Container>
       <RightPanel />
     </MainContainer>

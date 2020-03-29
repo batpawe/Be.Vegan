@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { MainContainer,Container } from "../../styles/WallStyle";
+import { MainContainer, Container } from "../../styles/WallStyle";
 import {
   RestaurantName,
   HeaderText,
@@ -141,13 +141,16 @@ const Restaurants = props => {
       ];
     });
     return (
-      <ContainerRestaurant>
+      <ContainerRestaurant style={{ width: "48%" }}>
+        {/*ttt*/}
         <ImageRestaurant
-          src={props.data.foto}
+          src={Image}
           style={{ width: "60%", cursor: "pointer" }}
           onClick={() => props.historyProps.push(`/restaurant/${props.index}`)}
         />
-        <ContentContainer style={{ width: "38%", background: "white" }}>
+        <ContentContainer
+          style={{ width: "100%", background: "rgba(255,255,255,0.6)" }}
+        >
           <RestaurantName>{props.data.name}</RestaurantName>
           {console.log(page[props.index])}
           {page[props.number] == 0 || page[props.number] == undefined ? (
@@ -156,7 +159,7 @@ const Restaurants = props => {
               <UnorderedList>
                 {time.map(t => {
                   return (
-                    <Item>
+                    <Item style={{ "font-size": "14px", margin: "1%" }}>
                       <p style={{ margin: 0 }}>{t[0]}</p>
                       <p style={{ margin: 0 }}>{t[1]}</p>
                     </Item>
@@ -181,7 +184,7 @@ const Restaurants = props => {
                 zoom={17}
                 style={{
                   width: 130,
-                  height: 150,
+                  height: 165,
                   "margin-left": 20,
                   "z-index": 0
                 }}
@@ -261,6 +264,9 @@ const Restaurants = props => {
             }}
           >
             <div>
+              <p style={{ "font-weight": "bold", color: "#27ae60" }}>
+                Filtruj:
+              </p>
               <div style={{ display: "flex" }}>
                 {radio == "restaurant" ? (
                   <AutoSuggest
@@ -373,21 +379,29 @@ const Restaurants = props => {
             </AddRestaurantLink>
           </div>
         </AddPostPageContainer>
-        {restaurants.length &&
-          restaurants.map((restaurant, index) => {
-            if (
-              restaurant.city.includes(valueCity) &&
-              restaurant.name.includes(valueRestaurant)
-            )
-              return (
-                <ContentController
-                  index={restaurant.id}
-                  number={index}
-                  data={restaurant}
-                  historyProps={props.history}
-                />
-              );
-          })}
+        <div
+          style={{
+            display: "flex",
+            "flex-wrap": "wrap",
+            justifyContent: "space-around"
+          }}
+        >
+          {restaurants.length &&
+            restaurants.map((restaurant, index) => {
+              if (
+                restaurant.city.includes(valueCity) &&
+                restaurant.name.includes(valueRestaurant)
+              )
+                return (
+                  <ContentController
+                    index={restaurant.id}
+                    number={index}
+                    data={restaurant}
+                    historyProps={props.history}
+                  />
+                );
+            })}
+        </div>
       </Container>
       <RightPanel />
     </MainContainer>

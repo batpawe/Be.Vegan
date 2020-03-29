@@ -59,6 +59,7 @@ import { FormControl } from "@material-ui/core";
 import FormLabel from "@material-ui/core/FormLabel";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { green, orange } from "@material-ui/core/colors";
+import "../../App.css";
 import axios from "axios";
 const Restaurant = props => {
   const [restaurant, setRestaurant] = useState({});
@@ -116,130 +117,73 @@ const Restaurant = props => {
   return (
     <MainContainer>
       <Container>
-        <AddPostPageContainer>
-          <div
-            style={{
-              display: "flex",
-              "justify-content": "space-between",
-              width: "100%"
-            }}
-          >
-            <div>
-              <div style={{ display: "flex" }}>
-                {radio == "restaurant" ? (
-                  <SearchInput
-                    placeholder="wpisz nazwę restauracji."
-                    onChange={e => {
-                      handleRestaurantChange(e.target.value);
-                    }}
-                    value={searchInfo.restaurant}
-                  />
-                ) : (
-                  <SearchInput
-                    placeholder="wpisz nazwę miasta."
-                    onChange={e => {
-                      handleCityChange(e.target.value);
-                    }}
-                    value={searchInfo.city}
-                  />
-                )}
-              </div>
-              <FormControl component="fieldset">
-                <RadioGroup
-                  aria-label="search"
-                  name="search"
-                  value={radio}
-                  onChange={handleChange}
-                >
-                  <ThemeProvider theme={outerTheme}>
-                    <div
-                      style={{
-                        display: "flex",
-                        "justify-content": "space-between"
-                      }}
-                    >
-                      <FormControlLabel
-                        value="restaurant"
-                        control={<Radio />}
-                        label="Restauracja"
-                      />
-                      <FormControlLabel
-                        value="city"
-                        control={<Radio />}
-                        label="Miasto"
-                      />
-                    </div>
-                  </ThemeProvider>
-                </RadioGroup>
-              </FormControl>
-              <div>
-                <div
-                  style={{
-                    display: "flex",
-                    "justify-content": "space-between"
-                  }}
-                >
-                  <p>Miasto:</p>
-                  <p style={{ "font-weight": "bold" }}>{searchInfo.city}</p>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    "justify-content": "space-between"
-                  }}
-                >
-                  <p>Restauracja:</p>
-                  <p style={{ "font-weight": "bold" }}>
-                    {searchInfo.restaurant}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <AddRestaurantLink to="/addrestaurant">
-              Dodaj restaurację
-            </AddRestaurantLink>
-          </div>
-        </AddPostPageContainer>
-
         <OrderedList>
           <UnorderedList>
             <HeaderRestaurantContainer>
-              <HeaderRestaurantText>Restauracja1</HeaderRestaurantText>
+              <HeaderRestaurantText>Nazwa</HeaderRestaurantText>
             </HeaderRestaurantContainer>
             <FirstRestaurantRow>
               <RestaurantImageComponent src={RestaurantImage} />
             </FirstRestaurantRow>
+            <RateContainer>
+              <RateHeader>Oceń</RateHeader>
+              <RateStars>
+                <ReactStars
+                  count={5}
+                  className="test"
+                  onChange={setRating}
+                  size={24}
+                  color2={"#4CAF50"}
+                />
+              </RateStars>
+            </RateContainer>
             <ColumnContainer>
               <div>
                 <Item>
-                  <BorderText>Godziny otwarcia:</BorderText>
+                  <BorderText
+                    style={{
+                      color: "black",
+                      "font-weight": "bold",
+                      "text-align": "center"
+                    }}
+                  >
+                    Godziny otwarcia:
+                  </BorderText>
                 </Item>
-                <UnorderedListIn>
-                  <RestaurantOpenItem>
+                <UnorderedListIn
+                  style={{
+                    background: "rgba(255,255,255,0.6)",
+                    "border-radius": "15px",
+                    "text-align": "center"
+                  }}
+                >
+                  <RestaurantOpenItem style={{ "text-align": "center" }}>
                     Poniedziałek 8:00 - 20:00
                   </RestaurantOpenItem>
-                  <RestaurantOpenItem>
+                  <RestaurantOpenItem style={{ "text-align": "center" }}>
                     Poniedziałek 8:00 - 20:00
                   </RestaurantOpenItem>
-                  <RestaurantOpenItem>
+                  <RestaurantOpenItem style={{ "text-align": "center" }}>
                     Poniedziałek 8:00 - 20:00
                   </RestaurantOpenItem>
-                  <RestaurantOpenItem>
+                  <RestaurantOpenItem style={{ "text-align": "center" }}>
                     Poniedziałek 8:00 - 20:00
                   </RestaurantOpenItem>
-                  <RestaurantOpenItem>
+                  <RestaurantOpenItem style={{ "text-align": "center" }}>
                     Poniedziałek 8:00 - 20:00
                   </RestaurantOpenItem>
-                  <RestaurantOpenItem>
+                  <RestaurantOpenItem style={{ "text-align": "center" }}>
                     Poniedziałek 8:00 - 20:00
                   </RestaurantOpenItem>
-                  <RestaurantOpenItem>
+                  <RestaurantOpenItem style={{ "text-align": "center" }}>
                     Poniedziałek 8:00 - 20:00
                   </RestaurantOpenItem>
                 </UnorderedListIn>
               </div>
               <LocationContainer>
-                <BorderHeader>Lokalizacja : </BorderHeader>
+                <BorderHeader style={{ color: "black", "font-weight": "bold" }}>
+                  Lokalizacja :
+                </BorderHeader>
                 <Map
                   id="mapid"
                   center={[53.009794, 18.591649]}
@@ -264,18 +208,7 @@ const Restaurant = props => {
                 </Map>
               </LocationContainer>
             </ColumnContainer>
-            <RateContainer>
-              <RateHeader>Oceń</RateHeader>
-              <RateStars>
-                <ReactStars
-                  style={{ left: "45%" }}
-                  count={5}
-                  onChange={setRating}
-                  size={24}
-                  color2={"#4CAF50"}
-                />
-              </RateStars>
-            </RateContainer>
+            {/*}
             <HeaderText>Komentarze:</HeaderText>
             <UnorderedListComments>
               <UnorderedListCommentsIn>
@@ -312,6 +245,7 @@ const Restaurant = props => {
                 </SubmitCommentButton>
               </CommentContainer>
             </UnorderedListComments>
+            {*/}
           </UnorderedList>
         </OrderedList>
       </Container>

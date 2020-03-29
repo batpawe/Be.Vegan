@@ -83,34 +83,7 @@ const AddRestaurant = () => {
     temp[e.target.id][1] = e.target.value;
     setTimeArray(temp);
   };
-  const MenuFields = () => {
-    const temp = [];
-    for (var i = 0; i < numberMenu; i++) {
-      temp.push(
-        <div style={{ display: "flex" }}>
-          <TextColumnInput
-            type="text"
-            id={i}
-            value={menuArray[i]}
-            onChange={e => {
-              handleMenu(e);
-            }}
-          />
-          <img
-            style={{ width: 25 }}
-            src={CloseImage}
-            onClick={() => prevMenuField()}
-          />
-        </div>
-      );
-    }
-    return (
-      <SecondColumn>
-        <InputLabel for="menus">Menu:{temp}</InputLabel>
-        <AddItem onClick={() => nextMenuField()}>Dodaj pole</AddItem>
-      </SecondColumn>
-    );
-  };
+
   const setButton = (e, t) => {
     if (t === true) {
       let tmp = timeArray;
@@ -235,20 +208,63 @@ const AddRestaurant = () => {
 
   return (
     <Container>
-      <InputLabel for="name">Nazwa:</InputLabel>
-      <TextInput
-        type="text"
-        id="name"
-        placeholder="Wprowadź nazwę restauracji"
-      />
-      <ColumnContainer>
+      <h1
+        style={{
+          "font-size": 28,
+          "text-align": "center",
+          color: "#27752e",
+          "font-weight": "bold"
+        }}
+      >
+        Dodaj restaurację:
+      </h1>
+      <div
+        style={{
+          margin: "1% auto 1% auto",
+          display: "flex",
+          "flex-direction": "column",
+          "text-align": "center"
+        }}
+      >
+        <InputLabel for="name" style={{ "font-size": 26 }}>
+          Nazwa:
+        </InputLabel>
+        <TextInput
+          style={{ "font-size": 22 }}
+          type="text"
+          id="name"
+          placeholder="Wprowadź nazwę restauracji"
+        />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          "flex-direction": "column",
+          "text-align": "center"
+        }}
+      >
+        <InputLabel for="content" style={{ "font-size": 26 }}>
+          Opis:
+        </InputLabel>
+        <TextArea
+          style={{ margin: "1% auto 1% auto" }}
+          id="content"
+          placeholder="Podaj opis restauracji"
+        />
+      </div>
+      <ColumnContainer
+        style={{
+          width: "100%",
+          "text-align": "center",
+          "justify-content": "center"
+        }}
+      >
         <TimeFields />
-        <MenuFields />
       </ColumnContainer>
       <InputLabel for="map">Podaj lokalizację restauracji ?</InputLabel>
       <Map
         id="map"
-        center={[51.505, -0.09]}
+        center={[53.01379, 18.598444]}
         zoom={13}
         style={{ height: 300, "z-index": 0 }}
         onClick={e => {
@@ -276,36 +292,6 @@ const AddRestaurant = () => {
             id="file-input-0"
             type="file"
             onChange={e => handleChange(0, e)}
-          />
-        </div>
-        <div className="image-upload">
-          <label for="file-input-1">
-            <Image src={file[1]} />
-          </label>
-          <input
-            id="file-input-1"
-            type="file"
-            onChange={e => handleChange(1, e)}
-          />
-        </div>
-        <div className="image-upload">
-          <label for="file-input-2">
-            <Image src={file[2]} />
-          </label>
-          <input
-            id="file-input-2"
-            type="file"
-            onChange={e => handleChange(2, e)}
-          />
-        </div>
-        <div className="image-upload">
-          <label for="file-input-3">
-            <Image src={file[3]} />
-          </label>
-          <input
-            id="file-input-3"
-            type="file"
-            onChange={e => handleChange(3, e)}
           />
         </div>
       </ImagesContainer>

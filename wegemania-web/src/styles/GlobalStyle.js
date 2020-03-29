@@ -39,8 +39,7 @@ export const Item = styled.li`
   margin: 4% 0 0 0;
 `;
 export const GlobalContainer = styled.div`
-  margin: 100px 1% 0 1%;
-  
+  margin: 0 1% 0 1%;
 `;
 export const SearchPanel = styled.div`
   padding: 1%;
@@ -48,7 +47,6 @@ export const SearchPanel = styled.div`
   justify-content: space-between;
   display: flex;
   background: rgba(255, 255, 255, 0.6);
-  
 `;
 export const SearchInput = styled.input`
   min-height: 50px;
@@ -65,7 +63,6 @@ export const SearchButton = styled(Link)`
   color: white;
   background: #27ae60;
   font-size: 14px;
-  width: 120px;
   text-align: center;
   padding: 2%;
   :hover {

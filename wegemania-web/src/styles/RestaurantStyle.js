@@ -8,9 +8,12 @@ export const HeaderRestaurantContainer = styled.ul`
 `;
 export const HeaderRestaurantText = styled.li`
   font-size: 24px;
-  color: #00a835;
+  color: white;
   font-weight: bold;
-  background: rgba(255, 255, 255, 0.6);
+  background: #00a835;
+  width: 30%;
+  margin: 1% auto 1% auto;
+  border-radius: 25px;
 `;
 export const FirstRestaurantRow = styled.div`
   display: block;
@@ -31,12 +34,11 @@ export const RestaurantOpenItem = styled.li`
   margin: 20px 0 0 0;
   padding: 0;
   width: 250px;
-  color: white;
+  color: black;
+  font-weight: bold;
   text-align: justify;
   text-justify: inter-word;
-  border: 1px solid black;
   cursor: pointer;
-  background: #00a835;
   padding: 1%;
 `;
 export const MenuList = styled.ul`
@@ -65,8 +67,10 @@ export const HeaderColumn = styled.li`
 export const RateContainer = styled.ul`
   list-style-type: none;
   text-align: center;
-  background: rgba(255, 255, 255, 0.6);
+  width: 12%;
+  padding: 0;
   margin: 5% auto 0 auto;
+  position: relative;
 `;
 export const RateHeader = styled.li`
   font-size: 20px;
@@ -75,8 +79,8 @@ export const RateHeader = styled.li`
   margin: 0;
 `;
 export const RateStars = styled.li`
-  position: relative;
-  left: 42.5%;
+  padding: 0;
+  margin: 0;
 `;
 export const LocationContainer = styled.div`
   margin: 25px 0 0 0;

@@ -93,7 +93,7 @@ const Posts = props => {
         <AddPostPageContainer>
           <SearchContainer>
             <div>
-              <p style={{ margin: 0, padding: 0, "font-weight": "bold" }}>
+              <p style={{ margin: 0, padding: 0, "font-weight": "bold","color":"#27ae60" }}>
                 Filtruj:
               </p>
               <AutoSuggest

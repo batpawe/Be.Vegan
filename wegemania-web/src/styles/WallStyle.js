@@ -8,14 +8,14 @@ export const OrderedList = styled.ol`
 export const MainContainer = styled.div`
   display: flex;
   justify-content: center;
- {/*} margin: ${props => (props.margin ? "2% 0 0 1%" : "1% 0 0 1%")}; {*/}
+  margin: 12% 0 0 0;
   width: 100vw;
 `;
 export const Container = styled.div`
   padding: 0.5% 2% 2% 2%;
   font-size: 17px;
   background: rgba(255, 255, 255, 0.3);
-  margin: 100px 0 0 1%;
+  margin: 0 1% 0 1%;
   width: 1000px;
   border-radius: 2px;
 `;
@@ -50,7 +50,7 @@ export const Item = styled.li`
 `;
 export const UnorderedListComments = styled.ul`
   list-style-type: none;
-  margin: 3% 0 3% 0;
+  padding: 0;
 `;
 export const UnorderedListCommentsIn = styled.ul`
   padding: 1%;
@@ -107,6 +107,11 @@ export const TextInput = styled.textarea`
   outline: none;
   border: 1px solid black;
   resize: none;
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: black;
+    opacity: 1; /* Firefox */
+  }
 `;
 export const SubmitCommentButton = styled.button`
   border: 1px solid black;

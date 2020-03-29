@@ -71,7 +71,6 @@ const Header = () => {
       ) : (
         <header className="header">
           <nav style={{ width: "100%" }}>
-            >
             <NavOrderedList>
               <MenuUnorderedList>
                 <MenuList>

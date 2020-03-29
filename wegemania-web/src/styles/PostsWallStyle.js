@@ -18,7 +18,7 @@ export const HeaderPostsText = styled.h1`
   width: 30%;
   display: block;
   border-radius: 25px;
-  background: #43a047;
+  background: #00a835;
   margin: 1% auto 1% auto;
   padding: 0.2%;
   color: white;

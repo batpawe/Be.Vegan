@@ -140,7 +140,6 @@ const Post = props => {
                   background: "rgba(255,255,255,0.6)",
                   "border-radius": "5px",
                   margin: "1% 0 1% 0",
-                  border: "1px solid black",
                   padding: "1%",
                   "font-size": "20px"
                 }}
@@ -177,36 +176,52 @@ const Post = props => {
                     </UnorderedListCommentsIn>
                   );
                 })}
-
-                <CommentContainer>
+                <CommentContainer
+                  style={{ "flex-direction": "column", width: "500px" }}
+                >
                   <TextInput
+                    style={{
+                      background: "rgba(255,255,255,0.2)",
+                      width: "500px"
+                    }}
                     type="text"
                     placeholder="Wprowadź treść komentarza"
                     onChange={e => {
                       setTempContent(e.target.value);
                     }}
                   />
-                  <div class="image-upload">
-                    <label for="file-input-0">
-                      <ImageForUpload
-                        src={
-                          file[0].name ? URL.createObjectURL(file[0]) : file[0]
-                        }
-                      />
-                    </label>
-                    <input
-                      id="file-input-0"
-                      type="file"
-                      onChange={e => setFile([e.target.files[0]])}
-                    />
-                  </div>
-                  <SubmitCommentButton
-                    onClick={() => {
-                      AddComment();
+                  <div
+                    style={{
+                      display: "flex",
+                      "justify-content": "space-between",
+                      width: "100%",
+                      "align-items": "center"
                     }}
                   >
-                    Dodaj komentarz
-                  </SubmitCommentButton>
+                    <div class="image-upload">
+                      <label for="file-input-0">
+                        <ImageForUpload
+                          src={
+                            file[0].name
+                              ? URL.createObjectURL(file[0])
+                              : file[0]
+                          }
+                        />
+                      </label>
+                      <input
+                        id="file-input-0"
+                        type="file"
+                        onChange={e => setFile([e.target.files[0]])}
+                      />
+                    </div>
+                    <SubmitCommentButton
+                      onClick={() => {
+                        AddComment();
+                      }}
+                    >
+                      Dodaj komentarz
+                    </SubmitCommentButton>
+                  </div>
                 </CommentContainer>
               </UnorderedListComments>
             </UnorderedList>

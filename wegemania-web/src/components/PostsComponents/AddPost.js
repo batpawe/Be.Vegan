@@ -120,6 +120,16 @@ const AddPost = () => {
   });
   return (
     <Container>
+      <h1
+        style={{
+          "font-size": 28,
+          "text-align": "center",
+          color: "#27752e",
+          "font-weight": "bold"
+        }}
+      >
+        Dodaj post:
+      </h1>
       {deleyedRedirect && <Redirect to={`/posts`} />}
       <Formik
         initialValues={{

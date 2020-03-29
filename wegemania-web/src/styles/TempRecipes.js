@@ -68,23 +68,20 @@ export const PagginationItem = styled.li`
   }
 `;
 export const Item = styled.li`
-  background: #00a835;
   margin: 1% 0 0 0;
-  width: 40%;
+  font-size: 15px;
+  white-space: nowrap;
+  font-weight: bold;
   padding: 1%;
-  border-radius: 20px;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
-  color: white;
+  color: black;
 `;
 export const WayItem = styled.li`
-  background: #00a835;
   text-align: justify;
   margin: 1% 0 0 0;
-  font-size: 10px;
-  border: 1px solid black;
-  color: white;
+  font-size: 14px;
+  color: black;
 `;

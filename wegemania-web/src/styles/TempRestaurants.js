@@ -46,8 +46,9 @@ export const PagginationContainer = styled.ul`
   display: flex;
   list-style-type: none;
   justify-content: space-around;
-  padding: 0;
-  margin: 0 0 1% 0;
+  padding: 4% 0 1% 0;
+  margin: 0;
+  border-top: 1px solid black;
 `;
 export const PagginationItem = styled.li`
   background: ${props => (props.active ? "#00e849" : "#00a835")};
@@ -62,10 +63,9 @@ export const PagginationItem = styled.li`
   }
 `;
 export const Item = styled.li`
-  background: #00a835;
   margin: auto;
-  border: 1px solid black;
-  color: white;
+  color: black;
   display: flex;
+  font-weight: bold;
   justify-content: space-between;
 `;
