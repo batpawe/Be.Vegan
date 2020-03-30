@@ -49,6 +49,7 @@ import {
   RateStars
 } from "../../styles/RecipeStyle";
 import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
+import "../../App.css";
 const Recipe = () => {
   let temp = [2];
   const [rating, setRating] = useState(temp);
@@ -60,51 +61,66 @@ const Recipe = () => {
   return (
     <MainContainer>
       <Container>
-        <SearchPanel>
-          <div>
-            <SearchInput
-              type="text"
-              id="ajax"
-              list="json-datalist"
-              placeholder="Wprowadź nazwę produktu"
-            />
-            <datalist id="json-datalist">
-              <option value="HTML" />
-              <option value="CSS" />
-              <option value="JavaScript" />
-              <option value="Java" />
-              <option value="Ruby" />
-              <option value="PHP" />
-              <option value="Go" />
-              <option value="Erlang" />
-              <option value="Python" />
-              <option value="C" />
-              <option value="C#" />
-              <option value="C++" />
-            </datalist>
-          </div>
-          <SearchButton>Wyszukaj</SearchButton>
-          <SearchButton to="/addrecipe">Dodaj przepis</SearchButton>
-        </SearchPanel>
         <OrderedList>
           <UnorderedList>
-            <HeaderRecipeContainer>
-              <HeaderRecipeText>ZUPA KREM Z TOPINAMBURU</HeaderRecipeText>
+            <HeaderRecipeContainer
+              style={{
+                background: "#00a835",
+                width: "40%",
+                "font-size": "24px",
+                color: "white",
+                "font-weight": "bold",
+                margin: "1% auto 1% auto",
+                "border-radius": "25px"
+              }}
+            >
+              <HeaderRecipeText style={{ color: "white" }}>
+                ZUPA KREM Z TOPINAMBURU
+              </HeaderRecipeText>
             </HeaderRecipeContainer>
             <ColumnContainer>
               <div>
                 <Item>
                   <BorderText>Składniki: </BorderText>
                 </Item>
-                <IngredientsList>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
+                <IngredientsList
+                  styles={{
+                    background: "rgba(255,255,255,0.6)",
+                    color: "black"
+                  }}
+                >
+                  <IngredientsItem>
+                    <p>Składniki</p>
+                    <p>100g</p>
+                  </IngredientsItem>
+                  <IngredientsItem>
+                    <p>Składniki</p>
+                    <p>100g</p>
+                  </IngredientsItem>
+                  <IngredientsItem>
+                    <p>Składniki</p>
+                    <p>100g</p>
+                  </IngredientsItem>
+                  <IngredientsItem>
+                    <p>Składniki</p>
+                    <p>100g</p>
+                  </IngredientsItem>
+                  <IngredientsItem>
+                    <p>Składniki</p>
+                    <p>100g</p>
+                  </IngredientsItem>
+                  <IngredientsItem>
+                    <p>Składniki</p>
+                    <p>100g</p>
+                  </IngredientsItem>
+                  <IngredientsItem>
+                    <p>Składniki</p>
+                    <p>100g</p>
+                  </IngredientsItem>
+                  <IngredientsItem>
+                    <p>Składniki</p>
+                    <p>100g</p>
+                  </IngredientsItem>
                 </IngredientsList>
               </div>
               <PreparingMethod>
@@ -128,8 +144,8 @@ const Recipe = () => {
               <RateHeader>Oceń</RateHeader>
               <RateStars>
                 <ReactStars
-                  style={{ left: "45%" }}
                   count={5}
+                  className="test"
                   onChange={setRating}
                   size={24}
                   color2={"#4CAF50"}
@@ -162,12 +178,15 @@ const Recipe = () => {
                   essentially unchanged.
                 </CommentContent>
               </UnorderedListCommentsIn>
-              <CommentContainer>
+              <CommentContainer
+                style={{ "flex-direction": "column", width: "300px" }}
+              >
                 <TextInput
+                  style={{ width: "100%", background: "rgba(255,255,255,0.7)" }}
                   type="text"
                   placeholder="Wprowadź treść komentarza"
                 />
-                <SubmitCommentButton type="submit">
+                <SubmitCommentButton style={{ width: "100%" }} type="submit">
                   Dodaj komentarz
                 </SubmitCommentButton>
               </CommentContainer>

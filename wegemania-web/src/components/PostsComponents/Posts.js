@@ -93,7 +93,14 @@ const Posts = props => {
         <AddPostPageContainer>
           <SearchContainer>
             <div>
-              <p style={{ margin: 0, padding: 0, "font-weight": "bold","color":"#27ae60" }}>
+              <p
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  "font-weight": "bold",
+                  color: "#27ae60"
+                }}
+              >
                 Filtruj:
               </p>
               <AutoSuggest
@@ -122,7 +129,12 @@ const Posts = props => {
             {/*<SearchInput placeholder="Wpisz tytuł lub tag"></SearchInput>*/}
             {/* <SearchButton>Wyszukaj</SearchButton> */}
           </SearchContainer>
-          <AddPostPageLink to="/addpost">Dodaj post</AddPostPageLink>
+          <AddPostPageLink
+            style={{ width: "200px", "font-size": "18px" }}
+            to="/addpost"
+          >
+            Dodaj post
+          </AddPostPageLink>
         </AddPostPageContainer>
         <div
           style={{

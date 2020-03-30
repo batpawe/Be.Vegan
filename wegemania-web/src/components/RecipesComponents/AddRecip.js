@@ -36,6 +36,7 @@ const AddRecipt = () => {
   const tempArray = [""];
   const [methods, setMethods] = useState("");
   const [productsArray, setProductsArray] = useState([[], [], []]);
+  const [newMethod, setNewMethod] = useState("");
   const handleMethods = e => {
     let temp = methods;
     temp = e.target.value;
@@ -73,7 +74,7 @@ const AddRecipt = () => {
     console.log(productsArray[0]);
     for (var i = 0; i < numberProducts; i++) {
       temp.push(
-        <ProductsContainer>
+        <ProductsContainer style={{ width: "100%" }}>
           <TextColumnInput
             type="text"
             placeholder="Nazwa produktu"
@@ -102,9 +103,12 @@ const AddRecipt = () => {
       );
     }
     return (
-      <div>
+      <div style={{ display: "flex", "justify-content": "space-between" }}>
         <ReciptLabel for="products">
-          Produkty:{temp}
+          <p style={{ "font-size": "20px", "font-weight": "bold" }}>
+            Produkty:
+          </p>
+          {temp}
           <AddItem onClick={() => nextProductField()}>Dodaj pole</AddItem>
         </ReciptLabel>
       </div>
@@ -112,24 +116,29 @@ const AddRecipt = () => {
   };
   const MethodFields = () => {
     return (
-      <div>
-        <ReciptLabel for="products">
-          Sposób przygotowania:
-          <MethodContainer>
-            <TextAreaMethod
-              type="text"
-              id={1}
-              value={methods}
-              onChange={e => {
-                handleMethods(e);
-              }}
-            />
-            <img
-              style={{ width: 25 }}
-              src={CloseImage}
-              onClick={() => prevMethodField()}
-            />
-          </MethodContainer>
+      <div style={{ display: "flex", "justify-content": "center" }}>
+        <ReciptLabel
+          for="products"
+          style={{ width: "100%", justifyContent: "center" }}
+        >
+          <div style={{ display: "flex", "flex-direction": "column" }}>
+            <p style={{ "font-size": "20px", "font-weight": "bold" }}>
+              Sposób przygotowania:
+            </p>
+            <MethodContainer
+              style={{ width: "40%", margin: "1% auto 1% auto" }}
+            >
+              <TextAreaMethod
+                style={{ width: "100%", height: "200px" }}
+                type="text"
+                id={1}
+                value={newMethod}
+                onChange={e => {
+                  setNewMethod(e.target.value);
+                }}
+              />
+            </MethodContainer>
+          </div>
         </ReciptLabel>
       </div>
     );
@@ -152,9 +161,20 @@ const AddRecipt = () => {
   };
   return (
     <Container>
-      <InputLabel for="name">Nazwa:</InputLabel>
-      <TextInput type="text" id="name" placeholder="Wprowadź nazwę dania" />
-      <ColumnContainer>
+      <div
+        style={{
+          display: "flex",
+          "justify-content": "center",
+          "flex-direction": "column",
+          "align-items": "center"
+        }}
+      >
+        <InputLabel for="name" style={{ "font-size": "20px" }}>
+          Nazwa:
+        </InputLabel>
+        <TextInput type="text" id="name" placeholder="Wprowadź nazwę dania" />
+      </div>
+      <ColumnContainer style={{ display: "flex", "flex-direction": "column" }}>
         <MethodFields />
         <ProductFields />
       </ColumnContainer>
@@ -167,36 +187,6 @@ const AddRecipt = () => {
             id="file-input-0"
             type="file"
             onChange={e => handleChange(0, e)}
-          />
-        </div>
-        <div className="image-upload">
-          <label for="file-input-1">
-            <Image src={file[1]} />
-          </label>
-          <input
-            id="file-input-1"
-            type="file"
-            onChange={e => handleChange(1, e)}
-          />
-        </div>
-        <div className="image-upload">
-          <label for="file-input-2">
-            <Image src={file[2]} />
-          </label>
-          <input
-            id="file-input-2"
-            type="file"
-            onChange={e => handleChange(2, e)}
-          />
-        </div>
-        <div className="image-upload">
-          <label for="file-input-3">
-            <Image src={file[3]} />
-          </label>
-          <input
-            id="file-input-3"
-            type="file"
-            onChange={e => handleChange(3, e)}
           />
         </div>
       </ImagesContainer>

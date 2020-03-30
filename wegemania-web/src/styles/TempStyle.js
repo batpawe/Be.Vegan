@@ -11,13 +11,11 @@ export const Container = styled.div`
   flex-wrap: wrap;
 `;
 export const ElementContainer = styled.div`
-  background: white;
   margin: 1% 0 0 0;
   padding: 0.2%;
   align-items: flex-start;
   width: 46%;
   justify-content: center;
-  border: 1px solid black;
   text-align: center;
   display: flex;
   cursor: pointer;

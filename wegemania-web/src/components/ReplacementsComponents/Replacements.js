@@ -1,20 +1,6 @@
 import React, { useState } from "react";
 import { MainContainer, Container } from "../../styles/WallStyle";
-import {
-  ReplacementsName,
-  HeaderText,
-  ContainerReplacements,
-  ImageReplacements,
-  ContentContainer,
-  UnorderedList,
-  PagginationContainer,
-  PagginationItem,
-  Item,
-  WayItem,
-  ReplacementsImage,
-  OuterUnorderedList,
-  InnerUnorderedList
-} from "../../styles/TempReplacements";
+import { ReplacementsContainer, Item } from "../../styles/ReplacementsStyle";
 import { Scrollbars } from "react-custom-scrollbars";
 import RightPanel from "../GlobalComponents/RightPanel";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
@@ -25,180 +11,39 @@ import {
   SearchInput,
   SearchButton
 } from "../../styles/GlobalStyle";
+import PerfectScrollbar from "react-perfect-scrollbar";
 import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
+/*
+     <OuterUnorderedList>
+                    <InnerUnorderedList>
+                      <WayItem>Zamiennik1</WayItem>
+                      <WayItem>kaloryczność:</WayItem>
+                      <WayItem>proteiny:</WayItem>
+                      <WayItem>tłuszcz:</WayItem>
+                      <WayItem>węglowodany</WayItem>
+                      <WayItem>celuluoza</WayItem>
+                    </InnerUnorderedList>
+                    <ReplacementsImage src={Image} />
+                  </OuterUnorderedList>
+                </UnorderedList>
+                */
 const Replacements = props => {
-  let temp = [0, 0, 0];
-  const [page, setPage] = useState(temp);
-  const Paggination = props => {
-    let no = props.no || 2;
-    const handlePage = k => {
-      let tmp = page;
-      console.log(k);
-      if (k == 1) {
-        tmp[props.index] = 1;
-      } else {
-        tmp[props.index] = 0;
-      }
-      setPage([...tmp]);
-    };
-    const paggin = Array.from({ length: no }, (_, k) =>
-      k == page[props.index] ? (
-        <PagginationItem
-          key={k}
-          active={true}
-          onClick={() => {
-            handlePage(k);
-          }}
-        >
-          {k + 1}
-        </PagginationItem>
-      ) : (
-        <PagginationItem
-          key={k}
-          onClick={() => {
-            handlePage(k);
-          }}
-        >
-          {k + 1}
-        </PagginationItem>
-      )
+  const [selected, setSelected] = useState(0);
+  const items = [];
+  for (var i = 0; i < 20; i++) {
+    items.push(
+      <Item
+        id={i}
+        onClick={e => {
+          setSelected(e.target.id);
+          console.log(e.target.id);
+        }}
+        select={selected == i}
+      >
+        test
+      </Item>
     );
-    return <PagginationContainer>{paggin}</PagginationContainer>;
-  };
-  const ContentController = props => {
-    return (
-      <ContainerReplacements>
-        <ImageReplacements
-          src={Image}
-          style={{ width: "60%", cursor: "pointer" }}
-          onClick={() => props.historyProps.push("/replacement")}
-        />
-        <ContentContainer style={{ width: "38%", background: "white" }}>
-          <ReplacementsName>Przepis</ReplacementsName>
-          {console.log(page[props.index])}
-          {page[props.index] == 0 ? (
-            <div>
-              <HeaderText>Zamienniki:</HeaderText>
-              <Scrollbars style={{ width: 165, height: 200 }}>
-                <UnorderedList>
-                  <OuterUnorderedList>
-                    <InnerUnorderedList>
-                      <WayItem>Zamiennik1</WayItem>
-                      <WayItem>kaloryczność:</WayItem>
-                      <WayItem>proteiny:</WayItem>
-                      <WayItem>tłuszcz:</WayItem>
-                      <WayItem>węglowodany</WayItem>
-                      <WayItem>celuluoza</WayItem>
-                    </InnerUnorderedList>
-                    <ReplacementsImage src={Image} />
-                  </OuterUnorderedList>
-                </UnorderedList>
-                <UnorderedList>
-                  <OuterUnorderedList>
-                    <InnerUnorderedList>
-                      <WayItem>Zamiennik1</WayItem>
-                      <WayItem>kaloryczność:</WayItem>
-                      <WayItem>proteiny:</WayItem>
-                      <WayItem>tłuszcz:</WayItem>
-                      <WayItem>węglowodany</WayItem>
-                      <WayItem>celuluoza</WayItem>
-                    </InnerUnorderedList>
-                    <ReplacementsImage src={Image} />
-                  </OuterUnorderedList>
-                </UnorderedList>
-                <UnorderedList>
-                  <OuterUnorderedList>
-                    <InnerUnorderedList>
-                      <WayItem>Zamiennik1</WayItem>
-                      <WayItem>kaloryczność:</WayItem>
-                      <WayItem>proteiny:</WayItem>
-                      <WayItem>tłuszcz:</WayItem>
-                      <WayItem>węglowodany</WayItem>
-                      <WayItem>celuluoza</WayItem>
-                    </InnerUnorderedList>
-                    <ReplacementsImage src={Image} />
-                  </OuterUnorderedList>
-                </UnorderedList>
-                <UnorderedList>
-                  <OuterUnorderedList>
-                    <InnerUnorderedList>
-                      <WayItem>Zamiennik1</WayItem>
-                      <WayItem>kaloryczność:</WayItem>
-                      <WayItem>proteiny:</WayItem>
-                      <WayItem>tłuszcz:</WayItem>
-                      <WayItem>węglowodany</WayItem>
-                      <WayItem>celuluoza</WayItem>
-                    </InnerUnorderedList>
-                    <ReplacementsImage src={Image} />
-                  </OuterUnorderedList>
-                </UnorderedList>
-              </Scrollbars>
-            </div>
-          ) : (
-            <div>
-              <HeaderText>Zamienniki:</HeaderText>
-              <Scrollbars style={{ width: 165, height: 200 }}>
-                <UnorderedList>
-                  <OuterUnorderedList>
-                    <InnerUnorderedList>
-                      <WayItem>Zamiennik1</WayItem>
-                      <WayItem>kaloryczność:</WayItem>
-                      <WayItem>proteiny:</WayItem>
-                      <WayItem>tłuszcz:</WayItem>
-                      <WayItem>węglowodany</WayItem>
-                      <WayItem>celuluoza</WayItem>
-                    </InnerUnorderedList>
-                    <ReplacementsImage src={Image} />
-                  </OuterUnorderedList>
-                </UnorderedList>
-                <UnorderedList>
-                  <OuterUnorderedList>
-                    <InnerUnorderedList>
-                      <WayItem>Zamiennik1</WayItem>
-                      <WayItem>kaloryczność:</WayItem>
-                      <WayItem>proteiny:</WayItem>
-                      <WayItem>tłuszcz:</WayItem>
-                      <WayItem>węglowodany</WayItem>
-                      <WayItem>celuluoza</WayItem>
-                    </InnerUnorderedList>
-                    <ReplacementsImage src={Image} />
-                  </OuterUnorderedList>
-                </UnorderedList>
-                <UnorderedList>
-                  <OuterUnorderedList>
-                    <InnerUnorderedList>
-                      <WayItem>Zamiennik1</WayItem>
-                      <WayItem>kaloryczność:</WayItem>
-                      <WayItem>proteiny:</WayItem>
-                      <WayItem>tłuszcz:</WayItem>
-                      <WayItem>węglowodany</WayItem>
-                      <WayItem>celuluoza</WayItem>
-                    </InnerUnorderedList>
-                    <ReplacementsImage src={Image} />
-                  </OuterUnorderedList>
-                </UnorderedList>
-                <UnorderedList>
-                  <OuterUnorderedList>
-                    <InnerUnorderedList>
-                      <WayItem>Zamiennik1</WayItem>
-                      <WayItem>kaloryczność:</WayItem>
-                      <WayItem>proteiny:</WayItem>
-                      <WayItem>tłuszcz:</WayItem>
-                      <WayItem>węglowodany</WayItem>
-                      <WayItem>celuluoza</WayItem>
-                    </InnerUnorderedList>
-                    <ReplacementsImage src={Image} />
-                  </OuterUnorderedList>
-                </UnorderedList>
-              </Scrollbars>
-            </div>
-          )}
-
-          <Paggination index={props.index} />
-        </ContentContainer>
-      </ContainerReplacements>
-    );
-  };
+  }
   return (
     <MainContainer>
       <Container>
@@ -225,14 +70,249 @@ const Replacements = props => {
               <option value="C++" />
             </datalist>
           </div>
-          <SearchButton>Wyszukaj</SearchButton>
-          <AddPostPageLink to="/addreplacement">
+          <SearchButton style={{ width: "200px", "font-size": "18px" }}>
+            Wyszukaj
+          </SearchButton>
+          <AddPostPageLink
+            style={{
+              width: "250px",
+              display: "flex",
+              "align-items": "center",
+              "justify-content": "center",
+              "font-size": "18px"
+            }}
+            to="/addreplacement"
+          >
             Dodaj zamiennik
           </AddPostPageLink>
         </SearchPanel>
-        <ContentController index={0} historyProps={props.history} />
-        <ContentController index={1} historyProps={props.history} />
-        <ContentController index={2} historyProps={props.history} />
+        <ReplacementsContainer>
+          <ul
+            style={{
+              "list-style-type": "none",
+              "font-size": "20px",
+              padding: 0,
+              margin: 0,
+              overflow: "auto",
+              width: "20%",
+              "max-height": "100%",
+              "text-align": "center"
+            }}
+          >
+            {items}
+          </ul>
+          <ul
+            style={{
+              "list-style-type": "none",
+              "font-size": "20px",
+              padding: 0,
+              margin: 0,
+              overflow: "auto",
+              "max-height": "100%",
+              width: "80%"
+            }}
+          >
+            <ul
+              style={{
+                "border-bottom": "1px solid black",
+                margin: 0,
+                padding: 0,
+                "list-style-type": "none"
+              }}
+            >
+              <li
+                style={{
+                  padding: "1%",
+                  "text-align": "center",
+                  "font-size": "22px",
+                  display: "block",
+                  background: "#00a835",
+                  width: "40%",
+                  "font-weight": "bold",
+                  margin: "1% auto 1% auto",
+                  "border-radius": "25px",
+                  color: "white"
+                }}
+              >
+                Nazwa
+              </li>
+              <li style={{ padding: "2%" }}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy
+                text ever since the 1500s, when an unknown printer took a galley
+                of type and scrambled
+              </li>
+            </ul>
+            <ul
+              style={{
+                margin: "1% 0 1% 0",
+                padding: 0,
+                "list-style-type": "none"
+              }}
+            >
+              <li
+                style={{
+                  padding: "1%",
+                  "text-align": "center",
+                  "font-size": "16px",
+                  display: "block",
+                  background: "#00a835",
+                  width: "30%",
+                  "font-weight": "bold",
+                  margin: "1% auto 1% auto",
+                  "border-radius": "25px",
+                  color: "white"
+                }}
+              >
+                Nazwa
+              </li>
+              <li
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  "justify-content": "space-evenly"
+                }}
+              >
+                <p style={{ width: "20%" }}>Kaloryczność:</p>
+                <p style={{ width: "10%" }}>100</p>
+              </li>
+              <li
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  "justify-content": "space-evenly"
+                }}
+              >
+                <p style={{ width: "20%" }}>Proteiny:</p>
+                <p style={{ width: "10%" }}>100</p>
+              </li>
+              <li
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  "justify-content": "space-evenly"
+                }}
+              >
+                <p style={{ width: "20%" }}>Tłuszcz:</p>
+                <p style={{ width: "10%" }}>100</p>
+              </li>
+              <li
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  "justify-content": "space-evenly"
+                }}
+              >
+                <p style={{ width: "20%" }}>Węglowodany:</p>
+                <p style={{ width: "10%" }}> 100</p>
+              </li>
+              <li
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  "justify-content": "space-evenly"
+                }}
+              >
+                <p style={{ width: "20%" }}>Celuloza:</p>
+                <p style={{ width: "10%" }}>100</p>
+              </li>
+              <li>
+                <img
+                  style={{
+                    width: "330px",
+                    margin: "1% auto 1% auto",
+                    display: "block"
+                  }}
+                  src={Image}
+                />
+              </li>
+            </ul>
+            <ul
+              style={{
+                margin: "1% 0 1% 0",
+                padding: 0,
+                "list-style-type": "none"
+              }}
+            >
+              <li
+                style={{
+                  padding: "1%",
+                  "text-align": "center",
+                  "font-size": "16px",
+                  display: "block",
+                  background: "#00a835",
+                  width: "30%",
+                  "font-weight": "bold",
+                  margin: "1% auto 1% auto",
+                  "border-radius": "25px",
+                  color: "white"
+                }}
+              >
+                Nazwa
+              </li>
+              <li
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  "justify-content": "space-evenly"
+                }}
+              >
+                <p style={{ width: "20%" }}>Kaloryczność:</p>
+                <p style={{ width: "10%" }}>100</p>
+              </li>
+              <li
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  "justify-content": "space-evenly"
+                }}
+              >
+                <p style={{ width: "20%" }}>Proteiny:</p>
+                <p style={{ width: "10%" }}>100</p>
+              </li>
+              <li
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  "justify-content": "space-evenly"
+                }}
+              >
+                <p style={{ width: "20%" }}>Tłuszcz:</p>
+                <p style={{ width: "10%" }}>100</p>
+              </li>
+              <li
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  "justify-content": "space-evenly"
+                }}
+              >
+                <p style={{ width: "20%" }}>Węglowodany:</p>
+                <p style={{ width: "10%" }}> 100</p>
+              </li>
+              <li
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  "justify-content": "space-evenly"
+                }}
+              >
+                <p style={{ width: "20%" }}>Celuloza:</p>
+                <p style={{ width: "10%" }}>100</p>
+              </li>
+              <li>
+                <img
+                  style={{
+                    width: "330px",
+                    margin: "1% auto 1% auto",
+                    display: "block"
+                  }}
+                  src={Image}
+                />
+              </li>
+            </ul>
+          </ul>
+        </ReplacementsContainer>
       </Container>
       <RightPanel />
     </MainContainer>

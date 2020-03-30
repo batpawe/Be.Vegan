@@ -61,7 +61,13 @@ const Recipes = props => {
     );
     return (
       <PagginationContainer
-        style={{ padding: "4% 0 1% 0", "border-top": "1px solid black" }}
+        style={{
+          padding: "4% 0 1% 0",
+          "border-top": "1px solid black",
+          position: "absolute",
+          bottom: 0,
+          width: "100%"
+        }}
       >
         {paggin}
       </PagginationContainer>
@@ -76,7 +82,11 @@ const Recipes = props => {
           onClick={() => props.historyProps.push("/recipe")}
         />
         <ContentContainer
-          style={{ width: "38%", background: "rgba(255,255,255,0.6)" }}
+          style={{
+            width: "38%",
+            background: "rgba(255,255,255,0.6)",
+            position: "relative"
+          }}
         >
           <RecipesName style={{ "font-size": "19px" }}>Przepis</RecipesName>
           {console.log(page[props.index])}
@@ -179,9 +189,37 @@ const Recipes = props => {
                 <option value="C++" />
               </datalist>
             </div>
-            <SearchButton>Wyszukaj</SearchButton>
+            <SearchButton
+              style={{
+                display: "flex",
+                background: "27ae60",
+                color: "white",
+                "text-decoration": "none",
+                padding: "0 1% 0 1%",
+                width: "100%",
+                "font-size": "18px",
+                "justify-content": "center"
+              }}
+            >
+              Wyszukaj
+            </SearchButton>
           </div>
-          <SearchButton to="/addrecipe">Dodaj przepis</SearchButton>
+          <SearchButton
+            to="/addrecipe"
+            style={{
+              display: "flex",
+              background: "27ae60",
+              color: "white",
+              width: "200px",
+              "text-decoration": "none",
+              padding: "0 1% 0 1%",
+              "font-size": "18px",
+              "justify-content": "center",
+              "align-items": "center"
+            }}
+          >
+            Dodaj przepis
+          </SearchButton>
         </SearchPanel>
         <div style={{ display: "flex", "flex-wrap": "wrap" }}>
           <ContentController index={0} historyProps={props.history} />

@@ -184,7 +184,7 @@ const Restaurants = props => {
                 zoom={17}
                 style={{
                   width: 130,
-                  height: 165,
+                  height: 158,
                   "margin-left": 20,
                   "z-index": 0
                 }}
@@ -374,7 +374,10 @@ const Restaurants = props => {
                 </div>
               </div>
             </div>
-            <AddRestaurantLink to="/addrestaurant">
+            <AddRestaurantLink
+              style={{ width: "200px", "font-size": "18px" }}
+              to="/addrestaurant"
+            >
               Dodaj restaurację
             </AddRestaurantLink>
           </div>

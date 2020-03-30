@@ -28,33 +28,34 @@ export const RecipeTime = styled.li`
 export const IngredientsList = styled.ul`
   list-style-type: none;
   padding: 0;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 5px;
+  padding: 1%;
   margin: 5px 0 0 0;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
   width: 350px;
 `;
 export const IngredientsItem = styled.li`
-  width: 40%;
+  font-weight: bold;
+  font-size: 14px;
   margin: 5px 10px 2px 10px;
   padding: 0;
-  color: white;
-  border: 1px solid black;
-  cursor: pointer;
+  color: black;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
   text-align: center;
-  border-radius: 25px;
-  background: #00a835;
   padding: 1%;
 `;
 export const PreparationItem = styled.li`
-  margin: 5px 10px 2px 10px;
+  margin: 5px 10px 2px 0;
   border-radius: 10px;
-  color: white;
+  color: black;
+  background: rgba(255, 255, 255, 0.6);
+  font-size: 18px;
   text-align: justify;
   text-justify: inter-word;
-  border: 1px solid black;
-  cursor: pointer;
-  background: #00a835;
   padding: 3%;
 `;
 export const RecipeImage = styled.img`
@@ -64,19 +65,19 @@ export const RecipeImage = styled.img`
 `;
 export const RateContainer = styled.ul`
   list-style-type: none;
-  padding: 0;
-  background: rgba(255, 255, 255, 0.6);
   text-align: center;
-  margin: 5% auto 0 auto;
+  width: 12%;
+  padding: 0;
+  margin: 5% auto 1% auto;
+  position: relative;
 `;
 export const RateHeader = styled.li`
   font-size: 20px;
+  font-weight: bold;
   padding: 0;
   margin: 0;
-  font-weight: bold;
 `;
 export const RateStars = styled.li`
-  position: relative;
-  left: 43%;
   padding: 0;
+  margin: 0;
 `;
