@@ -11,7 +11,18 @@ import DinnerImage from "../../images/dinner.jpg";
 export const RecommendedRecipt = () => {
   return (
     <LocalContainer>
-      <HeaderText> Polecane Przepisy :</HeaderText>
+      <HeaderText
+        style={{
+          "text-align": "center",
+          background: "#00a835",
+          "border-radius": "20px",
+          color: "white",
+          padding: "1%",
+          margin: "1% auto 1% auto"
+        }}
+      >
+        Polecane Przepisy :
+      </HeaderText>
       <UnorderedList>
         <HyperLink to="/posts">
           <li>

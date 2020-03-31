@@ -1,578 +1,710 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { NewLoginInfo } from "../../context/LoginInfo";
-import "../../styles/MenuLoginStyle.css";
-import { Redirect } from "react-router";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import {
-  Container,
-  UnorderedList,
-  ColumnContainer,
-  OrderedList,
-  BorderText,
-  Image,
-  UnorderedListIn,
-  Item,
-  UnorderedListComments,
-  HighlightItem,
-  CommentContent,
+  RecipesName,
   HeaderText,
-  UnorderedListCommentsIn,
-  HyperLink,
-  TextInput,
-  SubmitCommentButton,
-  HeaderRecipe,
-  CommentContainer,
-  MainContainer,
-  PreparingMethod,
-  ItemHeaderRecipe,
-  HiglightItemHeaderRecipe,
-  HeaderItem,
-  HeaderList
-} from "../../styles/WallStyle";
+  ContainerRecipes,
+  ImageRecipes,
+  ContentContainer,
+  UnorderedList,
+  PagginationContainer,
+  PagginationItem,
+  Item,
+  WayItem
+} from "../../styles/TempRecipes";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
-import DinnerImage from "../../images/dinner.jpg";
-import RestaurantImage from "../../images/restaurant.jpg";
-import ShopImage from "../../images/shop.jpg";
-import PostImage from "../../images/postimage.jpg";
+import PostsIcon from "../../icons/VeganAppIcons/posts.svg";
+import {
+  RestaurantName,
+  ContainerRestaurant,
+  ImageRestaurant
+} from "../../styles/TempRestaurants";
+import {
+  ImageComponent,
+  ElementContainer,
+  Icon,
+  HoverContainer,
+  HoverHeader,
+  HoverText,
+  ImageHoverComponent
+} from "../../styles/TempStyle";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { FormControl } from "@material-ui/core";
+import FormLabel from "@material-ui/core/FormLabel";
+import { green, orange } from "@material-ui/core/colors";
+import Image from "../../images/dinner.jpg";
 import RightPanel from "../GlobalComponents/RightPanel";
+import axios from "axios";
+import RecipesIcon from "../../icons/VeganAppIcons/recipes.svg";
 import {
-  HeaderRecipeContainer,
-  RecipeTimeContainer,
-  HeaderRecipeText,
-  RecipeTime,
-  IngredientsList,
-  IngredientsItem,
-  PreparationItem,
-  RecipeImage
-} from "../../styles/RecipeStyle";
-import {
-  HeaderRestaurantContainer,
-  HeaderRestaurantText,
-  FirstRestaurantRow,
-  FirstRestaurantItem,
-  RestaurantImageComponent,
-  RestaurantOpenItem,
-  MenuList,
-  MenuItem,
-  HeaderColumn
-} from "../../styles/RestaurantStyle";
-import {
-  HeaderPostsContainer,
-  HeaderPostsItem,
-  HeaderPostsText,
-  TagsPostsHeader,
-  TagsPostsHeaderContainer,
-  TagsPostsContainer,
-  TagsItems,
-  RateContainer,
-  RateItem,
-  RateStars,
-  RateHeader
-} from "../../styles/PostsWallStyle";
-import ReactStars from "react-stars";
-const Wall = () => {
-  const [rating, setRating] = useState(1);
-  const user = useContext(NewLoginInfo);
+  MainContainer,
+  Container,
+  ReplacementsContainer
+} from "../../styles/WallStyle";
+import ReplacementsIcon from "../../icons/VeganAppIcons/replacements.svg";
+import RestaurantIcon from "../../icons/VeganAppIcons/restaurants.svg";
+const Recipes = props => {
+  let temp = [0, 0, 0];
+  const [page, setPage] = useState(temp);
+  const Paggination = props => {
+    let no = props.no || 2;
+    const handlePage = k => {
+      let tmp = page;
+      console.log(k);
+      if (k == 1) {
+        tmp[props.index] = 1;
+      } else {
+        tmp[props.index] = 0;
+      }
+      setPage([...tmp]);
+    };
+    const paggin = Array.from({ length: no }, (_, k) =>
+      k == page[props.index] ? (
+        <PagginationItem
+          key={k}
+          active={true}
+          onClick={() => {
+            handlePage(k);
+          }}
+        >
+          {k + 1}
+        </PagginationItem>
+      ) : (
+        <PagginationItem
+          key={k}
+          onClick={() => {
+            handlePage(k);
+          }}
+        >
+          {k + 1}
+        </PagginationItem>
+      )
+    );
+    return (
+      <PagginationContainer
+        style={{
+          padding: "4% 0 1% 0",
+          "border-top": "1px solid black",
+          position: "absolute",
+          bottom: 0,
+          width: "100%"
+        }}
+      >
+        {paggin}
+      </PagginationContainer>
+    );
+  };
+  return (
+    <ContainerRecipes style={{ height: "300px", margin: 0, width: "40%" }}>
+      <ImageRecipes
+        src={Image}
+        style={{ width: "300px", cursor: "pointer" }}
+        onClick={() => props.historyProps.push("/recipe")}
+      />
+      <ContentContainer
+        style={{
+          position: "relative",
+          width: "100%",
+          background: "rgba(255,255,255,0.6)"
+        }}
+      >
+        <img
+          style={{
+            width: "35px",
+            position: "absolute",
+            top: 0,
+            right: 0,
+            background: "green"
+          }}
+          src={RecipesIcon}
+        />
+        <RecipesName style={{ "font-size": "19px" }}>Przepis</RecipesName>
+        <div
+          style={{
+            display: "flex",
+            "justify-content": "space-between",
+            width: "100%",
+            margin: "6% 0 0 0",
+            "font-size": "13px"
+          }}
+        >
+          <p
+            style={{
+              color: "#4CAF50",
+              "font-weight": "bold"
+            }}
+          >
+            Czas przygotowania:
+          </p>
+          <p style={{ "font-weight": "bold" }}>0s</p>
+        </div>
+        {page[props.index] == 0 ? (
+          <div>
+            <HeaderText>Składniki:</HeaderText>{" "}
+            <UnorderedList>
+              <ul
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  width: "100%",
+                  display: "flex",
+                  "justify-content": "space-between"
+                }}
+              >
+                <Item>Jakiś produkt</Item>
+                <Item>10g</Item>
+              </ul>
+              <ul
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  width: "100%",
+                  display: "flex",
+                  "justify-content": "space-between"
+                }}
+              >
+                <Item>Jakiś produkt</Item>
+                <Item>10g</Item>
+              </ul>
+              <ul
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  width: "100%",
+                  display: "flex",
+                  "justify-content": "space-between"
+                }}
+              >
+                <Item>Jakiś produkt</Item>
+                <Item>10g</Item>
+              </ul>
+              <ul
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  width: "100%",
+                  display: "flex",
+                  "justify-content": "space-between"
+                }}
+              >
+                <Item>Jakiś produkt</Item>
+                <Item>10g</Item>
+              </ul>
+            </UnorderedList>
+          </div>
+        ) : (
+          <div>
+            <HeaderText>Sposób przyrządzenia:</HeaderText>
+            <UnorderedList>
+              <WayItem>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy
+                text ever since the 1500s...
+              </WayItem>
+            </UnorderedList>
+          </div>
+        )}
+        <Paggination index={props.index} />
+      </ContentContainer>
+    </ContainerRecipes>
+  );
+};
+const Restaurants = props => {
+  const [page, setPage] = useState([]);
+
+  const Paggination = props => {
+    let no = props.no || 2;
+    const handlePage = k => {
+      let tmp = page;
+      console.log(k);
+      if (k == 1) {
+        tmp[props.index] = 1;
+      } else {
+        tmp[props.index] = 0;
+      }
+      setPage([...tmp]);
+    };
+    const paggin = Array.from({ length: no }, (_, k) =>
+      k == page[props.index] ? (
+        <PagginationItem
+          key={k}
+          active={true}
+          onClick={() => {
+            handlePage(k);
+          }}
+        >
+          {k + 1}
+        </PagginationItem>
+      ) : (
+        <PagginationItem
+          key={k}
+          onClick={() => {
+            handlePage(k);
+          }}
+        >
+          {k + 1}
+        </PagginationItem>
+      )
+    );
+    return (
+      <PagginationContainer
+        style={{
+          padding: "4% 0 1% 0",
+          "border-top": "1px solid black",
+          position: "absolute",
+          bottom: 0,
+          width: "100%"
+        }}
+      >
+        {paggin}
+      </PagginationContainer>
+    );
+  };
+  console.log("|||");
+  console.log(props.number);
+  const tempTime = props.data.hours.split("\r\n");
+  const time = tempTime.map(time => {
+    return [
+      time.split(":", 1).toString(),
+      time
+        .split(":")
+        .slice(1)
+        .join(":")
+    ];
+  });
+  return (
+    <ContainerRestaurant style={{ height: "300px", width: "40%" }}>
+      {/*ttt*/}
+      <ImageRestaurant
+        src={props.data.foto}
+        style={{ width: "300px", cursor: "pointer" }}
+        onClick={() => props.historyProps.push(`/restaurant/${props.index}`)}
+      />
+      <ContentContainer
+        style={{
+          width: "100%",
+          position: "relative",
+          background: "rgba(255,255,255,0.6)"
+        }}
+      >
+        <img
+          style={{
+            width: "35px",
+            background: "green",
+            position: "absolute",
+            top: 0,
+            right: 0
+          }}
+          src={RestaurantIcon}
+        />
+        <RestaurantName>{props.data.name}</RestaurantName>
+        {console.log(page[props.index])}
+        {page[props.number] == 0 || page[props.number] == undefined ? (
+          <div>
+            <HeaderText>Godziny otwarcia:</HeaderText>
+            <UnorderedList>
+              {time.map(t => {
+                return (
+                  <Item style={{ "font-size": "14px", margin: "1%" }}>
+                    <p style={{ margin: 0 }}>{t[0]}</p>
+                    <p style={{ margin: 0 }}>{t[1]}</p>
+                  </Item>
+                );
+              })}
+              {/*}
+              <Item>Poniedziałek: 10:00 - 20:00</Item>
+              <Item>Poniedziałek: 10:00 - 20:00</Item>
+              <Item>Poniedziałek: 10:00 - 20:00</Item>
+              <Item>Poniedziałek: 10:00 - 20:00</Item>
+              <Item>Poniedziałek: 10:00 - 20:00</Item>
+              <Item>Poniedziałek: 10:00 - 20:00</Item>
+              {*/}
+            </UnorderedList>
+          </div>
+        ) : (
+          <div>
+            <HeaderText>Lokalizacja:</HeaderText>
+            <Map
+              id="mapid"
+              center={[props.data.latX, props.data.longY]}
+              zoom={17}
+              style={{
+                width: 130,
+                height: 158,
+                "margin-left": 20,
+                "z-index": 0
+              }}
+            >
+              <TileLayer
+                style={{ "font-size": 4 }}
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[props.data.latX, props.data.longY]}>
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>
+            </Map>
+          </div>
+        )}
+
+        <Paggination index={props.number} />
+      </ContentContainer>
+    </ContainerRestaurant>
+  );
+};
+const Posts = props => {
+  const [isHover, setIsHover] = useState(false);
+  console.log("||||||||||||||");
+  console.log(props.index);
+  return (
+    <ElementContainer
+      style={{ width: "40%", "justify-content": "flex-start" }}
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
+      onClick={() => props.historyProps.push(`/post/${props.index}`)}
+    >
+      <HoverContainer>
+        {isHover ? (
+          <div>
+            <ImageHoverComponent
+              style={{ width: "100%" }}
+              src={`${props.post.foto}`}
+            />
+            <HoverHeader> {props.post.title}</HoverHeader>
+            <HoverText>{props.post.description}</HoverText>
+            <Icon style={{ width: "35px" }} src={PostsIcon} />
+          </div>
+        ) : (
+          <div>
+            <ImageComponent
+              style={{ width: "100%" }}
+              src={`${props.post.foto}`}
+            />
+            <Icon style={{ width: "35px" }} src={PostsIcon} />
+          </div>
+        )}
+      </HoverContainer>
+    </ElementContainer>
+  );
+};
+const Replacements = props => {
+  return (
+    <div>
+      <ul
+        style={{
+          "list-style-type": "none",
+          "font-size": "20px",
+          padding: 0,
+          margin: 0,
+          overflow: "auto",
+          "max-height": "100%",
+          width: "100%"
+        }}
+      >
+        <ul
+          style={{
+            "border-bottom": "1px solid black",
+            margin: 0,
+            padding: 0,
+            "list-style-type": "none"
+          }}
+        >
+          <li
+            style={{
+              padding: "1%",
+              "text-align": "center",
+              "font-size": "15px",
+              display: "block",
+              background: "#00a835",
+              width: "40%",
+              "font-weight": "bold",
+              margin: "1% auto 1% auto",
+              "border-radius": "25px",
+              color: "white"
+            }}
+          >
+            Nazwa
+          </li>
+          <li style={{ padding: "2%" }}>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled
+          </li>
+        </ul>
+        <ul
+          style={{
+            margin: "1% 0 1% 0",
+            padding: 0,
+            "list-style-type": "none"
+          }}
+        >
+          <li
+            style={{
+              padding: "1%",
+              "text-align": "center",
+              "font-size": "13px",
+              display: "block",
+              background: "#00a835",
+              width: "30%",
+              "font-weight": "bold",
+              margin: "1% auto 1% auto",
+              "border-radius": "25px",
+              color: "white"
+            }}
+          >
+            Nazwa
+          </li>
+          <li
+            style={{
+              display: "flex",
+              width: "100%",
+              "justify-content": "space-evenly"
+            }}
+          >
+            <p style={{ width: "20%" }}>Kaloryczność:</p>
+            <p style={{ width: "10%" }}>100</p>
+          </li>
+          <li
+            style={{
+              display: "flex",
+              width: "100%",
+              "justify-content": "space-evenly"
+            }}
+          >
+            <p style={{ width: "20%" }}>Proteiny:</p>
+            <p style={{ width: "10%" }}>100</p>
+          </li>
+          <li
+            style={{
+              display: "flex",
+              width: "100%",
+              "justify-content": "space-evenly"
+            }}
+          >
+            <p style={{ width: "20%" }}>Tłuszcz:</p>
+            <p style={{ width: "10%" }}>100</p>
+          </li>
+          <li
+            style={{
+              display: "flex",
+              width: "100%",
+              "justify-content": "space-evenly"
+            }}
+          >
+            <p style={{ width: "20%" }}>Węglowodany:</p>
+            <p style={{ width: "10%" }}> 100</p>
+          </li>
+          <li
+            style={{
+              display: "flex",
+              width: "100%",
+              "justify-content": "space-evenly"
+            }}
+          >
+            <p style={{ width: "20%" }}>Celuloza:</p>
+            <p style={{ width: "10%" }}>100</p>
+          </li>
+          <li>
+            <img
+              style={{
+                width: "330px",
+                margin: "1% auto 1% auto",
+                display: "block"
+              }}
+              src={Image}
+            />
+          </li>
+        </ul>
+        <ul
+          style={{
+            margin: "1% 0 1% 0",
+            padding: 0,
+            "list-style-type": "none"
+          }}
+        >
+          <li
+            style={{
+              padding: "1%",
+              "text-align": "center",
+              "font-size": "13px",
+              display: "block",
+              background: "#00a835",
+              width: "30%",
+              "font-weight": "bold",
+              margin: "1% auto 1% auto",
+              "border-radius": "25px",
+              color: "white"
+            }}
+          >
+            Nazwa
+          </li>
+          <li
+            style={{
+              display: "flex",
+              width: "100%",
+              "justify-content": "space-evenly"
+            }}
+          >
+            <p style={{ width: "20%" }}>Kaloryczność:</p>
+            <p style={{ width: "10%" }}>100</p>
+          </li>
+          <li
+            style={{
+              display: "flex",
+              width: "100%",
+              "justify-content": "space-evenly"
+            }}
+          >
+            <p style={{ width: "20%" }}>Proteiny:</p>
+            <p style={{ width: "10%" }}>100</p>
+          </li>
+          <li
+            style={{
+              display: "flex",
+              width: "100%",
+              "justify-content": "space-evenly"
+            }}
+          >
+            <p style={{ width: "20%" }}>Tłuszcz:</p>
+            <p style={{ width: "10%" }}>100</p>
+          </li>
+          <li
+            style={{
+              display: "flex",
+              width: "100%",
+              "justify-content": "space-evenly"
+            }}
+          >
+            <p style={{ width: "20%" }}>Węglowodany:</p>
+            <p style={{ width: "10%" }}> 100</p>
+          </li>
+          <li
+            style={{
+              display: "flex",
+              width: "100%",
+              "justify-content": "space-evenly"
+            }}
+          >
+            <p style={{ width: "20%" }}>Celuloza:</p>
+            <p style={{ width: "10%" }}>100</p>
+          </li>
+          <li>
+            <img
+              style={{
+                width: "330px",
+                margin: "1% auto 1% auto",
+                display: "block"
+              }}
+              src={Image}
+            />
+          </li>
+        </ul>
+      </ul>
+    </div>
+  );
+};
+const Wall = props => {
+  const [recipes, setRecipes] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios("https://veggiesapp.herokuapp.com/restaurants/")
+        .then(res => {
+          console.log(res.data);
+          setRestaurants(res.data);
+          console.log(res.data[0]);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(err.response);
+        });
+      await axios("https://veggiesapp.herokuapp.com/posts/")
+        .then(res => {
+          console.log(res.data);
+          setPosts(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(err.response);
+        });
+    };
+    fetchData();
+  }, []);
   return (
     <MainContainer>
-      <Container>
-        {user.username == "" && <Redirect to="/" />}
-        <OrderedList>
-          <UnorderedList>
-            <HeaderRecipeContainer>
-              <HeaderRecipeText>ZUPA KREM Z TOPINAMBURU</HeaderRecipeText>
-            </HeaderRecipeContainer>
-            <HeaderRecipeContainer>
-              <RecipeTimeContainer>
-                <BorderText>Czas przygotowania: </BorderText>
-                <RecipeTime>45minut</RecipeTime>
-              </RecipeTimeContainer>
-            </HeaderRecipeContainer>
-            <ColumnContainer>
-              <div>
-                <Item>
-                  <BorderText>Składniki: </BorderText>
-                </Item>
-                <IngredientsList>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                </IngredientsList>
-              </div>
-              <PreparingMethod>
-                <Item>
-                  <BorderText>Sposób przygotowania: </BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <PreparationItem>
-                    Flexbox was designed as a single dimensional layout, meaning
-                    that it deals with laying out items as a row or as a column
-                    — but not both at once. There is however the ability to wrap
-                    flex items onto new lines, creating new rows if
-                    flex-direction is row and new columns if flex-direction is
-                    column. I
-                  </PreparationItem>
-                  <PreparationItem>
-                    Flexbox was designed as a single dimensional layout, meaning
-                    that it deals with laying out items as a row or as a column
-                    — but not both at once. There is however the ability to wrap
-                    flex items onto new lines, creating new rows if
-                    flex-direction is row and new columns if flex-direction is
-                    column. I
-                  </PreparationItem>
-                  <PreparationItem>
-                    Flexbox was designed as a single dimensional layout, meaning
-                    that it deals with laying out items as a row or as a column
-                    — but not both at once. There is however the ability to wrap
-                    flex items onto new lines, creating new rows if
-                    flex-direction is row and new columns if flex-direction is
-                    column. I
-                  </PreparationItem>
-                  <PreparationItem>
-                    Flexbox was designed as a single dimensional layout, meaning
-                    that it deals with laying out items as a row or as a column
-                    — but not both at once. There is however the ability to wrap
-                    flex items onto new lines, creating new rows if
-                    flex-direction is row and new columns if flex-direction is
-                    column. I
-                  </PreparationItem>
-                </UnorderedListIn>
-              </PreparingMethod>
-            </ColumnContainer>
-            <RecipeImage src={DinnerImage} />
-            <RateContainer>
-              <RateHeader>Oceń</RateHeader>
-              <RateStars>
-                <ReactStars
-                  style={{ left: "45%" }}
-                  count={5}
-                  onChange={setRating}
-                  size={24}
-                  color2={"#4CAF50"}
-                />
-              </RateStars>
-            </RateContainer>
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-          <UnorderedList>
-            <HeaderRecipeContainer>
-              <HeaderRecipeText>ZUPA KREM Z TOPINAMBURU</HeaderRecipeText>
-            </HeaderRecipeContainer>
-            <HeaderRecipeContainer>
-              <RecipeTimeContainer>
-                <BorderText>Czas przygotowania: </BorderText>
-                <RecipeTime>45minut</RecipeTime>
-              </RecipeTimeContainer>
-            </HeaderRecipeContainer>
-            <ColumnContainer>
-              <div>
-                <Item>
-                  <BorderText>Składniki: </BorderText>
-                </Item>
-                <IngredientsList>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                  <IngredientsItem>Składniki</IngredientsItem>
-                </IngredientsList>
-              </div>
-              <PreparingMethod>
-                <Item>
-                  <BorderText>Sposób przygotowania: </BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <PreparationItem>
-                    Flexbox was designed as a single dimensional layout, meaning
-                    that it deals with laying out items as a row or as a column
-                    — but not both at once. There is however the ability to wrap
-                    flex items onto new lines, creating new rows if
-                    flex-direction is row and new columns if flex-direction is
-                    column. I
-                  </PreparationItem>
-                  <PreparationItem>
-                    Flexbox was designed as a single dimensional layout, meaning
-                    that it deals with laying out items as a row or as a column
-                    — but not both at once. There is however the ability to wrap
-                    flex items onto new lines, creating new rows if
-                    flex-direction is row and new columns if flex-direction is
-                    column. I
-                  </PreparationItem>
-                  <PreparationItem>
-                    Flexbox was designed as a single dimensional layout, meaning
-                    that it deals with laying out items as a row or as a column
-                    — but not both at once. There is however the ability to wrap
-                    flex items onto new lines, creating new rows if
-                    flex-direction is row and new columns if flex-direction is
-                    column. I
-                  </PreparationItem>
-                  <PreparationItem>
-                    Flexbox was designed as a single dimensional layout, meaning
-                    that it deals with laying out items as a row or as a column
-                    — but not both at once. There is however the ability to wrap
-                    flex items onto new lines, creating new rows if
-                    flex-direction is row and new columns if flex-direction is
-                    column. I
-                  </PreparationItem>
-                </UnorderedListIn>
-              </PreparingMethod>
-            </ColumnContainer>
-            <RecipeImage src={DinnerImage} />
-            <RateContainer>
-              <RateHeader>Oceń</RateHeader>
-              <RateStars>
-                <ReactStars
-                  style={{ left: "45%" }}
-                  count={5}
-                  onChange={setRating}
-                  size={24}
-                  color2={"#4CAF50"}
-                />
-              </RateStars>
-            </RateContainer>
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-          <UnorderedList>
-            <HeaderRestaurantContainer>
-              <HeaderRestaurantText>Restauracja1</HeaderRestaurantText>
-            </HeaderRestaurantContainer>
-            <FirstRestaurantRow>
-              <FirstRestaurantItem>
-                <RestaurantImageComponent src={RestaurantImage} />
-              </FirstRestaurantItem>
-              <FirstRestaurantItem>
-                <BorderText>Lokalizacja : </BorderText>
-                <Map
-                  id="mapid"
-                  center={[53.009794, 18.591649]}
-                  zoom={12}
-                  style={{
-                    width: 400,
-                    height: 300,
-                    "z-index": 0,
-                    display: "block",
-                    margin: "auto"
-                  }}
-                >
-                  <TileLayer
-                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  <Marker position={[53.009794, 18.591649]}>
-                    <Popup>
-                      A pretty CSS3 popup. <br /> Easily customizable.
-                    </Popup>
-                  </Marker>
-                </Map>
-              </FirstRestaurantItem>
-            </FirstRestaurantRow>
-            <ColumnContainer>
-              <div>
-                <Item>
-                  <BorderText>Godziny otwarcia:</BorderText>
-                </Item>
-                <UnorderedListIn>
-                  <RestaurantOpenItem>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                </UnorderedListIn>
-              </div>
-              <PreparingMethod>
-                <HeaderColumn>
-                  <BorderText>Menu: </BorderText>
-                </HeaderColumn>
-                <MenuList>
-                  <MenuItem>Produkt 8zł</MenuItem>
-                  <MenuItem>Produkt 8zł</MenuItem>
-                  <MenuItem>Produkt 8zł</MenuItem>
-                  <MenuItem>Produkt 8zł</MenuItem>
-                  <MenuItem>Produkt 8zł</MenuItem>
-                  <MenuItem>Produkt 8zł</MenuItem>
-                </MenuList>
-              </PreparingMethod>
-            </ColumnContainer>
-            <RateContainer>
-              <RateHeader>Oceń</RateHeader>
-              <RateStars>
-                <ReactStars
-                  style={{ left: "45%" }}
-                  count={5}
-                  onChange={setRating}
-                  size={24}
-                  color2={"#4CAF50"}
-                />
-              </RateStars>
-            </RateContainer>
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-          <UnorderedList>
-            <HeaderPostsContainer>
-              <HeaderPostsItem>
-                <HeaderPostsText>Post1</HeaderPostsText>
-              </HeaderPostsItem>
-              <HeaderPostsItem>Autor</HeaderPostsItem>
-            </HeaderPostsContainer>
-            <TagsPostsHeaderContainer>
-              <li>
-                <TagsPostsHeader>Tagi:</TagsPostsHeader>
-              </li>
-            </TagsPostsHeaderContainer>
-            <TagsPostsContainer>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-              <TagsItems>tag</TagsItems>
-            </TagsPostsContainer>
-            <ColumnContainer>
-              <div>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
-              </div>
-            </ColumnContainer>
-            <Image src={PostImage} />
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-          <UnorderedList>
-            <HeaderPostsContainer>
-              <HeaderPostsItem>
-                <HeaderPostsText>Post1</HeaderPostsText>
-              </HeaderPostsItem>
-              <HeaderPostsItem>Autor</HeaderPostsItem>
-            </HeaderPostsContainer>
-            <ColumnContainer>
-              <div>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
-              </div>
-            </ColumnContainer>
-            <Image src={PostImage} />
-            <HeaderText>Komentarze:</HeaderText>
-            <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-              <CommentContainer>
-                <TextInput
-                  type="text"
-                  placeholder="Wprowadź treść komentarza"
-                />
-                <SubmitCommentButton type="submit">
-                  Dodaj komentarz
-                </SubmitCommentButton>
-              </CommentContainer>
-            </UnorderedListComments>
-          </UnorderedList>
-        </OrderedList>
-      </Container>
+      <div
+        style={{
+          justifyContent: "space-between",
+          display: "flex",
+          "flex-wrap": "wrap",
+          height: "100%",
+          padding: "1%"
+        }}
+      >
+        <Recipes style={{ width: "40%", position: "relative" }} index={0} />
+        {restaurants[0] && (
+          <Restaurants
+            style={{ width: "40%", position: "relative" }}
+            index={restaurants[0].id}
+            number={0}
+            data={restaurants[0]}
+            historyProps={props.history}
+          />
+        )}
+        {posts[0] && (
+          <Posts
+            style={{ width: "40%", position: "relative" }}
+            key={posts[0].id}
+            index={posts[0].id}
+            post={posts[0]}
+            historyProps={props.history}
+          />
+        )}
+        <div
+          style={{
+            background: "rgba(255,255,255,0.6)",
+            height: "50%",
+            width: "40%"
+          }}
+        >
+          <div style={{ position: "relative" }}>
+            <img
+              style={{
+                position: "absolute",
+                width: "35px",
+                background: "green",
+                right: 0,
+                top: 0
+              }}
+              src={ReplacementsIcon}
+            />
+            <h1
+              style={{
+                color: "black",
+                "font-size": "18px",
+                "text-align": "center"
+              }}
+            >
+              Zamienniki
+            </h1>
+            <ReplacementsContainer>
+              <Replacements />
+            </ReplacementsContainer>
+          </div>
+        </div>
+      </div>
       <RightPanel />
     </MainContainer>
   );

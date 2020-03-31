@@ -89,10 +89,22 @@ const Recipes = props => {
           }}
         >
           <RecipesName style={{ "font-size": "19px" }}>Przepis</RecipesName>
-          {console.log(page[props.index])}
+          <div
+            style={{
+              display: "flex",
+              "justify-content": "space-between",
+              width: "100%",
+              "font-size": "13px"
+            }}
+          >
+            <p style={{ color: "#4CAF50", "font-weight": "bold" }}>
+              Czas przygotowania:
+            </p>
+            <p style={{ "font-weight": "bold" }}>0s</p>
+          </div>
           {page[props.index] == 0 ? (
             <div>
-              <HeaderText>Składniki:</HeaderText>
+              <HeaderText>Składniki:</HeaderText>{" "}
               <UnorderedList>
                 <ul
                   style={{

@@ -9,8 +9,6 @@ const RightPanel = () => {
   return (
     <GlobalContainer>
       <RecommendedRestauration />
-      <RecommendedEvent />
-      <RecommendedPlace />
       <RecommendedRecipt />
       <RecommendedTip />
     </GlobalContainer>

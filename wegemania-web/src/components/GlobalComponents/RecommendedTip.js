@@ -10,7 +10,18 @@ import {
 export const RecommendedTip = () => {
   return (
     <LocalContainer>
-      <HeaderText>Dzisiejsze Ciekawostki :</HeaderText>
+      <HeaderText
+        style={{
+          "text-align": "center",
+          background: "#00a835",
+          "border-radius": "20px",
+          color: "white",
+          padding: "1%",
+          margin: "1% auto 1% auto"
+        }}
+      >
+        Dzisiejsze Ciekawostki :
+      </HeaderText>
       <UnorderedList>
         <BoldItem>Tytuł 1</BoldItem>
         <Item>

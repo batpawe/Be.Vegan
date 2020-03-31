@@ -213,3 +213,18 @@ export const HeaderItem = styled.li`
   font-size: 24px;
   text-align: center;
 `;
+export const ReplacementsContainer = styled.div`
+  font-size: 20px;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  width: 100%;
+  @media (min-width: 1400px) {
+    height: 350px;
+    max-height: 350px;
+  }
+  @media (max-width: 1400px) {
+    height: 200px;
+    max-height: 200px;
+  }
+`;
