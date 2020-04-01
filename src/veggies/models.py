@@ -72,6 +72,7 @@ class Preference(models.Model):
 class Food_To_Substitute(models.Model):
     food_name = models.CharField("food_name", unique=True, max_length=120)
     description = models.TextField("decription", null=True, blank=True)
+    #show_on_view = models.BooleanField("show_or_not", default = 0)
 
     def __str__(self):
         return self.food_name
@@ -80,6 +81,10 @@ class Food_To_Substitute(models.Model):
 class Food_Substitute(models.Model):
     id_vegan = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     id_food_to_substitute = models.ForeignKey(Food_To_Substitute, on_delete=models.CASCADE)
+    show_on_view = models.BooleanField("show_or_not", default = 0)
+    #    else:
+    #        return Response(status=404)
+
 
 
 class Restaurant(models.Model):
