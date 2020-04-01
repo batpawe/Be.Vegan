@@ -12,7 +12,7 @@ from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant,
     Ingredient_List, Rating_Recipe, Preference
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
     IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, \
-    PreferenceSerializer, UserSerializer
+    PreferenceSerializer, UserSerializer, RestaurantCreateSerializer
 from django.contrib.auth import get_user_model
 from itertools import chain
 from .models import Main_Post, Reply_Post
@@ -198,6 +198,7 @@ class RestaurantView(viewsets.ViewSet):
 
 
 class RestaurantChangeView(APIView):
+    serializer = RestaurantSerializer
     def get(self, request, format=None):
         if Restaurant.objects.filter(id_moderator=request.user.id):
             res = Restaurant.objects.get(id_moderator=request.user.id)
@@ -215,6 +216,18 @@ class RestaurantChangeView(APIView):
                 return Response(serializer.data)
             else:
                 return Response(status=400)
+        else:
+            return Response(status=404)
+
+    def post(self, request,  format=None):
+        if request.user.is_superuser:
+            serializer = RestaurantCreateSerializer(data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(serializer.errors,status=400)
+
         else:
             return Response(status=404)
 

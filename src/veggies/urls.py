@@ -27,7 +27,7 @@ urlpatterns += [
     path('substitute/nveg/', SubstituteNVeganView.as_view(), name='substitute'),
     path('ingredients/', IngredientsView.as_view()),
   #  path('restaurants/', RestaurantView.as_view()),
-    path('restaurants/change/', RestaurantChangeView.as_view()),
+    path('restaurant/change/', RestaurantChangeView.as_view()),
     path('preference/', PreferenceView.as_view()),
 #    url(r'^(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,})
 ]
