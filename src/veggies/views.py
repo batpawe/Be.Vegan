@@ -12,7 +12,7 @@ from .models import Food_To_Substitute, Food_Substitute, Ingredient, Restaurant,
     Ingredient_List, Rating_Recipe, Preference
 from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSerializer, RestaurantSerializer, \
     IngredientListSerializer, RecipeSerializer, RatingRestaurantSerializer, RatingRecipeSerializer, \
-    PreferenceSerializer, UserSerializer
+    PreferenceSerializer, UserSerializer, RestaurantCreateSerializer
 from django.contrib.auth import get_user_model
 from itertools import chain
 from .models import Main_Post, Reply_Post
@@ -46,7 +46,6 @@ class UserViewSet(viewsets.ModelViewSet):
         if User.objects.filter(email=request.data['email']):
             return Response("{ email:[ 'taki emial już istnieje' ] }", status=400)
         return super().create(request)
-
 
 
 class ProfileView(APIView):
@@ -219,8 +218,9 @@ class IngredientsView(APIView):
             return Response(status=404)
 
 
-class RestaurantView(APIView):
-    def get(self, request, format=None):
+class RestaurantView(viewsets.ViewSet):
+
+    def list(self, request, format=None):
         if "city" in request.GET:
             prefix = str(request.GET.get("city", ''))
             if Restaurant.objects.filter(city__regex=r'^{}'.format(prefix)):
@@ -247,8 +247,22 @@ class RestaurantView(APIView):
             res = RestaurantSerializer(res, many=True)
             return Response(res.data)
 
+    def retrieve(self, request, pk=None):
+        if Restaurant.objects.filter(id=pk):
+            res = Restaurant.objects.get(id=pk)
+            rating = Rating_Restaurant.objects.filter(id_restaurant_id=pk)
+            serializerRestaurant = RestaurantSerializer(res, many=False)
+            serializerRating = RatingRestaurantSerializer(rating, many= True)
+            ser = {}
+            ser['restaurant'] = serializerRestaurant.data
+            ser['rating'] = serializerRating.data
+            return Response(ser)
+        else:
+            return Response(status=404)
+
 
 class RestaurantChangeView(APIView):
+    serializer = RestaurantSerializer
     def get(self, request, format=None):
         if Restaurant.objects.filter(id_moderator=request.user.id):
             res = Restaurant.objects.get(id_moderator=request.user.id)
@@ -269,6 +283,18 @@ class RestaurantChangeView(APIView):
         else:
             return Response(status=404)
 
+    def post(self, request,  format=None):
+        if request.user.is_superuser:
+            serializer = RestaurantCreateSerializer(data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(serializer.errors,status=400)
+
+        else:
+            return Response(status=404)
+
 
 class RestaurantRatingView(viewsets.ViewSet):
     serializer_class = RatingRestaurantSerializer
@@ -284,6 +310,7 @@ class RestaurantRatingView(viewsets.ViewSet):
         if Rating_Restaurant.objects.filter(id_user=request.user, id_restaurant=pk):
             rating = Rating_Restaurant.objects.get(id_user=request.user, id_restaurant=pk)
             serializer = RatingRestaurantSerializer(rating, many=False)
+            ser = {}
             return Response(serializer.data)
         else:
             return Response(status=404)
@@ -335,8 +362,13 @@ class RecipeView(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         if Recipe.objects.filter(id=pk):
             recipe = Recipe.objects.get(id=pk)
-            serializer = RecipeSerializer(recipe, many=False)
-            return Response(serializer.data)
+            serializerRecipe = RecipeSerializer(recipe, many=False)
+            rating = Rating_Recipe.objects.filter(id_recipe_id=pk)
+            serializerRating = RatingRecipeSerializer(rating, many=True)
+            ser = {}
+            ser['recipe'] = serializerRecipe.data
+            ser['rating'] = serializerRating.data
+            return Response(ser)
         else:
             return Response(status=404)
 

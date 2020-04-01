@@ -87,6 +87,10 @@ class RestaurantSerializer(serializers.ModelSerializer):
                   'description']
         read_only_fields = ['id', "name", "city",  'id_moderator', 'rating', 'street', 'street_number', 'latX', 'longY']
 
+class RestaurantCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = '__all__'
 
 class RatingRestaurantSerializer(serializers.ModelSerializer):
     class Meta:
