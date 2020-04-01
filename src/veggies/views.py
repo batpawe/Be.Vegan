@@ -16,7 +16,7 @@ from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSeri
 from django.contrib.auth import get_user_model
 from itertools import chain
 from .models import Main_Post, Reply_Post
-from .serializers import PostSerializer, PostReplySerializer, AmountSerializer, FoodSub
+from .serializers import PostSerializer, PostReplySerializer, AmountSerializer, FoodSub, AddSub
 from django.db.models import Value
 
 User = get_user_model()
@@ -83,14 +83,46 @@ class SubstituteNVeganView(APIView):
             return Response(serializer.data)
         else:
             return Response(status=404)
+
+class AddVeganView(APIView):
+    def get(self, request, format=None):
+        food_nv = Food_To_Substitute.objects.all()
+        food_v = Ingredient.objects.all()
+        serializer_1 = SubstituteSerializer(food_nv, many=True)
+        serializer_2 = IngredientSerializer (food_v, many=True)
+
+        food_arr = []
+        food_arr.append(serializer_1.data)
+        food_arr.append(serializer_2.data)
+        if food_arr:
+            return Response(food_arr)
+    def post(self, request, format=None):
+        print(request.data)
+        serializer = AddSub(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Reponse(status=400)
+
 ################
 class ModerateVeganView(viewsets.ViewSet):
     queryset = Food_Substitute.objects.all()
     serializer_class = FoodSub
 
+    def partial_update(self, request, pk):
+        if(request.user.is_superuser):
+            food = Food_Substitute.objects.get(id=pk)
+
+            serializer = FoodSub(food, data=request.data, many=False, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(status=400)
 
     def list(self, request):
-        food = Food_Substitute.objects.filter(show_on_view = 0)
+        food = Food_Substitute.objects.filter(show_on_view = False)
         if food:
             food = FoodSub(food, many=True)
             return Response(food.data)
@@ -105,26 +137,16 @@ class ModerateVeganView(viewsets.ViewSet):
         else:
             return Response(status=404)
 
-    def partial_update(self, request, pk):
-        #if(request.user.is_superuser or 1 == 1):
-        food = Food_Substitute.objects.filter(id=pk)
-
-        serializer = FoodSub(food, data=request.data, many=False, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Resposne(serializer.data)
-        else:
-            return Response(status=400)
-
     def destroy(self, request, pk):
         if(request.user.is_superuser):
-            try:
-                instance = Food_Substitute.objects.filter(id=pk)
-                self.perform_destroy(instance)
-            except Http404:
-                pass
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
+            instance = Food_Substitute.objects.get(id=pk)
+            if instance:
+                instance.delete()
+                return Response("Deleted")
+            else:
+                return Response(status=401)
+        else:
+            return Response("No admin auth")
 ################
 
 class SubstituteVeganView(viewsets.ViewSet):
@@ -132,14 +154,13 @@ class SubstituteVeganView(viewsets.ViewSet):
     serializer_class = IngredientSerializer
 
     def retrieve(self, request, pk=None):
-        food_substitute = Food_Substitute.objects.filter(id_food_to_substitute=pk).values_list('id_vegan', flat=True)
+        food_substitute = Food_Substitute.objects.filter(id_food_to_substitute=pk,show_on_view = True).values_list('id_vegan', flat=True)
         queryset = Ingredient.objects.filter(id__in=food_substitute)
         if queryset:
             serializer = IngredientSerializer(queryset, many=True)
             return Response(serializer.data)
         else:
             return Response(status=404)
-
 
 
 class PostIdView(viewsets.GenericViewSet):

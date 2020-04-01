@@ -81,7 +81,7 @@ class Food_To_Substitute(models.Model):
 class Food_Substitute(models.Model):
     id_vegan = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     id_food_to_substitute = models.ForeignKey(Food_To_Substitute, on_delete=models.CASCADE)
-    show_on_view = models.BooleanField("show_or_not", default = 0)
+    show_on_view = models.BooleanField("show_or_not", default = False)
     #    else:
     #        return Response(status=404)
 

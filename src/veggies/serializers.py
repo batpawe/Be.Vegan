@@ -134,3 +134,9 @@ class FoodSub(serializers.ModelSerializer):
     class Meta:
         model = Food_Substitute
         fields = "__all__"
+        read_only_fields = ['id']
+
+class AddSub(serializers.ModelSerializer):
+    class Meta:
+        model = Food_Substitute
+        fields = "__all__"
