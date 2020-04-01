@@ -40,6 +40,14 @@ const UserPanel = ({ click }) => {
           <UserOption>
             <HyperLink to={`/users/${user.userInfo.id}`}>Profil</HyperLink>
           </UserOption>
+          <UserOption
+            style={{
+              "font-size": "14px",
+              "border-bottom": "1px solid #8d8c91"
+            }}
+          >
+            <HyperLink to={`/adminpanel`}>Panel Administracyjny</HyperLink>
+          </UserOption>
           <UserOption onClick={userLogout}>Wyloguj</UserOption>
         </UserActions>
       )}

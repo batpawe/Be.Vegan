@@ -50,6 +50,10 @@ import Image from "../../images/restaurant.jpg";
 import { withRouter } from "react-router";
 import AutoSuggest from "react-autosuggest";
 import "../../styles/SuggestStyle.css";
+import ikonaCzasuActive from "../../icons/ikonaCzasuactive.svg";
+import ikonaMapyActive from "../../icons/ikonaMapyactive.svg";
+import ikonaCzasu from "../../icons/ikonaCzasu.svg";
+import ikonaMapy from "../../icons/ikonaMapy.svg";
 const Restaurants = props => {
   const [restaurants, setRestaurants] = useState([]);
   let tempSearch = {
@@ -87,7 +91,7 @@ const Restaurants = props => {
     temp.city = e;
     setSearchInfo({ ...temp });
   };
-  let temp = [];
+  let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
 
   const Paggination = props => {
@@ -102,29 +106,66 @@ const Restaurants = props => {
       }
       setPage([...tmp]);
     };
-    const paggin = Array.from({ length: no }, (_, k) =>
-      k == page[props.index] ? (
-        <PagginationItem
-          key={k}
-          active={true}
-          onClick={() => {
-            handlePage(k);
-          }}
-        >
-          {k + 1}
-        </PagginationItem>
-      ) : (
-        <PagginationItem
-          key={k}
-          onClick={() => {
-            handlePage(k);
-          }}
-        >
-          {k + 1}
-        </PagginationItem>
-      )
+    const paggin = Array.from({ length: no }, (_, k) => {
+      if (k == page[props.index] && k == 0) {
+        return (
+          <img
+            src={ikonaCzasuActive}
+            key={k}
+            onClick={() => {
+              handlePage(k);
+            }}
+            style={{ width: "35px", cursor: "pointer" }}
+          />
+        );
+      } else if (k == page[props.index] && k == 1) {
+        return (
+          <img
+            src={ikonaMapyActive}
+            key={k}
+            onClick={() => {
+              handlePage(k);
+            }}
+            style={{ width: "35px", cursor: "pointer" }}
+          />
+        );
+      } else if (k != page[props.index] && k == 0) {
+        return (
+          <img
+            src={ikonaCzasu}
+            key={k}
+            onClick={() => {
+              handlePage(k);
+            }}
+            style={{ width: "35px", cursor: "pointer" }}
+          />
+        );
+      } else if (k != page[props.index] && k == 1) {
+        return (
+          <img
+            src={ikonaMapy}
+            key={k}
+            onClick={() => {
+              handlePage(k);
+            }}
+            style={{ width: "35px", cursor: "pointer" }}
+          />
+        );
+      }
+    });
+    return (
+      <PagginationContainer
+        style={{
+          padding: "4% 0 1% 0",
+          "border-top": "1px solid black",
+          position: "absolute",
+          bottom: 0,
+          width: "100%"
+        }}
+      >
+        {paggin}
+      </PagginationContainer>
     );
-    return <PagginationContainer>{paggin}</PagginationContainer>;
   };
 
   const ContentController = props => {
@@ -141,7 +182,7 @@ const Restaurants = props => {
       ];
     });
     return (
-      <ContainerRestaurant style={{ width: "48%" }}>
+      <ContainerRestaurant style={{ width: "48%", height: "300px" }}>
         {/*ttt*/}
         <ImageRestaurant
           src={Image}
@@ -149,7 +190,11 @@ const Restaurants = props => {
           onClick={() => props.historyProps.push(`/restaurant/${props.index}`)}
         />
         <ContentContainer
-          style={{ width: "100%", background: "rgba(255,255,255,0.6)" }}
+          style={{
+            width: "100%",
+            background: "rgba(255,255,255,0.6)",
+            position: "relative"
+          }}
         >
           <RestaurantName>{props.data.name}</RestaurantName>
           {console.log(page[props.index])}
@@ -375,10 +420,14 @@ const Restaurants = props => {
               </div>
             </div>
             <AddRestaurantLink
-              style={{ width: "200px", "font-size": "18px" }}
+              style={{
+                width: "200px",
+                "font-size": "18px",
+                "white-space": "nowrap"
+              }}
               to="/addrestaurant"
             >
-              Dodaj restaurację
+              Zarządzaj restauracją
             </AddRestaurantLink>
           </div>
         </AddPostPageContainer>

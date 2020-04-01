@@ -48,12 +48,10 @@ const Element = props => {
             <ImageHoverComponent src={`${props.post.foto}`} />
             <HoverHeader> {props.post.title}</HoverHeader>
             <HoverText>{props.post.description}</HoverText>
-            <Icon src={PostsIcon} />
           </div>
         ) : (
           <div>
             <ImageComponent src={`${props.post.foto}`} />
-            <Icon src={PostsIcon} />
           </div>
         )}
       </HoverContainer>

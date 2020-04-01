@@ -1,6 +1,47 @@
 //props.match.params
 import React, { useState } from "react";
+import DeleteIcon from "../../icons/bin_delete.svg";
+import EditIcon from "../../icons/edit.svg";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import { blue } from "@material-ui/core/colors";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Button from "@material-ui/core/Button";
 import { MainContainer, Container } from "../../styles/WallStyle";
+import {
+  SortPageButton,
+  SortContainer,
+  SortRow,
+  SortLabel,
+  SortLabelLocation,
+  SortSelect,
+  SortInput,
+  SortButton,
+  PostTextHeader,
+  PostInfoContainer,
+  PostRow,
+  PostInfoItem,
+  ImagesContainer,
+  TextPostMinHeader,
+  HeaderCommentsText,
+  HeaderContainer,
+  CommentsContainer,
+  MapContainer,
+  HeaderCommentsElements,
+  PostInfoParagraph,
+  AddCommentContainer,
+  AddCommentButton,
+  TextArea,
+  Comment,
+  UserLink,
+  PostLink,
+  UserActionsContainer,
+  Icon
+} from "../../styles/ContainerStyles";
 import {
   RecipesName,
   HeaderText,
@@ -22,6 +63,12 @@ import {
   SearchInput,
   SearchButton
 } from "../../styles/GlobalStyle";
+
+import ikonaSkladnikowActive from "../../icons/ikonaSkladnikowactive.svg";
+import ikonaTresciPrzepisuActive from "../../icons/ikonaTresciprzepisuactive.svg";
+import ikonaSkladnikow from "../../icons/ikonaSkladnikow.svg";
+import ikonaTresciPrzepisu from "../../icons/ikonaTresciprzepisu.svg";
+import axiso from "axios";
 const Recipes = props => {
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
@@ -37,28 +84,53 @@ const Recipes = props => {
       }
       setPage([...tmp]);
     };
-    const paggin = Array.from({ length: no }, (_, k) =>
-      k == page[props.index] ? (
-        <PagginationItem
-          key={k}
-          active={true}
-          onClick={() => {
-            handlePage(k);
-          }}
-        >
-          {k + 1}
-        </PagginationItem>
-      ) : (
-        <PagginationItem
-          key={k}
-          onClick={() => {
-            handlePage(k);
-          }}
-        >
-          {k + 1}
-        </PagginationItem>
-      )
-    );
+    const paggin = Array.from({ length: no }, (_, k) => {
+      if (k == page[props.index] && k == 0) {
+        return (
+          <img
+            src={ikonaSkladnikowActive}
+            key={k}
+            onClick={() => {
+              handlePage(k);
+            }}
+            style={{ width: "35px", cursor: "pointer" }}
+          />
+        );
+      } else if (k == page[props.index] && k == 1) {
+        return (
+          <img
+            src={ikonaTresciPrzepisuActive}
+            key={k}
+            onClick={() => {
+              handlePage(k);
+            }}
+            style={{ width: "35px", cursor: "pointer" }}
+          />
+        );
+      } else if (k != page[props.index] && k == 0) {
+        return (
+          <img
+            src={ikonaSkladnikow}
+            key={k}
+            onClick={() => {
+              handlePage(k);
+            }}
+            style={{ width: "35px", cursor: "pointer" }}
+          />
+        );
+      } else if (k != page[props.index] && k == 1) {
+        return (
+          <img
+            src={ikonaTresciPrzepisu}
+            key={k}
+            onClick={() => {
+              handlePage(k);
+            }}
+            style={{ width: "35px", cursor: "pointer" }}
+          />
+        );
+      }
+    });
     return (
       <PagginationContainer
         style={{
@@ -79,7 +151,7 @@ const Recipes = props => {
         <ImageRecipes
           src={Image}
           style={{ width: "60%", cursor: "pointer" }}
-          onClick={() => props.historyProps.push("/recipe")}
+          onClick={() => props.historyProps.push("/recipe/1")}
         />
         <ContentContainer
           style={{

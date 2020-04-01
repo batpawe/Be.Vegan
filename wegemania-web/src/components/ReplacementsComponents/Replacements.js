@@ -83,7 +83,7 @@ const Replacements = props => {
             }}
             to="/addreplacement"
           >
-            Dodaj zamiennik
+            Zasugeruj zamiennik
           </AddPostPageLink>
         </SearchPanel>
         <ReplacementsContainer>

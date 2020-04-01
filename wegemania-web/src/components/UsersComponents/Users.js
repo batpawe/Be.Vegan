@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import Contents from "./Contents";
 import {
   Container,
   HelloMessage,
@@ -74,7 +75,7 @@ const Users = props => {
   }, []);
 
   return (
-    <Container>
+    <Container style={{ background: "rgba(255,255,255,0.7)" }}>
       {userData && (
         <div>
           <div
@@ -86,19 +87,31 @@ const Users = props => {
             }}
           >
             <Header>
-              <HelloMessage>Profil: </HelloMessage>
-              <UserName>{userData.username}</UserName>
+              <UserName
+                style={{
+                  "border-radius": "20px",
+                  "font-size": "20px",
+                  padding: "10%"
+                }}
+              >
+                {userData.username}
+              </UserName>
             </Header>
 
             {props.match.params.id == user.userInfo.id && (
-              <EditProfileButton to={`/edituser/${user.userInfo.id}`}>
+              <EditProfileButton
+                style={{ "font-size": "20px", "white-space": "nowrap" }}
+                to={`/edituser/${user.userInfo.id}`}
+              >
                 Edytuj użytkownika
               </EditProfileButton>
             )}
           </div>
-          <UnorderedListProfile>
+          <UnorderedListProfile style={{ border: "none" }}>
             {props.match.params.id == user.userInfo.id && (
-              <UnorderedFlexList>
+              <UnorderedFlexList
+                style={{ border: "none", background: "rgba(255,255,255,0.8)" }}
+              >
                 <UserProfileItemRow>
                   <BorderText>Adres e-mail:</BorderText>{" "}
                   {userData.email || "nie podano"}
@@ -128,77 +141,9 @@ const Users = props => {
                 )}
               </UnorderedFlexList>
             )}
-            <UserProfileItem>
-              <UserProfileItem>
-                <HelloMessage>Ostatni post:</HelloMessage>
-              </UserProfileItem>
-              <UserProfileItem>
-                <UnorderedList>
-                  <Item>
-                    <BorderText>Autor: </BorderText>
-                    <HighlightItem>Sklep1</HighlightItem>
-                  </Item>
-                  <Item>
-                    <BorderText>Tytuł: </BorderText>
-                    <HighlightItem>Tytuł</HighlightItem>
-                  </Item>
-                  <ColumnContainer>
-                    <div>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five
-                      centuries, but also the leap into electronic typesetting,
-                      remaining essentially unchanged. It was popularised in the
-                      1960s with the release of Letraset sheets containing Lorem
-                      Ipsum passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions of Lorem
-                      Ipsum.
-                    </div>
-                  </ColumnContainer>
-                  <Image src={PostImage} />
-                  <HeaderText>Komentarze:</HeaderText>
-                  <UnorderedListComments>
-                    <UnorderedListCommentsIn>
-                      <HighlightItem>Autor</HighlightItem>
-                      <CommentContent>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only five centuries, but also the leap into
-                        electronic typesetting, remaining essentially unchanged.
-                      </CommentContent>
-                    </UnorderedListCommentsIn>
-                    <UnorderedListCommentsIn>
-                      <HighlightItem>Autor</HighlightItem>
-                      <CommentContent>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only five centuries, but also the leap into
-                        electronic typesetting, remaining essentially unchanged.
-                      </CommentContent>
-                    </UnorderedListCommentsIn>
-                    <HyperLink to="/">ZOBACZ WIĘCEJ KOMENTARZY</HyperLink>
-                    <CommentContainer>
-                      <TextInput
-                        type="text"
-                        placeholder="Wprowadź treść komentarza"
-                      />
-                      <SubmitCommentButton type="submit">
-                        Dodaj komentarz
-                      </SubmitCommentButton>
-                    </CommentContainer>
-                  </UnorderedListComments>
-                </UnorderedList>
-              </UserProfileItem>
-            </UserProfileItem>
           </UnorderedListProfile>
+          <h1>Twoje aktywności:</h1>
+          <Contents />
         </div>
       )}
     </Container>

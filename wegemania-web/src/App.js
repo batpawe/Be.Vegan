@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Login from "./components/LoginComponents/Login";
+import AdminPanel from "./components/AdminComponents/AdminPanel";
 import Register from "./components/LoginComponents/Register";
 import Wall from "./components/WallComponents/Wall";
 import Recipe from "./components/RecipesComponents/Recipe";
@@ -60,6 +61,7 @@ const App = props => {
         {console.log(user.userInfo)}
         {user.userInfo !== undefined ? (
           <ContentContainer>
+            <Route path="/adminpanel" component={AdminPanel} />
             <Route path="/about" component={About} />
             <Route path="/wall" component={Wall} />
             <Route path="/posts" component={Posts} />

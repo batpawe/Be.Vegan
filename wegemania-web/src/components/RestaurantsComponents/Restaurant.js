@@ -23,6 +23,47 @@ import {
   RatingHeader,
   PreparingMethod
 } from "../../styles/WallStyle";
+import DeleteIcon from "../../icons/bin_delete.svg";
+import {
+  SortPageButton,
+  SortContainer,
+  SortRow,
+  SortLabel,
+  SortLabelLocation,
+  SortSelect,
+  SortInput,
+  SortButton,
+  PostTextHeader,
+  PostInfoContainer,
+  PostRow,
+  PostInfoItem,
+  ImagesContainer,
+  TextPostMinHeader,
+  HeaderCommentsText,
+  HeaderContainer,
+  CommentsContainer,
+  MapContainer,
+  HeaderCommentsElements,
+  PostInfoParagraph,
+  AddCommentContainer,
+  AddCommentButton,
+  TextArea,
+  Comment,
+  UserLink,
+  PostLink,
+  UserActionsContainer,
+  Icon
+} from "../../styles/ContainerStyles";
+import EditIcon from "../../icons/edit.svg";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import { blue } from "@material-ui/core/colors";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Button from "@material-ui/core/Button";
 import {
   HeaderRestaurantContainer,
   HeaderRestaurantText,
@@ -61,7 +102,38 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { green, orange } from "@material-ui/core/colors";
 import "../../App.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 const Restaurant = props => {
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const deletePost = id => {
+    handleClose();
+    /*
+    const redirect = () => {
+      userInfo.setRequest({});
+      props.history.push("/userpanel");
+    };
+    axios
+      .delete(`${userInfo.apiip}/posty/${id}`)
+      .then(res => {
+        if (res.status === 200) {
+          userInfo.initNotify("Post usunięty pomyślnie");
+          setTimeout(redirect, 4000);
+        } else {
+          userInfo.initNotify("Wystąpił błąd");
+        }
+      })
+      .catch(err => {
+        userInfo.initNotify("Wystąpił błąd");
+      });
+      */
+  };
   const [restaurant, setRestaurant] = useState({});
   let temp = {
     restaurant: "",
@@ -116,7 +188,60 @@ const Restaurant = props => {
   }, [props.match.params.id]);
   return (
     <MainContainer>
-      <Container>
+      <Container style={{ position: "relative" }}>
+        <div>
+          <UserActionsContainer>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => {
+                handleClickOpen();
+              }}
+            >
+              <Icon src={DeleteIcon} />
+            </Button>
+
+            <Link
+              to={{
+                pathname: "/editpost"
+                /*params: { id: props.data.idPosty }*/
+              }}
+            >
+              <Button variant="outlined" color="primary">
+                <Icon src={EditIcon} />
+              </Button>
+            </Link>
+          </UserActionsContainer>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Usunięcie posta"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Czy chcesz usunąć post ?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Nie
+              </Button>
+              <Button
+                onClick={() => {
+                  deletePost(props.data.idPosty);
+                }}
+                color="primary"
+                autoFocus
+              >
+                Tak
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
         <OrderedList>
           <UnorderedList>
             <HeaderRestaurantContainer>
