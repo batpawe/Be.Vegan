@@ -77,7 +77,10 @@ class CustomObtainAuthToken(ObtainAuthToken):
 class SubstituteNVeganView(APIView):
     def get(self, request, format=None):
         prefix = request.GET.get('prefix', '')
-        food = Food_To_Substitute.objects.filter(food_name__regex=r'{}'.format(prefix))
+        if r'{}'.format(prefix):
+            food = Food_To_Substitute.objects.filter(food_name__regex=r'{}'.format(prefix))
+        else:
+            food = Food_To_Substitute.objects.filter(food_name__regex=r'^{}'.format(prefix))
         if food:
             serializer = SubstituteSerializer(food, many=True)
             return Response(serializer.data)
@@ -358,7 +361,10 @@ class RecipeView(viewsets.ViewSet):
     def list(self, request):
         prefix = request.GET.get('prefix', '')
         ingredients = request.GET.get('ingredients', False)
-        recipes = Recipe.objects.filter(recipe_name__regex=r'{}'.format(prefix))
+        if r'{}'.format(prefix):
+            recipes = Recipe.objects.filter(recipe_name__regex=r'{}'.format(prefix))
+        else:
+            recipes = Recipe.objects.filter(recipe_name__regex=r'^{}'.format(prefix))
         if ingredients:
             ingredients = ingredients.split(',')
             recipes_list = Ingredient_List.objects.filter(id_ingredient__name__in=ingredients)
