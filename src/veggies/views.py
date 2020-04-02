@@ -169,16 +169,13 @@ class SubstituteVeganView(viewsets.ViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
 
-    def retrieve(self, request, pk=None):
-        food_substitute = Food_Substitute.objects.filter(id_food_to_substitute=pk,show_on_view = True).values_list('id_vegan', flat=True)
-        queryset = Ingredient.objects.filter(id__in=food_substitute)
-        if queryset:
-            serializer = IngredientSerializer(queryset, many=True)
+    def list(self, request):
+        food = Food_Substitute.objects.filter(show_on_view = True)
+        if food:
+            serializer = FoodSub(food, many=True)
             return Response(serializer.data)
         else:
             return Response(status=404)
-
-
 
 class PostIdView(viewsets.GenericViewSet):
     queryset = Main_Post.objects.all()
