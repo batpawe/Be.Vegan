@@ -77,7 +77,7 @@ class CustomObtainAuthToken(ObtainAuthToken):
 class SubstituteNVeganView(APIView):
     def get(self, request, format=None):
         prefix = request.GET.get('prefix', '')
-        food = Food_To_Substitute.objects.filter(food_name__regex=r'^{}'.format(prefix))
+        food = Food_To_Substitute.objects.filter(food_name__regex=r'{}'.format(prefix))
         if food:
             serializer = SubstituteSerializer(food, many=True)
             return Response(serializer.data)
@@ -140,18 +140,6 @@ class ModerateVeganView(viewsets.ViewSet):
             return Response(food.data)
         else:
             return Response(status=404)
-
-    def partial_update(self, request, pk):
-        #if(request.user.is_superuser or 1 == 1):
-        food = Food_Substitute.objects.filter(id=pk)
-
-        serializer = FoodSub(food, many=False)
-        serializer.update()
-       # if serializer.is_valid():
-        #    serializer.()
-        #    return Response(serializer.data)
-        #else:
-        #    return Response(status=400)
 
 
     def destroy(self, request, pk):
@@ -229,7 +217,7 @@ class PostIdView(viewsets.GenericViewSet):
 class IngredientsView(APIView):
     def get(self, request, format=None):
         prefix = request.GET.get('prefix', '')
-        food = Ingredient.objects.filter(name__regex=r'^{}'.format(prefix))
+        food = Ingredient.objects.filter(name__regex=r'{}'.format(prefix))
         if food:
             food = IngredientSerializer(food, many=True)
             return Response(food.data)
@@ -257,8 +245,8 @@ class RestaurantView(viewsets.ViewSet):
             return Response(res.data)
         elif 'prefix' in request.GET:
             prefix = str(request.GET.get("prefix", ''))
-            if Restaurant.objects.filter(name__regex=r'^{}'.format(prefix)):
-                res = Restaurant.objects.filter(name__regex=r'^{}'.format(prefix))
+            if Restaurant.objects.filter(name__regex=r'{}'.format(prefix)):
+                res = Restaurant.objects.filter(name__regex=r'{}'.format(prefix))
                 res = RestaurantSerializer(res, many=True)
             return Response(res.data)
         else:
@@ -370,7 +358,7 @@ class RecipeView(viewsets.ViewSet):
     def list(self, request):
         prefix = request.GET.get('prefix', '')
         ingredients = request.GET.get('ingredients', False)
-        recipes = Recipe.objects.filter(recipe_name__regex=r'^{}'.format(prefix))
+        recipes = Recipe.objects.filter(recipe_name__regex=r'{}'.format(prefix))
         if ingredients:
             ingredients = ingredients.split(',')
             recipes_list = Ingredient_List.objects.filter(id_ingredient__name__in=ingredients)
