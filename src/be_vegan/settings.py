@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from .config0 import SecretVariables
+from .config import SecretVariables
 
 AWS_ACCESS_KEY_ID = SecretVariables.AWS_ID
 AWS_SECRET_ACCESS_KEY = SecretVariables.AWS_SECRET
