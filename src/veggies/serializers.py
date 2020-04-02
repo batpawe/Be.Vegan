@@ -67,6 +67,7 @@ class SubstituteSerializer(serializers.ModelSerializer):
         fields = '__all__'
         editable = False
 
+
 class AmountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient_List
@@ -83,14 +84,17 @@ class IngredientSerializer(serializers.ModelSerializer):
 class RestaurantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
-        fields = ['id', 'id_moderator', 'name', 'city', 'foto', 'street', 'street_number', 'latX', 'longY', 'hours', 'rating',
+        fields = ['id', 'id_moderator', 'name', 'city', 'foto', 'street', 'street_number', 'latX', 'longY', 'hours',
+                  'rating',
                   'description']
-        read_only_fields = ['id', "name", "city",  'id_moderator', 'rating', 'street', 'street_number', 'latX', 'longY']
+        read_only_fields = ['id', "name", "city", 'id_moderator', 'rating', 'street', 'street_number', 'latX', 'longY']
+
 
 class RestaurantCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
         fields = '__all__'
+
 
 class RatingRestaurantSerializer(serializers.ModelSerializer):
     class Meta:
@@ -98,8 +102,9 @@ class RatingRestaurantSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ['id']
 
+
 class IngredientListSerializer(serializers.ModelSerializer):
-    #id_ingredient = IngredientSerializer(read_only=True)
+    # id_ingredient = IngredientSerializer(read_only=True)
 
     class Meta:
         model = Ingredient_List
@@ -131,10 +136,18 @@ class PreferenceSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ['id']
 
+
 class FoodSub(serializers.ModelSerializer):
     id_vegan = IngredientSerializer(read_only=True)
     id_food_to_substitute = SubstituteSerializer(read_only=True)
 
+    class Meta:
+        model = Food_Substitute
+        fields = "__all__"
+        read_only_fields = ['id']
+
+
+class AddSub(serializers.ModelSerializer):
     class Meta:
         model = Food_Substitute
         fields = "__all__"
