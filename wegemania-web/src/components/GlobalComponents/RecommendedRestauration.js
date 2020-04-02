@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   LocalContainer,
   UnorderedList,
@@ -10,7 +10,22 @@ import {
 } from "../../styles/GlobalStyle";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import RestaurantImage from "../../images/restaurant.jpg";
+import axios from "axios";
+var moment = require("moment");
 export const RecommendedRestauration = () => {
+  const [restaurations, setRestaurations] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios("https://veggiesapp.herokuapp.com/restaurants/")
+        .then(res => {
+          setRestaurations(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, []);
   return (
     <LocalContainer>
       <HeaderText
@@ -25,80 +40,55 @@ export const RecommendedRestauration = () => {
       >
         Polecane Restauracje :
       </HeaderText>
-      <UnorderedList style={{ padding: 0 }}>
-        <HyperLink to="/posts">
-          <Item style={{ "text-align": "center" }}>
-            <BoldText>Nazwa:</BoldText>Restauracja1
-          </Item>
-          <Item style={{ "text-align": "center" }}>
-            <BoldText>Godziny otwarcia:</BoldText>8:00 - 20:00
-          </Item>
-          <Item style={{ "text-align": "center" }}>
-            <BoldText>Lokalizacja:</BoldText>
-            <Map
-              id="mapid"
-              center={[53.009794, 18.591649]}
-              zoom={12}
-              style={{
-                width: 300,
-                height: 200,
-                "z-index": 0,
-                margin: "1% auto 1% auto"
-              }}
-            >
-              <TileLayer
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[53.009794, 18.591649]}>
-                <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-              </Marker>
-            </Map>
-          </Item>
-          <Item style={{ "text-align": "center" }}>
-            <Image src={RestaurantImage}></Image>
-          </Item>
-        </HyperLink>
-      </UnorderedList>
-      <UnorderedList style={{ padding: 0 }}>
-        <HyperLink to="/posts">
-          <Item style={{ "text-align": "center" }}>
-            <BoldText>Nazwa:</BoldText>Restauracja1
-          </Item>
-          <Item style={{ "text-align": "center" }}>
-            <BoldText>Godziny otwarcia:</BoldText>8:00 - 20:00
-          </Item>
-          <Item style={{ "text-align": "center" }}>
-            <BoldText>Lokalizacja:</BoldText>
-            <Map
-              id="mapid"
-              center={[53.009794, 18.591649]}
-              zoom={12}
-              style={{
-                width: 300,
-                height: 200,
-                "z-index": 0,
-                margin: "1% auto 1% auto"
-              }}
-            >
-              <TileLayer
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[53.009794, 18.591649]}>
-                <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-              </Marker>
-            </Map>
-          </Item>
-          <Item style={{ "text-align": "center" }}>
-            <Image src={RestaurantImage}></Image>
-          </Item>
-        </HyperLink>
-      </UnorderedList>
+      {restaurations &&
+        restaurations.map((restaurant, index) => {
+          let hours = restaurant.hours.split("\r\n");
+          let today = moment().day();
+          let hour = hours[moment().day()];
+          if (index < 2) {
+            return (
+              <UnorderedList style={{ padding: 0 }}>
+                <HyperLink to="/posts">
+                  <Item style={{ "text-align": "center" }}>
+                    <BoldText>Nazwa:</BoldText>
+                    {restaurant.name}
+                  </Item>
+                  <Item style={{ "text-align": "center" }}>
+                    <BoldText>Godziny otwarcia:</BoldText>
+                    {hour}
+                  </Item>
+                  <Item style={{ "text-align": "center" }}>
+                    <BoldText>Lokalizacja:</BoldText>
+                    <Map
+                      id="mapid"
+                      center={[restaurant.latX, restaurant.longY]}
+                      zoom={12}
+                      style={{
+                        width: 300,
+                        height: 200,
+                        "z-index": 0,
+                        margin: "1% auto 1% auto"
+                      }}
+                    >
+                      <TileLayer
+                        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      />
+                      <Marker position={[restaurant.latX, restaurant.longY]}>
+                        <Popup>
+                          A pretty CSS3 popup. <br /> Easily customizable.
+                        </Popup>
+                      </Marker>
+                    </Map>
+                  </Item>
+                  <Item style={{ "text-align": "center" }}>
+                    <Image src={restaurant.foto}></Image>
+                  </Item>
+                </HyperLink>
+              </UnorderedList>
+            );
+          }
+        })}
     </LocalContainer>
   );
 };
