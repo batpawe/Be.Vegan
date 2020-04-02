@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework import routers
 from .views import ProfileView, SubstituteNVeganView, SubstituteVeganView, IngredientsView, RestaurantView, RestaurantRatingView, RestaurantChangeView, RecipeView, RecipeListView, RecipeRatingView, PreferenceView
 from .views import PostIdView, ModerateVeganView
-from .views import PostIdView, ModerateVeganView, AddVeganView
+from .views import PostIdView, ModerateVeganView, AddVeganView, CuriositiesView
 #from django.views.static import serve
 #from django.conf import settings
 #from django.conf.urls import url
@@ -32,5 +32,6 @@ urlpatterns += [
     path('restaurant/change/', RestaurantChangeView.as_view()),
     path('preference/', PreferenceView.as_view()),
     path('addsubstitute/', AddVeganView.as_view()),
+    path('curiosities/', CuriositiesView.as_view()),
 #    url(r'^(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,})
 ]
