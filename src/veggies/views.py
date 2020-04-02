@@ -16,7 +16,7 @@ from .serializers import ProfileSerializer, SubstituteSerializer, IngredientSeri
 from django.contrib.auth import get_user_model
 from itertools import chain
 from .models import Main_Post, Reply_Post
-from .serializers import PostSerializer, PostReplySerializer, AmountSerializer
+from .serializers import PostSerializer, PostReplySerializer, AmountSerializer, FoodSub
 from django.db.models import Value
 
 User = get_user_model()
@@ -83,6 +83,48 @@ class SubstituteNVeganView(APIView):
         else:
             return Response(status=404)
 
+class ModerateVeganView(viewsets.ViewSet):
+    queryset = Food_Substitute.objects.all()
+    serializer_class = FoodSub
+
+
+    def list(self, request):
+        food = Food_Substitute.objects.filter(show_on_view = 0)
+        if food:
+            food = FoodSub(food, many=True)
+            return Response(food.data)
+        else:
+            return Response(status=404)
+
+    def retrieve(self, request, pk):
+        food = Food_Substitute.objects.filter(id=pk)
+        if food:
+            food = FoodSub(food, many=True)
+            return Response(food.data)
+        else:
+            return Response(status=404)
+
+    def partial_update(self, request, pk):
+        #if(request.user.is_superuser or 1 == 1):
+        food = Food_Substitute.objects.filter(id=pk)
+
+        serializer = FoodSub(food, many=False)
+        serializer.update()
+       # if serializer.is_valid():
+        #    serializer.()
+        #    return Response(serializer.data)
+        #else:
+        #    return Response(status=400)
+
+    def destroy(self, request, pk):
+        if(request.user.is_superuser):
+            try:
+                instance = Food_Substitute.objects.filter(id=pk)
+                self.perform_destroy(instance)
+            except Http404:
+                pass
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class SubstituteVeganView(viewsets.ViewSet):
     queryset = Ingredient.objects.all()
@@ -96,6 +138,7 @@ class SubstituteVeganView(viewsets.ViewSet):
             return Response(serializer.data)
         else:
             return Response(status=404)
+
 
 
 class PostIdView(viewsets.GenericViewSet):

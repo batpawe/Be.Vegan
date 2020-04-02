@@ -4,7 +4,7 @@ from .models import Food_To_Substitute, Ingredient, Restaurant, Rating_Restauran
     Rating_Recipe, Preference
 from django.db import models
 
-from .models import Main_Post, Reply_Post
+from .models import Main_Post, Reply_Post, Food_Substitute
 
 User = get_user_model()
 
@@ -130,3 +130,11 @@ class PreferenceSerializer(serializers.ModelSerializer):
         model = Preference
         fields = "__all__"
         read_only_fields = ['id']
+
+class FoodSub(serializers.ModelSerializer):
+    id_vegan = IngredientSerializer(read_only=True)
+    id_food_to_substitute = SubstituteSerializer(read_only=True)
+
+    class Meta:
+        model = Food_Substitute
+        fields = "__all__"
