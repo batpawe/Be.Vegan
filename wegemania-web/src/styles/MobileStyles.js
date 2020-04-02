@@ -49,3 +49,13 @@ export const ScrollContainer = styled.div`
   max-height: 236px;
   overflow: auto;
 `;
+export const TextContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  margin: 6% 0 0 0;
+  font-size: 18px;
+  @media (max-width: 1400px) {
+    font-size: 13px;
+  }
+`;

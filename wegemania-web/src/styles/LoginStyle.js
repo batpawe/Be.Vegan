@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Background from "../images/web2.png";
+import Background from "../images/webNOWY.png";
 import { Link } from "react-router-dom";
 export const FormArea = styled.div`
   background: rgba(255, 255, 255);
@@ -85,12 +85,16 @@ export const StyleLink = styled(Link)`
   }
 `;
 export const LoginPage = styled.div`
+/*
   background-image: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.6) 0%,
       rgba(0, 0, 0.6, 0.6) 100%
     ),
     url(${Background});
+  */
+   background-image: 
+  url(${Background});
   background-position: center;
   background-size: cover;
   height: 100vh;

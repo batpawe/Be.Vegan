@@ -61,9 +61,32 @@ import {
   ImageElement,
   PostsContainer,
   MobileContainer,
-  ScrollContainer
+  ScrollContainer,
+  TextContainer
 } from "../../styles/MobileStyles";
 const Recipes = props => {
+  let recipe = props.recipe;
+  const [listIngredients, setListIngredients] = useState([]);
+
+  let text =
+    recipe.recipe_decription &&
+    recipe.recipe_decription.replace("\r\n\r\n", "\n").replace("\r\n", "\n");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios(`https://veggiesapp.herokuapp.com/recipes/list/${recipe.id}/`)
+        .then(res => {
+          console.log(res.data);
+          setListIngredients(res.data);
+          console.log(res.data[0]);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(err.response);
+        });
+    };
+    fetchData();
+  }, []);
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
   const Paggination = props => {
@@ -142,117 +165,110 @@ const Recipes = props => {
   };
   return (
     <ElementContainerMobile>
-      <MobileContainer>
-        <ImageElement
-          src={Image}
-          onClick={() => props.historyProps.push("/recipe")}
-        />
-        <ContentContainer
-          style={{
-            position: "relative",
-            width: "100%",
-            background: "rgba(255,255,255,0.6)"
-          }}
-        >
-          <img
-            style={{
-              width: "35px",
-              position: "absolute",
-              top: 0,
-              right: 0,
-              background: "green"
-            }}
-            src={RecipesIcon}
+      {recipe && (
+        <MobileContainer>
+          <ImageElement
+            src={recipe.recipe_foto}
+            onClick={() => props.historyProps.push(`/recipe/${recipe.id}`)}
           />
-          <RecipesName style={{ "font-size": "19px" }}>Przepis</RecipesName>
-          {page[props.index] == 0 ? (
-            <div>
-              <HeaderText>Składniki:</HeaderText>{" "}
-              <UnorderedList>
-                <ul
+          <ContentContainer
+            style={{
+              position: "relative",
+              width: "100%",
+              background: "rgba(255,255,255,0.6)"
+            }}
+          >
+            <img
+              style={{
+                width: "35px",
+                position: "absolute",
+                top: 0,
+                right: 0,
+                background: "green"
+              }}
+              src={RecipesIcon}
+            />
+            <RecipesName style={{ "font-size": "19px" }}>Przepis</RecipesName>
+            {page[props.index] == 0 ? (
+              <div>
+                <HeaderText>Składniki:</HeaderText>
+                <UnorderedList
                   style={{
+                    "max-height": "150px",
+                    overflow: "auto",
                     margin: 0,
                     padding: 0,
-                    width: "100%",
-                    display: "flex",
-                    "justify-content": "space-between"
+                    width: "100%"
                   }}
                 >
-                  <Item>Jakiś produkt</Item>
-                  <Item>10g</Item>
-                </ul>
-                <ul
-                  style={{
-                    margin: 0,
-                    padding: 0,
-                    width: "100%",
-                    display: "flex",
-                    "justify-content": "space-between"
-                  }}
-                >
-                  <Item>Jakiś produkt</Item>
-                  <Item>10g</Item>
-                </ul>
-                <ul
-                  style={{
-                    margin: 0,
-                    padding: 0,
-                    width: "100%",
-                    display: "flex",
-                    "justify-content": "space-between"
-                  }}
-                >
-                  <Item>Jakiś produkt</Item>
-                  <Item>10g</Item>
-                </ul>
-                <ul
-                  style={{
-                    margin: 0,
-                    padding: 0,
-                    width: "100%",
-                    display: "flex",
-                    "justify-content": "space-between"
-                  }}
-                >
-                  <Item>Jakiś produkt</Item>
-                  <Item>10g</Item>
-                </ul>
-              </UnorderedList>
-              <div
-                style={{
-                  display: "flex",
-                  "justify-content": "space-evenly",
-                  width: "100%",
-                  margin: "6% 0 0 0",
-                  "font-size": "18px"
-                }}
-              >
-                <p
-                  style={{
-                    color: "#4CAF50",
-                    "font-weight": "bold"
-                  }}
-                >
-                  Czas przygotowania:
-                </p>
-                <p style={{ "font-weight": "bold" }}>0s</p>
+                  {listIngredients.map(ingredient => {
+                    return (
+                      <ul
+                        style={{
+                          "font-size": 10,
+                          margin: "4% 0 0 0",
+                          padding: 0,
+                          width: "100%",
+                          display: "flex",
+                          "justify-content": "space-between",
+                          "align-items": "flex-end"
+                        }}
+                      >
+                        <Item
+                          style={{
+                            "font-size": 10,
+                            "max-width": "50%",
+                            "text-align": "left",
+                            "white-space": "normal",
+                            padding: 0,
+                            margin: 0
+                          }}
+                        >
+                          {ingredient.name}
+                        </Item>
+                        <Item style={{ "font-size": 10 }}>
+                          {ingredient.amount}
+                        </Item>
+                      </ul>
+                    );
+                  })}
+                </UnorderedList>
+                <TextContainer>
+                  <p
+                    style={{
+                      color: "#4CAF50",
+                      "font-weight": "bold"
+                    }}
+                  >
+                    Czas przygotowania:
+                  </p>
+                  <p
+                    style={{ "font-weight": "bold" }}
+                  >{`${recipe.time} minut`}</p>
+                </TextContainer>
               </div>
-            </div>
-          ) : (
-            <div>
-              <HeaderText>Sposób przyrządzenia:</HeaderText>
-              <UnorderedList>
-                <WayItem>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s...
-                </WayItem>
-              </UnorderedList>
-            </div>
-          )}
-          <Paggination index={props.index} />
-        </ContentContainer>
-      </MobileContainer>
+            ) : (
+              <div>
+                <HeaderText>Sposób przyrządzenia:</HeaderText>
+                <UnorderedList
+                  style={{
+                    overflow: "auto",
+                    "max-height": "180px",
+                    width: "100%",
+                    margin: 0,
+                    padding: 0
+                  }}
+                >
+                  <WayItem style={{ "white-space": "pre-line", width: "96%" }}>
+                    {text}
+                  </WayItem>
+                </UnorderedList>
+              </div>
+            )}
+            <Paggination index={props.index} />
+          </ContentContainer>
+        </MobileContainer>
+      )}
     </ElementContainerMobile>
   );
 };
@@ -488,219 +504,126 @@ const Posts = props => {
   );
 };
 const Replacements = props => {
+  console.log(props.replacements);
+  let replacements = props.replacements && props.replacements[0];
   return (
     <div>
-      <ul
-        style={{
-          "list-style-type": "none",
-          "font-size": "20px",
-          padding: 0,
-          margin: 0,
-          overflow: "auto",
-          "max-height": "100%",
-          width: "100%"
-        }}
-      >
+      {replacements && (
         <ul
           style={{
-            "border-bottom": "1px solid black",
-            margin: "2% 0 2% 0",
+            "list-style-type": "none",
+            "font-size": "20px",
             padding: 0,
-            "list-style-type": "none"
+            margin: 0,
+            overflow: "auto",
+            "max-height": "100%",
+            width: "100%"
           }}
         >
-          <li
+          <ul
             style={{
-              padding: "1%",
-              "text-align": "center",
-              "font-size": "15px",
-              display: "block",
-              background: "#00a835",
-              width: "40%",
-              "font-weight": "bold",
-              margin: "1% auto 1% auto",
-              "border-radius": "25px",
-              color: "white"
+              "border-bottom": "1px solid black",
+              margin: "2% 0 2% 0",
+              padding: 0,
+              "list-style-type": "none"
             }}
           >
-            Nazwa
-          </li>
-          <li style={{ padding: "2%" }}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled
-          </li>
-        </ul>
-        <ul
-          style={{
-            margin: "5% 0 5% 0",
-            padding: 0,
-            "list-style-type": "none"
-          }}
-        >
-          <li
-            style={{
-              padding: "1%",
-              "text-align": "center",
-              "font-size": "13px",
-              display: "block",
-              background: "#00a835",
-              width: "30%",
-              "font-weight": "bold",
-              margin: "1% auto 1% auto",
-              "border-radius": "25px",
-              color: "white"
-            }}
-          >
-            Nazwa
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly"
-            }}
-          >
-            <p style={{ width: "20%" }}>Kaloryczność:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly"
-            }}
-          >
-            <p style={{ width: "20%" }}>Proteiny:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly"
-            }}
-          >
-            <p style={{ width: "20%" }}>Tłuszcz:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly"
-            }}
-          >
-            <p style={{ width: "20%" }}>Węglowodany:</p>
-            <p style={{ width: "10%" }}> 100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly"
-            }}
-          >
-            <p style={{ width: "20%" }}>Celuloza:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li>
-            <img
+            <li
               style={{
-                width: "330px",
+                padding: "1%",
+                "text-align": "center",
+                "font-size": "15px",
+                display: "block",
+                background: "#00a835",
+                width: "40%",
+                "font-weight": "bold",
                 margin: "1% auto 1% auto",
-                display: "block"
+                "border-radius": "25px",
+                color: "white"
               }}
-              src={Image}
-            />
-          </li>
-        </ul>
-        <ul
-          style={{
-            margin: "5% 0 5% 0",
-            padding: 0,
-            "list-style-type": "none"
-          }}
-        >
-          <li
+            >
+              {replacements.id_food_to_substitute.food_name}
+            </li>
+            <li style={{ padding: "2%" }}>
+              {replacements.id_food_to_substitute.description}
+            </li>
+          </ul>
+          <ul
             style={{
-              padding: "1%",
-              "text-align": "center",
-              "font-size": "13px",
-              display: "block",
-              background: "#00a835",
-              width: "30%",
-              margin: "1% auto 1% auto",
-              "font-weight": "bold",
-              "border-radius": "25px",
-              color: "white"
+              margin: "5% 0 5% 0",
+              padding: 0,
+              "list-style-type": "none"
             }}
           >
-            Nazwa
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly"
-            }}
-          >
-            <p style={{ width: "20%" }}>Kaloryczność:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly"
-            }}
-          >
-            <p style={{ width: "20%" }}>Proteiny:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly"
-            }}
-          >
-            <p style={{ width: "20%" }}>Tłuszcz:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly"
-            }}
-          >
-            <p style={{ width: "20%" }}>Węglowodany:</p>
-            <p style={{ width: "10%" }}> 100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly"
-            }}
-          >
-            <p style={{ width: "20%" }}>Celuloza:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li>
-            <img
+            <li
               style={{
-                width: "330px",
+                padding: "1%",
+                "text-align": "center",
+                "font-size": "13px",
+                display: "block",
+                background: "#00a835",
+                width: "30%",
+                "font-weight": "bold",
                 margin: "1% auto 1% auto",
-                display: "block"
+                "border-radius": "25px",
+                color: "white"
               }}
-              src={Image}
-            />
-          </li>
+            >
+              {replacements.id_vegan.name}
+            </li>
+            <li
+              style={{
+                display: "flex",
+                width: "100%",
+                "justify-content": "space-evenly"
+              }}
+            >
+              <p style={{ width: "20%" }}>Kaloryczność:</p>
+              <p style={{ width: "10%" }}>{replacements.id_vegan.kcal}</p>
+            </li>
+            <li
+              style={{
+                display: "flex",
+                width: "100%",
+                "justify-content": "space-evenly"
+              }}
+            >
+              <p style={{ width: "20%" }}>Proteiny:</p>
+              <p style={{ width: "10%" }}>{replacements.id_vegan.protein}</p>
+            </li>
+            <li
+              style={{
+                display: "flex",
+                width: "100%",
+                "justify-content": "space-evenly"
+              }}
+            >
+              <p style={{ width: "20%" }}>Tłuszcz:</p>
+              <p style={{ width: "10%" }}>{replacements.id_vegan.fat}</p>
+            </li>
+            <li
+              style={{
+                display: "flex",
+                width: "100%",
+                "justify-content": "space-evenly"
+              }}
+            >
+              <p style={{ width: "20%" }}>Węglowodany:</p>
+              <p style={{ width: "10%" }}>{replacements.id_vegan.carbs}</p>
+            </li>
+            <li
+              style={{
+                display: "flex",
+                width: "100%",
+                "justify-content": "space-evenly"
+              }}
+            >
+              <p style={{ width: "20%" }}>Celuloza:</p>
+              <p style={{ width: "10%" }}>{replacements.id_vegan.cellulose}</p>
+            </li>
+          </ul>
         </ul>
-      </ul>
+      )}
     </div>
   );
 };
@@ -708,6 +631,7 @@ const Wall = props => {
   const [recipes, setRecipes] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [replacements, setReplacements] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       await axios("https://veggiesapp.herokuapp.com/restaurants/")
@@ -729,13 +653,26 @@ const Wall = props => {
           console.log(err);
           console.log(err.response);
         });
+      await axios("http://veggiesapp.herokuapp.com/recipes/")
+        .then(res => {
+          setRecipes(res.data);
+        })
+        .catch(err => console.log(err));
+      await axios("https://veggiesapp.herokuapp.com/substitute/veg/")
+        .then(res => {
+          setReplacements(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     };
     fetchData();
   }, []);
   return (
     <MainContainer>
       <WallContainer>
-        <Recipes s index={0} />
+        {recipes[0] &&
+          recipes.map(recipe => <Recipes index={0} recipe={recipe} />)}
         {restaurants[0] && (
           <Restaurants
             index={restaurants[0].id}
@@ -780,7 +717,7 @@ const Wall = props => {
               Zamienniki
             </h1>
             <ScrollContainer style={{ margin: 0 }}>
-              <Replacements />
+              {replacements && <Replacements replacements={replacements} />}
             </ScrollContainer>
           </div>
         </div>

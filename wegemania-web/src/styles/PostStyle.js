@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Background from "../images/web2.png";
+import Background from "../images/webNOWY.png";
 export const ContainerPosts = styled.div`
   width: 80%;
   background: rgba(255, 255, 255, 0.3);
@@ -62,14 +62,16 @@ export const Image = styled.img`
   */
 `;
 export const ContentContainer = styled.div`
-  margin: 0;
-  display: flex;
-  justify-content: space-between;
-  background-image: linear-gradient(
+/*  background-image: linear-gradient(
       to bottom,
       rgba(250, 250, 250, 0.6) 0%,
       rgba(0, 0, 0.6, 0.6) 100%
     ),
+    url(${Background}); */
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  background-image: 
     url(${Background});
   background-position: center;
   background-size: cover;
