@@ -104,6 +104,36 @@ import "../../App.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 const Restaurant = props => {
+  const [restaurant, setRestaurant] = useState({});
+  const [hours, setHours] = useState([]);
+  const [description, setDescription] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios("https://veggiesapp.herokuapp.com/restaurants/11/")
+        .then(res => {
+          setRestaurant(res.data);
+          const tempTime = res.data.restaurant.hours.split("\r\n");
+          const time = tempTime.map(time => {
+            return [
+              time.split(":", 1).toString(),
+              time
+                .split(":")
+                .slice(1)
+                .join(":")
+            ];
+          });
+          const desc = res.data.restaurant.description
+            .replace("\r\n\r\n", "\n")
+            .replace("\r\n", "\n");
+          setHours(time);
+          setDescription(desc);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, []);
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -134,206 +164,166 @@ const Restaurant = props => {
       });
       */
   };
-  const [restaurant, setRestaurant] = useState({});
-  let temp = {
-    restaurant: "",
-    city: ""
-  };
-  const [searchInfo, setSearchInfo] = useState(temp);
-  const user = useContext(NewLoginInfo);
-  let starTemp = [2];
-  const outerTheme = createMuiTheme({
-    palette: {
-      secondary: {
-        main: green[500]
-      }
-    }
-  });
 
-  const [rating, setRating] = useState(starTemp);
-  const changeRating = val => {
-    let temp = rating;
-    temp[0] = val;
-    setRating([...temp]);
-  };
-  const [radio, setRadio] = useState("city");
-  const handleChange = e => {
-    setRadio(e.target.value);
-  };
-  const handleRestaurantChange = e => {
-    let temp = searchInfo;
-    temp.restaurant = e;
-    setSearchInfo({ ...temp });
-  };
-  const handleCityChange = e => {
-    let temp = searchInfo;
-    temp.city = e;
-    setSearchInfo({ ...temp });
-  };
-  useEffect(() => {
-    const fetchData = async () => {
-      await axios(
-        `https://veggiesapp.herokuapp.com/posts/${props.match.params.id}`
-      )
-        .then(res => {
-          console.log(res.data);
-          setRestaurant({ ...res.data });
-        })
-        .catch(err => {
-          console.log(err);
-          console.log(err.response);
-        });
-    };
-    fetchData();
-  }, [props.match.params.id]);
   return (
     <MainContainer>
-      <Container style={{ position: "relative" }}>
-        <div>
-          <UserActionsContainer>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => {
-                handleClickOpen();
-              }}
-            >
-              <Icon src={DeleteIcon} />
-            </Button>
-
-            <Link
-              to={{
-                pathname: "/editpost"
-                /*params: { id: props.data.idPosty }*/
-              }}
-            >
-              <Button variant="outlined" color="primary">
-                <Icon src={EditIcon} />
-              </Button>
-            </Link>
-          </UserActionsContainer>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {"Usunięcie posta"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                Czy chcesz usunąć post ?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Nie
-              </Button>
+      {restaurant.restaurant && (
+        <Container style={{ position: "relative" }}>
+          <div>
+            <UserActionsContainer>
               <Button
-                onClick={() => {
-                  deletePost(props.data.idPosty);
-                }}
+                variant="outlined"
                 color="primary"
-                autoFocus
+                onClick={() => {
+                  handleClickOpen();
+                }}
               >
-                Tak
+                <Icon src={DeleteIcon} />
               </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-        <OrderedList>
-          <UnorderedList>
-            <HeaderRestaurantContainer>
-              <HeaderRestaurantText>Nazwa</HeaderRestaurantText>
-            </HeaderRestaurantContainer>
-            <FirstRestaurantRow>
-              <RestaurantImageComponent src={RestaurantImage} />
-            </FirstRestaurantRow>
-            <RateContainer>
-              <RateHeader>Oceń</RateHeader>
-              <RateStars>
-                <ReactStars
-                  count={5}
-                  className="test"
-                  onChange={setRating}
-                  size={24}
-                  color2={"#4CAF50"}
-                />
-              </RateStars>
-            </RateContainer>
-            <ColumnContainer>
-              <div>
-                <Item>
-                  <BorderText
+
+              <Link
+                to={{
+                  pathname: "/editpost"
+                  /*params: { id: props.data.idPosty }*/
+                }}
+              >
+                <Button variant="outlined" color="primary">
+                  <Icon src={EditIcon} />
+                </Button>
+              </Link>
+            </UserActionsContainer>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Usunięcie posta"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Czy chcesz usunąć post ?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Nie
+                </Button>
+                <Button
+                  onClick={() => {
+                    deletePost(props.data.idPosty);
+                  }}
+                  color="primary"
+                  autoFocus
+                >
+                  Tak
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+          <OrderedList>
+            <UnorderedList>
+              <HeaderRestaurantContainer>
+                <HeaderRestaurantText>
+                  {restaurant.restaurant.name}
+                </HeaderRestaurantText>
+              </HeaderRestaurantContainer>
+              <FirstRestaurantRow>
+                <p
+                  style={{
+                    background: "rgba(255,255,255,0.6)",
+                    "text-align": "justify",
+                    padding: "1%",
+                    "font-size": "18px"
+                  }}
+                >
+                  {description}
+                </p>
+                <RestaurantImageComponent src={restaurant.restaurant.foto} />
+              </FirstRestaurantRow>
+              <RateContainer>
+                <RateHeader>Oceń</RateHeader>
+                <RateStars>
+                  <ReactStars
+                    value={restaurant.restaurant.description}
+                    count={5}
+                    className="test"
+                    //onChange
+                    size={24}
+                    color2={"#4CAF50"}
+                  />
+                </RateStars>
+              </RateContainer>
+              <ColumnContainer>
+                <div>
+                  <Item>
+                    <BorderText
+                      style={{
+                        color: "black",
+                        "font-weight": "bold",
+                        "text-align": "center"
+                      }}
+                    >
+                      Godziny otwarcia:
+                    </BorderText>
+                  </Item>
+                  <UnorderedListIn
                     style={{
-                      color: "black",
-                      "font-weight": "bold",
+                      background: "rgba(255,255,255,0.6)",
+                      "border-radius": "15px",
                       "text-align": "center"
                     }}
                   >
-                    Godziny otwarcia:
-                  </BorderText>
-                </Item>
-                <UnorderedListIn
-                  style={{
-                    background: "rgba(255,255,255,0.6)",
-                    "border-radius": "15px",
-                    "text-align": "center"
-                  }}
-                >
-                  <RestaurantOpenItem style={{ "text-align": "center" }}>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem style={{ "text-align": "center" }}>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem style={{ "text-align": "center" }}>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem style={{ "text-align": "center" }}>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem style={{ "text-align": "center" }}>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem style={{ "text-align": "center" }}>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                  <RestaurantOpenItem style={{ "text-align": "center" }}>
-                    Poniedziałek 8:00 - 20:00
-                  </RestaurantOpenItem>
-                </UnorderedListIn>
-              </div>
-              <LocationContainer>
-                <BorderHeader style={{ color: "black", "font-weight": "bold" }}>
-                  Lokalizacja :
-                </BorderHeader>
-                <Map
-                  id="mapid"
-                  center={[53.009794, 18.591649]}
-                  zoom={12}
-                  style={{
-                    width: 400,
-                    height: 300,
-                    "z-index": 0,
-                    display: "block",
-                    margin: "auto"
-                  }}
-                >
-                  <TileLayer
-                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  <Marker position={[53.009794, 18.591649]}>
-                    <Popup>
-                      A pretty CSS3 popup. <br /> Easily customizable.
-                    </Popup>
-                  </Marker>
-                </Map>
-              </LocationContainer>
-            </ColumnContainer>
-            {/*}
+                    {hours.map(h => {
+                      return (
+                        <RestaurantOpenItem style={{ "text-align": "center" }}>
+                          <p>{`${h[0]} `}</p>
+                          <p>{h[1]}</p>
+                        </RestaurantOpenItem>
+                      );
+                    })}
+                  </UnorderedListIn>
+                </div>
+                <LocationContainer>
+                  <BorderHeader
+                    style={{ color: "black", "font-weight": "bold" }}
+                  >
+                    Lokalizacja :
+                  </BorderHeader>
+                  <Map
+                    id="mapid"
+                    center={[
+                      restaurant.restaurant.latX,
+                      restaurant.restaurant.longY
+                    ]}
+                    zoom={12}
+                    style={{
+                      width: 400,
+                      height: 300,
+                      "z-index": 0,
+                      display: "block",
+                      margin: "auto"
+                    }}
+                  >
+                    <TileLayer
+                      attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <Marker
+                      position={[
+                        restaurant.restaurant.latX,
+                        restaurant.restaurant.longY
+                      ]}
+                    >
+                      <Popup>
+                        A pretty CSS3 popup. <br /> Easily customizable.
+                      </Popup>
+                    </Marker>
+                  </Map>
+                </LocationContainer>
+              </ColumnContainer>
+              {/*}
             <HeaderText>Komentarze:</HeaderText>
             <UnorderedListComments>
               <UnorderedListCommentsIn>
@@ -371,9 +361,11 @@ const Restaurant = props => {
               </CommentContainer>
             </UnorderedListComments>
             {*/}
-          </UnorderedList>
-        </OrderedList>
-      </Container>
+            </UnorderedList>
+          </OrderedList>
+        </Container>
+      )}
+
       <RightPanel />
     </MainContainer>
   );

@@ -1,5 +1,5 @@
 //props.match.params
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeleteIcon from "../../icons/bin_delete.svg";
 import EditIcon from "../../icons/edit.svg";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -68,8 +68,21 @@ import ikonaSkladnikowActive from "../../icons/ikonaSkladnikowactive.svg";
 import ikonaTresciPrzepisuActive from "../../icons/ikonaTresciprzepisuactive.svg";
 import ikonaSkladnikow from "../../icons/ikonaSkladnikow.svg";
 import ikonaTresciPrzepisu from "../../icons/ikonaTresciprzepisu.svg";
-import axiso from "axios";
+import axios from "axios";
 const Recipes = props => {
+  const [recipes, setRecipes] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios("https://veggiesapp.herokuapp.com/recipes/")
+        .then(res => {
+          setRecipes(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, []);
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
   const Paggination = props => {
@@ -146,10 +159,28 @@ const Recipes = props => {
     );
   };
   const ContentController = props => {
+    const [listIngredients, setListIngredients] = useState([]);
+    useEffect(() => {
+      const fetchData = async () => {
+        await axios(
+          `https://veggiesapp.herokuapp.com/recipes/list/${props.recipe.id}/`
+        )
+          .then(res => {
+            setListIngredients(res.data);
+            console.log("WWWWWWWWW");
+            console.log(props.recipe.id);
+            console.log(res.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      };
+      fetchData();
+    }, []);
     return (
       <ContainerRecipes>
         <ImageRecipes
-          src={Image}
+          src={props.recipe.recipe_foto}
           style={{ width: "60%", cursor: "pointer" }}
           onClick={() => props.historyProps.push("/recipe/1")}
         />
@@ -160,72 +191,58 @@ const Recipes = props => {
             position: "relative"
           }}
         >
-          <RecipesName style={{ "font-size": "19px" }}>Przepis</RecipesName>
+          <RecipesName style={{ "font-size": "14px" }}>
+            {props.recipe.recipe_name}
+          </RecipesName>
           <div
             style={{
               display: "flex",
               "justify-content": "space-between",
               width: "100%",
-              "font-size": "13px"
+              "font-size": "12px",
+              "white-space": "nowrap"
             }}
           >
             <p style={{ color: "#4CAF50", "font-weight": "bold" }}>
               Czas przygotowania:
             </p>
-            <p style={{ "font-weight": "bold" }}>0s</p>
+            <p
+              style={{ "font-weight": "bold" }}
+            >{`${props.recipe.time} minut`}</p>
           </div>
           {page[props.index] == 0 ? (
             <div>
-              <HeaderText>Składniki:</HeaderText>{" "}
-              <UnorderedList>
-                <ul
-                  style={{
-                    margin: 0,
-                    padding: 0,
-                    width: "100%",
-                    display: "flex",
-                    "justify-content": "space-between"
-                  }}
-                >
-                  <Item>Jakiś produkt</Item>
-                  <Item>10g</Item>
-                </ul>
-                <ul
-                  style={{
-                    margin: 0,
-                    padding: 0,
-                    width: "100%",
-                    display: "flex",
-                    "justify-content": "space-between"
-                  }}
-                >
-                  <Item>Jakiś produkt</Item>
-                  <Item>10g</Item>
-                </ul>
-                <ul
-                  style={{
-                    margin: 0,
-                    padding: 0,
-                    width: "100%",
-                    display: "flex",
-                    "justify-content": "space-between"
-                  }}
-                >
-                  <Item>Jakiś produkt</Item>
-                  <Item>10g</Item>
-                </ul>
-                <ul
-                  style={{
-                    margin: 0,
-                    padding: 0,
-                    width: "100%",
-                    display: "flex",
-                    "justify-content": "space-between"
-                  }}
-                >
-                  <Item>Jakiś produkt</Item>
-                  <Item>10g</Item>
-                </ul>
+              <HeaderText>Składniki:</HeaderText>
+              <UnorderedList
+                style={{
+                  "max-height": "150px",
+                  overflow: "auto",
+                  margin: 0,
+                  padding: 0,
+                  width: "100%"
+                }}
+              >
+                {listIngredients &&
+                  listIngredients.map(ingredient => {
+                    return (
+                      <ul
+                        style={{
+                          margin: 0,
+                          padding: 0,
+                          width: "100%",
+                          display: "flex",
+                          "justify-content": "space-between"
+                        }}
+                      >
+                        <Item style={{ "font-size": "10px" }}>
+                          {ingredient.name}
+                        </Item>
+                        <Item style={{ "font-size": "10px" }}>
+                          {ingredient.amount}
+                        </Item>
+                      </ul>
+                    );
+                  })}
               </UnorderedList>
             </div>
           ) : (
@@ -306,9 +323,15 @@ const Recipes = props => {
           </SearchButton>
         </SearchPanel>
         <div style={{ display: "flex", "flex-wrap": "wrap" }}>
-          <ContentController index={0} historyProps={props.history} />
-          <ContentController index={1} historyProps={props.history} />
-          <ContentController index={2} historyProps={props.history} />
+          {recipes.map((recipe, index) => {
+            return (
+              <ContentController
+                index={index}
+                recipe={recipe}
+                historyProps={props.history}
+              />
+            );
+          })}
         </div>
       </Container>
       <RightPanel />

@@ -188,7 +188,9 @@ const Recipes = props => {
               }}
               src={RecipesIcon}
             />
-            <RecipesName style={{ "font-size": "19px" }}>Przepis</RecipesName>
+            <RecipesName style={{ "font-size": "14px" }}>
+              {recipe.recipe_name}
+            </RecipesName>
             {page[props.index] == 0 ? (
               <div>
                 <HeaderText>Składniki:</HeaderText>
@@ -226,7 +228,16 @@ const Recipes = props => {
                         >
                           {ingredient.name}
                         </Item>
-                        <Item style={{ "font-size": 10 }}>
+                        <Item
+                          style={{
+                            "font-size": 10,
+                            "max-width": "50%",
+                            "text-align": "left",
+                            "white-space": "normal",
+                            padding: 0,
+                            margin: 0
+                          }}
+                        >
                           {ingredient.amount}
                         </Item>
                       </ul>

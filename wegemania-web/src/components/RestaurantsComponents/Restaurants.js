@@ -185,7 +185,7 @@ const Restaurants = props => {
       <ContainerRestaurant style={{ width: "48%", height: "300px" }}>
         {/*ttt*/}
         <ImageRestaurant
-          src={Image}
+          src={props.data.foto}
           style={{ width: "60%", cursor: "pointer" }}
           onClick={() => props.historyProps.push(`/restaurant/${props.index}`)}
         />

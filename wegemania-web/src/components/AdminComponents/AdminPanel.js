@@ -18,7 +18,7 @@ const AdminPanel = props => {
         >
           <li>
             <button
-              onClick={() => setSelect(sel => !sel)}
+              onClick={() => setSelect(0)}
               style={{
                 background: "#27ae60",
                 border: "none",
@@ -34,7 +34,7 @@ const AdminPanel = props => {
           </li>
           <li>
             <button
-              onClick={() => setSelect(sel => !sel)}
+              onClick={() => setSelect(1)}
               style={{
                 background: "#27ae60",
                 border: "none",
