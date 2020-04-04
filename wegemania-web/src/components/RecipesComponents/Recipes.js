@@ -69,13 +69,72 @@ import ikonaTresciPrzepisuActive from "../../icons/ikonaTresciprzepisuactive.svg
 import ikonaSkladnikow from "../../icons/ikonaSkladnikow.svg";
 import ikonaTresciPrzepisu from "../../icons/ikonaTresciprzepisu.svg";
 import axios from "axios";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { FormControl } from "@material-ui/core";
+import FormLabel from "@material-ui/core/FormLabel";
+import AutoSuggest from "react-autosuggest";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { green, orange } from "@material-ui/core/colors";
+import { NewLoginInfo } from "../../context/LoginInfo";
 const Recipes = (props) => {
+  const [products, setProducts] = useState([]);
+  const [names, setNames] = useState([]);
+  const outerTheme = createMuiTheme({
+    palette: {
+      secondary: {
+        main: green[500],
+      },
+    },
+  });
+  const [radio, setRadio] = useState("name");
+  const handleChange = (e) => {
+    setRadio(e.target.value);
+  };
   const [recipes, setRecipes] = useState([]);
+  const [suggestionsName, setSuggestionsName] = useState([]);
+  const [valueName, setValueName] = useState("");
+  const [valueProduct, setValueProduct] = useState("");
+  const nameName = names.map((name) => {
+    return name;
+  });
+  const productProduct = products.map((product) => {
+    return product;
+  });
+  const [suggestionsProduct, setSuggestionsProduct] = useState([]);
+  const getSuggestionName = (value) => {
+    console.log(nameName.filter((name) => name.includes(value.trim())));
+    return nameName.filter((name) => name.includes(value.trim()));
+    //return nameName.filter((name) => name.name.includes(value.trim()));
+  };
+  const getSuggestionProduct = (value) => {
+    const temp = productProduct.reduce((acc, current) => {
+      const x = acc.find((item) => item.name === current.name);
+      if (!x) {
+        return acc.concat([current]);
+      } else {
+        return acc;
+      }
+    }, []);
+    console.log(temp);
+    console.log(temp[0].filter((prod) => prod.name.includes(value.trim())));
+    return temp[0].filter((prod) => prod.name.includes(value.trim()));
+  };
   useEffect(() => {
     const fetchData = async () => {
       await axios("https://veggiesapp.herokuapp.com/recipes/")
         .then((res) => {
           setRecipes(res.data);
+          let tempProducts = [];
+          let tempNames = [];
+          res.data.map((date) => {
+            tempProducts.push(date.ingredients);
+            tempNames.push(date.recipe_name);
+          });
+          setProducts(tempProducts);
+          setNames(tempNames);
         })
         .catch((err) => {
           console.log(err);
@@ -272,47 +331,105 @@ const Recipes = (props) => {
       </ContainerRecipes>
     );
   };
+
   return (
     <MainContainer>
       <Container>
         <SearchPanel>
           <div style={{ display: "flex", "flex-direction": "column" }}>
             <div>
-              <SearchInput
-                type="text"
-                id="ajax"
-                list="json-datalist"
-                placeholder="Wprowadź nazwę produktu"
-              />
-              <datalist id="json-datalist">
-                <option value="HTML" />
-                <option value="CSS" />
-                <option value="JavaScript" />
-                <option value="Java" />
-                <option value="Ruby" />
-                <option value="PHP" />
-                <option value="Go" />
-                <option value="Erlang" />
-                <option value="Python" />
-                <option value="C" />
-                <option value="C#" />
-                <option value="C++" />
-              </datalist>
+              <p style={{ "font-weight": "bold", color: "rgb(39,174,96)" }}>
+                Filtruj:
+              </p>
+              {radio == "name" ? (
+                <AutoSuggest
+                  style={{ "font-size": 10 }}
+                  suggestions={suggestionsName}
+                  onSuggestionsClearRequested={() => setSuggestionsName([])}
+                  onSuggestionsFetchRequested={({ value }) => {
+                    console.log(value);
+                    setValueName(value);
+                    setSuggestionsName(getSuggestionName(value));
+                  }}
+                  onSuggestionSelected={(_, { suggestionValue }) =>
+                    console.log("Wybrany: " + suggestionValue)
+                  }
+                  getSuggestionValue={(suggestion) => suggestion}
+                  renderSuggestion={(suggestion) => <span>{suggestion}</span>}
+                  inputProps={{
+                    placeholder: "Wprowadź nazwę przepisu",
+                    value: valueName,
+                    onChange: (_, { newValue, method }) => {
+                      setValueName(newValue);
+                    },
+                  }}
+                  highlightFirstSuggestion={true}
+                />
+              ) : (
+                <AutoSuggest
+                  suggestions={suggestionsProduct}
+                  onSuggestionsClearRequested={() => setSuggestionsProduct([])}
+                  onSuggestionsFetchRequested={({ value }) => {
+                    console.log(value);
+                    setValueProduct(value);
+                    setSuggestionsProduct(getSuggestionProduct(value));
+                  }}
+                  onSuggestionSelected={(_, { suggestionValue }) =>
+                    console.log("Wybrany: " + suggestionValue)
+                  }
+                  getSuggestionValue={(suggestion) => suggestion.name}
+                  renderSuggestion={(suggestion) => (
+                    <span>{suggestion.name}</span>
+                  )}
+                  inputProps={{
+                    placeholder: "Wprowadź nazwę produktu",
+                    value: valueProduct,
+                    onChange: (_, { newValue, method }) => {
+                      setValueProduct(newValue);
+                    },
+                  }}
+                  highlightFirstSuggestion={true}
+                />
+              )}
+              <FormControl component="fieldset">
+                <RadioGroup
+                  aria-label="search"
+                  name="search"
+                  value={radio}
+                  onChange={handleChange}
+                >
+                  <ThemeProvider theme={outerTheme}>
+                    <div
+                      style={{
+                        display: "flex",
+                        "justify-content": "space-between",
+                      }}
+                    >
+                      <FormControlLabel
+                        value="name"
+                        control={<Radio />}
+                        label="Nazwa przepisu"
+                      />
+                      <FormControlLabel
+                        value="product"
+                        control={<Radio />}
+                        label="Nazwa produktu"
+                      />
+                    </div>
+                  </ThemeProvider>
+                </RadioGroup>
+              </FormControl>
             </div>
-            <SearchButton
-              style={{
-                display: "flex",
-                background: "27ae60",
-                color: "white",
-                "text-decoration": "none",
-                padding: "0 1% 0 1%",
-                width: "100%",
-                "font-size": "18px",
-                "justify-content": "center",
-              }}
-            >
-              Wyszukaj
-            </SearchButton>
+            <div>
+              <div style={{ display: "flex" }}>
+                <p style={{ "font-weight": "bold" }}>Nazwa przepisu:</p>
+                <p>{valueName}</p>
+              </div>
+              <div style={{ display: "flex" }}>
+                <p style={{ "font-weight": "bold" }}>Nazwa produktu:</p>
+                <p>{valueProduct}</p>
+              </div>
+            </div>
           </div>
           <SearchButton
             to="/addrecipe"
@@ -321,6 +438,7 @@ const Recipes = (props) => {
               background: "27ae60",
               color: "white",
               width: "200px",
+              height: "50px",
               "text-decoration": "none",
               padding: "0 1% 0 1%",
               "font-size": "18px",
@@ -333,13 +451,17 @@ const Recipes = (props) => {
         </SearchPanel>
         <div style={{ display: "flex", "flex-wrap": "wrap" }}>
           {recipes.map((recipe, index) => {
-            return (
-              <ContentController
-                index={index}
-                recipe={recipe}
-                historyProps={props.history}
-              />
-            );
+            if (
+              recipe.recipe_name.includes(valueName) &&
+              recipe.ingredients.some((x) => x.name.includes(valueProduct))
+            )
+              return (
+                <ContentController
+                  index={index}
+                  recipe={recipe}
+                  historyProps={props.history}
+                />
+              );
           })}
         </div>
       </Container>

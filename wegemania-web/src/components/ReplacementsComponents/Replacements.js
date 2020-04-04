@@ -13,6 +13,16 @@ import {
 } from "../../styles/GlobalStyle";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { FormControl } from "@material-ui/core";
+import FormLabel from "@material-ui/core/FormLabel";
+import AutoSuggest from "react-autosuggest";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { green, orange } from "@material-ui/core/colors";
+import { NewLoginInfo } from "../../context/LoginInfo";
 import axios from "axios";
 /*
      <OuterUnorderedList>
@@ -29,10 +39,40 @@ import axios from "axios";
                 </UnorderedList>
                 */
 const Replacements = (props) => {
+  const outerTheme = createMuiTheme({
+    palette: {
+      secondary: {
+        main: green[500],
+      },
+    },
+  });
+  const [radio, setRadio] = useState("vegan");
   const [replacements, setReplacements] = useState([]);
   const [current, setCurrent] = useState([]);
   const [selected, setSelected] = useState(0);
+  const [vegan, setVegan] = useState([]);
+  const [nVegan, setNVegan] = useState([]);
   const items = [];
+  const [suggestionsVegan, setSuggestionsVegan] = useState([]);
+  const [valueVegan, setValueVegan] = useState("");
+  const [valueNVegan, setValueNVegan] = useState("");
+  const nVegannVegan = nVegan.map((prod) => {
+    return prod;
+  });
+  const veganVegan = vegan.map((prod) => {
+    return prod;
+  });
+  const handleChange = (e) => {
+    setRadio(e.target.value);
+  };
+  const [suggestionsNVegan, setSuggestionsNVegan] = useState([]);
+  const getSuggestionNVegan = (value) => {
+    return nVegannVegan.filter((name) => name.includes(value.trim()));
+    //return nameName.filter((name) => name.name.includes(value.trim()));
+  };
+  const getSuggestionVegan = (value) => {
+    return veganVegan.filter((name) => name.includes(value.trim()));
+  };
   useEffect(() => {
     const fetchData = async () => {
       await axios(`https://veggiesapp.herokuapp.com/substitute/veg/`)
@@ -58,6 +98,17 @@ const Replacements = (props) => {
             }
             return acc;
           }, []);
+          console.log(newTemp);
+          let tempVegan = [];
+          let tempNVegan = [];
+          newTemp.map((tmp) => {
+            tempVegan.push(tmp.id_vegan[0].name);
+            tempNVegan.push(tmp.id_food_to_substitute.food_name);
+          });
+          setVegan(tempVegan);
+          console.log(tempVegan);
+          setNVegan(tempNVegan);
+          console.log(tempNVegan);
           setReplacements(newTemp);
           setCurrent(newTemp[0]);
           console.log(newTemp);
@@ -70,18 +121,22 @@ const Replacements = (props) => {
   }, []);
   replacements &&
     replacements.map((replacement, index) => {
-      items.push(
-        <Item
-          id={index}
-          onClick={(e) => {
-            setSelected(e.target.id);
-            setCurrent(replacement);
-          }}
-          select={selected == index}
-        >
-          {replacement.id_food_to_substitute.food_name}
-        </Item>
-      );
+      if (
+        replacement.id_food_to_substitute.food_name.includes(valueNVegan) &&
+        replacement.id_vegan[0].name.includes(valueVegan)
+      )
+        items.push(
+          <Item
+            id={index}
+            onClick={(e) => {
+              setSelected(e.target.id);
+              setCurrent(replacement);
+            }}
+            select={selected == index}
+          >
+            {replacement.id_food_to_substitute.food_name}
+          </Item>
+        );
     });
 
   return (
@@ -89,30 +144,93 @@ const Replacements = (props) => {
       <Container>
         <SearchPanel>
           <div>
-            <SearchInput
-              type="text"
-              id="ajax"
-              list="json-datalist"
-              placeholder="Wprowadź nazwę produktu"
-            />
-            <datalist id="json-datalist">
-              <option value="HTML" />
-              <option value="CSS" />
-              <option value="JavaScript" />
-              <option value="Java" />
-              <option value="Ruby" />
-              <option value="PHP" />
-              <option value="Go" />
-              <option value="Erlang" />
-              <option value="Python" />
-              <option value="C" />
-              <option value="C#" />
-              <option value="C++" />
-            </datalist>
+            {radio == "vegan" ? (
+              <AutoSuggest
+                style={{ "font-size": 10 }}
+                suggestions={suggestionsVegan}
+                onSuggestionsClearRequested={() => setSuggestionsVegan([])}
+                onSuggestionsFetchRequested={({ value }) => {
+                  console.log(value);
+                  setValueVegan(value);
+                  setSuggestionsVegan(getSuggestionVegan(value));
+                }}
+                onSuggestionSelected={(_, { suggestionValue }) =>
+                  console.log("Wybrany: " + suggestionValue)
+                }
+                getSuggestionValue={(suggestion) => suggestion}
+                renderSuggestion={(suggestion) => <span>{suggestion}</span>}
+                inputProps={{
+                  placeholder: "Produkt Wegański",
+                  value: valueVegan,
+                  onChange: (_, { newValue, method }) => {
+                    setValueVegan(newValue);
+                  },
+                }}
+                highlightFirstSuggestion={true}
+              />
+            ) : (
+              <AutoSuggest
+                suggestions={suggestionsNVegan}
+                onSuggestionsClearRequested={() => setSuggestionsNVegan([])}
+                onSuggestionsFetchRequested={({ value }) => {
+                  console.log(value);
+                  setValueNVegan(value);
+                  setSuggestionsNVegan(getSuggestionNVegan(value));
+                }}
+                onSuggestionSelected={(_, { suggestionValue }) =>
+                  console.log("Wybrany: " + suggestionValue)
+                }
+                getSuggestionValue={(suggestion) => suggestion}
+                renderSuggestion={(suggestion) => <span>{suggestion}</span>}
+                inputProps={{
+                  placeholder: "Produkt niewegański",
+                  value: valueNVegan,
+                  onChange: (_, { newValue, method }) => {
+                    setValueNVegan(newValue);
+                  },
+                }}
+                highlightFirstSuggestion={true}
+              />
+            )}
+            <FormControl component="fieldset">
+              <RadioGroup
+                aria-label="search"
+                name="search"
+                value={radio}
+                onChange={handleChange}
+              >
+                <ThemeProvider theme={outerTheme}>
+                  <div
+                    style={{
+                      display: "flex",
+                      "justify-content": "space-between",
+                    }}
+                  >
+                    <FormControlLabel
+                      value="vegan"
+                      control={<Radio />}
+                      label="Produkt wegański"
+                    />
+                    <FormControlLabel
+                      value="nvegan"
+                      control={<Radio />}
+                      label="Produkt niewegański"
+                    />
+                  </div>
+                </ThemeProvider>
+              </RadioGroup>
+            </FormControl>
+            <div>
+              <div style={{ display: "flex" }}>
+                <p style={{ "font-weight": "bold" }}>Produkt wegański:</p>
+                <p>{valueVegan}</p>
+              </div>
+              <div style={{ display: "flex" }}>
+                <p style={{ "font-weight": "bold" }}>Produkt niewegański:</p>
+                <p>{valueNVegan}</p>
+              </div>
+            </div>
           </div>
-          <SearchButton style={{ width: "200px", "font-size": "18px" }}>
-            Wyszukaj
-          </SearchButton>
           <AddPostPageLink
             style={{
               width: "250px",
@@ -120,6 +238,7 @@ const Replacements = (props) => {
               "align-items": "center",
               "justify-content": "center",
               "font-size": "18px",
+              height: "50px",
             }}
             to="/addreplacement"
           >
