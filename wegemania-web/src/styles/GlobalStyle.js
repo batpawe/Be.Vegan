@@ -39,7 +39,7 @@ export const Item = styled.li`
   margin: 4% 0 0 0;
 `;
 export const GlobalContainer = styled.div`
-  margin: 0 1% 0 1%;
+  margin: 0 2% 0 0;
 `;
 export const SearchPanel = styled.div`
   padding: 1%;

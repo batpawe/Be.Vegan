@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import ProductImage from "../../images/product.jpg";
 import { NewLoginInfo } from "../../context/LoginInfo";
 import DeleteIcon from "../../icons/bin_delete.svg";
@@ -41,7 +41,7 @@ import {
   UserLink,
   PostLink,
   UserActionsContainer,
-  Icon
+  Icon,
 } from "../../styles/ContainerStyles";
 import {
   UnorderedList,
@@ -62,7 +62,7 @@ import {
   CommentContainer,
   PreparingMethod,
   RatingComponent,
-  RatingHeader
+  RatingHeader,
 } from "../../styles/WallStyle";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import DinnerImage from "../../images/dinner.jpg";
@@ -70,7 +70,7 @@ import RightPanel from "../GlobalComponents/RightPanel";
 import {
   SearchPanel,
   SearchInput,
-  SearchButton
+  SearchButton,
 } from "../../styles/GlobalStyle";
 import "../../styles/MenuLoginStyle.css";
 import ReactStars from "react-stars";
@@ -86,12 +86,15 @@ import {
   RecipeImage,
   RateContainer,
   RateHeader,
-  RateStars
+  RateStars,
 } from "../../styles/RecipeStyle";
 import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
 import "../../App.css";
 import { Link } from "react-router-dom";
-const Recipe = props => {
+import axios from "axios";
+const Recipe = (props) => {
+  const [recipe, setRecipe] = useState([]);
+  const [listIngredients, setListIngredients] = useState([]);
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -100,7 +103,7 @@ const Recipe = props => {
   const handleClose = () => {
     setOpen(false);
   };
-  const deletePost = id => {
+  const deletePost = (id) => {
     handleClose();
     /*
     const redirect = () => {
@@ -124,11 +127,37 @@ const Recipe = props => {
   };
   let temp = [2];
   const [rating, setRating] = useState(temp);
-  const changeRating = val => {
+  const changeRating = (val) => {
     let temp = rating;
     temp[0] = val;
     setRating([...temp]);
   };
+  useEffect(() => {
+    console.log(
+      `https://veggiesapp.herokuapp.com/recipes/${props.match.params.id}`
+    );
+    const fetchData = async () => {
+      await axios(
+        `https://veggiesapp.herokuapp.com/recipes/${props.match.params.id}`
+      )
+        .then((res) => {
+          setRecipe(res.data);
+          console.log("!!!");
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+      await axios(
+        `https://veggiesapp.herokuapp.com/recipes/list/${props.match.params.id}/`
+      )
+        .then((res) => {
+          setListIngredients(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, []);
   return (
     <MainContainer>
       <Container style={{ position: "relative" }}>
@@ -146,7 +175,7 @@ const Recipe = props => {
 
             <Link
               to={{
-                pathname: "/editpost"
+                pathname: "/editpost",
                 /*params: { id: props.data.idPosty }*/
               }}
             >
@@ -195,11 +224,11 @@ const Recipe = props => {
                 color: "white",
                 "font-weight": "bold",
                 margin: "1% auto 1% auto",
-                "border-radius": "25px"
+                "border-radius": "25px",
               }}
             >
               <HeaderRecipeText style={{ color: "white" }}>
-                ZUPA KREM Z TOPINAMBURU
+                {recipe.recipe && recipe.recipe.recipe_name}
               </HeaderRecipeText>
             </HeaderRecipeContainer>
             <ColumnContainer>
@@ -210,60 +239,43 @@ const Recipe = props => {
                 <IngredientsList
                   styles={{
                     background: "rgba(255,255,255,0.6)",
-                    color: "black"
+                    color: "black",
                   }}
                 >
-                  <IngredientsItem>
-                    <p>Składniki</p>
-                    <p>100g</p>
-                  </IngredientsItem>
-                  <IngredientsItem>
-                    <p>Składniki</p>
-                    <p>100g</p>
-                  </IngredientsItem>
-                  <IngredientsItem>
-                    <p>Składniki</p>
-                    <p>100g</p>
-                  </IngredientsItem>
-                  <IngredientsItem>
-                    <p>Składniki</p>
-                    <p>100g</p>
-                  </IngredientsItem>
-                  <IngredientsItem>
-                    <p>Składniki</p>
-                    <p>100g</p>
-                  </IngredientsItem>
-                  <IngredientsItem>
-                    <p>Składniki</p>
-                    <p>100g</p>
-                  </IngredientsItem>
-                  <IngredientsItem>
-                    <p>Składniki</p>
-                    <p>100g</p>
-                  </IngredientsItem>
-                  <IngredientsItem>
-                    <p>Składniki</p>
-                    <p>100g</p>
-                  </IngredientsItem>
+                  {listIngredients &&
+                    listIngredients.map((ingredient) => {
+                      return (
+                        <IngredientsItem
+                          style={{
+                            "justify-content": "space-between",
+                            width: "90%",
+                          }}
+                        >
+                          <p>{ingredient.name}</p>
+                          <p>{ingredient.amount}</p>
+                        </IngredientsItem>
+                      );
+                    })}
                 </IngredientsList>
+                <RecipeImage
+                  style={{ width: "90%", margin: "3% 0 0 0" }}
+                  src={recipe.recipe && recipe.recipe.recipe_foto}
+                />
               </div>
               <PreparingMethod>
                 <Item>
                   <BorderText>Sposób przygotowania: </BorderText>
                 </Item>
                 <UnorderedListIn>
-                  <PreparationItem>
-                    Flexbox was designed as a single dimensional layout, meaning
-                    that it deals with laying out items as a row or as a column
-                    — but not both at once. There is however the ability to wrap
-                    flex items onto new lines, creating new rows if
-                    flex-direction is row and new columns if flex-direction is
-                    column. I
+                  <PreparationItem style={{ "white-space": "pre-wrap" }}>
+                    {recipe.recipe &&
+                      recipe.recipe.recipe_decription
+                        .replace("\r\n\r\n", "\n")
+                        .replace("\r\n", "\n")}
                   </PreparationItem>
                 </UnorderedListIn>
               </PreparingMethod>
             </ColumnContainer>
-            <RecipeImage src={DinnerImage} />
             <RateContainer>
               <RateHeader>Oceń</RateHeader>
               <RateStars>
@@ -276,6 +288,7 @@ const Recipe = props => {
                 />
               </RateStars>
             </RateContainer>
+            {/*}
             <HeaderText>Komentarze:</HeaderText>
             <UnorderedListComments>
               <UnorderedListCommentsIn>
@@ -315,6 +328,7 @@ const Recipe = props => {
                 </SubmitCommentButton>
               </CommentContainer>
             </UnorderedListComments>
+            {*/}
           </UnorderedList>
         </OrderedList>
       </Container>

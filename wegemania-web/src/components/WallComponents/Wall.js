@@ -11,14 +11,14 @@ import {
   PagginationContainer,
   PagginationItem,
   Item,
-  WayItem
+  WayItem,
 } from "../../styles/TempRecipes";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import PostsIcon from "../../icons/VeganAppIcons/posts.svg";
 import {
   RestaurantName,
   ContainerRestaurant,
-  ImageRestaurant
+  ImageRestaurant,
 } from "../../styles/TempRestaurants";
 import {
   ImageComponent,
@@ -27,7 +27,7 @@ import {
   HoverContainer,
   HoverHeader,
   HoverText,
-  ImageHoverComponent
+  ImageHoverComponent,
 } from "../../styles/TempStyle";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -51,7 +51,7 @@ import ikonaTresciPrzepisu from "../../icons/ikonaTresciprzepisu.svg";
 import {
   MainContainer,
   Container,
-  ReplacementsContainer
+  ReplacementsContainer,
 } from "../../styles/WallStyle";
 import ReplacementsIcon from "../../icons/VeganAppIcons/replacements.svg";
 import RestaurantIcon from "../../icons/VeganAppIcons/restaurants.svg";
@@ -62,9 +62,9 @@ import {
   PostsContainer,
   MobileContainer,
   ScrollContainer,
-  TextContainer
+  TextContainer,
 } from "../../styles/MobileStyles";
-const Recipes = props => {
+const Recipes = (props) => {
   let recipe = props.recipe;
   const [listIngredients, setListIngredients] = useState([]);
 
@@ -75,12 +75,12 @@ const Recipes = props => {
   useEffect(() => {
     const fetchData = async () => {
       await axios(`https://veggiesapp.herokuapp.com/recipes/list/${recipe.id}/`)
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
           setListIngredients(res.data);
           console.log(res.data[0]);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           console.log(err.response);
         });
@@ -89,9 +89,9 @@ const Recipes = props => {
   }, []);
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
-  const Paggination = props => {
+  const Paggination = (props) => {
     let no = props.no || 2;
-    const handlePage = k => {
+    const handlePage = (k) => {
       let tmp = page;
       console.log(k);
       if (k == 1) {
@@ -156,7 +156,7 @@ const Recipes = props => {
           "border-top": "1px solid black",
           position: "absolute",
           bottom: 0,
-          width: "100%"
+          width: "100%",
         }}
       >
         {paggin}
@@ -175,7 +175,7 @@ const Recipes = props => {
             style={{
               position: "relative",
               width: "100%",
-              background: "rgba(255,255,255,0.6)"
+              background: "rgba(255,255,255,0.6)",
             }}
           >
             <img
@@ -184,11 +184,11 @@ const Recipes = props => {
                 position: "absolute",
                 top: 0,
                 right: 0,
-                background: "green"
+                background: "green",
               }}
               src={RecipesIcon}
             />
-            <RecipesName style={{ "font-size": "14px" }}>
+            <RecipesName style={{ "font-size": "14px", width: "80%" }}>
               {recipe.recipe_name}
             </RecipesName>
             {page[props.index] == 0 ? (
@@ -196,14 +196,14 @@ const Recipes = props => {
                 <HeaderText>Składniki:</HeaderText>
                 <UnorderedList
                   style={{
-                    "max-height": "150px",
+                    "max-height": "140px",
                     overflow: "auto",
                     margin: 0,
                     padding: 0,
-                    width: "100%"
+                    width: "100%",
                   }}
                 >
-                  {listIngredients.map(ingredient => {
+                  {listIngredients.map((ingredient) => {
                     return (
                       <ul
                         style={{
@@ -213,7 +213,7 @@ const Recipes = props => {
                           width: "100%",
                           display: "flex",
                           "justify-content": "space-between",
-                          "align-items": "flex-end"
+                          "align-items": "flex-end",
                         }}
                       >
                         <Item
@@ -223,7 +223,7 @@ const Recipes = props => {
                             "text-align": "left",
                             "white-space": "normal",
                             padding: 0,
-                            margin: 0
+                            margin: 0,
                           }}
                         >
                           {ingredient.name}
@@ -235,7 +235,7 @@ const Recipes = props => {
                             "text-align": "left",
                             "white-space": "normal",
                             padding: 0,
-                            margin: 0
+                            margin: 0,
                           }}
                         >
                           {ingredient.amount}
@@ -248,7 +248,7 @@ const Recipes = props => {
                   <p
                     style={{
                       color: "#4CAF50",
-                      "font-weight": "bold"
+                      "font-weight": "bold",
                     }}
                   >
                     Czas przygotowania:
@@ -267,7 +267,7 @@ const Recipes = props => {
                     "max-height": "180px",
                     width: "100%",
                     margin: 0,
-                    padding: 0
+                    padding: 0,
                   }}
                 >
                   <WayItem style={{ "white-space": "pre-line", width: "96%" }}>
@@ -283,13 +283,13 @@ const Recipes = props => {
     </ElementContainerMobile>
   );
 };
-const Restaurants = props => {
+const Restaurants = (props) => {
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
 
-  const Paggination = props => {
+  const Paggination = (props) => {
     let no = props.no || 2;
-    const handlePage = k => {
+    const handlePage = (k) => {
       let tmp = page;
       console.log(k);
       if (k == 1) {
@@ -354,7 +354,7 @@ const Restaurants = props => {
           "border-top": "1px solid black",
           position: "absolute",
           bottom: 0,
-          width: "100%"
+          width: "100%",
         }}
       >
         {paggin}
@@ -364,14 +364,8 @@ const Restaurants = props => {
   console.log("|||");
   console.log(props.number);
   const tempTime = props.data.hours.split("\r\n");
-  const time = tempTime.map(time => {
-    return [
-      time.split(":", 1).toString(),
-      time
-        .split(":")
-        .slice(1)
-        .join(":")
-    ];
+  const time = tempTime.map((time) => {
+    return [time.split(":", 1).toString(), time.split(":").slice(1).join(":")];
   });
   return (
     <ElementContainerMobile>
@@ -385,7 +379,7 @@ const Restaurants = props => {
           style={{
             width: "100%",
             position: "relative",
-            background: "rgba(255,255,255,0.6)"
+            background: "rgba(255,255,255,0.6)",
           }}
         >
           <img
@@ -394,35 +388,37 @@ const Restaurants = props => {
               background: "green",
               position: "absolute",
               top: 0,
-              right: 0
+              right: 0,
             }}
             src={RestaurantIcon}
           />
           <RestaurantName>{props.data.name}</RestaurantName>
           {console.log(page[props.index])}
           {page[props.number] == 0 || page[props.number] == undefined ? (
-            <div>
+            <div style={{ margin: "10% 0 0 0" }}>
               <HeaderText>Godziny otwarcia:</HeaderText>
               <UnorderedList
                 style={{
                   "font-size": "14px",
+                  width: "100%",
                   margin: "0",
                   padding: "0",
                   "justify-content": "flex-start",
                   "flex-direction": "column",
                   "max-height": "200px",
-                  "align-items": "flex-start"
+                  "align-items": "flex-start",
                 }}
               >
-                {time.map(t => {
+                {time.map((t) => {
                   return (
                     <Item
                       style={{
                         "align-items": "flex-start",
+                        width: "100%",
                         "justify-content": "space-between",
                         margin: 0,
                         padding: 0,
-                        width: "100%"
+                        width: "100%",
                       }}
                     >
                       <p style={{ margin: 0 }}>{t[0]}:</p>
@@ -451,7 +447,7 @@ const Restaurants = props => {
                   width: 160,
                   height: 170,
                   margin: "1% auto 1% auto",
-                  "z-index": 0
+                  "z-index": 0,
                 }}
               >
                 <TileLayer
@@ -474,12 +470,12 @@ const Restaurants = props => {
     </ElementContainerMobile>
   );
 };
-const Posts = props => {
+const Posts = (props) => {
   const [isHover, setIsHover] = useState(false);
   console.log("||||||||||||||");
   console.log(props.index);
   return (
-    <ElementContainerMobile>
+    <ElementContainerMobile style={{ cursor: "pointer" }}>
       <PostsContainer
         onMouseEnter={() => {
           setIsHover(true);
@@ -514,7 +510,7 @@ const Posts = props => {
     </ElementContainerMobile>
   );
 };
-const Replacements = props => {
+const Replacements = (props) => {
   console.log(props.replacements);
   let replacements = props.replacements && props.replacements[0];
   return (
@@ -528,7 +524,7 @@ const Replacements = props => {
             margin: 0,
             overflow: "auto",
             "max-height": "100%",
-            width: "100%"
+            width: "100%",
           }}
         >
           <ul
@@ -536,7 +532,7 @@ const Replacements = props => {
               "border-bottom": "1px solid black",
               margin: "2% 0 2% 0",
               padding: 0,
-              "list-style-type": "none"
+              "list-style-type": "none",
             }}
           >
             <li
@@ -550,12 +546,12 @@ const Replacements = props => {
                 "font-weight": "bold",
                 margin: "1% auto 1% auto",
                 "border-radius": "25px",
-                color: "white"
+                color: "white",
               }}
             >
               {replacements.id_food_to_substitute.food_name}
             </li>
-            <li style={{ padding: "2%" }}>
+            <li style={{ padding: "2%", "font-size": "17px" }}>
               {replacements.id_food_to_substitute.description}
             </li>
           </ul>
@@ -563,7 +559,8 @@ const Replacements = props => {
             style={{
               margin: "5% 0 5% 0",
               padding: 0,
-              "list-style-type": "none"
+              "font-size": "15px",
+              "list-style-type": "none",
             }}
           >
             <li
@@ -577,7 +574,7 @@ const Replacements = props => {
                 "font-weight": "bold",
                 margin: "1% auto 1% auto",
                 "border-radius": "25px",
-                color: "white"
+                color: "white",
               }}
             >
               {replacements.id_vegan.name}
@@ -586,7 +583,7 @@ const Replacements = props => {
               style={{
                 display: "flex",
                 width: "100%",
-                "justify-content": "space-evenly"
+                "justify-content": "space-evenly",
               }}
             >
               <p style={{ width: "20%" }}>Kaloryczność:</p>
@@ -596,7 +593,7 @@ const Replacements = props => {
               style={{
                 display: "flex",
                 width: "100%",
-                "justify-content": "space-evenly"
+                "justify-content": "space-evenly",
               }}
             >
               <p style={{ width: "20%" }}>Proteiny:</p>
@@ -606,7 +603,7 @@ const Replacements = props => {
               style={{
                 display: "flex",
                 width: "100%",
-                "justify-content": "space-evenly"
+                "justify-content": "space-evenly",
               }}
             >
               <p style={{ width: "20%" }}>Tłuszcz:</p>
@@ -616,7 +613,7 @@ const Replacements = props => {
               style={{
                 display: "flex",
                 width: "100%",
-                "justify-content": "space-evenly"
+                "justify-content": "space-evenly",
               }}
             >
               <p style={{ width: "20%" }}>Węglowodany:</p>
@@ -626,7 +623,7 @@ const Replacements = props => {
               style={{
                 display: "flex",
                 width: "100%",
-                "justify-content": "space-evenly"
+                "justify-content": "space-evenly",
               }}
             >
               <p style={{ width: "20%" }}>Celuloza:</p>
@@ -638,7 +635,7 @@ const Replacements = props => {
     </div>
   );
 };
-const Wall = props => {
+const Wall = (props) => {
   const [recipes, setRecipes] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [posts, setPosts] = useState([]);
@@ -646,34 +643,34 @@ const Wall = props => {
   useEffect(() => {
     const fetchData = async () => {
       await axios("https://veggiesapp.herokuapp.com/restaurants/")
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
           setRestaurants(res.data);
           console.log(res.data[0]);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           console.log(err.response);
         });
       await axios("https://veggiesapp.herokuapp.com/posts/")
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
           setPosts(res.data);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           console.log(err.response);
         });
       await axios("http://veggiesapp.herokuapp.com/recipes/")
-        .then(res => {
+        .then((res) => {
           setRecipes(res.data);
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
       await axios("https://veggiesapp.herokuapp.com/substitute/veg/")
-        .then(res => {
+        .then((res) => {
           setReplacements(res.data);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     };
@@ -683,7 +680,7 @@ const Wall = props => {
     <MainContainer>
       <WallContainer>
         {recipes[0] &&
-          recipes.map(recipe => <Recipes index={0} recipe={recipe} />)}
+          recipes.map((recipe) => <Recipes index={0} recipe={recipe} />)}
         {restaurants[0] && (
           <Restaurants
             index={restaurants[0].id}
@@ -704,7 +701,7 @@ const Wall = props => {
           style={{
             background: "rgba(255,255,255,0.6)",
             height: "100%",
-            width: "40%"
+            width: "40%",
           }}
         >
           <div style={{ position: "relative" }}>
@@ -714,7 +711,7 @@ const Wall = props => {
                 width: "35px",
                 background: "green",
                 right: 0,
-                top: 0
+                top: 0,
               }}
               src={ReplacementsIcon}
             />
@@ -722,7 +719,7 @@ const Wall = props => {
               style={{
                 color: "black",
                 "font-size": "18px",
-                "text-align": "center"
+                "text-align": "center",
               }}
             >
               Zamienniki

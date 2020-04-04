@@ -21,7 +21,7 @@ import {
   MainContainer,
   RatingComponent,
   RatingHeader,
-  PreparingMethod
+  PreparingMethod,
 } from "../../styles/WallStyle";
 import DeleteIcon from "../../icons/bin_delete.svg";
 import {
@@ -52,7 +52,7 @@ import {
   UserLink,
   PostLink,
   UserActionsContainer,
-  Icon
+  Icon,
 } from "../../styles/ContainerStyles";
 import EditIcon from "../../icons/edit.svg";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -83,7 +83,7 @@ import {
   SearchInput,
   SearchButton,
   RadiusContainer,
-  AddRestaurantLink
+  AddRestaurantLink,
 } from "../../styles/RestaurantStyle";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import RestaurantImage from "../../images/restaurant.jpg";
@@ -103,23 +103,22 @@ import { green, orange } from "@material-ui/core/colors";
 import "../../App.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-const Restaurant = props => {
+const Restaurant = (props) => {
   const [restaurant, setRestaurant] = useState({});
   const [hours, setHours] = useState([]);
   const [description, setDescription] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      await axios("https://veggiesapp.herokuapp.com/restaurants/11/")
-        .then(res => {
+      await axios(
+        `https://veggiesapp.herokuapp.com/restaurants/${props.match.params.id}/`
+      )
+        .then((res) => {
           setRestaurant(res.data);
           const tempTime = res.data.restaurant.hours.split("\r\n");
-          const time = tempTime.map(time => {
+          const time = tempTime.map((time) => {
             return [
               time.split(":", 1).toString(),
-              time
-                .split(":")
-                .slice(1)
-                .join(":")
+              time.split(":").slice(1).join(":"),
             ];
           });
           const desc = res.data.restaurant.description
@@ -128,7 +127,7 @@ const Restaurant = props => {
           setHours(time);
           setDescription(desc);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     };
@@ -142,7 +141,7 @@ const Restaurant = props => {
   const handleClose = () => {
     setOpen(false);
   };
-  const deletePost = id => {
+  const deletePost = (id) => {
     handleClose();
     /*
     const redirect = () => {
@@ -183,7 +182,7 @@ const Restaurant = props => {
 
               <Link
                 to={{
-                  pathname: "/editpost"
+                  pathname: "/editpost",
                   /*params: { id: props.data.idPosty }*/
                 }}
               >
@@ -234,8 +233,9 @@ const Restaurant = props => {
                   style={{
                     background: "rgba(255,255,255,0.6)",
                     "text-align": "justify",
+                    "white-space": "pre-wrap",
                     padding: "1%",
-                    "font-size": "18px"
+                    "font-size": "18px",
                   }}
                 >
                   {description}
@@ -262,7 +262,7 @@ const Restaurant = props => {
                       style={{
                         color: "black",
                         "font-weight": "bold",
-                        "text-align": "center"
+                        "text-align": "center",
                       }}
                     >
                       Godziny otwarcia:
@@ -272,13 +272,19 @@ const Restaurant = props => {
                     style={{
                       background: "rgba(255,255,255,0.6)",
                       "border-radius": "15px",
-                      "text-align": "center"
+                      "text-align": "center",
                     }}
                   >
-                    {hours.map(h => {
+                    {hours.map((h) => {
                       return (
-                        <RestaurantOpenItem style={{ "text-align": "center" }}>
-                          <p>{`${h[0]} `}</p>
+                        <RestaurantOpenItem
+                          style={{
+                            "text-align": "center",
+                            display: "flex",
+                            "justify-content": "space-between",
+                          }}
+                        >
+                          <p>{`${h[0]}: `}</p>
                           <p>{h[1]}</p>
                         </RestaurantOpenItem>
                       );
@@ -295,7 +301,7 @@ const Restaurant = props => {
                     id="mapid"
                     center={[
                       restaurant.restaurant.latX,
-                      restaurant.restaurant.longY
+                      restaurant.restaurant.longY,
                     ]}
                     zoom={12}
                     style={{
@@ -303,7 +309,7 @@ const Restaurant = props => {
                       height: 300,
                       "z-index": 0,
                       display: "block",
-                      margin: "auto"
+                      margin: "auto",
                     }}
                   >
                     <TileLayer
@@ -313,7 +319,7 @@ const Restaurant = props => {
                     <Marker
                       position={[
                         restaurant.restaurant.latX,
-                        restaurant.restaurant.longY
+                        restaurant.restaurant.longY,
                       ]}
                     >
                       <Popup>

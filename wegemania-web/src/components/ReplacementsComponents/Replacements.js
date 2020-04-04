@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MainContainer, Container } from "../../styles/WallStyle";
 import { ReplacementsContainer, Item } from "../../styles/ReplacementsStyle";
 import { Scrollbars } from "react-custom-scrollbars";
@@ -9,10 +9,11 @@ import { withRouter } from "react-router";
 import {
   SearchPanel,
   SearchInput,
-  SearchButton
+  SearchButton,
 } from "../../styles/GlobalStyle";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
+import axios from "axios";
 /*
      <OuterUnorderedList>
                     <InnerUnorderedList>
@@ -27,23 +28,62 @@ import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
                   </OuterUnorderedList>
                 </UnorderedList>
                 */
-const Replacements = props => {
+const Replacements = (props) => {
+  const [replacements, setReplacements] = useState([]);
+  const [current, setCurrent] = useState([]);
   const [selected, setSelected] = useState(0);
   const items = [];
-  for (var i = 0; i < 20; i++) {
-    items.push(
-      <Item
-        id={i}
-        onClick={e => {
-          setSelected(e.target.id);
-          console.log(e.target.id);
-        }}
-        select={selected == i}
-      >
-        test
-      </Item>
-    );
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios(`https://veggiesapp.herokuapp.com/substitute/veg/`)
+        .then((res) => {
+          const newTemp = res.data.reduce((acc, obj) => {
+            let nextLoop = false;
+
+            acc.forEach((savedFood) => {
+              if (
+                obj.id_food_to_substitute.id ===
+                savedFood.id_food_to_substitute.id
+              ) {
+                savedFood.id_vegan.push(obj.id_vegan);
+                nextLoop = true;
+                return acc;
+              }
+            });
+            if (!nextLoop) {
+              acc.push({
+                ...obj,
+                id_vegan: [obj.id_vegan],
+              });
+            }
+            return acc;
+          }, []);
+          setReplacements(newTemp);
+          setCurrent(newTemp[0]);
+          console.log(newTemp);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, []);
+  replacements &&
+    replacements.map((replacement, index) => {
+      items.push(
+        <Item
+          id={index}
+          onClick={(e) => {
+            setSelected(e.target.id);
+            setCurrent(replacement);
+          }}
+          select={selected == index}
+        >
+          {replacement.id_food_to_substitute.food_name}
+        </Item>
+      );
+    });
+
   return (
     <MainContainer>
       <Container>
@@ -79,7 +119,7 @@ const Replacements = props => {
               display: "flex",
               "align-items": "center",
               "justify-content": "center",
-              "font-size": "18px"
+              "font-size": "18px",
             }}
             to="/addreplacement"
           >
@@ -96,7 +136,7 @@ const Replacements = props => {
               overflow: "auto",
               width: "20%",
               "max-height": "100%",
-              "text-align": "center"
+              "text-align": "center",
             }}
           >
             {items}
@@ -109,7 +149,7 @@ const Replacements = props => {
               margin: 0,
               overflow: "auto",
               "max-height": "100%",
-              width: "80%"
+              width: "80%",
             }}
           >
             <ul
@@ -117,7 +157,7 @@ const Replacements = props => {
                 "border-bottom": "1px solid black",
                 margin: 0,
                 padding: 0,
-                "list-style-type": "none"
+                "list-style-type": "none",
               }}
             >
               <li
@@ -131,186 +171,96 @@ const Replacements = props => {
                   "font-weight": "bold",
                   margin: "1% auto 1% auto",
                   "border-radius": "25px",
-                  color: "white"
+                  color: "white",
                 }}
               >
-                Nazwa
+                {current.id_food_to_substitute &&
+                  current.id_food_to_substitute.food_name}
               </li>
               <li style={{ padding: "2%" }}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled
+                {current.id_food_to_substitute &&
+                  current.id_food_to_substitute.description}
               </li>
             </ul>
-            <ul
-              style={{
-                margin: "1% 0 1% 0",
-                padding: 0,
-                "list-style-type": "none"
-              }}
-            >
-              <li
-                style={{
-                  padding: "1%",
-                  "text-align": "center",
-                  "font-size": "16px",
-                  display: "block",
-                  background: "#00a835",
-                  width: "30%",
-                  "font-weight": "bold",
-                  margin: "1% auto 1% auto",
-                  "border-radius": "25px",
-                  color: "white"
-                }}
-              >
-                Nazwa
-              </li>
-              <li
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  "justify-content": "space-evenly"
-                }}
-              >
-                <p style={{ width: "20%" }}>Kaloryczność:</p>
-                <p style={{ width: "10%" }}>100</p>
-              </li>
-              <li
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  "justify-content": "space-evenly"
-                }}
-              >
-                <p style={{ width: "20%" }}>Proteiny:</p>
-                <p style={{ width: "10%" }}>100</p>
-              </li>
-              <li
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  "justify-content": "space-evenly"
-                }}
-              >
-                <p style={{ width: "20%" }}>Tłuszcz:</p>
-                <p style={{ width: "10%" }}>100</p>
-              </li>
-              <li
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  "justify-content": "space-evenly"
-                }}
-              >
-                <p style={{ width: "20%" }}>Węglowodany:</p>
-                <p style={{ width: "10%" }}> 100</p>
-              </li>
-              <li
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  "justify-content": "space-evenly"
-                }}
-              >
-                <p style={{ width: "20%" }}>Celuloza:</p>
-                <p style={{ width: "10%" }}>100</p>
-              </li>
-              <li>
-                <img
-                  style={{
-                    width: "330px",
-                    margin: "1% auto 1% auto",
-                    display: "block"
-                  }}
-                  src={Image}
-                />
-              </li>
-            </ul>
-            <ul
-              style={{
-                margin: "1% 0 1% 0",
-                padding: 0,
-                "list-style-type": "none"
-              }}
-            >
-              <li
-                style={{
-                  padding: "1%",
-                  "text-align": "center",
-                  "font-size": "16px",
-                  display: "block",
-                  background: "#00a835",
-                  width: "30%",
-                  "font-weight": "bold",
-                  margin: "1% auto 1% auto",
-                  "border-radius": "25px",
-                  color: "white"
-                }}
-              >
-                Nazwa
-              </li>
-              <li
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  "justify-content": "space-evenly"
-                }}
-              >
-                <p style={{ width: "20%" }}>Kaloryczność:</p>
-                <p style={{ width: "10%" }}>100</p>
-              </li>
-              <li
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  "justify-content": "space-evenly"
-                }}
-              >
-                <p style={{ width: "20%" }}>Proteiny:</p>
-                <p style={{ width: "10%" }}>100</p>
-              </li>
-              <li
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  "justify-content": "space-evenly"
-                }}
-              >
-                <p style={{ width: "20%" }}>Tłuszcz:</p>
-                <p style={{ width: "10%" }}>100</p>
-              </li>
-              <li
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  "justify-content": "space-evenly"
-                }}
-              >
-                <p style={{ width: "20%" }}>Węglowodany:</p>
-                <p style={{ width: "10%" }}> 100</p>
-              </li>
-              <li
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  "justify-content": "space-evenly"
-                }}
-              >
-                <p style={{ width: "20%" }}>Celuloza:</p>
-                <p style={{ width: "10%" }}>100</p>
-              </li>
-              <li>
-                <img
-                  style={{
-                    width: "330px",
-                    margin: "1% auto 1% auto",
-                    display: "block"
-                  }}
-                  src={Image}
-                />
-              </li>
-            </ul>
+            {current.id_vegan &&
+              current.id_vegan.map((veg) => {
+                return (
+                  <ul
+                    style={{
+                      margin: "1% 0 1% 0",
+                      padding: 0,
+                      "list-style-type": "none",
+                    }}
+                  >
+                    <li
+                      style={{
+                        padding: "1%",
+                        "text-align": "center",
+                        "font-size": "16px",
+                        display: "block",
+                        background: "#00a835",
+                        width: "30%",
+                        "font-weight": "bold",
+                        margin: "1% auto 1% auto",
+                        "border-radius": "25px",
+                        color: "white",
+                      }}
+                    >
+                      {veg.name}
+                    </li>
+                    <li
+                      style={{
+                        display: "flex",
+                        width: "100%",
+                        "justify-content": "space-evenly",
+                      }}
+                    >
+                      <p style={{ width: "20%" }}>Kaloryczność:</p>
+                      <p style={{ width: "10%" }}>{veg.kcal}</p>
+                    </li>
+                    <li
+                      style={{
+                        display: "flex",
+                        width: "100%",
+                        "justify-content": "space-evenly",
+                      }}
+                    >
+                      <p style={{ width: "20%" }}>Proteiny:</p>
+                      <p style={{ width: "10%" }}>{veg.protein}</p>
+                    </li>
+                    <li
+                      style={{
+                        display: "flex",
+                        width: "100%",
+                        "justify-content": "space-evenly",
+                      }}
+                    >
+                      <p style={{ width: "20%" }}>Tłuszcz:</p>
+                      <p style={{ width: "10%" }}>{veg.fat}</p>
+                    </li>
+                    <li
+                      style={{
+                        display: "flex",
+                        width: "100%",
+                        "justify-content": "space-evenly",
+                      }}
+                    >
+                      <p style={{ width: "20%" }}>Węglowodany:</p>
+                      <p style={{ width: "10%" }}> 100</p>
+                    </li>
+                    <li
+                      style={{
+                        display: "flex",
+                        width: "100%",
+                        "justify-content": "space-evenly",
+                      }}
+                    >
+                      <p style={{ width: "20%" }}>Celuloza:</p>
+                      <p style={{ width: "10%" }}>{veg.celulose}</p>
+                    </li>
+                  </ul>
+                );
+              })}
           </ul>
         </ReplacementsContainer>
       </Container>

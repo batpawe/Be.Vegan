@@ -56,6 +56,6 @@ export const TextContainer = styled.div`
   margin: 6% 0 0 0;
   font-size: 18px;
   @media (max-width: 1400px) {
-    font-size: 13px;
+    font-size: 12px;
   }
 `;

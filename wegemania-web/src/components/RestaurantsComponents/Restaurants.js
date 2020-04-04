@@ -9,7 +9,7 @@ import {
   UnorderedList,
   PagginationContainer,
   PagginationItem,
-  Item
+  Item,
 } from "../../styles/TempRestaurants";
 import {
   HeaderRestaurantContainer,
@@ -30,7 +30,7 @@ import {
   SearchInput,
   SearchButton,
   RadiusContainer,
-  AddRestaurantLink
+  AddRestaurantLink,
 } from "../../styles/RestaurantStyle";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -54,11 +54,11 @@ import ikonaCzasuActive from "../../icons/ikonaCzasuactive.svg";
 import ikonaMapyActive from "../../icons/ikonaMapyactive.svg";
 import ikonaCzasu from "../../icons/ikonaCzasu.svg";
 import ikonaMapy from "../../icons/ikonaMapy.svg";
-const Restaurants = props => {
+const Restaurants = (props) => {
   const [restaurants, setRestaurants] = useState([]);
   let tempSearch = {
     restaurant: "",
-    city: ""
+    city: "",
   };
   const [searchInfo, setSearchInfo] = useState(tempSearch);
   const user = useContext(NewLoginInfo);
@@ -66,27 +66,27 @@ const Restaurants = props => {
   const outerTheme = createMuiTheme({
     palette: {
       secondary: {
-        main: green[500]
-      }
-    }
+        main: green[500],
+      },
+    },
   });
 
   const [rating, setRating] = useState(starTemp);
-  const changeRating = val => {
+  const changeRating = (val) => {
     let temp = rating;
     temp[0] = val;
     setRating([...temp]);
   };
   const [radio, setRadio] = useState("city");
-  const handleChange = e => {
+  const handleChange = (e) => {
     setRadio(e.target.value);
   };
-  const handleRestaurantChange = e => {
+  const handleRestaurantChange = (e) => {
     let temp = searchInfo;
     temp.restaurant = e;
     setSearchInfo({ ...temp });
   };
-  const handleCityChange = e => {
+  const handleCityChange = (e) => {
     let temp = searchInfo;
     temp.city = e;
     setSearchInfo({ ...temp });
@@ -94,9 +94,9 @@ const Restaurants = props => {
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
 
-  const Paggination = props => {
+  const Paggination = (props) => {
     let no = props.no || 2;
-    const handlePage = k => {
+    const handlePage = (k) => {
       let tmp = page;
       console.log(k);
       if (k == 1) {
@@ -160,7 +160,7 @@ const Restaurants = props => {
           "border-top": "1px solid black",
           position: "absolute",
           bottom: 0,
-          width: "100%"
+          width: "100%",
         }}
       >
         {paggin}
@@ -168,17 +168,14 @@ const Restaurants = props => {
     );
   };
 
-  const ContentController = props => {
+  const ContentController = (props) => {
     console.log("|||");
     console.log(props.number);
     const tempTime = props.data.hours.split("\r\n");
-    const time = tempTime.map(time => {
+    const time = tempTime.map((time) => {
       return [
         time.split(":", 1).toString(),
-        time
-          .split(":")
-          .slice(1)
-          .join(":")
+        time.split(":").slice(1).join(":"),
       ];
     });
     return (
@@ -193,7 +190,7 @@ const Restaurants = props => {
           style={{
             width: "100%",
             background: "rgba(255,255,255,0.6)",
-            position: "relative"
+            position: "relative",
           }}
         >
           <RestaurantName>{props.data.name}</RestaurantName>
@@ -202,11 +199,24 @@ const Restaurants = props => {
             <div>
               <HeaderText>Godziny otwarcia:</HeaderText>
               <UnorderedList>
-                {time.map(t => {
+                {time.map((t) => {
                   return (
-                    <Item style={{ "font-size": "14px", margin: "1%" }}>
-                      <p style={{ margin: 0 }}>{t[0]}</p>
-                      <p style={{ margin: 0 }}>{t[1]}</p>
+                    <Item
+                      style={{
+                        "font-size": "14px",
+                        width: "100%",
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          width: "50%",
+                          "text-align": "left",
+                        }}
+                      >
+                        {t[0]}
+                      </p>
+                      <p style={{ margin: 0, "text-align": "right" }}>{t[1]}</p>
                     </Item>
                   );
                 })}
@@ -231,7 +241,7 @@ const Restaurants = props => {
                   width: 130,
                   height: 158,
                   "margin-left": 20,
-                  "z-index": 0
+                  "z-index": 0,
                 }}
               >
                 <TileLayer
@@ -256,41 +266,41 @@ const Restaurants = props => {
   const [valueRestaurant, setValueRestaurant] = useState("");
   const [valueCity, setValueCity] = useState("");
   const [suggestionsRestaurants, setSuggestionsRestaurants] = useState([]);
-  const restaurantsName = restaurants.map(restaurant => {
+  const restaurantsName = restaurants.map((restaurant) => {
     return restaurant;
   });
-  const getSuggestionsRestaurants = value => {
-    return restaurantsName.filter(name => name.name.includes(value.trim()));
+  const getSuggestionsRestaurants = (value) => {
+    return restaurantsName.filter((name) => name.name.includes(value.trim()));
   };
   const [suggestionsCity, setSuggestionsCity] = useState([]);
-  const restaurantsCity = restaurants.map(restaurant => {
+  const restaurantsCity = restaurants.map((restaurant) => {
     return restaurant;
   });
-  const getSuggestionsCity = value => {
+  const getSuggestionsCity = (value) => {
     const temp = restaurantsCity.reduce((acc, current) => {
-      const x = acc.find(item => item.city === current.city);
+      const x = acc.find((item) => item.city === current.city);
       if (!x) {
         return acc.concat([current]);
       } else {
         return acc;
       }
     }, []);
-    return temp.filter(city => city.city.includes(value.trim()));
+    return temp.filter((city) => city.city.includes(value.trim()));
   };
   useEffect(() => {
     const fetchData = async () => {
       await axios("https://veggiesapp.herokuapp.com/restaurants/")
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
           setRestaurants(res.data);
           setSuggestionsRestaurants([
-            ...new Map(res.data.map(item => [item["name"], item])).values()
+            ...new Map(res.data.map((item) => [item["name"], item])).values(),
           ]);
           setSuggestionsCity([
-            ...new Map(res.data.map(item => [item["city"], item])).values()
+            ...new Map(res.data.map((item) => [item["city"], item])).values(),
           ]);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           console.log(err.response);
         });
@@ -305,7 +315,7 @@ const Restaurants = props => {
             style={{
               display: "flex",
               "justify-content": "space-between",
-              width: "100%"
+              width: "100%",
             }}
           >
             <div>
@@ -330,8 +340,8 @@ const Restaurants = props => {
                     onSuggestionSelected={(_, { suggestionValue }) =>
                       console.log("Wybrany: " + suggestionValue)
                     }
-                    getSuggestionValue={suggestion => suggestion.name}
-                    renderSuggestion={suggestion => (
+                    getSuggestionValue={(suggestion) => suggestion.name}
+                    renderSuggestion={(suggestion) => (
                       <span>{suggestion.name}</span>
                     )}
                     inputProps={{
@@ -339,7 +349,7 @@ const Restaurants = props => {
                       value: valueRestaurant,
                       onChange: (_, { newValue, method }) => {
                         setValueRestaurant(newValue);
-                      }
+                      },
                     }}
                     highlightFirstSuggestion={true}
                   />
@@ -355,8 +365,8 @@ const Restaurants = props => {
                     onSuggestionSelected={(_, { suggestionValue }) =>
                       console.log("Wybrany: " + suggestionValue)
                     }
-                    getSuggestionValue={suggestion => suggestion.city}
-                    renderSuggestion={suggestion => (
+                    getSuggestionValue={(suggestion) => suggestion.city}
+                    renderSuggestion={(suggestion) => (
                       <span>{suggestion.city}</span>
                     )}
                     inputProps={{
@@ -364,7 +374,7 @@ const Restaurants = props => {
                       value: valueCity,
                       onChange: (_, { newValue, method }) => {
                         setValueCity(newValue);
-                      }
+                      },
                     }}
                     highlightFirstSuggestion={true}
                   />
@@ -381,7 +391,7 @@ const Restaurants = props => {
                     <div
                       style={{
                         display: "flex",
-                        "justify-content": "space-between"
+                        "justify-content": "space-between",
                       }}
                     >
                       <FormControlLabel
@@ -402,7 +412,7 @@ const Restaurants = props => {
                 <div
                   style={{
                     display: "flex",
-                    "justify-content": "space-between"
+                    "justify-content": "space-between",
                   }}
                 >
                   <p>Miasto:</p>
@@ -411,7 +421,7 @@ const Restaurants = props => {
                 <div
                   style={{
                     display: "flex",
-                    "justify-content": "space-between"
+                    "justify-content": "space-between",
                   }}
                 >
                   <p>Restauracja:</p>
@@ -423,7 +433,7 @@ const Restaurants = props => {
               style={{
                 width: "200px",
                 "font-size": "18px",
-                "white-space": "nowrap"
+                "white-space": "nowrap",
               }}
               to="/addrestaurant"
             >
@@ -435,7 +445,7 @@ const Restaurants = props => {
           style={{
             display: "flex",
             "flex-wrap": "wrap",
-            justifyContent: "space-around"
+            justifyContent: "space-around",
           }}
         >
           {restaurants.length &&

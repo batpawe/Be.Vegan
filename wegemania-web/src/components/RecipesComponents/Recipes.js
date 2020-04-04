@@ -40,7 +40,7 @@ import {
   UserLink,
   PostLink,
   UserActionsContainer,
-  Icon
+  Icon,
 } from "../../styles/ContainerStyles";
 import {
   RecipesName,
@@ -52,7 +52,7 @@ import {
   PagginationContainer,
   PagginationItem,
   Item,
-  WayItem
+  WayItem,
 } from "../../styles/TempRecipes";
 import RightPanel from "../GlobalComponents/RightPanel";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
@@ -61,7 +61,7 @@ import { withRouter } from "react-router";
 import {
   SearchPanel,
   SearchInput,
-  SearchButton
+  SearchButton,
 } from "../../styles/GlobalStyle";
 
 import ikonaSkladnikowActive from "../../icons/ikonaSkladnikowactive.svg";
@@ -69,15 +69,15 @@ import ikonaTresciPrzepisuActive from "../../icons/ikonaTresciprzepisuactive.svg
 import ikonaSkladnikow from "../../icons/ikonaSkladnikow.svg";
 import ikonaTresciPrzepisu from "../../icons/ikonaTresciprzepisu.svg";
 import axios from "axios";
-const Recipes = props => {
+const Recipes = (props) => {
   const [recipes, setRecipes] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       await axios("https://veggiesapp.herokuapp.com/recipes/")
-        .then(res => {
+        .then((res) => {
           setRecipes(res.data);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     };
@@ -85,9 +85,9 @@ const Recipes = props => {
   }, []);
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
-  const Paggination = props => {
+  const Paggination = (props) => {
     let no = props.no || 2;
-    const handlePage = k => {
+    const handlePage = (k) => {
       let tmp = page;
       console.log(k);
       if (k == 1) {
@@ -151,27 +151,27 @@ const Recipes = props => {
           "border-top": "1px solid black",
           position: "absolute",
           bottom: 0,
-          width: "100%"
+          width: "100%",
         }}
       >
         {paggin}
       </PagginationContainer>
     );
   };
-  const ContentController = props => {
+  const ContentController = (props) => {
     const [listIngredients, setListIngredients] = useState([]);
     useEffect(() => {
       const fetchData = async () => {
         await axios(
           `https://veggiesapp.herokuapp.com/recipes/list/${props.recipe.id}/`
         )
-          .then(res => {
+          .then((res) => {
             setListIngredients(res.data);
             console.log("WWWWWWWWW");
             console.log(props.recipe.id);
             console.log(res.data);
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
           });
       };
@@ -182,13 +182,13 @@ const Recipes = props => {
         <ImageRecipes
           src={props.recipe.recipe_foto}
           style={{ width: "60%", cursor: "pointer" }}
-          onClick={() => props.historyProps.push("/recipe/1")}
+          onClick={() => props.historyProps.push(`/recipe/${props.recipe.id}`)}
         />
         <ContentContainer
           style={{
             width: "38%",
             background: "rgba(255,255,255,0.6)",
-            position: "relative"
+            position: "relative",
           }}
         >
           <RecipesName style={{ "font-size": "14px" }}>
@@ -200,7 +200,7 @@ const Recipes = props => {
               "justify-content": "space-between",
               width: "100%",
               "font-size": "12px",
-              "white-space": "nowrap"
+              "white-space": "nowrap",
             }}
           >
             <p style={{ color: "#4CAF50", "font-weight": "bold" }}>
@@ -215,15 +215,15 @@ const Recipes = props => {
               <HeaderText>Składniki:</HeaderText>
               <UnorderedList
                 style={{
-                  "max-height": "150px",
+                  "max-height": "140px",
                   overflow: "auto",
                   margin: 0,
                   padding: 0,
-                  width: "100%"
+                  width: "100%",
                 }}
               >
                 {listIngredients &&
-                  listIngredients.map(ingredient => {
+                  listIngredients.map((ingredient) => {
                     return (
                       <ul
                         style={{
@@ -231,7 +231,7 @@ const Recipes = props => {
                           padding: 0,
                           width: "100%",
                           display: "flex",
-                          "justify-content": "space-between"
+                          "justify-content": "space-between",
                         }}
                       >
                         <Item style={{ "font-size": "10px" }}>
@@ -248,11 +248,20 @@ const Recipes = props => {
           ) : (
             <div>
               <HeaderText>Sposób przyrządzenia:</HeaderText>
-              <UnorderedList>
-                <WayItem>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s...
+              <UnorderedList
+                style={{
+                  "max-height": "140px",
+                  overflow: "auto",
+                  width: "100%",
+                  padding: 0,
+                  margin: 0,
+                }}
+              >
+                <WayItem style={{ width: "80%", "white-space": "pre-wrap" }}>
+                  {props.recipe.recipe_decription &&
+                    props.recipe.recipe_decription
+                      .replace("\r\n\r\n", "\n")
+                      .replace("\r\n", "\n")}
                 </WayItem>
               </UnorderedList>
             </div>
@@ -299,7 +308,7 @@ const Recipes = props => {
                 padding: "0 1% 0 1%",
                 width: "100%",
                 "font-size": "18px",
-                "justify-content": "center"
+                "justify-content": "center",
               }}
             >
               Wyszukaj
@@ -316,7 +325,7 @@ const Recipes = props => {
               padding: "0 1% 0 1%",
               "font-size": "18px",
               "justify-content": "center",
-              "align-items": "center"
+              "align-items": "center",
             }}
           >
             Dodaj przepis
