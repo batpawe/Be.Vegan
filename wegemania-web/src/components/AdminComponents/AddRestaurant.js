@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { NewLoginInfo } from "../../context/LoginInfo";
 import axios from "axios";
@@ -16,12 +16,18 @@ import {
   AddItem,
   SmallContainer,
   SecondColumn,
-  SmallDiv
+  SmallDiv,
 } from "../../styles/AddForms";
 import UploadImage from "../../images/upload.png";
 import CloseImage from "../../images/close.svg";
-
-const AddRestaurant = props => {
+import AutoSuggest from "react-autosuggest";
+import "../../styles/SuggestUserStyle.css";
+const AddRestaurant = (props) => {
+  const [users, setUsers] = useState([]);
+  const [restaurantTitle, setRestaurantTitle] = useState("");
+  const [restaurantDescription, setRestaurantDescription] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [value, setValue] = useState("");
   let time = [
     [null, null],
     [null, null],
@@ -29,9 +35,9 @@ const AddRestaurant = props => {
     [null, null],
     [null, null],
     [null, null],
-    [null, null]
+    [null, null],
   ];
-  const handleTimeFirst = e => {
+  const handleTimeFirst = (e) => {
     let temp = timeArray;
     for (var i = 0; i < 7; i++) {
       if (temp[i] === undefined) {
@@ -41,7 +47,7 @@ const AddRestaurant = props => {
     temp[e.target.id][0] = e.target.value;
     setTimeArray(temp);
   };
-  const handleTimeSecond = e => {
+  const handleTimeSecond = (e) => {
     let temp = timeArray;
     for (var i = 0; i < 7; i++) {
       if (temp[i] === undefined) {
@@ -58,15 +64,34 @@ const AddRestaurant = props => {
   const [markers, setMarkers] = useState([23, 23]);
   const [isClosed, setIsClosed] = useState(closed);
   const [timeArray, setTimeArray] = useState(time);
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios(`https://veggiesapp.herokuapp.com/users/`)
+        .then((res) => {
+          setUsers(res.data);
+          setSuggestions(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, []);
   const handleChange = (i, event) => {
     console.log(i);
     let temp = file;
     temp[i] = URL.createObjectURL(event.target.files[0]);
     setFile([...temp]);
   };
-  const addMarker = e => {
+  const addMarker = (e) => {
     let temp = [e.latlng.lat, e.latlng.lng];
     setMarkers(temp);
+  };
+  const usersName = users.map((date) => {
+    return date;
+  });
+  const getSuggestions = (value) => {
+    return usersName.filter((user) => user.username.includes(value.trim()));
   };
   const setButton = (e, t) => {
     if (t === true) {
@@ -79,24 +104,26 @@ const AddRestaurant = props => {
     temp[e.target.id] = t;
     setIsClosed([...temp]);
   };
-  const Input = props => {
+  const Input = (props) => {
     if (isClosed[props.id] === true) {
       return (
         <div style={{ display: "flex" }}>
           <TextColumnInput
+            style={{ width: "100px" }}
             type="time"
             id={props.id}
             value={timeArray[props.id][0]}
-            onChange={e => {
+            onChange={(e) => {
               handleTimeFirst(e);
             }}
             disabled
           />
           <TextColumnInput
+            style={{ width: "100px" }}
             type="time"
             id={props.id}
             value={timeArray[props.id][1]}
-            onChange={e => {
+            onChange={(e) => {
               handleTimeSecond(e);
             }}
             disabled
@@ -107,18 +134,20 @@ const AddRestaurant = props => {
       return (
         <div style={{ display: "flex" }}>
           <TextColumnInput
+            style={{ width: "100px" }}
             type="time"
             id={props.id}
             value={timeArray[props.id][0]}
-            onChange={e => {
+            onChange={(e) => {
               handleTimeFirst(e);
             }}
           />
           <TextColumnInput
+            style={{ width: "100px" }}
             type="time"
             id={props.id}
             value={timeArray[props.id][1]}
-            onChange={e => {
+            onChange={(e) => {
               handleTimeSecond(e);
             }}
           />
@@ -126,12 +155,12 @@ const AddRestaurant = props => {
       );
     }
   };
-  const TimeButton = props => {
+  const TimeButton = (props) => {
     if (props.close === true) {
       return (
         <AddItem
           id={props.id}
-          onClick={e => {
+          onClick={(e) => {
             setButton(e, false);
           }}
         >
@@ -142,7 +171,7 @@ const AddRestaurant = props => {
       return (
         <AddItem
           id={props.id}
-          onClick={e => {
+          onClick={(e) => {
             setButton(e, true);
           }}
         >
@@ -151,7 +180,7 @@ const AddRestaurant = props => {
       );
     }
   };
-  const Days = props => {
+  const Days = (props) => {
     if (props.i == 0) {
       return <span>Poniedziałek:</span>;
     }
@@ -166,7 +195,7 @@ const AddRestaurant = props => {
     const temp = [];
     for (var i = 0; i < 7; i++) {
       temp.push(
-        <SmallContainer>
+        <SmallContainer style={{ width: "100%" }}>
           <Days i={i} />
           <SmallDiv>
             <Input key={i} id={i} />
@@ -183,7 +212,14 @@ const AddRestaurant = props => {
       </div>
     );
   };
-
+  const AddRestaurantFunction = () => {
+    console.log(suggestions);
+    console.log(timeArray);
+    console.log(markers);
+    console.log(restaurantDescription);
+    console.log(restaurantTitle);
+    console.log(file);
+  };
   return (
     <div style={{ margin: "3% 0 0 0 " }}>
       <div>
@@ -192,7 +228,7 @@ const AddRestaurant = props => {
             "font-size": "28px",
             "text-align": "center",
             color: "rgb(39,117,46)",
-            "font-weight": "bold"
+            "font-weight": "bold",
           }}
         >
           Dodaj restaurację
@@ -204,18 +240,20 @@ const AddRestaurant = props => {
               margin: "2% auto",
               display: "flex",
               "flex-direction": "column",
-              "text-align": "center"
+              "text-align": "center",
             }}
           >
             <h2 style={{ "font-size": "26px" }}>Nazwa:</h2>
             <input
+              value={restaurantTitle}
+              onChange={(e) => setRestaurantTitle(e.target.value)}
               style={{
                 margin: "1% auto",
                 "font-size": "22px",
                 border: "1px solid black",
                 outline: "none",
                 padding: "1%",
-                width: "400px"
+                width: "400px",
               }}
               type="text"
               id="name"
@@ -230,11 +268,13 @@ const AddRestaurant = props => {
               margin: "2% auto",
               display: "flex",
               "flex-direction": "column",
-              "text-align": "center"
+              "text-align": "center",
             }}
           >
             <h2 style={{ "font-size": "26px" }}>Opis:</h2>
             <textarea
+              value={restaurantDescription}
+              onChange={(e) => setRestaurantDescription(e.target.value)}
               style={{
                 margin: "1% auto",
                 "font-size": "22px",
@@ -243,11 +283,11 @@ const AddRestaurant = props => {
                 padding: "1%",
                 width: "80%",
                 resize: "none",
-                padding: "1%"
+                padding: "1%",
               }}
               type="text"
               id="description"
-              placeholder="Wprowadź opis restauracj"
+              placeholder="Wprowadź opis restauracji"
             />
           </label>
           <label
@@ -256,22 +296,38 @@ const AddRestaurant = props => {
               margin: "2% auto",
               display: "flex",
               "flex-direction": "column",
-              "text-align": "center"
+              "text-align": "center",
             }}
           >
             <h2 style={{ "font-size": "26px" }}>Moderator:</h2>
-            <input
-              style={{
-                margin: "1% auto",
-                "font-size": "22px",
-                border: "1px solid black",
-                outline: "none",
-                padding: "1%",
-                width: "440px"
+            <AutoSuggest
+              suggestions={users}
+              onSuggestionsClearRequested={() => setSuggestions([])}
+              onSuggestionsFetchRequested={({ value }) => {
+                console.log(value);
+                setValue(value);
+                setSuggestions(getSuggestions(value));
               }}
-              type="text"
-              id="moderator"
-              placeholder="Wpisz nazwę użytkownika moderatora"
+              onSuggestionSelected={(_, { suggestionValue }) =>
+                console.log("Wybrany: " + suggestionValue)
+              }
+              getSuggestionValue={(suggestion) => suggestion.username}
+              renderSuggestion={(suggestion) => (
+                <span
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p>{suggestion.username}</p>
+                  <p>{suggestion.id}</p>
+                </span>
+              )}
+              inputProps={{
+                placeholder: "Wpisz nazwę użytkownika",
+                value: value,
+                onChange: (_, { newValue, method }) => {
+                  setValue(newValue);
+                },
+              }}
+              highlightFirstSuggestion={true}
             />
           </label>
         </div>
@@ -282,7 +338,7 @@ const AddRestaurant = props => {
         center={[53.01379, 18.598444]}
         zoom={13}
         style={{ height: 300, "z-index": 0 }}
-        onClick={e => {
+        onClick={(e) => {
           addMarker(e);
         }}
       >
@@ -306,19 +362,22 @@ const AddRestaurant = props => {
           <input
             id="file-input-0"
             type="file"
-            onChange={e => handleChange(0, e)}
+            onChange={(e) => handleChange(0, e)}
           />
         </div>
       </ImagesContainer>
       <div style={{ width: "100%", "text-align": "center" }}>
         <button
+          onClick={() => {
+            AddRestaurantFunction();
+          }}
           style={{
             background: "#388E3C",
             margin: "1% auto 1% auto",
             color: "white",
             "text-align": "center",
             "font-size": "28px",
-            border: "none"
+            border: "none",
           }}
         >
           Dodaj restaurację
