@@ -39,6 +39,7 @@ import Restaurants from "./components/RestaurantsComponents/Restaurants";
 import Replacements from "./components/ReplacementsComponents/Replacements";
 import Posts from "./components/PostsComponents/Posts";
 import ScrollTop from "./components/ScrollTop";
+import ValidateRestaurant from "./components/RestaurantsComponents/ValidateRestaurant";
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Titillium+Web&display=swap');
   @import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
@@ -47,7 +48,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const App = props => {
+const App = (props) => {
   const notify = useContext(NewNotifyContext);
   const user = useContext(NewLoginInfo);
   return (
@@ -104,6 +105,7 @@ const App = props => {
               path="/notificationrestaurations"
               component={NotificationRestaurations}
             />
+            <Route path="/validaterestaurant" component={ValidateRestaurant} />
           </ContentContainer>
         ) : (
           <Redirect path="/" />

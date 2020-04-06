@@ -214,9 +214,11 @@ const Restaurants = (props) => {
                           "text-align": "left",
                         }}
                       >
-                        {t[0]}
+                        {t[0].trim()}
                       </p>
-                      <p style={{ margin: 0, "text-align": "right" }}>{t[1]}</p>
+                      <p
+                        style={{ margin: 0, "text-align": "right" }}
+                      >{`${t[1].trim().replace(" ", " - ")}`}</p>
                     </Item>
                   );
                 })}
@@ -435,7 +437,7 @@ const Restaurants = (props) => {
                 "font-size": "18px",
                 "white-space": "nowrap",
               }}
-              to="/addrestaurant"
+              to="/validaterestaurant"
             >
               Zarządzaj restauracją
             </AddRestaurantLink>

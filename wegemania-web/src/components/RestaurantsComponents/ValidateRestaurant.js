@@ -23,7 +23,7 @@ import CloseImage from "../../images/close.svg";
 import AutoSuggest from "react-autosuggest";
 import "../../styles/SuggestUserStyle.css";
 import { NewNotifyContext } from "../../context/Notify";
-const AddRestaurant = (props) => {
+const ValidateRestaurant = (props) => {
   const [deleyedRedirect, setDeleyedRedirect] = useState(false);
   const notify = useContext(NewNotifyContext);
   const user = useContext(NewLoginInfo);
@@ -49,8 +49,11 @@ const AddRestaurant = (props) => {
         temp[i] = "";
       }
     }
+    console.log(temp);
+    console.log(e.target.value);
+    console.log(temp[e.target.id][0]);
     temp[e.target.id][0] = e.target.value;
-    setTimeArray(temp);
+    setTimeArray([...temp]);
   };
   const handleTimeSecond = (e) => {
     let temp = timeArray;
@@ -60,7 +63,7 @@ const AddRestaurant = (props) => {
       }
     }
     temp[e.target.id][1] = e.target.value;
-    setTimeArray(temp);
+    setTimeArray([...temp]);
   };
   let temp = [UploadImage, UploadImage, UploadImage, UploadImage];
 
@@ -72,12 +75,63 @@ const AddRestaurant = (props) => {
   const [city, setCity] = useState("");
   const [street, setStreet] = useState("");
   const [number, setNumber] = useState(null);
+  const [myRestaurant, setMyRestaurant] = useState([]);
   useEffect(() => {
+    const getFile = async (path) => {
+      let response = await fetch(path);
+      let data = await response.blob();
+      let metadata = {
+        type: "image/jpeg",
+      };
+      let file = new File([data], "test.jpg", metadata);
+      return file;
+    };
     const fetchData = async () => {
-      await axios(`https://veggiesapp.herokuapp.com/users/`)
+      await axios("https://veggiesapp.herokuapp.com/restaurants/")
         .then((res) => {
-          setUsers(res.data);
-          setSuggestions(res.data);
+          res.data.map((date) => {
+            if (date.id_moderator === user.userInfo.id) {
+              setMyRestaurant(date);
+              setRestaurantTitle(date.name);
+              setRestaurantDescription(
+                date.description.replace("\r\n\r\n", "\n").replace("\r\n", "\n")
+              );
+              const tempTime = date.hours.split("\r\n");
+              const time = tempTime.map((time) => {
+                return [
+                  time.split(":", 1).toString(),
+                  time.split(":").slice(1).join(":"),
+                ];
+              });
+              let newTimeArray = [];
+              console.log(time);
+              time.map((t, index) => {
+                if (t[1] !== " Nieczynne") {
+                  t[1] = t[1].trim().split(" ");
+                  newTimeArray.push(t[1]);
+                } else {
+                  let tempArr = ["00:00", "00:00"];
+                  t[1] = tempArr;
+                  let tempClose = isClosed;
+                  tempClose[index] = true;
+                  setIsClosed(tempClose);
+                  newTimeArray.push(t[1]);
+                }
+              });
+              setTimeArray([...newTimeArray]);
+              setMarkers([date.latX, date.longY]);
+              setCity(date.city);
+              setStreet(date.street);
+              setNumber(date.street_number);
+              let temp = getFile(`${date.foto}`).then((res) => {
+                return res;
+              });
+              temp.then((responses) => {
+                console.log(responses);
+                setFile([responses]);
+              });
+            }
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -121,8 +175,13 @@ const AddRestaurant = (props) => {
             type="time"
             id={props.id}
             value={timeArray[props.id][0]}
-            onChange={(e) => {
+            onInput={(e) => {
               handleTimeFirst(e);
+            }}
+            onClick={(e) => {
+              let temp = timeArray;
+              temp[e.target.id][1] = null;
+              setTimeArray([...temp]);
             }}
             disabled
           />
@@ -131,7 +190,7 @@ const AddRestaurant = (props) => {
             type="time"
             id={props.id}
             value={timeArray[props.id][1]}
-            onChange={(e) => {
+            onInput={(e) => {
               handleTimeSecond(e);
             }}
             disabled
@@ -149,6 +208,13 @@ const AddRestaurant = (props) => {
             onChange={(e) => {
               handleTimeFirst(e);
             }}
+            onClick={(e) => {
+              let temp = timeArray;
+              if (temp[e.target.id][0] !== null) {
+                temp[e.target.id][0] = null;
+                setTimeArray([...temp]);
+              }
+            }}
           />
           <TextColumnInput
             style={{ width: "100px" }}
@@ -157,6 +223,13 @@ const AddRestaurant = (props) => {
             value={timeArray[props.id][1]}
             onChange={(e) => {
               handleTimeSecond(e);
+            }}
+            onClick={(e) => {
+              let temp = timeArray;
+              if (temp[e.target.id][1] !== null) {
+                temp[e.target.id][1] = null;
+                setTimeArray([...temp]);
+              }
             }}
           />
         </div>
@@ -245,45 +318,43 @@ const AddRestaurant = (props) => {
         tempTimeText += "niedziela: ";
       }
       if (timeArray[i][0] !== null) {
-        tempTimeText += timeArray[i][0] + " - " + timeArray[i][1] + "\r\n";
+        tempTimeText += timeArray[i][0] + " " + timeArray[i][1] + "\r\n";
       } else {
-        tempTimeText += "Nieczynne";
+        tempTimeText += "Nieczynne\r\n";
       }
     }
     console.log(JSON.stringify(tempTimeText));
     let userIndex = null;
     await axios("https://veggiesapp.herokuapp.com/users/")
       .then((res) => {
+        let i = 0;
         res.data.map((date) => {
-          if (date.username == value) {
+          if (date.username == value && i == 0) {
             userIndex = date.id;
+            i++;
           }
         });
       })
       .catch((err) => console.log(err));
     console.log(userIndex);
     console.log(markers);
-    console.log(
-      JSON.stringify(restaurantDescription.replace("\n", "\r\n\r\n"))
-    );
+    console.log(restaurantDescription);
     console.log(restaurantTitle);
     console.log(file);
 
     const data = new FormData();
-    data.append("id_moderator", userIndex);
+    data.append("id", myRestaurant.id);
+    data.append("id_moderator", myRestaurant.id_moderator);
     data.append("name", restaurantTitle);
     data.append("foto", file[0]);
     data.append("street", street);
     data.append("street_number", number);
     data.append("latX", markers[0]);
     data.append("longY", markers[1]);
-    data.append("hours", JSON.stringify(tempTimeText));
-    data.append(
-      "description",
-      JSON.stringify(restaurantDescription.replace("\n", "\r\n\r\n"))
-    );
+    data.append("hours", tempTimeText);
+    data.append("description", restaurantDescription.replace("\n", "\r\n"));
     const config = {
-      method: "POST",
+      method: "PUT",
       headers: {
         Accept: "application/json; charset=UTF-8",
         Authorization: `Token ${user.userInfo.token}`,
@@ -291,7 +362,8 @@ const AddRestaurant = (props) => {
       },
       body: data,
     };
-    await fetch("https://veggiesapp.herokuapp.com/restaurants/", config)
+
+    await fetch("http://veggiesapp.herokuapp.com/restaurant/change/", config)
       .then((res) => {
         console.log(res);
         res
@@ -300,7 +372,7 @@ const AddRestaurant = (props) => {
             let json = JSON.parse(text);
             console.log(text);
             if (json.id_moderator) {
-              notify.set("Pomyślnie dodano restaurację.");
+              notify.set("Pomyślnie edytowano restaurację.");
               setTimeout(() => {
                 setDeleyedRedirect(true);
               }, 2000);
@@ -322,242 +394,209 @@ const AddRestaurant = (props) => {
       });
   };
   return (
-    <div style={{ margin: "3% 0 0 0 " }}>
-      {deleyedRedirect && <Redirect to={`/restaurants`} />}
-      <div>
-        <h1
-          style={{
-            "font-size": "28px",
-            "text-align": "center",
-            color: "rgb(39,117,46)",
-            "font-weight": "bold",
-          }}
-        >
-          Dodaj restaurację
-        </h1>
+    <div
+      style={{ margin: "7% auto 1% auto", background: "rgba(255,255,255,0.7)" }}
+    >
+      {console.log(myRestaurant)}
+      <div style={{ margin: "3% 0 0 0 " }}>
+        {deleyedRedirect && <Redirect to={`/restaurants`} />}
         <div>
-          <label
-            for="name"
+          <h1
             style={{
-              margin: "2% auto",
-              display: "flex",
-              "flex-direction": "column",
+              "font-size": "28px",
               "text-align": "center",
+              color: "rgb(39,117,46)",
+              "font-weight": "bold",
             }}
           >
-            <h2 style={{ "font-size": "26px" }}>Nazwa:</h2>
+            Dodaj restaurację
+          </h1>
+          <div>
+            <label
+              for="name"
+              style={{
+                margin: "2% auto",
+                display: "flex",
+                "flex-direction": "column",
+                "text-align": "center",
+              }}
+            >
+              <h2 style={{ "font-size": "26px" }}>Nazwa:</h2>
+              <input
+                value={restaurantTitle}
+                onChange={(e) => setRestaurantTitle(e.target.value)}
+                style={{
+                  margin: "1% auto",
+                  "font-size": "22px",
+                  border: "1px solid black",
+                  outline: "none",
+                  padding: "1%",
+                  width: "400px",
+                }}
+                type="text"
+                id="name"
+                placeholder="Wprowadź nazwę restauracji"
+              />
+            </label>
+          </div>
+          <div>
+            <label
+              for="description"
+              style={{
+                margin: "2% auto",
+                display: "flex",
+                "flex-direction": "column",
+                "text-align": "center",
+              }}
+            >
+              <h2 style={{ "font-size": "26px" }}>Opis:</h2>
+              <textarea
+                value={restaurantDescription}
+                onChange={(e) => setRestaurantDescription(e.target.value)}
+                style={{
+                  margin: "1% auto",
+                  "font-size": "22px",
+                  border: "1px solid black",
+                  outline: "none",
+                  padding: "1%",
+                  width: "80%",
+                  resize: "none",
+                  padding: "1%",
+                }}
+                type="text"
+                id="description"
+                placeholder="Wprowadź opis restauracji"
+              />
+            </label>
+          </div>
+        </div>
+        <TimeFields />
+        <div style={{ width: "100%", display: "flex", margin: "2% 0 0 0" }}>
+          <label
+            style={{ width: "100%", display: "flex", "align-items": "center" }}
+            for="city"
+          >
+            <p style={{ margin: 0 }}>Miasto:</p>
             <input
-              value={restaurantTitle}
-              onChange={(e) => setRestaurantTitle(e.target.value)}
+              onChange={(e) => {
+                setCity(e.target.value);
+              }}
+              value={city}
+              id="city"
+              placeholder="Wprowadź nazwę miasta"
               style={{
-                margin: "1% auto",
                 "font-size": "22px",
+                margin: "1%",
                 border: "1px solid black",
                 outline: "none",
                 padding: "1%",
-                width: "400px",
               }}
               type="text"
-              id="name"
-              placeholder="Wprowadź nazwę restauracji"
             />
           </label>
-        </div>
-        <div>
           <label
-            for="description"
-            style={{
-              margin: "2% auto",
-              display: "flex",
-              "flex-direction": "column",
-              "text-align": "center",
-            }}
+            style={{ width: "100%", display: "flex", "align-items": "center" }}
+            for="nameStreet"
           >
-            <h2 style={{ "font-size": "26px" }}>Opis:</h2>
-            <textarea
-              value={restaurantDescription}
-              onChange={(e) => setRestaurantDescription(e.target.value)}
+            <p style={{ margin: 0 }}>Nazwa uliczy:</p>
+            <input
+              onChange={(e) => {
+                setStreet(e.target.value);
+              }}
+              value={street}
+              id="nameStreet"
+              placeholder="Wprowadź nazwę ulicy"
               style={{
-                margin: "1% auto",
                 "font-size": "22px",
+                margin: "1%",
                 border: "1px solid black",
                 outline: "none",
                 padding: "1%",
-                width: "80%",
-                resize: "none",
-                padding: "1%",
               }}
               type="text"
-              id="description"
-              placeholder="Wprowadź opis restauracji"
             />
           </label>
           <label
-            for="moderator"
-            style={{
-              margin: "2% auto",
-              display: "flex",
-              "flex-direction": "column",
-              "text-align": "center",
-            }}
+            style={{ width: "100%", display: "flex", "align-items": "center" }}
+            for="numberStreet"
           >
-            <h2 style={{ "font-size": "26px" }}>Moderator:</h2>
-            <AutoSuggest
-              suggestions={users}
-              onSuggestionsClearRequested={() => setSuggestions([])}
-              onSuggestionsFetchRequested={({ value }) => {
-                console.log(value);
-                setValue(value);
-                setSuggestions(getSuggestions(value));
+            <p style={{ margin: 0 }}>Numer ulicy:</p>
+            <input
+              onChange={(e) => {
+                setNumber(e.target.value);
               }}
-              onSuggestionSelected={(_, { suggestionValue }) =>
-                console.log("Wybrany: " + suggestionValue)
-              }
-              getSuggestionValue={(suggestion) => suggestion.username}
-              renderSuggestion={(suggestion) => (
-                <span
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <p>{suggestion.username}</p>
-                  <p>{suggestion.id}</p>
-                </span>
-              )}
-              inputProps={{
-                placeholder: "Wpisz nazwę użytkownika",
-                value: value,
-                onChange: (_, { newValue, method }) => {
-                  setValue(newValue);
-                },
+              value={number}
+              placeholder="Wprowadź numer ulicy"
+              style={{
+                "font-size": "22px",
+                margin: "1%",
+                border: "1px solid black",
+                outline: "none",
+                padding: "1%",
               }}
-              highlightFirstSuggestion={true}
+              type="text"
             />
           </label>
         </div>
-      </div>
-      <TimeFields />
-      <div style={{ width: "100%", display: "flex", margin: "2% 0 0 0" }}>
-        <label
-          style={{ width: "100%", display: "flex", "align-items": "center" }}
-          for="city"
-        >
-          <p style={{ margin: 0 }}>Miasto:</p>
-          <input
-            onChange={(e) => {
-              setCity(e.target.value);
-            }}
-            value={city}
-            id="city"
-            placeholder="Wprowadź nazwę miasta"
-            style={{
-              "font-size": "22px",
-              margin: "1%",
-              border: "1px solid black",
-              outline: "none",
-              padding: "1%",
-            }}
-            type="text"
-          />
-        </label>
-        <label
-          style={{ width: "100%", display: "flex", "align-items": "center" }}
-          for="nameStreet"
-        >
-          <p style={{ margin: 0 }}>Nazwa uliczy:</p>
-          <input
-            onChange={(e) => {
-              setStreet(e.target.value);
-            }}
-            value={street}
-            id="nameStreet"
-            placeholder="Wprowadź nazwę ulicy"
-            style={{
-              "font-size": "22px",
-              margin: "1%",
-              border: "1px solid black",
-              outline: "none",
-              padding: "1%",
-            }}
-            type="text"
-          />
-        </label>
-        <label
-          style={{ width: "100%", display: "flex", "align-items": "center" }}
-          for="numberStreet"
-        >
-          <p style={{ margin: 0 }}>Numer ulicy:</p>
-          <input
-            onChange={(e) => {
-              setNumber(e.target.value);
-            }}
-            value={number}
-            placeholder="Wprowadź numer ulicy"
-            style={{
-              "font-size": "22px",
-              margin: "1%",
-              border: "1px solid black",
-              outline: "none",
-              padding: "1%",
-            }}
-            type="text"
-          />
-        </label>
-      </div>
-      <Map
-        id="map"
-        center={[53.01379, 18.598444]}
-        zoom={13}
-        style={{
-          height: 300,
-          "z-index": 0,
-          width: "90%",
-          margin: "2% auto 2% auto",
-        }}
-        onClick={(e) => {
-          addMarker(e);
-        }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-        />
-        <Marker key={`marker`} position={markers}>
-          <Popup>
-            <span>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </span>
-          </Popup>
-        </Marker>
-      </Map>
-      <ImagesContainer>
-        <div className="image-upload">
-          <label for="file-input-0">
-            <Image src={file[0]} />
-          </label>
-          <input
-            id="file-input-0"
-            type="file"
-            onChange={(e) => handleChange(0, e)}
-          />
-        </div>
-      </ImagesContainer>
-      <div style={{ width: "100%", "text-align": "center" }}>
-        <button
-          onClick={() => {
-            AddRestaurantFunction();
-          }}
+        <Map
+          id="map"
+          center={[53.01379, 18.598444]}
+          zoom={13}
           style={{
-            background: "#388E3C",
-            margin: "1% auto 1% auto",
-            color: "white",
-            "text-align": "center",
-            "font-size": "28px",
-            border: "none",
+            height: 300,
+            "z-index": 0,
+            width: "90%",
+            margin: "2% auto 2% auto",
+          }}
+          onClick={(e) => {
+            addMarker(e);
           }}
         >
-          Dodaj restaurację
-        </button>
+          <TileLayer
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+          />
+          <Marker key={`marker`} position={markers}>
+            <Popup>
+              <span>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </span>
+            </Popup>
+          </Marker>
+        </Map>
+        <ImagesContainer>
+          <div className="image-upload">
+            <label for="file-input-0">
+              <Image
+                src={file[0].name ? URL.createObjectURL(file[0]) : file[0]}
+              />
+            </label>
+            <input
+              id="file-input-0"
+              type="file"
+              onChange={(e) => handleChange(0, e)}
+            />
+          </div>
+        </ImagesContainer>
+        <div style={{ width: "100%", "text-align": "center" }}>
+          <button
+            onClick={() => {
+              AddRestaurantFunction();
+            }}
+            style={{
+              background: "#388E3C",
+              margin: "1% auto 1% auto",
+              color: "white",
+              "text-align": "center",
+              "font-size": "28px",
+              border: "none",
+            }}
+          >
+            Edytuj restaurację
+          </button>
+        </div>
       </div>
     </div>
   );
 };
-export default AddRestaurant;
+export default ValidateRestaurant;
