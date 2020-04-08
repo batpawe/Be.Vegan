@@ -25,6 +25,8 @@ import {
 import UploadImage from "../../images/upload.png";
 import "../../App.css";
 import CloseImage from "../../images/close.svg";
+import AutoSuggest from "react-autosuggest";
+import "../../styles/SuggestProducts.css";
 const AddRecipt = () => {
   const user = useContext(NewLoginInfo);
   let temp = [UploadImage, UploadImage, UploadImage, UploadImage];
@@ -39,17 +41,71 @@ const AddRecipt = () => {
   const [newMethod, setNewMethod] = useState("");
   const [description, setDescription] = useState("");
   const [recipeName, setRecipeName] = useState("");
-  let tempProducts = [
-    {
-      name: "",
-      quanity: 0,
-    },
-  ];
-  const [products, setProducts] = useState(tempProducts);
-  const sendRequest = () => {
+
+  const [products, setProducts] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [value, setValue] = useState("");
+  const [data, setData] = useState([]);
+  const [mySuggestion, setMySuggestion] = useState({});
+  const [time, setTime] = useState(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios("https://veggiesapp.herokuapp.com/ingredients/")
+        .then((res) => {
+          setData(res.data);
+          setSuggestions(res.data.map((date) => date.name));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, []);
+  const productName = data.map((date) => {
+    return date;
+  });
+  const getSuggestions = (value) => {
+    setMySuggestion(
+      productName.filter((name) => name.name.includes(value.trim()))
+    );
+    return productName.filter((name) => name.name.includes(value.trim()));
+  };
+  const sendRequest = async () => {
     console.log(recipeName);
     console.log(description);
     console.log(products);
+    console.log(file);
+    const data = new FormData();
+    data.append("recipe_name", recipeName);
+    data.append(
+      "recipe_decription",
+      JSON.stringify(description.replace("\n", "\r\n\r\n"))
+    );
+    data.append("recipe_foto", file[0]);
+    data.append("time", time);
+    const config = {
+      method: "POST",
+      headers: {
+        Accept: "application/json; charset=UTF-8",
+        Authorization: `Token ${user.userInfo.token}`,
+        // 'Content-Type': 'multipart/form-data',
+      },
+      body: data,
+    };
+    await fetch("https://veggiesapp.herokuapp.com/recipes/", config)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+    /*
+    const dataIngredients = new FormData();
+    products.map(product => {
+      dataIngredients.append("id_ingredient",product.id);
+      dataIngredients.append("id_recipe",);
+      dataIngredients.append("amount",product.number)
+    })
+    */
   };
   const handleMethods = (e) => {
     let temp = methods;
@@ -83,13 +139,40 @@ const AddRecipt = () => {
     temp[i] = URL.createObjectURL(event.target.files[0]);
     setFile([...temp]);
   };
-
+  const shouldRenderSuggestions = (value) => {
+    return value.trim().length > 3;
+  };
   const ProductFields = () => {
     const temp = [];
     console.log(productsArray[0]);
     for (var i = 0; i < numberProducts; i++) {
       temp.push(
         <ProductsContainer style={{ width: "100%" }}>
+          <AutoSuggest
+            suggestions={suggestions}
+            onSuggestionsClearRequested={() => setSuggestions([])}
+            onSuggestionsFetchRequested={({ value }) => {
+              setValue(value);
+              setSuggestions(getSuggestions(value));
+            }}
+            onSuggestionSelected={(_, { suggestion, suggestionValue }) => {
+              console.log("TTTTTTT");
+              console.log(suggestion);
+              console.log("Wybrany: " + suggestionValue);
+            }}
+            getSuggestionValue={(suggestion) => suggestion.name}
+            renderSuggestion={(suggestion) => <span>{suggestion.name}</span>}
+            inputProps={{
+              placeholder: "Nazwa produktu",
+              value: value,
+              onChange: (_, { newValue, method }) => {
+                setValue(newValue);
+              },
+            }}
+            highlightFirstSuggestion={true}
+            shouldRenderSuggestions={(v) => v.trim().length > 0}
+          />
+          {/*}
           <TextColumnInput
             style={{ width: "300px" }}
             type="text"
@@ -101,6 +184,7 @@ const AddRecipt = () => {
               handleProducts(e);
             }}
           />
+          {*/}
           <TextColumnInput
             style={{ width: "200px" }}
             type="number"
@@ -143,7 +227,11 @@ const AddRecipt = () => {
     let temp = numberProducts - 1;
     setNumberProducts(temp);
   };
-
+  var indents = [];
+  for (var i = 0; i < 2; i++) {
+    indents.push(<span>Witaj</span>);
+  }
+  const [tempQuanity, setTempQuanity] = useState(0);
   return (
     <Container>
       <div
@@ -165,6 +253,19 @@ const AddRecipt = () => {
           type="text"
           id="name"
           placeholder="Wprowadź nazwę dania"
+        />
+        <InputLabel for="time" style={{ "font-size": "20px" }}>
+          Czas(w minutach):
+        </InputLabel>
+        <TextInput
+          style={{ "text-align": "right", width: "10%" }}
+          value={time}
+          onChange={(e) => {
+            setTime(e.target.value);
+          }}
+          type="number"
+          id="name"
+          placeholder="Wprowadź czas wykonania przepisu"
         />
       </div>
       <ColumnContainer style={{ display: "flex", "flex-direction": "column" }}>
@@ -202,34 +303,111 @@ const AddRecipt = () => {
         >
           Produkty:
         </p>
+        <ProductsContainer style={{ display: "flex", "align-items": "center" }}>
+          <AutoSuggest
+            key={`suggest`}
+            suggestions={suggestions}
+            onSuggestionsClearRequested={() => setSuggestions([])}
+            onSuggestionsFetchRequested={({ value }) => {
+              console.log(value);
+              setValue(value);
+              setSuggestions(getSuggestions(value));
+            }}
+            onSuggestionSelected={(_, { suggestion, suggestionValue }) =>
+              setMySuggestion(suggestion)
+            }
+            getSuggestionValue={(suggestion) => suggestion.name}
+            renderSuggestion={(suggestion) => <span>{suggestion.name}</span>}
+            inputProps={{
+              placeholder: "Nazwa produktu",
+              value: value,
+              onChange: (_, { newValue, method }) => {
+                setValue(newValue);
+              },
+            }}
+            highlightFirstSuggestion={true}
+            shouldRenderSuggestions={(v) => v.trim().length > 2}
+          />
+          <TextColumnInput
+            style={{
+              width: "200px",
+              height: "40px",
+              padding: 0,
+              margin: 0,
+            }}
+            placeholder="Wprowadź ilość"
+            type="text"
+            value={tempQuanity}
+            onChange={(e) => {
+              setTempQuanity(e.target.value);
+            }}
+          />
+          <HighlightText
+            style={{
+              width: "100px",
+              height: "40px",
+              "text-align": "center",
+              padding: 0,
+              margin: 0,
+            }}
+          >
+            gram
+          </HighlightText>
+        </ProductsContainer>
+        <AddItem
+          style={{ padding: "0", margin: "1% auto 1% auto" }}
+          onClick={() => {
+            let tempArray = products;
+            console.log(mySuggestion);
+            let temp = {
+              id: mySuggestion.id,
+              name: mySuggestion.name,
+              number: tempQuanity,
+            };
+            tempArray.push(temp);
+            setSuggestions([]);
+            setProducts([...tempArray]);
+            setTempQuanity("");
+            setValue("");
+            setMySuggestion("");
+          }}
+        >
+          Dodaj produkt
+        </AddItem>
         {products &&
+          suggestions &&
           products.map((product, index) => {
-            return (
-              <div>
-                <ProductsContainer style={{ display: "flex" }}>
-                  <TextColumnInput
-                    style={{ width: "300px" }}
-                    placeholder="Nazwa produktu"
-                    type="text"
-                    value={product.name}
-                    onChange={(e) => {
-                      let temp = products;
-                      temp[index].name = e.target.value;
-                      setProducts([...temp]);
+            console.log(products);
+            if (product.name) {
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    margin: "1% auto 1% auto",
+                    width: "40%",
+                    "justify-content": "space-around",
+                  }}
+                >
+                  <div
+                    style={{
+                      border: "1px solid black",
+                      padding: "1%",
+                      "text-align": "center",
+                      width: "60%",
                     }}
-                  />
-                  <TextColumnInput
-                    style={{ width: "200px" }}
-                    placeholder="Wprowadź ilość"
-                    type="text"
-                    value={products.quanity}
-                    onChange={(e) => {
-                      let temp = products;
-                      temp[index].quanity = e.target.value;
-                      setProducts([...temp]);
+                  >
+                    {product.name}
+                  </div>
+                  <div
+                    style={{
+                      border: "1px solid black",
+                      padding: "1%",
+                      "text-align": "right",
+                      width: "20%",
                     }}
-                  />
-                  <HighlightText style={{ width: "100px" }}>gram</HighlightText>
+                  >
+                    {product.number}
+                  </div>
                   <img
                     style={{ width: 25 }}
                     src={CloseImage}
@@ -239,20 +417,10 @@ const AddRecipt = () => {
                       setProducts([...temp]);
                     }}
                   />
-                </ProductsContainer>
-              </div>
-            );
+                </div>
+              );
+            }
           })}
-        <AddItem
-          onClick={() => {
-            let tempArray = products;
-            let temp = { name: "", number: 0 };
-            tempArray.push(temp);
-            setProducts([...tempArray]);
-          }}
-        >
-          Dodaj produkt
-        </AddItem>
       </ColumnContainer>
       <ImagesContainer>
         <div className="image-upload">
