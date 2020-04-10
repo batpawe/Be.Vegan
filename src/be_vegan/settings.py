@@ -13,14 +13,14 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from .config0 import SecretVariables
 
-AWS_ACCESS_KEY_ID = SecretVariables.AWS_ID
-AWS_SECRET_ACCESS_KEY = SecretVariables.AWS_SECRET
+AWS_ACCESS_KEY_ID = 'AKIA37SVVXBH2SZV67NQ'
+AWS_SECRET_ACCESS_KEY = '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'
 AWS_URL = 'https://cloud-cube-eu.s3.amazonaws.com/kgohyhjgpt5s'
 AWS_S3_REGION_NAME = 'eu-west-1'
 AWS_STORAGE_BUCKET_NAME = 'cloud-cube-eu'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -155,13 +155,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 
-PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+#PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
+#STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-	os.path.join(PROJECT_ROOT, 'static'),
-)
+#STATICFILES_DIRS = (
+#	os.path.join(PROJECT_ROOT, 'static'),
+#)
 
 #STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
