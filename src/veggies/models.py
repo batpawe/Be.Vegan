@@ -134,3 +134,6 @@ class Reply_Post(models.Model):
     foto = models.ImageField("foto",upload_to='ctig8ylotxru/public/images/post_replies', null=True, blank=True)
     data_stamp = models.DateTimeField(default = timezone.now)
     id_post_int = models.PositiveIntegerField()
+
+class VeganCuriosities(models.Model):
+    text = models.TextField("curiosity")

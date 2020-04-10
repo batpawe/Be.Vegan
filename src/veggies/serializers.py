@@ -4,10 +4,15 @@ from .models import Food_To_Substitute, Ingredient, Restaurant, Rating_Restauran
     Rating_Recipe, Preference
 from django.db import models
 
-from .models import Main_Post, Reply_Post, Food_Substitute
+from .models import Main_Post, Reply_Post, Food_Substitute, VeganCuriosities
 
 User = get_user_model()
 
+class Curiosity(serializers.ModelSerializer):
+    class Meta:
+        model = VeganCuriosities
+        fields = ['text']
+        read_only_fields = ['text']
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     password = serializers.CharField(write_only=True)
