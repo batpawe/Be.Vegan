@@ -15,7 +15,7 @@ from .config0 import SecretVariables
 
 AWS_ACCESS_KEY_ID = SecretVariables.AWS_ID
 AWS_SECRET_ACCESS_KEY = SecretVariables.AWS_SECRET
-AWS_URL = 'https://cloud-cube-eu.s3.amazonaws.com/ctig8ylotxru'
+AWS_URL = 'https://cloud-cube-eu.s3.amazonaws.com/kgohyhjgpt5s'
 AWS_S3_REGION_NAME = 'eu-west-1'
 AWS_STORAGE_BUCKET_NAME = 'cloud-cube-eu'
 

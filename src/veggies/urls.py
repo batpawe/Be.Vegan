@@ -28,7 +28,7 @@ urlpatterns += [
     path('me/', ProfileView.as_view(), name='profile'),
     path('substitute/nveg/', SubstituteNVeganView.as_view(), name='substitute'),
     path('ingredients/', IngredientsView.as_view()),
-  # path('restaurants/', RestaurantView.as_view()),
+    #path('restaurants/', RestaurantView.as_view()),
     path('restaurant/change/', RestaurantChangeView.as_view()),
     path('preference/', PreferenceView.as_view()),
     path('addsubstitute/', AddVeganView.as_view()),
