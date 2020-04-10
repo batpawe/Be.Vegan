@@ -77,7 +77,7 @@ class CustomObtainAuthToken(ObtainAuthToken):
 class SubstituteNVeganView(APIView):
     def get(self, request, format=None):
         prefix = request.GET.get('prefix', '')
-        food = Food_To_Substitute.objects.filter(food_name__regex=r'{}'.format(prefix))
+        food = Food_To_Substitute.objects.filter(food_name__regex='{}'.format(prefix))
         if food:
             serializer = SubstituteSerializer(food, many=True)
             return Response(serializer.data)
