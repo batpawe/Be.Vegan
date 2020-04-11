@@ -129,6 +129,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
 
 class RatingRecipeSerializer(serializers.ModelSerializer):
+    id_user = UserName(read_only=True)
     class Meta:
         model = Rating_Recipe
         fields = "__all__"
