@@ -102,6 +102,7 @@ class RestaurantCreateSerializer(serializers.ModelSerializer):
 
 
 class RatingRestaurantSerializer(serializers.ModelSerializer):
+    id_user = UserName(read_only=True)
     class Meta:
         model = Rating_Restaurant
         fields = "__all__"

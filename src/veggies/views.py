@@ -112,7 +112,6 @@ class AddVeganView(APIView):
         if food_arr:
             return Response(food_arr)
     def post(self, request, format=None):
-        print(request.data)
         serializer = AddSub(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -331,17 +330,16 @@ class RestaurantRatingView(viewsets.ViewSet):
         if Rating_Restaurant.objects.filter(id_user=request.user, id_restaurant=pk):
             rating = Rating_Restaurant.objects.get(id_user=request.user, id_restaurant=pk)
             serializer = RatingRestaurantSerializer(rating, many=False)
-            ser = {}
             return Response(serializer.data)
         else:
             return Response(status=404)
 
     def create(self, request):
         req = QueryDict.copy(request.data)
-        req['id_user'] = request.user.id
+        req['id_user'] = request.user
         serializer = RatingRestaurantSerializer(data=req, many=False, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(id_user=request.user)
             return Response(serializer.data)
         else:
             return Response(status=400)
@@ -391,13 +389,10 @@ class RecipeView(viewsets.ViewSet):
             serializerRating = RatingRecipeSerializer(rating, many=True)
 
             result = give_rec(int(pk))
-            print(result)
             rec_list = []
             for i in result:
-                #print(i)
                 rec_list.append(Recipe.objects.get(id=i))
             serializerRecommend = RecipeSerializer(rec_list, many=True)
-            print(serializerRecommend)
             ser = {}
             ser['recipe'] = serializerRecipe.data
             ser['rating'] = serializerRating.data
@@ -415,7 +410,6 @@ class RecipeView(viewsets.ViewSet):
             serializer.save(id_user=request.user)
             return Response(serializer.data)
         else:
-            print(serializer.errors)
             return Response(status=400)
 
     def destroy(self, request, pk=None):
@@ -454,7 +448,6 @@ class RecipeListView(viewsets.ViewSet):
             for obj in serializer_amount.data:
                 serializer.data[i]['amount'] = serializer_amount.data[i]['amount']
                 i = i + 1
-            print(serializer.data)
             return Response(serializer.data)
         else:
             return Response(status=404)
@@ -468,7 +461,6 @@ class RecipeListView(viewsets.ViewSet):
                 serializer.save()
                 return Response(serializer.data)
             else:
-                print(serializer.errors)
                 return Response(status=400)
         else:
             return Response(status=404)
@@ -494,10 +486,10 @@ class RecipeRatingView(viewsets.ViewSet):
 
     def create(self, request):
         req = QueryDict.copy(request.data)
-        req['id_user'] = request.user.id
+        req['id_user'] = request.user
         serializer = RatingRecipeSerializer(data=req, many=False, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(id_user=request.user)
             return Response(serializer.data)
         else:
             return Response(status=400)
