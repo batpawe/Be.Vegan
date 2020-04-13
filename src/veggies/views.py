@@ -305,6 +305,7 @@ class RestaurantChangeView(APIView):
 
     def post(self, request,  format=None):
         if request.user.is_superuser:
+            request.data['rating'] = 5
             serializer = RestaurantCreateSerializer(data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
@@ -320,6 +321,17 @@ class RestaurantRatingView(viewsets.ViewSet):
     serializer_class = RatingRestaurantSerializer
     queryset = Restaurant.objects.all()
     permission_classes = (IsAuthenticated,)
+
+    def new_rating(self, restaurant_id):
+        restaurant = Restaurant.objects.get(id=restaurant_id)
+        rating = Rating_Restaurant.objects.filter(id_restaurant=restaurant_id)
+        rate = 0
+        for r in rating:
+            rate += r.rating
+        rate = rate / len(rating)
+        data = {'rating': rate}
+        serializer = RecipeSerializer()
+        serializer.update(restaurant,data)
 
     def list(self, request):
         rating = Rating_Restaurant.objects.filter(id_user=request.user)
@@ -340,6 +352,7 @@ class RestaurantRatingView(viewsets.ViewSet):
         serializer = RatingRestaurantSerializer(data=req, many=False, partial=True)
         if serializer.is_valid():
             serializer.save(id_user=request.user)
+            self.new_rating(req['id_restaurant'])
             return Response(serializer.data)
         else:
             return Response(status=400)
@@ -404,10 +417,13 @@ class RecipeView(viewsets.ViewSet):
     def create(self, request):
         if not request.user.is_authenticated:
             return Response(data={"detail": "Nie jesteś zalogowany"} , status=400)
-        serializer = RecipeSerializer(data=request.data, many=False, partial=True)
+        req = QueryDict.copy(request.data)
+        req['rating'] = 5
+        req['popularity'] = 0
+        serializer = RecipeSerializer(data=req, many=False, partial=True)
         if serializer.is_valid():
-            # serializer.save(id_user=request.user, ingredients=request.data['ingredients'])
             serializer.save(id_user=request.user)
+
             return Response(serializer.data)
         else:
             return Response(status=400)
@@ -471,9 +487,22 @@ class RecipeRatingView(viewsets.ViewSet):
     queryset = Recipe.objects.all()
     permission_classes = (IsAuthenticated,)
 
+    def new_rating(self, recipe_id):
+        recipe = Recipe.objects.get(id=recipe_id)
+        rating = Rating_Recipe.objects.filter(id_recipe=recipe)
+        rate = 0
+        for r in rating:
+            rate += r.rating
+        rate = rate / len(rating)
+        data = {'rating': rate}
+        serializer = RecipeSerializer(recipe)
+        serializer.update(recipe,data)
+
+
+
     def list(self, request):
         rating = Rating_Recipe.objects.filter(id_user=request.user)
-        serializer = RatingRestaurantSerializer(rating, many=True)
+        serializer = RatingRecipeSerializer(rating, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
@@ -490,6 +519,7 @@ class RecipeRatingView(viewsets.ViewSet):
         serializer = RatingRecipeSerializer(data=req, many=False, partial=True)
         if serializer.is_valid():
             serializer.save(id_user=request.user)
+            self.new_rating(req['id_recipe'])
             return Response(serializer.data)
         else:
             return Response(status=400)

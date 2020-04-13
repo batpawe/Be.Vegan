@@ -37,7 +37,7 @@ class Recipe(models.Model):
     id_user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
     ingredients = models.ManyToManyField(Ingredient, through='Ingredient_List', default = False)
     popularity = models.PositiveIntegerField(default = 0)
-    rating = models.PositiveIntegerField(default=5, validators=[MaxValueValidator(5), MinValueValidator(1)])
+    rating = models.DecimalField(default=5, validators=[MaxValueValidator(5), MinValueValidator(1)], decimal_places=2, max_digits=3)
 
     def __str__(self):
         return self.recipe_name
@@ -99,7 +99,7 @@ class Restaurant(models.Model):
     latX = models.DecimalField("latX", max_digits=12, decimal_places=10)
     longY = models.DecimalField("LongY", max_digits=12, decimal_places=10)
     hours = models.TextField("hours", null=True, blank=True)
-    rating = models.DecimalField("rating", max_digits=4, decimal_places=2)
+    rating = models.DecimalField(default=5, validators=[MaxValueValidator(5), MinValueValidator(1)], decimal_places=2, max_digits=3)
     description = models.TextField("description")
 
     def __str__(self):
