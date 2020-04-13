@@ -17,11 +17,14 @@ from django.contrib.auth import get_user_model
 from itertools import chain
 from .models import Main_Post, Reply_Post
 from .serializers import PostSerializer, PostReplySerializer, AmountSerializer, FoodSub, AddSub, Curiosity
+from recommend_recipe import give_rec
 
 from django.db.models import Value
 
 User = get_user_model()
 
+# zwraca listę poleconych recipes (lista id)
+# result = give_rec(51)
 
 # Create your views here.
 
@@ -386,9 +389,19 @@ class RecipeView(viewsets.ViewSet):
             serializerRecipe = RecipeSerializer(recipe, many=False)
             rating = Rating_Recipe.objects.filter(id_recipe_id=pk)
             serializerRating = RatingRecipeSerializer(rating, many=True)
+
+            result = give_rec(int(pk))
+            print(result)
+            rec_list = []
+            for i in result:
+                #print(i)
+                rec_list.append(Recipe.objects.get(id=i))
+            serializerRecommend = RecipeSerializer(rec_list, many=True)
+            print(serializerRecommend)
             ser = {}
             ser['recipe'] = serializerRecipe.data
             ser['rating'] = serializerRating.data
+            ser['recommend'] = serializerRecommend.data
             return Response(ser)
         else:
             return Response(status=404)
