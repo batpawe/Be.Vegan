@@ -394,6 +394,8 @@ class RecipeView(viewsets.ViewSet):
             return Response(status=404)
 
     def create(self, request):
+        if not request.user.is_authenticated:
+            return Response(data={"detail": "Nie jesteś zalogowany"} , status=400)
         serializer = RecipeSerializer(data=request.data, many=False, partial=True)
         if serializer.is_valid():
             # serializer.save(id_user=request.user, ingredients=request.data['ingredients'])
