@@ -11,7 +11,14 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from .config import SecretVariables
+from .config0 import SecretVariables
+
+AWS_ACCESS_KEY_ID = 'AKIA37SVVXBHRHSKTEV2'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_URL = 'https://cloud-cube-eu.s3.amazonaws.com/kgohyhjgpt5s'
+AWS_S3_REGION_NAME = 'eu-west-1'
+AWS_STORAGE_BUCKET_NAME = 'cloud-cube-eu'
+AWS_DEFAULT_ACL = 'public-read'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
