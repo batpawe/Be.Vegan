@@ -283,6 +283,7 @@ class RestaurantView(viewsets.ViewSet):
 
 class RestaurantChangeView(APIView):
     serializer = RestaurantSerializer
+
     def get(self, request, format=None):
         if Restaurant.objects.filter(id_moderator=request.user.id):
             res = Restaurant.objects.get(id_moderator=request.user.id)
@@ -349,6 +350,9 @@ class RestaurantRatingView(viewsets.ViewSet):
     def create(self, request):
         req = QueryDict.copy(request.data)
         req['id_user'] = request.user
+        rate_exist = Rating_Restaurant.objects.get(id_user=req['id_user'],id_restaurant=req['id_restaurant'])
+        if rate_exist:
+            return Response({"detail": "ocena już istnieje."},status=400)
         serializer = RatingRestaurantSerializer(data=req, many=False, partial=True)
         if serializer.is_valid():
             serializer.save(id_user=request.user)
@@ -358,8 +362,7 @@ class RestaurantRatingView(viewsets.ViewSet):
             return Response(status=400)
 
     def destroy(self, request, pk=None):
-        user = User.objects.get(id=pk)
-        rating = Rating_Restaurant.objects.get(id_user=user.id, id_restaurant=pk)
+        rating = Rating_Restaurant.objects.get(id_user=request.user, id_restaurant=pk)
         if request.user.id == rating.id_user_id:
             rating.delete()
             return Response("Deleted")
@@ -516,6 +519,9 @@ class RecipeRatingView(viewsets.ViewSet):
     def create(self, request):
         req = QueryDict.copy(request.data)
         req['id_user'] = request.user
+        rate_exist = Rating_Recipe.objects.get(id_user=req['id_user'],id_recipe=req['id_recipe'])
+        if rate_exist:
+            return Response({"detail": "ocena już istnieje."},status=400)
         serializer = RatingRecipeSerializer(data=req, many=False, partial=True)
         if serializer.is_valid():
             serializer.save(id_user=request.user)
@@ -525,8 +531,7 @@ class RecipeRatingView(viewsets.ViewSet):
             return Response(status=400)
 
     def destroy(self, request, pk=None):
-        user = User.objects.get(id=pk)
-        rating = Rating_Recipe.objects.get(id_user=user.id, id_recipe=pk)
+        rating = Rating_Recipe.objects.get(id_user=request.user, id_recipe=pk)
         if request.user.id == rating.id_user_id:
             rating.delete()
             return Response("Deleted")
