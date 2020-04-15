@@ -468,18 +468,13 @@ class RecipeListView(viewsets.ViewSet):
         else:
             return Response(status=404)
 
-    def update(self, request, pk=None):
-        if Recipe.objects.filter(id=pk):
-            data = QueryDict.copy(request.data)
-            data['id_recipes'] = pk
-            serializer = IngredientListSerializer(data=data, many=False)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            else:
-                return Response(status=400)
+    def update(self, request, pk):
+        serializer = IngredientListSerializer(data=request.data, many=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
         else:
-            return Response(status=404)
+            return Response(status=400)
 
 
 class RecipeRatingView(viewsets.ViewSet):
