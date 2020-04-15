@@ -62,8 +62,8 @@ class PostReplySerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'height', 'weight', 'age', 'activity']
-        read_only_fields = ['id', 'username', ]
+        fields = ['id', 'username', 'email', 'height', 'weight', 'age', 'activity', 'is_staff']
+        read_only_fields = ['id', 'username', 'is_staff']
 
 
 class SubstituteSerializer(serializers.ModelSerializer):
