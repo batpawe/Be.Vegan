@@ -27,10 +27,14 @@ import "../../App.css";
 import CloseImage from "../../images/close.svg";
 import AutoSuggest from "react-autosuggest";
 import "../../styles/SuggestProducts.css";
+import { NewNotifyContext } from "../../context/Notify";
 const AddRecipt = () => {
+  const [deleyedRedirect, setDeleyedRedirect] = useState(false);
+  const notify = useContext(NewNotifyContext);
   const user = useContext(NewLoginInfo);
   let temp = [UploadImage, UploadImage, UploadImage, UploadImage];
   const [file, setFile] = useState(temp);
+  const [uploadFile, setUploadFile] = useState(temp);
   const [type, setType] = useState("łyżeczka");
   const [markers, setMarkers] = useState([23, 23]);
   const [numberProducts, setNumberProducts] = useState(1);
@@ -79,9 +83,9 @@ const AddRecipt = () => {
     data.append("recipe_name", recipeName);
     data.append(
       "recipe_decription",
-      JSON.stringify(description.replace("\n", "\r\n\r\n"))
+      JSON.parse(JSON.stringify(description.replace("\n", "\r\n\r\n")))
     );
-    data.append("recipe_foto", file[0]);
+    data.append("recipe_foto", uploadFile[0]);
     data.append("time", time);
     const config = {
       method: "POST",
@@ -92,12 +96,54 @@ const AddRecipt = () => {
       },
       body: data,
     };
+    console.log([...data]);
     await fetch("https://veggiesapp.herokuapp.com/recipes/", config)
       .then((res) => {
-        console.log(res);
-        console.log(res.data);
+        if (res.status === 200) {
+          console.log(
+            res.json().then((result) => {
+              console.log(result);
+              products.forEach((product) => {
+                if (product.name !== null) {
+                  const dataProduct = new FormData();
+                  dataProduct.append("id_ingredient", product.id);
+                  dataProduct.append("id_recipes", result.id);
+                  dataProduct.append("amount", product.number);
+                  const configProduct = {
+                    method: "PUT",
+                    headers: {
+                      Accept: "application/json; charset=UTF-8",
+                      Authorization: `Token ${user.userInfo.token}`,
+                      // 'Content-Type': 'multipart/form-data',
+                    },
+                    body: dataProduct,
+                  };
+                  fetch(
+                    `https://veggiesapp.herokuapp.com/recipes/list/${result.id}/`,
+                    configProduct
+                  )
+                    .then((resProduct) => {
+                      console.log(resProduct);
+                      console.log(resProduct);
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }
+              });
+              notify.set("Pomyślnie dodano przepis.");
+              setTimeout(() => {
+                setDeleyedRedirect(true);
+              }, 2000);
+            })
+          );
+        } else {
+          notify.set("Wystąpił nieoczekiwany błąd.");
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        notify.set("Wystąpił nieoczekiwany błąd.");
+      });
     /*
     const dataIngredients = new FormData();
     products.map(product => {
@@ -137,7 +183,10 @@ const AddRecipt = () => {
     console.log(i);
     let temp = file;
     temp[i] = URL.createObjectURL(event.target.files[0]);
+    let tempF = uploadFile;
+    tempF[i] = event.target.files[0];
     setFile([...temp]);
+    setUploadFile([...tempF]);
   };
   const shouldRenderSuggestions = (value) => {
     return value.trim().length > 3;
@@ -234,6 +283,7 @@ const AddRecipt = () => {
   const [tempQuanity, setTempQuanity] = useState(0);
   return (
     <Container>
+      {deleyedRedirect && <Redirect to={`/recipes`} />}
       <div
         style={{
           display: "flex",

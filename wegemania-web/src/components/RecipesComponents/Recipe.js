@@ -92,7 +92,12 @@ import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
 import "../../App.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { NewNotifyContext } from "../../context/Notify";
 const Recipe = (props) => {
+  const notify = useContext(NewNotifyContext);
+  const user = useContext(NewLoginInfo);
+  const [descriptionComment, setDescriptionComment] = useState("");
+  const [myRate, setRate] = useState(0);
   const [recipe, setRecipe] = useState([]);
   const [listIngredients, setListIngredients] = useState([]);
   const [open, setOpen] = useState(false);
@@ -131,6 +136,46 @@ const Recipe = (props) => {
     let temp = rating;
     temp[0] = val;
     setRating([...temp]);
+  };
+  const AddComment = async () => {
+    const data = new FormData();
+    data.append("id_restaurant", props.match.params.id);
+    data.append("user_comment", descriptionComment);
+    data.append("rating", myRate);
+    const config = {
+      method: "POST",
+      headers: {
+        Accept: "application/json; charset=UTF-8",
+        Authorization: `Token ${user.userInfo.token}`,
+      },
+      body: data,
+    };
+    await fetch(`https://veggiesapp.herokuapp.com/recipe/rating`, config)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        /*
+        res.text().then((text) => {
+          let json = JSON.parse(text);
+          console.log(json);
+          if (json.id_restaurant) {
+            notify.set("Pomyślnie dodano komentarz.");
+            setTimeout(() => {
+              setDeleyedRedirect(true);
+            }, 2000);
+          } else {
+            console.log(res);
+            console.log(res.response);
+            notify.set("Wystąpił nieoczekiwany błąd!");
+          }
+        });
+        */
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+        notify.set("Wystąpił nieoczekiwany błąd!");
+      });
   };
   useEffect(() => {
     console.log(
@@ -277,58 +322,80 @@ const Recipe = (props) => {
               </PreparingMethod>
             </ColumnContainer>
             <RateContainer>
-              <RateHeader>Oceń</RateHeader>
+              <RateHeader>Ocena</RateHeader>
               <RateStars>
                 <ReactStars
+                  value={recipe.recipe ? recipe.recipe.rating : 0}
                   count={5}
                   className="test"
-                  onChange={setRating}
+                  //onChange
                   size={24}
                   color2={"#4CAF50"}
                 />
               </RateStars>
             </RateContainer>
-            {/*}
             <HeaderText>Komentarze:</HeaderText>
             <UnorderedListComments>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
-              <UnorderedListCommentsIn>
-                <HighlightItem>Autor</HighlightItem>
-                <CommentContent>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CommentContent>
-              </UnorderedListCommentsIn>
+              {recipe.rating &&
+                recipe.rating.map((rate) => {
+                  return (
+                    <UnorderedListCommentsIn>
+                      <HighlightItem>
+                        {rate.username || "mateuszklimek"}
+                      </HighlightItem>
+                      <CommentContent>
+                        {rate.user_comment || "testowy komentarz"}
+                      </CommentContent>
+                      <RateStars style={{ width: "14%" }}>
+                        <ReactStars
+                          value={rate.rating}
+                          count={5}
+                          className="test"
+                          //onChange
+                          size={24}
+                          color2={"#4CAF50"}
+                        />
+                      </RateStars>
+                    </UnorderedListCommentsIn>
+                  );
+                })}
+
               <CommentContainer
-                style={{ "flex-direction": "column", width: "300px" }}
+                style={{ "flex-direction": "column", width: "30%" }}
               >
                 <TextInput
-                  style={{ width: "100%", background: "rgba(255,255,255,0.7)" }}
+                  value={descriptionComment}
+                  onChange={(e) => {
+                    setDescriptionComment(e.target.value);
+                  }}
+                  style={{
+                    width: "100%",
+                    background: "rgba(255,255,255,0.7)",
+                  }}
                   type="text"
                   placeholder="Wprowadź treść komentarza"
                 />
-                <SubmitCommentButton style={{ width: "100%" }} type="submit">
+                <RateStars style={{ width: "42%", margin: "1% auto" }}>
+                  <ReactStars
+                    value={myRate}
+                    count={5}
+                    className="test"
+                    onChange={(e) => setRate(e)}
+                    size={24}
+                    color2={"#4CAF50"}
+                  />
+                </RateStars>
+                <SubmitCommentButton
+                  style={{ width: "100%" }}
+                  type="submit"
+                  onClick={() => {
+                    AddComment();
+                  }}
+                >
                   Dodaj komentarz
                 </SubmitCommentButton>
               </CommentContainer>
             </UnorderedListComments>
-            {*/}
           </UnorderedList>
         </OrderedList>
       </Container>

@@ -146,6 +146,11 @@ const Recipes = (props) => {
   const [page, setPage] = useState(temp);
   const Paggination = (props) => {
     let no = props.no || 2;
+    if (page[props.index] === undefined) {
+      let tmp = page;
+      tmp[props.index] = 0;
+      setPage([...tmp]);
+    }
     const handlePage = (k) => {
       let tmp = page;
       console.log(k);
@@ -157,6 +162,11 @@ const Recipes = (props) => {
       setPage([...tmp]);
     };
     const paggin = Array.from({ length: no }, (_, k) => {
+      if (page[props.index] === undefined) {
+        let tmp = page;
+        tmp[props.index] = 0;
+        setPage([...tmp]);
+      }
       if (k == page[props.index] && k == 0) {
         return (
           <img
