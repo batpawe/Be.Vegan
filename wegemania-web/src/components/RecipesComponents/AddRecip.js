@@ -183,9 +183,10 @@ const AddRecipt = () => {
     console.log(i);
     let temp = file;
     temp[i] = URL.createObjectURL(event.target.files[0]);
+
+    setFile([...temp]);
     let tempF = uploadFile;
     tempF[i] = event.target.files[0];
-    setFile([...temp]);
     setUploadFile([...tempF]);
   };
   const shouldRenderSuggestions = (value) => {
