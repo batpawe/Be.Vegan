@@ -94,6 +94,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { NewNotifyContext } from "../../context/Notify";
 const Recipe = (props) => {
+  const qs = require("querystring");
+
+  const [deleyedRedirect, setDeleyedRedirect] = useState(false);
   const notify = useContext(NewNotifyContext);
   const user = useContext(NewLoginInfo);
   const [descriptionComment, setDescriptionComment] = useState("");
@@ -138,10 +141,49 @@ const Recipe = (props) => {
     setRating([...temp]);
   };
   const AddComment = async () => {
+    const params = new URLSearchParams();
+    params.append("id_recipe", props.match.params.id);
+    params.append("user_comment", descriptionComment);
+    params.append("rating", myRate);
+
+    axios({
+      method: "post",
+      url: "https://veggiesapp.herokuapp.com/recipe/rating/",
+      data: qs.stringify({
+        id_restaurant: parseInt(props.match.params.id, 10),
+        user_comment: descriptionComment,
+        rating: myRate,
+      }),
+      headers: {
+        "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        Authorization: `Token ${user.userInfo.token}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          notify.set("Pomyślnie dodano komentarz.");
+          setTimeout(() => {
+            setDeleyedRedirect(true);
+          }, 2000);
+        } else if (res.detail) {
+          notify.set("Przepis został już przez Ciebie oceniony.");
+        } else {
+          notify.set("Wystąpił nieoczekiwany błąd");
+        }
+        console.log(res.data.data);
+        console.log(res.body);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
+    /*
     const data = new FormData();
     data.append("id_restaurant", props.match.params.id);
     data.append("user_comment", descriptionComment);
-    data.append("rating", myRate);
+    data.append("rating", parseInt(myRate, 10));
+    console.log([...data]);
     const config = {
       method: "POST",
       headers: {
@@ -150,32 +192,84 @@ const Recipe = (props) => {
       },
       body: data,
     };
-    await fetch(`https://veggiesapp.herokuapp.com/recipe/rating`, config)
+    */
+    /*
+    const params = new URLSearchParams();
+    params.append("id_recipe", props.match.params.id);
+    params.append("user_comment", descriptionComment);
+    params.append("rating", myRate);
+
+    axios({
+      method: "post",
+      url: "https://veggiesapp.herokuapp.com/recipe/rating/",
+      data: qs.stringify({
+        id_restaurant: parseInt(props.match.params.id, 10),
+        user_comment: descriptionComment,
+        rating: myRate,
+      }),
+      headers: {
+        "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        Authorization: `Token ${user.userInfo.token}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        console.log(res.data.data);
+        console.log(res.body);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
+      */
+    /*
+    await axios
+      .post("https://veggiesapp.herokuapp.com/recipe/rating/", params, {
+        headers: {
+          Authorization: `Token ${user.userInfo.token}`,
+          "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        },
+      })
       .then((res) => {
         console.log(res);
         console.log(res.data);
-        /*
-        res.text().then((text) => {
-          let json = JSON.parse(text);
-          console.log(json);
-          if (json.id_restaurant) {
-            notify.set("Pomyślnie dodano komentarz.");
-            setTimeout(() => {
-              setDeleyedRedirect(true);
-            }, 2000);
-          } else {
-            console.log(res);
-            console.log(res.response);
-            notify.set("Wystąpił nieoczekiwany błąd!");
-          }
-        });
-        */
+        console.log(res.body);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+        console.log(err.response.data);
+      });
+*/
+    /*
+    await fetch(`https://veggiesapp.herokuapp.com/restaurants/rating/`, config)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          res.text().then((text) => {
+            let json = JSON.parse(text);
+            console.log(json);
+            if (json.id_restaurant) {
+              notify.set("Pomyślnie dodano komentarz.");
+              setTimeout(() => {
+                setDeleyedRedirect(true);
+              }, 2000);
+            } else if (json.detail) {
+              notify.set("Ocena już istnieje");
+            } else {
+              console.log(res);
+              console.log(res.response);
+              notify.set("Wystąpił nieoczekiwany błąd!");
+            }
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
         console.log(err.response);
         notify.set("Wystąpił nieoczekiwany błąd!");
       });
+      */
   };
   useEffect(() => {
     console.log(
@@ -205,6 +299,7 @@ const Recipe = (props) => {
   }, []);
   return (
     <MainContainer>
+      {deleyedRedirect && <Redirect to={`/recipes`} />}
       <Container style={{ position: "relative" }}>
         <div>
           <UserActionsContainer>
@@ -341,7 +436,7 @@ const Recipe = (props) => {
                   return (
                     <UnorderedListCommentsIn>
                       <HighlightItem>
-                        {rate.username || "mateuszklimek"}
+                        {rate.id_user.username || "mateuszklimek"}
                       </HighlightItem>
                       <CommentContent>
                         {rate.user_comment || "testowy komentarz"}
@@ -399,7 +494,7 @@ const Recipe = (props) => {
           </UnorderedList>
         </OrderedList>
       </Container>
-      <RightPanel />
+      <RightPanel recommend={recipe.recommend} />
     </MainContainer>
   );
 };

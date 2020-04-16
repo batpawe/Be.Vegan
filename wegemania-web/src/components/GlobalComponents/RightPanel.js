@@ -5,12 +5,63 @@ import { RecommendedPlace } from "./RecommendedPlace";
 import { RecommendedRecipt } from "./RecommendedRecipt";
 import { RecommendedTip } from "./RecommendedTip";
 import { GlobalContainer } from "../../styles/GlobalStyle";
-const RightPanel = () => {
+import {
+  LocalContainer,
+  UnorderedList,
+  HeaderText,
+  HyperLink,
+  Image,
+  BoldText,
+} from "../../styles/GlobalStyle";
+const RightPanel = (props) => {
+  console.log(props.recommend);
   return (
     <GlobalContainer>
-      <RecommendedRestauration />
-      <RecommendedRecipt />
-      <RecommendedTip />
+      {!props.recommend ? (
+        <div>
+          <RecommendedRestauration />
+          <RecommendedRecipt />
+          <RecommendedTip />
+        </div>
+      ) : (
+        <div>
+          <h1
+            style={{
+              padding: 0,
+              color: "white",
+              "border-radius": "20px",
+              background: "#00a835",
+              margin: "0 0 10px 0",
+              "font-size": "25px",
+              "text-align": "center",
+            }}
+          >
+            Rekomendowane przepisy
+          </h1>
+          {props.recommend &&
+            props.recommend.map((recom) => {
+              return (
+                <LocalContainer>
+                  <UnorderedList>
+                    <HyperLink to="/posts">
+                      <li>
+                        <BoldText>Nazwa:</BoldText>
+                        {recom.recipe_name}
+                      </li>
+                      <li>
+                        <BoldText>Czas przygotowania:</BoldText>
+                        {`${recom.time} minut`}
+                      </li>
+                      <li>
+                        <Image src={recom.recipe_foto}></Image>
+                      </li>
+                    </HyperLink>
+                  </UnorderedList>
+                </LocalContainer>
+              );
+            })}
+        </div>
+      )}
     </GlobalContainer>
   );
 };
