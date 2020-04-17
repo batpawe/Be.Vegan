@@ -39,7 +39,7 @@ import {
   UserLink,
   PostLink,
   UserActionsContainer,
-  Icon
+  Icon,
 } from "../../styles/ContainerStyles";
 import {
   Container,
@@ -62,7 +62,7 @@ import {
   MainContainer,
   TagContainer,
   TagItem,
-  RatingComponent
+  RatingComponent,
 } from "../../styles/WallStyle";
 import {
   HeaderPostsContainer,
@@ -72,7 +72,7 @@ import {
   TagsPostsHeaderContainer,
   TagsPostsContainer,
   TagsItems,
-  ImageForUpload
+  ImageForUpload,
 } from "../../styles/PostsWallStyle";
 import PostImage from "../../images/postimage.jpg";
 import RightPanel from "../GlobalComponents/RightPanel";
@@ -82,7 +82,7 @@ import {
   AddPostPageLink,
   SearchInput,
   SearchButton,
-  SearchContainer
+  SearchContainer,
 } from "../../styles/PostStyle";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
@@ -91,7 +91,7 @@ import "../../App.css";
 import ImageRestaurant from "../../images/restaurant.jpg";
 import { NewNotifyContext } from "../../context/Notify";
 var moment = require("moment");
-const Post = props => {
+const Post = (props) => {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -100,7 +100,7 @@ const Post = props => {
   const handleClose = () => {
     setOpen(false);
   };
-  const deletePost = id => {
+  const deletePost = (id) => {
     handleClose();
     /*
     const redirect = () => {
@@ -138,16 +138,16 @@ const Post = props => {
       method: "POST",
       headers: {
         Accept: "application/json; charset=UTF-8",
-        Authorization: `Token ${user.userInfo.token}`
+        Authorization: `Token ${user.userInfo.token}`,
       },
-      body: data
+      body: data,
     };
     await fetch(
       `https://veggiesapp.herokuapp.com/posts/${props.match.params.id}/`,
       config
     )
-      .then(res => {
-        res.text().then(text => {
+      .then((res) => {
+        res.text().then((text) => {
           let json = JSON.parse(text);
           if (json.author) {
             notify.set("Pomyślnie dodano komentarz.");
@@ -161,7 +161,7 @@ const Post = props => {
           }
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         console.log(err.response);
         notify.set("Wystąpił nieoczekiwany błąd!");
@@ -173,11 +173,11 @@ const Post = props => {
       await axios(
         `https://veggiesapp.herokuapp.com/posts/${props.match.params.id}`
       )
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
           setPost({ ...res.data });
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           console.log(err.response);
         });
@@ -203,7 +203,7 @@ const Post = props => {
 
             <Link
               to={{
-                pathname: "/editpost"
+                pathname: `/editpost/${props.match.params.id}`,
                 /*params: { id: props.data.idPosty }*/
               }}
             >
@@ -265,7 +265,7 @@ const Post = props => {
                   "border-radius": "5px",
                   margin: "1% 0 1% 0",
                   padding: "1%",
-                  "font-size": "20px"
+                  "font-size": "20px",
                 }}
               >
                 <ColumnContainer>
@@ -277,7 +277,7 @@ const Post = props => {
               <HeaderText>Komentarze:</HeaderText>
 
               <UnorderedListComments>
-                {post[1].map(comment => {
+                {post[1].map((comment) => {
                   return (
                     <UnorderedListCommentsIn>
                       <HighlightItem to={`/users/${comment.author.id}`}>
@@ -306,11 +306,11 @@ const Post = props => {
                   <TextInput
                     style={{
                       background: "rgba(255,255,255,0.2)",
-                      width: "500px"
+                      width: "500px",
                     }}
                     type="text"
                     placeholder="Wprowadź treść komentarza"
-                    onChange={e => {
+                    onChange={(e) => {
                       setTempContent(e.target.value);
                     }}
                   />
@@ -319,7 +319,7 @@ const Post = props => {
                       display: "flex",
                       "justify-content": "space-between",
                       width: "100%",
-                      "align-items": "center"
+                      "align-items": "center",
                     }}
                   >
                     <div class="image-upload">
@@ -335,7 +335,7 @@ const Post = props => {
                       <input
                         id="file-input-0"
                         type="file"
-                        onChange={e => setFile([e.target.files[0]])}
+                        onChange={(e) => setFile([e.target.files[0]])}
                       />
                     </div>
                     <SubmitCommentButton

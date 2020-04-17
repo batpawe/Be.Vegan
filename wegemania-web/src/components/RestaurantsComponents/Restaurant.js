@@ -139,7 +139,7 @@ const Restaurant = (props) => {
         });
     };
     fetchData();
-  }, [deleyedRedirect]);
+  }, [deleyedRedirect, props.match.params.id]);
   const AddComment = async () => {
     /*
     const data = new FormData();

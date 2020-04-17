@@ -43,19 +43,19 @@ const RightPanel = (props) => {
               return (
                 <LocalContainer>
                   <UnorderedList>
-                    <HyperLink to="/posts">
-                      <li>
-                        <BoldText>Nazwa:</BoldText>
-                        {recom.recipe_name}
-                      </li>
-                      <li>
-                        <BoldText>Czas przygotowania:</BoldText>
-                        {`${recom.time} minut`}
-                      </li>
-                      <li>
-                        <Image src={recom.recipe_foto}></Image>
-                      </li>
-                    </HyperLink>
+                    <li>
+                      <BoldText>Nazwa:</BoldText>
+                      {recom.recipe_name}
+                    </li>
+                    <li>
+                      <BoldText>Czas przygotowania:</BoldText>
+                      {`${recom.time} minut`}
+                    </li>
+                    <li>
+                      <HyperLink to={`/recipes/${recom.id}`}>
+                        <Image src={recom.recipe_foto}></Image>{" "}
+                      </HyperLink>
+                    </li>
                   </UnorderedList>
                 </LocalContainer>
               );

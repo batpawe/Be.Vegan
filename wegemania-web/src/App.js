@@ -40,6 +40,7 @@ import Replacements from "./components/ReplacementsComponents/Replacements";
 import Posts from "./components/PostsComponents/Posts";
 import ScrollTop from "./components/ScrollTop";
 import ValidateRestaurant from "./components/RestaurantsComponents/ValidateRestaurant";
+import EditPost from "./components/PostsComponents/EditPost";
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Titillium+Web&display=swap');
   @import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
@@ -87,6 +88,7 @@ const App = (props) => {
               path="/acceptrestaurations"
               component={AcceptRestaurations}
             />
+            <Route path="/editpost/:id" component={EditPost} />
             <Route path="/admincomponent" component={AdminComponent} />
             <Route path="/notificationposts" component={NotificationPosts} />
             <Route

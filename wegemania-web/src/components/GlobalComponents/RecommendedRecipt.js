@@ -5,7 +5,7 @@ import {
   HeaderText,
   HyperLink,
   Image,
-  BoldText
+  BoldText,
 } from "../../styles/GlobalStyle";
 import DinnerImage from "../../images/dinner.jpg";
 import axios from "axios";
@@ -14,12 +14,28 @@ export const RecommendedRecipt = () => {
   useEffect(() => {
     const fetchData = async () => {
       await axios("https://veggiesapp.herokuapp.com/recipes/")
-        .then(res => {
-          console.log(res.data);
-          setRecipes(res.data);
-          console.log(res.data[0]);
+        .then((res) => {
+          //console.log(res.data);
+          //setRecipes(res.data);
+          //console.log(res.data[0]);
+          let temp = [];
+          let randArray = [];
+          for (var i = 0; i < res.data.length; i++) {
+            randArray.push(i);
+          }
+          let getUniqueRandomNumbers = (n) => {
+            let set = new Set();
+            while (set.size < n) set.add(Math.floor(Math.random() * n));
+            return Array.from(set);
+          };
+          let result = getUniqueRandomNumbers(randArray.length).map(
+            (x) => randArray[x]
+          );
+          temp.push(res.data[result[0]]);
+          temp.push(res.data[result[1]]);
+          setRecipes(temp);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           console.log(err.response);
         });
@@ -35,32 +51,30 @@ export const RecommendedRecipt = () => {
           "border-radius": "20px",
           color: "white",
           padding: "1%",
-          margin: "1% auto 1% auto"
+          margin: "1% auto 1% auto",
         }}
       >
         Polecane Przepisy :
       </HeaderText>
       {recipes &&
         recipes.map((recipe, index) => {
-          if (index < 2) {
-            return (
-              <UnorderedList>
-                <HyperLink to="/posts">
-                  <li>
-                    <BoldText>Nazwa:</BoldText>
-                    {recipe.recipe_name}
-                  </li>
-                  <li>
-                    <BoldText>Czas przygotowania:</BoldText>
-                    {`${recipe.time} minut`}
-                  </li>
-                  <li>
-                    <Image src={recipe.recipe_foto}></Image>
-                  </li>
+          return (
+            <UnorderedList>
+              <li>
+                <BoldText>Nazwa:</BoldText>
+                {recipe.recipe_name}
+              </li>
+              <li>
+                <BoldText>Czas przygotowania:</BoldText>
+                {`${recipe.time} minut`}
+              </li>
+              <li>
+                <HyperLink to={`/recipe/${recipe.id}`}>
+                  <Image src={recipe.recipe_foto}></Image>
                 </HyperLink>
-              </UnorderedList>
-            );
-          }
+              </li>
+            </UnorderedList>
+          );
         })}
     </LocalContainer>
   );

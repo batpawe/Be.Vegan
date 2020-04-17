@@ -296,7 +296,7 @@ const Recipe = (props) => {
         });
     };
     fetchData();
-  }, []);
+  }, [props.match.params.id]);
   return (
     <MainContainer>
       {deleyedRedirect && <Redirect to={`/recipes`} />}
