@@ -190,28 +190,6 @@ const Post = (props) => {
       {deleyedRedirect && <Redirect to={`/posts`} />}
       <Container style={{ position: "relative" }}>
         <div>
-          <UserActionsContainer>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => {
-                handleClickOpen();
-              }}
-            >
-              <Icon src={DeleteIcon} />
-            </Button>
-
-            <Link
-              to={{
-                pathname: `/editpost/${props.match.params.id}`,
-                /*params: { id: props.data.idPosty }*/
-              }}
-            >
-              <Button variant="outlined" color="primary">
-                <Icon src={EditIcon} />
-              </Button>
-            </Link>
-          </UserActionsContainer>
           <Dialog
             open={open}
             onClose={handleClose}

@@ -15,22 +15,22 @@ import {
   FormButton,
   StyleLink,
   LoginFlex,
-  TextField
+  TextField,
 } from "../../styles/LoginStyle";
 import "../../styles/MenuLoginStyle.css";
 
 const Login = () => {
   const [tempLogin, addTempLogin] = useState([]);
   const [isError, setError] = useState(false);
-  const newLogin = event => {
+  const newLogin = (event) => {
     addTempLogin({
-      login: event.target.value
+      login: event.target.value,
     });
   };
-  const newPassword = event => {
+  const newPassword = (event) => {
     addTempLogin({
       ...tempLogin,
-      password: event.target.value
+      password: event.target.value,
     });
   };
   const LoginUser = async () => {
@@ -39,23 +39,24 @@ const Login = () => {
         "https://veggiesapp.herokuapp.com/api-token-auth/",
         {
           username: tempLogin.login,
-          password: tempLogin.password
+          password: tempLogin.password,
         },
         {
           headers: {
-            "Content-Type": "application/json; charset=UTF-8"
-          }
+            "Content-Type": "application/json; charset=UTF-8",
+          },
         }
       );
       return result.data;
     };
     await fetchData()
-      .then(res => {
+      .then((res) => {
         console.log(res);
         if (res.token) {
           let temp = {};
           temp.id = res.id;
           temp.token = res.token;
+          temp.is_staff = res.is_staff;
           temp.name = tempLogin.login;
           user.login(temp);
           setError(false);
@@ -64,7 +65,7 @@ const Login = () => {
           setError(true);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         console.log(err.response);
         setError(true);
@@ -72,7 +73,7 @@ const Login = () => {
 
     await addTempLogin({
       login: "",
-      password: ""
+      password: "",
     });
   };
 
