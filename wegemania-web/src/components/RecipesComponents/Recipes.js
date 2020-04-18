@@ -80,6 +80,8 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { green, orange } from "@material-ui/core/colors";
 import { NewLoginInfo } from "../../context/LoginInfo";
 const Recipes = (props) => {
+  const [current, setCurrent] = useState(1);
+  const [length, setLength] = useState(0);
   const [products, setProducts] = useState([]);
   const [names, setNames] = useState([]);
   const outerTheme = createMuiTheme({
@@ -126,7 +128,29 @@ const Recipes = (props) => {
     const fetchData = async () => {
       await axios("https://veggiesapp.herokuapp.com/recipes/")
         .then((res) => {
-          setRecipes(res.data);
+          const temp = res.data.reduce((acc, curr, i) => {
+            if (!(i % 6)) {
+              // if index is 0 or can be divided by the `size`...
+              acc.push(res.data.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
+            }
+            return acc;
+          }, []);
+          let num = 0;
+          res.data.map((recipe, index) => {
+            console.log(recipe.recipe_name.includes(valueName));
+            console.log(
+              recipe.ingredients.some((x) => x.name.includes(valueProduct))
+            );
+            console.log("VVVVV");
+            if (
+              recipe.recipe_name.includes(valueName) &&
+              recipe.ingredients.some((x) => x.name.includes(valueProduct))
+            ) {
+              num++;
+            }
+          });
+          setLength(num);
+          setRecipes(temp);
           let tempProducts = [];
           let tempNames = [];
           res.data.map((date) => {
@@ -460,20 +484,80 @@ const Recipes = (props) => {
           </SearchButton>
         </SearchPanel>
         <div style={{ display: "flex", "flex-wrap": "wrap" }}>
-          {recipes.map((recipe, index) => {
-            if (
-              recipe.recipe_name.includes(valueName) &&
-              recipe.ingredients.some((x) => x.name.includes(valueProduct))
-            )
-              return (
-                <ContentController
-                  index={index}
-                  recipe={recipe}
-                  historyProps={props.history}
-                />
-              );
-          })}
+          {console.log("|||||")}
+          {console.log(recipes)}
+
+          {recipes[current - 1] &&
+            recipes[current - 1].map((recipe, index) => {
+              if (
+                recipe.recipe_name.includes(valueName) &&
+                recipe.ingredients.some((x) => x.name.includes(valueProduct))
+              )
+                return (
+                  <ContentController
+                    index={index}
+                    recipe={recipe}
+                    historyProps={props.history}
+                  />
+                );
+            })}
         </div>
+        {console.log("||||||||")}
+        {console.log(length)}
+        <ul
+          style={{
+            margin: "1% auto 1% auto",
+            display: "flex",
+            textAlign: "center",
+            "list-style-type": "none",
+            width: "40%",
+            justifyContent: "space-between",
+          }}
+        >
+          {Array.from(
+            {
+              length: length / 6,
+            },
+            (item, index) =>
+              current !== index + 1 ? (
+                <li
+                  style={{
+                    padding: "4%",
+                    border: "1px solid black",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    setCurrent(index + 1);
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+                >
+                  {index + 1}
+                </li>
+              ) : (
+                <li
+                  style={{
+                    background: "black",
+                    color: "white",
+                    padding: "4%",
+                    border: "1px solid black",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    setCurrent(index + 1);
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }}
+                >
+                  {index + 1}
+                </li>
+              )
+          )}
+        </ul>
       </Container>
       <RightPanel />
     </MainContainer>
