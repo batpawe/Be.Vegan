@@ -312,17 +312,6 @@ const Recipe = (props) => {
             >
               <Icon src={DeleteIcon} />
             </Button>
-
-            <Link
-              to={{
-                pathname: "/editpost",
-                /*params: { id: props.data.idPosty }*/
-              }}
-            >
-              <Button variant="outlined" color="primary">
-                <Icon src={EditIcon} />
-              </Button>
-            </Link>
           </UserActionsContainer>
           <Dialog
             open={open}
@@ -335,7 +324,7 @@ const Recipe = (props) => {
             </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                Czy chcesz usunąć post ?
+                Czy chcesz usunąć przepis ?
               </DialogContentText>
             </DialogContent>
             <DialogActions>

@@ -169,6 +169,7 @@ const Post = (props) => {
   };
   useEffect(() => {
     console.log(props.match.params);
+    console.log(file[0]);
     const fetchData = async () => {
       await axios(
         `https://veggiesapp.herokuapp.com/posts/${props.match.params.id}`
@@ -300,15 +301,27 @@ const Post = (props) => {
                       "align-items": "center",
                     }}
                   >
+                    {console.log(file[0])}
                     <div class="image-upload">
                       <label for="file-input-0">
-                        <ImageForUpload
-                          src={
-                            file[0].name
-                              ? URL.createObjectURL(file[0])
-                              : file[0]
-                          }
-                        />
+                        {file[0].name ? (
+                          <ImageForUpload
+                            style={{ width: "350px" }}
+                            src={
+                              file[0].name
+                                ? URL.createObjectURL(file[0])
+                                : file[0]
+                            }
+                          />
+                        ) : (
+                          <ImageForUpload
+                            src={
+                              file[0].name
+                                ? URL.createObjectURL(file[0])
+                                : file[0]
+                            }
+                          />
+                        )}
                       </label>
                       <input
                         id="file-input-0"

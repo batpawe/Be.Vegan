@@ -35,7 +35,7 @@ const useStateWithLocalStorage = localStorageKey => {
   return [userInfo, setUserInfo];
 };
 */
-export const LoginInfoProvider = props => {
+export const LoginInfoProvider = (props) => {
   let tempInfo;
   if (localStorage.getItem("loginState")) {
     tempInfo = JSON.parse(localStorage.getItem("loginState"));
@@ -43,9 +43,13 @@ export const LoginInfoProvider = props => {
     tempInfo = undefined;
   }
   const [userInfo, setUserInfo] = useState(tempInfo);
+  const [isStaff, setIsStaff] = useState(false);
+  const setStaff = (val) => {
+    setIsStaff(val);
+  };
   console.log("-------");
   console.log(userInfo);
-  const login = info => {
+  const login = (info) => {
     localStorage.setItem("loginState", JSON.stringify(info));
     setUserInfo(info);
   };
@@ -58,8 +62,10 @@ export const LoginInfoProvider = props => {
     <LoginInfo.Provider
       value={{
         login: login,
+        isStaff: isStaff,
+        setStaff: setStaff,
         logout: logout,
-        userInfo: userInfo
+        userInfo: userInfo,
       }}
     >
       {children}

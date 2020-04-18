@@ -18,7 +18,7 @@ import {
   SecondColumn,
   ReplacementImage,
   ReplacementContainer,
-  RecplacementsLabel
+  RecplacementsLabel,
 } from "../../styles/AddForms";
 import UploadImage from "../../images/upload.png";
 import "../../App.css";
@@ -30,7 +30,7 @@ const AddReplecement = () => {
   const [file, setFile] = useState(temp);
   const [numberReplacements, setNumberReplacements] = useState(1);
   const [replacementsArray, setReplacementsArray] = useState([]);
-  const handleReplacements = e => {
+  const handleReplacements = (e) => {
     let temp = replacementsArray;
     for (var i = 0; i < numberReplacements; i++) {
       if (temp[i] === undefined) {
@@ -44,7 +44,7 @@ const AddReplecement = () => {
     console.log(i);
     console.log(event.target.files[0]);
     let temp = file;
-    temp[event.target.name] = URL.createObjectURL(event.target.files[0]);
+    temp[i] = event.target.files[0];
     setFile([...temp]);
   };
 
@@ -58,9 +58,12 @@ const AddReplecement = () => {
     setNumberReplacements(temp);
   };
   const [selectedOption, setSelectedOption] = useState("vegan");
-  const handleCheck = e => {
+  const handleCheck = (e) => {
     setSelectedOption(e.target.value);
   };
+  useEffect(() => {
+    console.log(file[0]);
+  }, []);
   return (
     <Container>
       <div
@@ -68,7 +71,7 @@ const AddReplecement = () => {
           display: "flex",
           "justify-content": "center",
           "flex-direction": "column",
-          "align-items": "center"
+          "align-items": "center",
         }}
       >
         <InputLabel
@@ -88,7 +91,7 @@ const AddReplecement = () => {
           style={{
             "font-size": "22px",
             "font-weight": "bold",
-            "text-align": "center"
+            "text-align": "center",
           }}
         >
           Zamiennik:
@@ -97,7 +100,7 @@ const AddReplecement = () => {
           style={{
             margin: "0 0 0 0",
             width: "100%",
-            margin: "1% auto 1% auto"
+            margin: "1% auto 1% auto",
           }}
         >
           <div
@@ -106,7 +109,7 @@ const AddReplecement = () => {
               "flex-direction": "column",
               "justify-content": "space-between",
               width: "70%",
-              margin: "1% auto 1% auto"
+              margin: "1% auto 1% auto",
             }}
           >
             <label
@@ -182,14 +185,11 @@ const AddReplecement = () => {
               />
             </label>
             <div className="image-upload" style={{ margin: "0 auto 0 auto" }}>
-              <label for="file-input-0">
-                <Image src={file[0]} />
-              </label>
               <input
                 style={{ width: "300px", border: "1px solid black" }}
                 id="file-input-0"
                 type="file"
-                onChange={e => handleChange(0, e)}
+                onChange={(e) => handleChange(0, e)}
               />
             </div>
           </div>

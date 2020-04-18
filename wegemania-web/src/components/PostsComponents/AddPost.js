@@ -12,7 +12,7 @@ import {
   ImagesContainer,
   FormContainer,
   TextContainer,
-  ErrorText
+  ErrorText,
 } from "../../styles/AddForms";
 import UploadImage from "../../images/upload.png";
 import { TagInput, TagButton } from "../../styles/PostsWallStyle";
@@ -22,7 +22,7 @@ import {
   AddHeader,
   OrderedList,
   DeleteIcon,
-  UnorderedList
+  UnorderedList,
 } from "../../styles/PostsWallStyle";
 import { NewNotifyContext } from "../../context/Notify";
 import * as Yup from "yup";
@@ -35,9 +35,9 @@ const AddPost = () => {
   const [file, setFile] = useState(temp);
   const [tempForm, setTempForm] = useState({
     title: "",
-    description: ""
+    description: "",
   });
-  const handleAddPost = async values => {
+  const handleAddPost = async (values) => {
     console.log(tempForm);
     console.log(file);
     const data = new FormData();
@@ -48,18 +48,18 @@ const AddPost = () => {
       method: "POST",
       headers: {
         Accept: "application/json; charset=UTF-8",
-        Authorization: `Token ${user.userInfo.token}`
+        Authorization: `Token ${user.userInfo.token}`,
         // 'Content-Type': 'multipart/form-data',
       },
-      body: data
+      body: data,
     };
     console.log(file[0]);
 
     await fetch("https://veggiesapp.herokuapp.com/posts/", config)
-      .then(res => {
+      .then((res) => {
         res
           .text()
-          .then(text => {
+          .then((text) => {
             let json = JSON.parse(text);
             if (json.author) {
               notify.set("Pomyślnie dodano post.");
@@ -72,12 +72,12 @@ const AddPost = () => {
               notify.set("Wystąpił nieoczekiwany błąd!");
             }
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(res);
             notify.set("Wystąpił nieoczekiwany błąd!");
           });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err.response);
         console.log(err);
         notify.set("Wystąpił nieoczekiwany błąd!");
@@ -95,7 +95,7 @@ const AddPost = () => {
     setCurrentTag("");
     setTags(temp);
   };
-  const handleRemove = event => {
+  const handleRemove = (event) => {
     let temp = tags;
     temp.splice(event.target.id, 1);
     setTags([...temp]);
@@ -110,7 +110,7 @@ const AddPost = () => {
           <DeleteIcon
             src={TrashImg}
             id={index}
-            onClick={event => {
+            onClick={(event) => {
               handleRemove(event);
             }}
           />
@@ -125,7 +125,7 @@ const AddPost = () => {
           "font-size": 28,
           "text-align": "center",
           color: "#27752e",
-          "font-weight": "bold"
+          "font-weight": "bold",
         }}
       >
         Dodaj post:
@@ -134,9 +134,9 @@ const AddPost = () => {
       <Formik
         initialValues={{
           title: "",
-          content: ""
+          content: "",
         }}
-        onSubmit={values => handleAddPost(values)}
+        onSubmit={(values) => handleAddPost(values)}
         validationSchema={Yup.object().shape({
           title: Yup.string()
             .required("To pole jest wymagane")
@@ -145,7 +145,7 @@ const AddPost = () => {
           content: Yup.string()
             .required("To pole jest wymagane")
             .min(3, "Treść posta jest za krótka!")
-            .max(80, "Treść posta jest za długa!")
+            .max(80, "Treść posta jest za długa!"),
         })}
       >
         {({
@@ -155,7 +155,7 @@ const AddPost = () => {
           setFieldTouched,
           touched,
           isValid,
-          handleSubmit
+          handleSubmit,
         }) => (
           <form style={{ with: "100%" }} onSubmit={handleSubmit}>
             <div>
@@ -232,23 +232,32 @@ const AddPost = () => {
                   style={{
                     margin: 0,
                     "font-size": "26px",
-                    "font-weight": "bold"
+                    "font-weight": "bold",
                   }}
                 >
                   Dodaj zdjęcie:
                 </p>
                 <div class="image-upload">
                   <label for="file-input-0">
-                    <Image
-                      src={
-                        file[0].name ? URL.createObjectURL(file[0]) : file[0]
-                      }
-                    />
+                    {file[0].name ? (
+                      <Image
+                        style={{ width: "550px" }}
+                        src={
+                          file[0].name ? URL.createObjectURL(file[0]) : file[0]
+                        }
+                      />
+                    ) : (
+                      <Image
+                        src={
+                          file[0].name ? URL.createObjectURL(file[0]) : file[0]
+                        }
+                      />
+                    )}
                   </label>
                   <input
                     id="file-input-0"
                     type="file"
-                    onChange={e => setFile([e.target.files[0]])}
+                    onChange={(e) => setFile([e.target.files[0]])}
                   />
                 </div>
               </ImagesContainer>

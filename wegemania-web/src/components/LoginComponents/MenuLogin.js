@@ -20,7 +20,6 @@ const UserPanel = ({ click }) => {
   const notify = useContext(NewNotifyContext);
   const user = useContext(NewLoginInfo);
   const [clicked, setClicked] = useState(click);
-  const [isStaff, setIsStaff] = useState(false);
   const userSettings = () => {
     setClicked((prev) => !prev);
     notify.changeMargin();
@@ -37,10 +36,10 @@ const UserPanel = ({ click }) => {
           authorization: `Token ${user.userInfo.token}`,
         },
       });
-      setIsStaff(result.data.is_staff);
+      user.setStaff(result.data.is_staff);
     };
     fetchData();
-  });
+  }, [user]);
   return (
     <UserMenuList>
       {console.log(user.userInfo.is_staff)}
@@ -53,7 +52,7 @@ const UserPanel = ({ click }) => {
           <UserOption>
             <HyperLink to={`/users/${user.userInfo.id}`}>Profil</HyperLink>
           </UserOption>
-          {isStaff && (
+          {user.isStaff && (
             <UserOption
               style={{
                 "font-size": "14px",

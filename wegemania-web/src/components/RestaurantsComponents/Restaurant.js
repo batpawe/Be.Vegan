@@ -258,59 +258,6 @@ const Restaurant = (props) => {
       {/*{deleyedRedirect && <Redirect to={`/restaurants/${props.match.params.id}`} />*/}
       {restaurant.restaurant && (
         <Container style={{ position: "relative" }}>
-          <div>
-            <UserActionsContainer>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => {
-                  handleClickOpen();
-                }}
-              >
-                <Icon src={DeleteIcon} />
-              </Button>
-
-              <Link
-                to={{
-                  pathname: "/editpost",
-                  /*params: { id: props.data.idPosty }*/
-                }}
-              >
-                <Button variant="outlined" color="primary">
-                  <Icon src={EditIcon} />
-                </Button>
-              </Link>
-            </UserActionsContainer>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">
-                {"Usunięcie posta"}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  Czy chcesz usunąć post ?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                  Nie
-                </Button>
-                <Button
-                  onClick={() => {
-                    deletePost(props.data.idPosty);
-                  }}
-                  color="primary"
-                  autoFocus
-                >
-                  Tak
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </div>
           <OrderedList>
             <UnorderedList>
               <HeaderRestaurantContainer>

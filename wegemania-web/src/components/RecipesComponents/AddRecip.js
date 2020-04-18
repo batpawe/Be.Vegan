@@ -476,7 +476,11 @@ const AddRecipt = () => {
       <ImagesContainer>
         <div className="image-upload">
           <label for="file-input-0">
-            <Image src={file[0]} />
+            {uploadFile[0].name ? (
+              <Image style={{ width: "550px" }} src={file[0]} />
+            ) : (
+              <Image src={file[0]} />
+            )}
           </label>
           <input
             id="file-input-0"
