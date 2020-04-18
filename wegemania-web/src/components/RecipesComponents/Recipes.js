@@ -132,17 +132,6 @@ const Recipes = (props) => {
         return acc;
       }
     }, []);
-    console.log(temp);
-    console.log(temp[0].filter((prod) => prod.name.includes(value.trim())));
-    let num = 0;
-    recipes.map((recipe, index) => {
-      if (recipe.ingredients.some((x) => x.name.includes(valueProduct))) {
-        num++;
-      }
-    });
-
-    console.log(num);
-    setLength(0);
     return temp[0].filter((prod) => prod.name.includes(value.trim()));
   };
   useEffect(() => {
