@@ -12,6 +12,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import Button from "@material-ui/core/Button";
 import { MainContainer, Container } from "../../styles/WallStyle";
+import "../../styles/Paginate.css";
 import {
   SortPageButton,
   SortContainer,
@@ -79,6 +80,17 @@ import AutoSuggest from "react-autosuggest";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { green, orange } from "@material-ui/core/colors";
 import { NewLoginInfo } from "../../context/LoginInfo";
+
+import Pagination from "@material-ui/lab/Pagination";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
 const Recipes = (props) => {
   const [current, setCurrent] = useState(1);
   const [length, setLength] = useState(0);
@@ -122,6 +134,15 @@ const Recipes = (props) => {
     }, []);
     console.log(temp);
     console.log(temp[0].filter((prod) => prod.name.includes(value.trim())));
+    let num = 0;
+    recipes.map((recipe, index) => {
+      if (recipe.ingredients.some((x) => x.name.includes(valueProduct))) {
+        num++;
+      }
+    });
+
+    console.log(num);
+    setLength(0);
     return temp[0].filter((prod) => prod.name.includes(value.trim()));
   };
   useEffect(() => {
@@ -141,7 +162,6 @@ const Recipes = (props) => {
             console.log(
               recipe.ingredients.some((x) => x.name.includes(valueProduct))
             );
-            console.log("VVVVV");
             if (
               recipe.recipe_name.includes(valueName) &&
               recipe.ingredients.some((x) => x.name.includes(valueProduct))
@@ -149,6 +169,8 @@ const Recipes = (props) => {
               num++;
             }
           });
+          console.log("VVVVV");
+          console.log(num);
           setLength(num);
           setRecipes(temp);
           let tempProducts = [];
@@ -514,6 +536,7 @@ const Recipes = (props) => {
             justifyContent: "space-between",
           }}
         >
+          {/*}
           {Array.from(
             {
               length: length / 6,
@@ -557,6 +580,25 @@ const Recipes = (props) => {
                 </li>
               )
           )}
+          {*/}
+          {console.log("lenght")}
+          {console.log(length)}
+          <div
+            style={{
+              background: "green",
+              padding: "5%",
+              margin: " 1% auto 1% auto",
+              "text-align": "center",
+            }}
+          >
+            <Pagination
+              count={length / 6}
+              page={current}
+              onChange={(e, num) => {
+                setCurrent(num);
+              }}
+            />
+          </div>
         </ul>
       </Container>
       <RightPanel />
