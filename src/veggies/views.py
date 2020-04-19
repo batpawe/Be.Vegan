@@ -348,18 +348,18 @@ class RestaurantRatingView(viewsets.ViewSet):
             return Response(status=404)
 
     def create(self, request):
-        req = QueryDict.copy(request.data)
-        req['id_user'] = request.user
-        rate_exist = Rating_Restaurant.objects.filter(id_user=req['id_user'],id_restaurant=req['id_restaurant'])
+        if not 'id_restaurant' in request.data:
+            return Response(data={"detail": "błędne zapytanie"},status=400)
+        rate_exist = Rating_Restaurant.objects.filter(id_user=request.user,id_restaurant=request.data['id_restaurant'])
         if rate_exist:
             return Response({"detail": "ocena już istnieje."},status=400)
-        serializer = RatingRestaurantSerializer(data=req, many=False, partial=True)
+        serializer = RatingRestaurantSerializer(data=request.data, many=False, partial=True)
         if serializer.is_valid():
             serializer.save(id_user=request.user)
-            self.new_rating(req['id_restaurant'])
+            self.new_rating(request.data['id_restaurant'])
             return Response(serializer.data)
         else:
-            return Response({"detail": "błędne zapytanie." , "seriializer": serializer.errors},status=400)
+            return Response({"detail": "błędne zapytanie." , "serializer": serializer.errors},status=400)
 
     def destroy(self, request, pk=None):
         rating = Rating_Restaurant.objects.get(id_user=request.user, id_restaurant=pk)
@@ -512,15 +512,15 @@ class RecipeRatingView(viewsets.ViewSet):
             return Response(status=404)
 
     def create(self, request):
-        req = QueryDict.copy(request.data)
-        req['id_user'] = request.user
-        rate_exist = Rating_Recipe.objects.filter(id_user=req['id_user'],id_recipe=req['id_recipe'])
+        if not 'id_recipe' in request.data:
+            return Response(data={"detail": "błędne zapytanie"},status=400)
+        rate_exist = Rating_Recipe.objects.filter(id_user=request.user,id_recipe=request.data['id_recipe'])
         if rate_exist:
             return Response({"detail": "ocena już istnieje."},status=400)
-        serializer = RatingRecipeSerializer(data=req, many=False, partial=True)
+        serializer = RatingRecipeSerializer(data=request.data, many=False, partial=True)
         if serializer.is_valid():
             serializer.save(id_user=request.user)
-            self.new_rating(req['id_recipe'])
+            self.new_rating(request.data['id_recipe'])
             return Response(serializer.data)
         else:
             return Response({"detail": "błędne zapytanie." , "seriializer": serializer.errors},status=400)
