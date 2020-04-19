@@ -5,8 +5,8 @@ class SecretVariables:
     database_host = 'eu-cdbr-west-02.cleardb.net'
     secret_key = 'j&&7yaef2s85&afuk)3^to)da23uqflh%3g2$imp(89*@hgs6j'
 
-    AWS_ACCESS_KEY_ID = 'AKIA37SVVXBHRHSKTEV2'
-    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_ACCESS_KEY_ID = 'AKIA37SVVXBH5RWT7FHI'
+    AWS_SECRET_ACCESS_KEY = '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'
     AWS_URL = 'https://cloud-cube-eu.s3.amazonaws.com/kgohyhjgpt5s'
     AWS_S3_REGION_NAME = 'eu-west-1'
     AWS_STORAGE_BUCKET_NAME = 'cloud-cube-eu'

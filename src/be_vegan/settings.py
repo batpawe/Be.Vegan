@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from .config0 import SecretVariables
 
-
 AWS_ACCESS_KEY_ID = 'AKIA37SVVXBH5RWT7FHI'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_URL = 'https://cloud-cube-eu.s3.amazonaws.com/kgohyhjgpt5s'

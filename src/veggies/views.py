@@ -18,7 +18,7 @@ from itertools import chain
 from .models import Main_Post, Reply_Post
 from .serializers import PostSerializer, PostReplySerializer, AmountSerializer, FoodSub, AddSub, Curiosity
 from recommend_recipe import give_rec
-
+import random
 from django.db.models import Value
 
 User = get_user_model()
@@ -576,3 +576,23 @@ class PreferenceView(APIView):
             return Response("Deleted")
         else:
             return Response(status=404)
+
+class RecommendView(APIView):
+    def get(self, request, format=None):
+        if(request.user.is_anonymous != True):
+            recipes = Rating_Recipe.objects.filter(id_user = request.user, rating__gte = 4).values_list('id_recipe', flat=True)
+            if recipes.exists():
+                result = give_rec(int(recipes[random.randint(0,recipes.count()-1)]))
+                rec_list = []
+                for i in result:
+                    rec_list.append(Recipe.objects.get(id=i))
+                serializerRecommend = RecipeSerializer(rec_list, many=True)
+                return Response(serializerRecommend.data)
+        else:
+            recipes = Recipe.objects.all().values_list('id', flat=True)
+            result = give_rec(int(recipes[random.randint(0,recipes.count()-1)]))
+            rec_list = []
+            for i in result:
+                rec_list.append(Recipe.objects.get(id=i))
+            serializerRecommend = RecipeSerializer(rec_list, many=True)
+            return Response(serializerRecommend.data)
