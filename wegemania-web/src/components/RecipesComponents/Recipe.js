@@ -150,7 +150,7 @@ const Recipe = (props) => {
       method: "post",
       url: "https://veggiesapp.herokuapp.com/recipe/rating/",
       data: qs.stringify({
-        id_restaurant: parseInt(props.match.params.id, 10),
+        id_recipe: parseInt(props.match.params.id, 10),
         user_comment: descriptionComment,
         rating: myRate,
       }),
@@ -166,7 +166,7 @@ const Recipe = (props) => {
           setTimeout(() => {
             setDeleyedRedirect(true);
           }, 2000);
-        } else if (res.detail) {
+        } else if (res.data.detail) {
           notify.set("Przepis został już przez Ciebie oceniony.");
         } else {
           notify.set("Wystąpił nieoczekiwany błąd");
@@ -296,10 +296,9 @@ const Recipe = (props) => {
         });
     };
     fetchData();
-  }, [props.match.params.id]);
+  }, [props.match.params.id, deleyedRedirect]);
   return (
     <MainContainer>
-      {deleyedRedirect && <Redirect to={`/recipes`} />}
       <Container style={{ position: "relative" }}>
         <div>
           <UserActionsContainer>

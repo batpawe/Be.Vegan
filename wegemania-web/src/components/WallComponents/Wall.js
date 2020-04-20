@@ -271,7 +271,7 @@ const Recipes = (props) => {
                   }}
                 >
                   <WayItem style={{ "white-space": "pre-line", width: "96%" }}>
-                    {text}
+                    {JSON.parse(text)}
                   </WayItem>
                 </UnorderedList>
               </div>
@@ -661,7 +661,7 @@ const Wall = (props) => {
           console.log(err);
           console.log(err.response);
         });
-      await axios("http://veggiesapp.herokuapp.com/recipes/")
+      await axios("http://veggiesapp.herokuapp.com/recommend")
         .then((res) => {
           setRecipes(res.data);
         })

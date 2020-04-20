@@ -147,12 +147,10 @@ const Recipes = (props) => {
           }, []);
           let num = 0;
           res.data.map((recipe, index) => {
-            console.log(recipe.recipe_name.includes(valueName));
-            console.log(
-              recipe.ingredients.some((x) => x.name.includes(valueProduct))
-            );
+            let temp = JSON.parse(recipe.recipe_name);
+
             if (
-              recipe.recipe_name.includes(valueName) &&
+              temp.includes(valueName) &&
               recipe.ingredients.some((x) => x.name.includes(valueProduct))
             ) {
               num++;
@@ -165,6 +163,8 @@ const Recipes = (props) => {
           let tempProducts = [];
           let tempNames = [];
           res.data.map((date) => {
+            console.log("|||||:");
+            console.log(date);
             tempProducts.push(date.ingredients);
             tempNames.push(date.recipe_name);
           });
@@ -500,8 +500,9 @@ const Recipes = (props) => {
 
           {recipes[current - 1] &&
             recipes[current - 1].map((recipe, index) => {
+              let temp = JSON.parse(recipe.recipe_name);
               if (
-                recipe.recipe_name.includes(valueName) &&
+                temp.includes(valueName) &&
                 recipe.ingredients.some((x) => x.name.includes(valueProduct))
               )
                 return (
