@@ -11,6 +11,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import Button from "@material-ui/core/Button";
+//import { tempObj } from "./tempObj.js";
 import { MainContainer, Container } from "../../styles/WallStyle";
 import "../../styles/Paginate.css";
 import {
@@ -96,6 +97,7 @@ const Recipes = (props) => {
   const [length, setLength] = useState(0);
   const [products, setProducts] = useState([]);
   const [names, setNames] = useState([]);
+  const [data, setData] = useState([]);
   const outerTheme = createMuiTheme({
     palette: {
       secondary: {
@@ -138,28 +140,42 @@ const Recipes = (props) => {
     const fetchData = async () => {
       await axios("https://veggiesapp.herokuapp.com/recipes/")
         .then((res) => {
+          setData(res.data);
+          /*
           const temp = res.data.reduce((acc, curr, i) => {
             if (!(i % 6)) {
-              // if index is 0 or can be divided by the `size`...
-              acc.push(res.data.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
+              if (
+                curr.recipe_name.includes(valueName) &&
+                curr.ingredients.some((x) => x.name.includes(valueProduct))
+              )
+                // if index is 0 or can be divided by the `size`...
+                acc.push(res.data.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
             }
             return acc;
           }, []);
-          let num = 0;
-          res.data.map((recipe, index) => {
-            let temp = JSON.parse(recipe.recipe_name);
+          */
+          var tempArray = [];
 
+          const temp = res.data.reduce((acc, curr, i) => {
             if (
-              temp.includes(valueName) &&
-              recipe.ingredients.some((x) => x.name.includes(valueProduct))
+              curr.recipe_name.includes(valueName) &&
+              curr.ingredients.some((x) => x.name.includes(valueProduct))
             ) {
-              num++;
+              tempArray.push(curr);
             }
-          });
-          console.log("VVVVV");
-          console.log(num);
-          setLength(num);
-          setRecipes(temp);
+            return tempArray;
+          }, []);
+          const tempResult = temp.reduce((acc, curr, i) => {
+            if (!(i % 6)) {
+              acc.push(temp.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
+            }
+            return acc;
+          }, []);
+          console.log("PPP");
+          console.log(temp);
+          console.log(tempResult);
+          setLength(tempResult.length);
+          setRecipes(tempResult);
           let tempProducts = [];
           let tempNames = [];
           res.data.map((date) => {
@@ -175,6 +191,45 @@ const Recipes = (props) => {
           console.log(err);
         });
     };
+    /*
+    const byObj = () => {
+
+      console.log(tempObj);
+      const temp = tempObj.reduce((acc, curr, i) => {
+        if (!(i % 6)) {
+          // if index is 0 or can be divided by the `size`...
+          acc.push(tempObj.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
+        }
+        return acc;
+      }, []);
+      let num = 0;
+      tempObj.map((recipe, index) => {
+        let temp = JSON.parse(recipe.recipe_name);
+
+        if (
+          temp.includes(valueName) &&
+          recipe.ingredients.some((x) => x.name.includes(valueProduct))
+        ) {
+          num++;
+        }
+      });
+      console.log("VVVVV");
+      console.log(num);
+      setLength(num);
+      setRecipes(temp);
+      let tempProducts = [];
+      let tempNames = [];
+      tempObj.map((date) => {
+        console.log("|||||:");
+        console.log(date);
+        tempProducts.push(date.ingredients);
+        tempNames.push(date.recipe_name);
+      });
+      setProducts(tempProducts);
+      setNames(tempNames);
+    };
+*/
+    // byObj();
     fetchData();
   }, []);
   let temp = [0, 0, 0];
@@ -265,6 +320,8 @@ const Recipes = (props) => {
   const ContentController = (props) => {
     const [listIngredients, setListIngredients] = useState([]);
     useEffect(() => {
+      {
+        /*}
       const fetchData = async () => {
         await axios(
           `https://veggiesapp.herokuapp.com/recipes/list/${props.recipe.id}/`
@@ -280,6 +337,8 @@ const Recipes = (props) => {
           });
       };
       fetchData();
+    {*/
+      }
     }, []);
     return (
       <ContainerRecipes>
@@ -405,6 +464,37 @@ const Recipes = (props) => {
                     placeholder: "Wprowadź nazwę przepisu",
                     value: valueName,
                     onChange: (_, { newValue, method }) => {
+                      setCurrent(1);
+
+                      var tempArray = [];
+                      if (newValue === "") {
+                        console.log("START");
+                      }
+                      const temp = data.reduce((acc, curr, i) => {
+                        if (
+                          curr.recipe_name.includes(newValue) &&
+                          curr.ingredients.some((x) =>
+                            x.name.includes(valueProduct)
+                          )
+                        ) {
+                          tempArray.push(curr);
+                        }
+                        return tempArray;
+                      }, []);
+                      const tempResult = temp.reduce((acc, curr, i) => {
+                        if (!(i % 6)) {
+                          acc.push(temp.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
+                        }
+                        return acc;
+                      }, []);
+                      console.log("STARTEMP");
+                      console.log(temp);
+                      console.log(tempResult);
+                      console.log("STOPTEMP");
+
+                      setLength(tempResult.length);
+                      setRecipes([...tempResult]);
+
                       setValueName(newValue);
                     },
                   }}
@@ -430,6 +520,31 @@ const Recipes = (props) => {
                     placeholder: "Wprowadź nazwę produktu",
                     value: valueProduct,
                     onChange: (_, { newValue, method }) => {
+                      setCurrent(1);
+                      var tempArray = [];
+                      if (newValue === "") {
+                        console.log("START");
+                      }
+                      const temp = data.reduce((acc, curr, i) => {
+                        if (
+                          curr.recipe_name.includes(valueProduct) &&
+                          curr.ingredients.some((x) =>
+                            x.name.includes(newValue)
+                          )
+                        ) {
+                          tempArray.push(curr);
+                        }
+                        return tempArray;
+                      }, []);
+                      const tempResult = temp.reduce((acc, curr, i) => {
+                        if (!(i % 6)) {
+                          acc.push(tempArray.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
+                        }
+                        return acc;
+                      }, []);
+                      setLength(tempResult.length);
+                      setRecipes([...tempResult]);
+
                       setValueProduct(newValue);
                     },
                   }}
@@ -500,18 +615,21 @@ const Recipes = (props) => {
 
           {recipes[current - 1] &&
             recipes[current - 1].map((recipe, index) => {
-              let temp = JSON.parse(recipe.recipe_name);
+              {
+                /*}
               if (
-                temp.includes(valueName) &&
+                recipe.recipe_name.includes(valueName) &&
                 recipe.ingredients.some((x) => x.name.includes(valueProduct))
               )
-                return (
-                  <ContentController
-                    index={index}
-                    recipe={recipe}
-                    historyProps={props.history}
-                  />
-                );
+              {*/
+              }
+              return (
+                <ContentController
+                  index={index}
+                  recipe={recipe}
+                  historyProps={props.history}
+                />
+              );
             })}
         </div>
         {console.log("||||||||")}
@@ -582,7 +700,7 @@ const Recipes = (props) => {
             }}
           >
             <Pagination
-              count={length / 6}
+              count={length}
               page={current}
               onChange={(e, num) => {
                 setCurrent(num);
@@ -591,7 +709,9 @@ const Recipes = (props) => {
           </div>
         </ul>
       </Container>
+      {/*}
       <RightPanel />
+              {*/}
     </MainContainer>
   );
 };
