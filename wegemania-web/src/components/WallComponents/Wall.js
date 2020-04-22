@@ -73,6 +73,8 @@ const Recipes = (props) => {
     recipe.recipe_decription.replace("\r\n\r\n", "\n").replace("\r\n", "\n");
 
   useEffect(() => {
+    {
+      /*}
     const fetchData = async () => {
       await axios(`https://veggiesapp.herokuapp.com/recipes/list/${recipe.id}/`)
         .then((res) => {
@@ -86,6 +88,8 @@ const Recipes = (props) => {
         });
     };
     fetchData();
+  {*/
+    }
   }, []);
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
@@ -680,7 +684,9 @@ const Wall = (props) => {
     <MainContainer>
       <WallContainer>
         {recipes[0] &&
-          recipes.map((recipe) => <Recipes index={0} recipe={recipe} />)}
+          recipes.map((recipe) => (
+            <Recipes index={0} recipe={recipe} historyProps={props.history} />
+          ))}
         {restaurants[0] && (
           <Restaurants
             index={restaurants[0].id}

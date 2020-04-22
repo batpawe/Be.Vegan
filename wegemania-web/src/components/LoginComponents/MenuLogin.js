@@ -16,6 +16,8 @@ import { Link } from "react-router-dom";
 import icon from "../../icons/ikona.ico";
 import { NewNotifyContext } from "../../context/Notify";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+import LogoVeggies from "../../images/NazwaVeggies.png";
 const UserPanel = ({ click }) => {
   const notify = useContext(NewNotifyContext);
   const user = useContext(NewLoginInfo);
@@ -41,43 +43,65 @@ const UserPanel = ({ click }) => {
     fetchData();
   }, [user]);
   return (
-    <UserMenuList>
+    <UserMenuList style={{ position: "relative" }}>
       {console.log(user.userInfo.is_staff)}
-      <li>
-        {console.log("USER USER")}
-        <UserName onClick={userSettings}>{user.userInfo.name}</UserName>
-      </li>
+      {clicked !== true ? (
+        <li>
+          {console.log("USER USER")}
+          <UserName onClick={userSettings}>{user.userInfo.name}</UserName>
+        </li>
+      ) : (
+        <li>
+          {console.log("USER USER")}
+          <UserName style={{ background: "#27752e" }} onClick={userSettings}>
+            {user.userInfo.name}
+          </UserName>
+        </li>
+      )}
+
       {clicked === true && (
-        <UserActions>
+        <UserActions style={{ position: "absolute" }}>
           <UserOption>
-            <HyperLink to={`/users/${user.userInfo.id}`}>Profil</HyperLink>
+            <HyperLink
+              to={`/users/${user.userInfo.id}`}
+              style={{ "font-size": "12px" }}
+            >
+              Profil
+            </HyperLink>
           </UserOption>
           {user.isStaff && (
             <UserOption
               style={{
                 "font-size": "14px",
-                "border-bottom": "1px solid #8d8c91",
               }}
             >
-              <HyperLink to={`/adminpanel`}>Panel Administracyjny</HyperLink>
+              <HyperLink to={`/adminpanel`} style={{ "font-size": "12px" }}>
+                Panel Administracyjny
+              </HyperLink>
             </UserOption>
           )}
 
-          <UserOption onClick={userLogout}>Wyloguj</UserOption>
+          <UserOption style={{ "font-size": "12px" }} onClick={userLogout}>
+            Wyloguj
+          </UserOption>
         </UserActions>
       )}
     </UserMenuList>
   );
 };
-const Header = () => {
+const Header = (props) => {
+  let location = useLocation();
   const user = useContext(NewLoginInfo);
-
+  console.log("PPP");
+  console.log(props);
   return (
     <div>
       {user.userInfo === undefined ? (
         <header className="header">
-          <img style={{ width: 50, height: 50 }} src={icon} />
-          <nav style={{ width: "100%" }}>
+          <MenuListLink to="/">
+            <img style={{ width: 50, height: 50 }} src={LogoVeggies} />
+          </MenuListLink>
+          <nav style={{ width: "70%" }}>
             <MenuUnorderedList>
               <MenuList>
                 <MenuListLink to="/">Zaloguj</MenuListLink>
@@ -92,13 +116,20 @@ const Header = () => {
           </nav>
         </header>
       ) : (
-        <header className="header">
+        <header className="header" style={{ padding: "0 1%" }}>
+          <div class={{ padding: "1% 0" }}>
+            <MenuListLink to="/wall">
+              <img style={{ height: 50 }} src={LogoVeggies} />
+            </MenuListLink>
+          </div>
           <nav style={{ width: "100%" }}>
             <NavOrderedList>
               <MenuUnorderedList>
+                {/*}
                 <MenuList>
                   <MenuListLink to="/wall">Tablica</MenuListLink>
                 </MenuList>
+                {*/}
                 <MenuList>
                   <MenuListLink to="/posts">Posty</MenuListLink>
                 </MenuList>
@@ -120,9 +151,9 @@ const Header = () => {
                   <MenuListLink to="/about">O weganizmie</MenuListLink>
                 </MenuList>
               </MenuUnorderedList>
-              <UserPanel click={false} />
             </NavOrderedList>
           </nav>
+          <UserPanel click={false} />
         </header>
       )}
     </div>

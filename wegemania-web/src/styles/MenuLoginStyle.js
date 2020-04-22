@@ -4,10 +4,12 @@ import Background from "../images/web2.png";
 export const UserActions = styled.div`
   background: white;
   padding: 1%;
+  overflow: auto;
+
   position: absolute;
-  width: 200px;
+  width: 100%;
   text-align: center;
-  border-radius: 5px;
+  border-bottom-right-radius: 15px;
 `;
 
 export const MenuList = styled.li`
@@ -54,15 +56,21 @@ export const MenuListLink = styled(Link)`
   height: 100%;
   display: flex;
   align-items: center;
-  font-size: 25px;
+  font-size: 19px;
   color: white;
+  padding: 0 10px 0 10px;
   opacity: white;
   :hover,
   :focus {
+    /*
     background: #2e8438;
     color: white;
     text-decoration: none;
     border-radius: 15px;
+    */
+
+    color: #4caf50;
+    text-decoration: none;
   }
 `;
 export const MenuUnorderedList = styled.ul`
@@ -84,16 +92,17 @@ export const MenuUnorderedList = styled.ul`
   {*/
   }
   display: flex;
-  height: 76px;
   padding: 0;
   margin: 0;
   white-space: nowrap;
+  width: 100%;
+  justify-content: center;
 `;
 export const NavOrderedList = styled.div`
   list-style: none;
   display: flex;
   margin: auto;
-  justify-content: space-between;
+  justify-content: center;
   align-items: baseline;
    {
     /*
@@ -120,48 +129,42 @@ export const UserMenuList = styled.ul`
 `;
 
 export const UserName = styled.button`
-  padding: 1em;
   box-sizing: border-box;
   text-align: center;
-  width: 200px;
-  border: 1px solid black;
-  border-radius: 5px;
   outline: none;
+  overflow: auto;
+  border: none;
   color: white;
-  background: #27752e;
-  transition: border-radius 0.3s;
+  border-top-left-radius: 15px;
+  background: none;
+  transition: border-radius 0.7s;
+  transition: background 0.7s;
   :focus {
     outline: none;
   }
   :hover {
-    border-radius: 20px;
+    /*border: 1px solid black;*/
+    box-sizing: border-box;
+    background: #27752e;
+
+    /* border-radius: 20px; */
   }
 `;
 export const HyperLink = styled(Link)`
   color: black;
   width: 100%;
   display: block;
-  border-bottom: 1px solid #8d8c91;
+  border-bottom: 1px solid rgb(141, 140, 145);
   text-decoration: none;
+
   :hover {
-    font-weight: bold;
     text-decoration: none;
     color: black;
   }
 `;
 export const UserOption = styled.li`
-  color: #EBF5EF;
-  animation-name: example;
-  animation-duration: 1.1s;
-  animation-fill-mode: forwards;
-  :hover{
-    font-weight:bold;
-  }
-@keyframes example {
-  from {
-    color: white;
-  }
-  to {
-    color: black;
+  color: black;
+  :hover {
+    text-shadow: 0.25px 0px 0.1px, -0.25px 0px 0.1px;
   }
 `;
