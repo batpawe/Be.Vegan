@@ -181,3 +181,12 @@ export const TextContainer = styled.div`
 export const ErrorText = styled.div`
   color: red;
 `;
+export const AddRecipeFooterItem = styled.li`
+  background: ${(props) => (props.select ? "#32CD32" : "white")};
+  color: ${(props) => (props.select ? "#32CD32" : "white")};
+  border: 1px solid black;
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
+  font-size: 0;
+`;

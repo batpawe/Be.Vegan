@@ -21,7 +21,6 @@ import {
   MethodContainer,
   ProductsContainer,
   HighlightText,
-  AddRecipeFooterItem,
 } from "../../styles/AddForms";
 import UploadImage from "../../images/upload.png";
 import "../../App.css";
@@ -29,8 +28,6 @@ import CloseImage from "../../images/close.svg";
 import AutoSuggest from "react-autosuggest";
 import "../../styles/SuggestProducts.css";
 import { NewNotifyContext } from "../../context/Notify";
-import Back from "../../icons/back.svg";
-import Next from "../../icons/next.svg";
 const AddRecipt = () => {
   const [deleyedRedirect, setDeleyedRedirect] = useState(false);
   const notify = useContext(NewNotifyContext);
@@ -55,7 +52,6 @@ const AddRecipt = () => {
   const [data, setData] = useState([]);
   const [mySuggestion, setMySuggestion] = useState({});
   const [time, setTime] = useState(0);
-  const [current, setCurrent] = useState(1);
   useEffect(() => {
     const fetchData = async () => {
       await axios("https://veggiesapp.herokuapp.com/ingredients/")
@@ -302,64 +298,222 @@ const AddRecipt = () => {
   }
   const [tempQuanity, setTempQuanity] = useState(0);
   return (
-    <Container
-      style={{ position: "relative", height: "600px", "min-width": "82%" }}
-    >
+    <Container>
       {deleyedRedirect && <Redirect to={`/recipes`} />}
-      <div style={{ width: "100%", bottom: 10 }}>
-        <div>
-          <InputLabel for="name" style={{ "font-size": "20px" }}>
-            Nazwa:
-          </InputLabel>
-          <TextInput
-            value={recipeName}
-            onChange={(e) => {
-              setRecipeName(e.target.value);
-            }}
-            type="text"
-            id="name"
-            placeholder="Wprowadź nazwę dania"
-          />
+      <div
+        style={{
+          display: "flex",
+          "justify-content": "center",
+          "flex-direction": "column",
+          "align-items": "center",
+        }}
+      >
+        <InputLabel for="name" style={{ "font-size": "20px" }}>
+          Nazwa:
+        </InputLabel>
+        <TextInput
+          value={recipeName}
+          onChange={(e) => {
+            setRecipeName(e.target.value);
+          }}
+          type="text"
+          id="name"
+          placeholder="Wprowadź nazwę dania"
+        />
+        <InputLabel for="time" style={{ "font-size": "20px" }}>
+          Czas(w minutach):
+        </InputLabel>
+        <TextInput
+          style={{ "text-align": "right", width: "10%" }}
+          value={time}
+          onChange={(e) => {
+            setTime(e.target.value);
+          }}
+          type="number"
+          id="name"
+          placeholder="Wprowadź czas wykonania przepisu"
+        />
+      </div>
+      <ColumnContainer style={{ display: "flex", "flex-direction": "column" }}>
+        <div style={{ display: "flex", "justify-content": "center" }}>
+          <ReciptLabel
+            for="products"
+            style={{ width: "100%", justifyContent: "center" }}
+          >
+            <div style={{ display: "flex", "flex-direction": "column" }}>
+              <p style={{ "font-size": "20px", "font-weight": "bold" }}>
+                Sposób przygotowania:
+              </p>
+              <MethodContainer
+                style={{ width: "40%", margin: "1% auto 1% auto" }}
+              >
+                <TextAreaMethod
+                  placeholder="Wprowadź sposób przygotowania"
+                  style={{ width: "100%", height: "200px" }}
+                  type="text"
+                  value={description}
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                  }}
+                />
+              </MethodContainer>
+            </div>
+          </ReciptLabel>
         </div>
-        <div style={{ position: "absolute", bottom: 10, width: "100%" }}>
-          <ul
+        <p
+          style={{
+            "font-size": "20px",
+            "font-weight": "bold",
+            "text-align": "center",
+          }}
+        >
+          Produkty:
+        </p>
+        <ProductsContainer style={{ display: "flex", "align-items": "center" }}>
+          <AutoSuggest
+            key={`suggest`}
+            suggestions={suggestions}
+            onSuggestionsClearRequested={() => setSuggestions([])}
+            onSuggestionsFetchRequested={({ value }) => {
+              console.log(value);
+              setValue(value);
+              setSuggestions(getSuggestions(value));
+            }}
+            onSuggestionSelected={(_, { suggestion, suggestionValue }) =>
+              setMySuggestion(suggestion)
+            }
+            getSuggestionValue={(suggestion) => suggestion.name}
+            renderSuggestion={(suggestion) => <span>{suggestion.name}</span>}
+            inputProps={{
+              placeholder: "Nazwa produktu",
+              value: value,
+              onChange: (_, { newValue, method }) => {
+                setValue(newValue);
+              },
+            }}
+            highlightFirstSuggestion={true}
+            shouldRenderSuggestions={(v) => v.trim().length > 2}
+          />
+          <TextColumnInput
             style={{
-              display: "flex",
-              margin: 0,
+              width: "200px",
+              height: "50px",
               padding: 0,
-              "list-style-type": "none",
-              width: "10%",
-              margin: "0 auto",
-              justifyContent: "space-evenly",
+              margin: 0,
+            }}
+            placeholder="Wprowadź ilość"
+            type="text"
+            value={tempQuanity}
+            onChange={(e) => {
+              setTempQuanity(e.target.value);
+            }}
+          />
+          <HighlightText
+            style={{
+              width: "100px",
+              height: "50px",
+              "text-align": "center",
+              padding: 0,
+              margin: 0,
+              display: "flex",
+              "align-items": "center",
+              "justify-content": "center",
             }}
           >
-            <AddRecipeFooterItem
-              onClick={() => {
-                setCurrent(1);
-              }}
-              select={current === 1}
-            >
-              1
-            </AddRecipeFooterItem>
-            <AddRecipeFooterItem
-              onClick={() => {
-                setCurrent(2);
-              }}
-              select={current === 2}
-            >
-              2
-            </AddRecipeFooterItem>
-            <AddRecipeFooterItem
-              onClick={() => {
-                setCurrent(3);
-              }}
-              select={current === 3}
-            >
-              3
-            </AddRecipeFooterItem>
-          </ul>
+            <p style={{ margin: 0 }}>gram</p>
+          </HighlightText>
+        </ProductsContainer>
+        <AddItem
+          style={{ padding: "0", margin: "1% auto 1% auto" }}
+          onClick={() => {
+            let tempArray = products;
+            console.log(mySuggestion);
+            let temp = {
+              id: mySuggestion.id,
+              name: mySuggestion.name,
+              number: tempQuanity,
+            };
+            tempArray.push(temp);
+            setSuggestions([]);
+            setProducts([...tempArray]);
+            setTempQuanity("");
+            setValue("");
+            setMySuggestion("");
+          }}
+        >
+          Dodaj produkt
+        </AddItem>
+        {products &&
+          suggestions &&
+          products.map((product, index) => {
+            console.log(products);
+            if (product.name) {
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    margin: "1% auto 1% auto",
+                    width: "40%",
+                    "justify-content": "space-around",
+                  }}
+                >
+                  <div
+                    style={{
+                      border: "1px solid black",
+                      padding: "1%",
+                      "text-align": "center",
+                      width: "60%",
+                    }}
+                  >
+                    {product.name}
+                  </div>
+                  <div
+                    style={{
+                      border: "1px solid black",
+                      padding: "1%",
+                      "text-align": "right",
+                      width: "20%",
+                    }}
+                  >
+                    {product.number}
+                  </div>
+                  <img
+                    style={{ width: 25 }}
+                    src={CloseImage}
+                    onClick={() => {
+                      let temp = products;
+                      temp.splice(index, 1);
+                      setProducts([...temp]);
+                    }}
+                  />
+                </div>
+              );
+            }
+          })}
+      </ColumnContainer>
+      <ImagesContainer>
+        <div className="image-upload">
+          <label for="file-input-0">
+            {uploadFile[0].name ? (
+              <Image style={{ width: "550px" }} src={file[0]} />
+            ) : (
+              <Image src={file[0]} />
+            )}
+          </label>
+          <input
+            id="file-input-0"
+            type="file"
+            onChange={(e) => handleChange(0, e)}
+          />
         </div>
-      </div>
+      </ImagesContainer>
+      <Button
+        onClick={() => {
+          sendRequest();
+        }}
+      >
+        Dodaj przepis
+      </Button>
     </Container>
   );
 };

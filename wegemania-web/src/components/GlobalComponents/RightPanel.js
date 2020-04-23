@@ -16,7 +16,7 @@ import {
 const RightPanel = (props) => {
   console.log(props.recommend);
   return (
-    <GlobalContainer>
+    <GlobalContainer style={{ margin: 0 }}>
       {!props.recommend ? (
         <div>
           <RecommendedRestauration />

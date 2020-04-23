@@ -341,254 +341,84 @@ const Recipes = (props) => {
       }
     }, []);
     return (
-      <ContainerRecipes>
-        <ImageRecipes
+      <div style={{ width: "30%" }}>
+        <img
+          style={{ width: "100%", height: "80%" }}
           src={props.recipe.recipe_foto}
-          style={{ width: "60%", cursor: "pointer" }}
-          onClick={() => props.historyProps.push(`/recipe/${props.recipe.id}`)}
         />
-        <ContentContainer
-          style={{
-            width: "38%",
-            background: "rgba(255,255,255,0.6)",
-            position: "relative",
-          }}
-        >
-          <RecipesName style={{ "font-size": "14px" }}>
-            {props.recipe.recipe_name}
-          </RecipesName>
-          <div
-            style={{
-              display: "flex",
-              "justify-content": "space-between",
-              width: "100%",
-              "font-size": "12px",
-              "white-space": "nowrap",
-            }}
-          >
-            <p style={{ color: "#4CAF50", "font-weight": "bold" }}>
-              Czas przygotowania:
-            </p>
-            <p
-              style={{ "font-weight": "bold" }}
-            >{`${props.recipe.time} minut`}</p>
-          </div>
-          {page[props.index] == 0 ? (
-            <div>
-              <HeaderText>Składniki:</HeaderText>
-              <UnorderedList
-                style={{
-                  "max-height": "140px",
-                  overflow: "auto",
-                  margin: 0,
-                  padding: 0,
-                  width: "100%",
-                }}
-              >
-                {listIngredients &&
-                  listIngredients.map((ingredient) => {
-                    return (
-                      <ul
-                        style={{
-                          margin: 0,
-                          padding: 0,
-                          width: "100%",
-                          display: "flex",
-                          "justify-content": "space-between",
-                        }}
-                      >
-                        <Item style={{ "font-size": "10px" }}>
-                          {ingredient.name}
-                        </Item>
-                        <Item style={{ "font-size": "10px" }}>
-                          {ingredient.amount}
-                        </Item>
-                      </ul>
-                    );
-                  })}
-              </UnorderedList>
-            </div>
-          ) : (
-            <div>
-              <HeaderText>Sposób przyrządzenia:</HeaderText>
-              <UnorderedList
-                style={{
-                  "max-height": "140px",
-                  overflow: "auto",
-                  width: "100%",
-                  padding: 0,
-                  margin: 0,
-                }}
-              >
-                <WayItem style={{ width: "80%", "white-space": "pre-wrap" }}>
-                  {props.recipe.recipe_decription &&
-                    props.recipe.recipe_decription
-                      .replace("\r\n\r\n", "\n")
-                      .replace("\r\n", "\n")}
-                </WayItem>
-              </UnorderedList>
-            </div>
-          )}
-
-          <Paggination index={props.index} />
-        </ContentContainer>
-      </ContainerRecipes>
+        <p>{props.recipe.recipe_name}</p>
+      </div>
     );
   };
 
   return (
-    <MainContainer>
-      <Container>
+    <div
+      style={{
+        display: "flex",
+        "flex-direction": "column",
+        "align-items": "center",
+        margin: "0 auto",
+        width: "75%",
+      }}
+    >
+      <div style={{ margin: "10% 0 0 0", width: "100%" }}>
         <SearchPanel>
           <div style={{ display: "flex", "flex-direction": "column" }}>
             <div>
-              <p style={{ "font-weight": "bold", color: "rgb(39,174,96)" }}>
-                Filtruj:
-              </p>
-              {radio == "name" ? (
-                <AutoSuggest
-                  style={{ "font-size": 10 }}
-                  suggestions={suggestionsName}
-                  onSuggestionsClearRequested={() => setSuggestionsName([])}
-                  onSuggestionsFetchRequested={({ value }) => {
-                    console.log(value);
-                    setValueName(value);
-                    setSuggestionsName(getSuggestionName(value));
-                  }}
-                  onSuggestionSelected={(_, { suggestionValue }) =>
-                    console.log("Wybrany: " + suggestionValue)
-                  }
-                  getSuggestionValue={(suggestion) => suggestion}
-                  renderSuggestion={(suggestion) => <span>{suggestion}</span>}
-                  inputProps={{
-                    placeholder: "Wprowadź nazwę przepisu",
-                    value: valueName,
-                    onChange: (_, { newValue, method }) => {
-                      setCurrent(1);
+              <AutoSuggest
+                style={{ "font-size": 10 }}
+                suggestions={suggestionsName}
+                onSuggestionsClearRequested={() => setSuggestionsName([])}
+                onSuggestionsFetchRequested={({ value }) => {
+                  console.log(value);
+                  setValueName(value);
+                  setSuggestionsName(getSuggestionName(value));
+                }}
+                onSuggestionSelected={(_, { suggestionValue }) =>
+                  console.log("Wybrany: " + suggestionValue)
+                }
+                getSuggestionValue={(suggestion) => suggestion}
+                renderSuggestion={(suggestion) => <span>{suggestion}</span>}
+                inputProps={{
+                  placeholder: "Znajdź przepis",
+                  value: valueName,
+                  onChange: (_, { newValue, method }) => {
+                    setCurrent(1);
 
-                      var tempArray = [];
-                      if (newValue === "") {
-                        console.log("START");
+                    var tempArray = [];
+                    if (newValue === "") {
+                      console.log("START");
+                    }
+                    const temp = data.reduce((acc, curr, i) => {
+                      if (
+                        curr.recipe_name.includes(newValue) &&
+                        curr.ingredients.some((x) =>
+                          x.name.includes(valueProduct)
+                        )
+                      ) {
+                        tempArray.push(curr);
                       }
-                      const temp = data.reduce((acc, curr, i) => {
-                        if (
-                          curr.recipe_name.includes(newValue) &&
-                          curr.ingredients.some((x) =>
-                            x.name.includes(valueProduct)
-                          )
-                        ) {
-                          tempArray.push(curr);
-                        }
-                        return tempArray;
-                      }, []);
-                      const tempResult = temp.reduce((acc, curr, i) => {
-                        if (!(i % 6)) {
-                          acc.push(temp.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
-                        }
-                        return acc;
-                      }, []);
-                      console.log("STARTEMP");
-                      console.log(temp);
-                      console.log(tempResult);
-                      console.log("STOPTEMP");
-
-                      setLength(tempResult.length);
-                      setRecipes([...tempResult]);
-
-                      setValueName(newValue);
-                    },
-                  }}
-                  highlightFirstSuggestion={true}
-                />
-              ) : (
-                <AutoSuggest
-                  suggestions={suggestionsProduct}
-                  onSuggestionsClearRequested={() => setSuggestionsProduct([])}
-                  onSuggestionsFetchRequested={({ value }) => {
-                    console.log(value);
-                    setValueProduct(value);
-                    setSuggestionsProduct(getSuggestionProduct(value));
-                  }}
-                  onSuggestionSelected={(_, { suggestionValue }) =>
-                    console.log("Wybrany: " + suggestionValue)
-                  }
-                  getSuggestionValue={(suggestion) => suggestion.name}
-                  renderSuggestion={(suggestion) => (
-                    <span>{suggestion.name}</span>
-                  )}
-                  inputProps={{
-                    placeholder: "Wprowadź nazwę produktu",
-                    value: valueProduct,
-                    onChange: (_, { newValue, method }) => {
-                      setCurrent(1);
-                      var tempArray = [];
-                      if (newValue === "") {
-                        console.log("START");
+                      return tempArray;
+                    }, []);
+                    const tempResult = temp.reduce((acc, curr, i) => {
+                      if (!(i % 6)) {
+                        acc.push(temp.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
                       }
-                      const temp = data.reduce((acc, curr, i) => {
-                        if (
-                          curr.recipe_name.includes(valueProduct) &&
-                          curr.ingredients.some((x) =>
-                            x.name.includes(newValue)
-                          )
-                        ) {
-                          tempArray.push(curr);
-                        }
-                        return tempArray;
-                      }, []);
-                      const tempResult = temp.reduce((acc, curr, i) => {
-                        if (!(i % 6)) {
-                          acc.push(tempArray.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
-                        }
-                        return acc;
-                      }, []);
-                      setLength(tempResult.length);
-                      setRecipes([...tempResult]);
+                      return acc;
+                    }, []);
+                    console.log("STARTEMP");
+                    console.log(temp);
+                    console.log(tempResult);
+                    console.log("STOPTEMP");
 
-                      setValueProduct(newValue);
-                    },
-                  }}
-                  highlightFirstSuggestion={true}
-                />
-              )}
-              <FormControl component="fieldset">
-                <RadioGroup
-                  aria-label="search"
-                  name="search"
-                  value={radio}
-                  onChange={handleChange}
-                >
-                  <ThemeProvider theme={outerTheme}>
-                    <div
-                      style={{
-                        display: "flex",
-                        "justify-content": "space-between",
-                      }}
-                    >
-                      <FormControlLabel
-                        value="name"
-                        control={<Radio />}
-                        label="Nazwa przepisu"
-                      />
-                      <FormControlLabel
-                        value="product"
-                        control={<Radio />}
-                        label="Nazwa produktu"
-                      />
-                    </div>
-                  </ThemeProvider>
-                </RadioGroup>
-              </FormControl>
-            </div>
-            <div>
-              <div style={{ display: "flex" }}>
-                <p style={{ "font-weight": "bold" }}>Nazwa przepisu:</p>
-                <p>{valueName}</p>
-              </div>
-              <div style={{ display: "flex" }}>
-                <p style={{ "font-weight": "bold" }}>Nazwa produktu:</p>
-                <p>{valueProduct}</p>
-              </div>
+                    setLength(tempResult.length);
+                    setRecipes([...tempResult]);
+
+                    setValueName(newValue);
+                  },
+                }}
+                highlightFirstSuggestion={true}
+              />
             </div>
           </div>
           <SearchButton
@@ -609,42 +439,58 @@ const Recipes = (props) => {
             Dodaj przepis
           </SearchButton>
         </SearchPanel>
-        <div style={{ display: "flex", "flex-wrap": "wrap" }}>
-          {console.log("|||||")}
-          {console.log(recipes)}
+      </div>
+      <MainContainer
+        style={{
+          margin: 0,
+          width: "100%",
+          display: "flex",
+          "justify-content": "space-between",
+        }}
+      >
+        <Container style={{ margin: 0 }}>
+          <div
+            style={{
+              display: "flex",
+              "flex-wrap": "wrap",
+              justifyContent: "space-between",
+            }}
+          >
+            {console.log("|||||")}
+            {console.log(recipes)}
 
-          {recipes[current - 1] &&
-            recipes[current - 1].map((recipe, index) => {
-              {
-                /*}
+            {recipes[current - 1] &&
+              recipes[current - 1].map((recipe, index) => {
+                {
+                  /*}
               if (
                 recipe.recipe_name.includes(valueName) &&
                 recipe.ingredients.some((x) => x.name.includes(valueProduct))
               )
               {*/
-              }
-              return (
-                <ContentController
-                  index={index}
-                  recipe={recipe}
-                  historyProps={props.history}
-                />
-              );
-            })}
-        </div>
-        {console.log("||||||||")}
-        {console.log(length)}
-        <ul
-          style={{
-            margin: "1% auto 1% auto",
-            display: "flex",
-            textAlign: "center",
-            "list-style-type": "none",
-            width: "40%",
-            justifyContent: "space-between",
-          }}
-        >
-          {/*}
+                }
+                return (
+                  <ContentController
+                    index={index}
+                    recipe={recipe}
+                    historyProps={props.history}
+                  />
+                );
+              })}
+          </div>
+          {console.log("||||||||")}
+          {console.log(length)}
+          <ul
+            style={{
+              margin: "1% auto 1% auto",
+              display: "flex",
+              textAlign: "center",
+              "list-style-type": "none",
+              width: "40%",
+              justifyContent: "space-between",
+            }}
+          >
+            {/*}
           {Array.from(
             {
               length: length / 6,
@@ -689,30 +535,30 @@ const Recipes = (props) => {
               )
           )}
           {*/}
-          {console.log("lenght")}
-          {console.log(length)}
-          <div
-            style={{
-              background: "green",
-              padding: "5%",
-              margin: " 1% auto 1% auto",
-              "text-align": "center",
-            }}
-          >
-            <Pagination
-              count={length}
-              page={current}
-              onChange={(e, num) => {
-                setCurrent(num);
+            {console.log("lenght")}
+            {console.log(length)}
+            <div
+              style={{
+                background: "green",
+                padding: "5%",
+                margin: " 1% auto 1% auto",
+                "text-align": "center",
               }}
-            />
-          </div>
-        </ul>
-      </Container>
-      {/*}
-      <RightPanel />
-              {*/}
-    </MainContainer>
+            >
+              <Pagination
+                count={length}
+                page={current}
+                onChange={(e, num) => {
+                  setCurrent(num);
+                }}
+              />
+            </div>
+          </ul>
+        </Container>
+
+        <RightPanel style={{ margin: 0 }} />
+      </MainContainer>
+    </div>
   );
 };
 export default withRouter(Recipes);
