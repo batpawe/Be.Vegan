@@ -9,7 +9,7 @@ import {
   HoverContainer,
   HoverHeader,
   HoverText,
-  ImageHoverComponent
+  ImageHoverComponent,
 } from "../../styles/TempStyle";
 import PinIcon from "../../icons/VeganAppIcons/pin.svg";
 import PostsIcon from "../../icons/VeganAppIcons/posts.svg";
@@ -22,13 +22,13 @@ import {
   AddPostPageLink,
   SearchInput,
   SearchButton,
-  SearchContainer
+  SearchContainer,
 } from "../../styles/PostStyle";
 import axios from "axios";
 import AutoSuggest from "react-autosuggest";
 import "../../styles/SuggestStyle.css";
 import ImageRestaurant from "../../images/restaurant.jpg";
-const Element = props => {
+const Element = (props) => {
   const [isHover, setIsHover] = useState(false);
   console.log("||||||||||||||");
   console.log(props.index);
@@ -58,27 +58,27 @@ const Element = props => {
     </ElementContainer>
   );
 };
-const Posts = props => {
+const Posts = (props) => {
   const [suggestions, setSuggestions] = useState([]);
   const [value, setValue] = useState("");
   const [data, setData] = useState([]);
 
-  const titleName = data.map(date => {
+  const titleName = data.map((date) => {
     return date;
   });
-  const getSuggestions = value => {
-    return titleName.filter(title => title.title.includes(value.trim()));
+  const getSuggestions = (value) => {
+    return titleName.filter((title) => title.title.includes(value.trim()));
   };
 
   useEffect(() => {
     const fetchData = async () => {
       await axios("https://veggiesapp.herokuapp.com/posts/")
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
           setData(res.data);
-          setSuggestions(res.data.map(date => date.title));
+          setSuggestions(res.data.map((date) => date.title));
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           console.log(err.response);
         });
@@ -96,7 +96,7 @@ const Posts = props => {
                   margin: 0,
                   padding: 0,
                   "font-weight": "bold",
-                  color: "#27ae60"
+                  color: "#27ae60",
                 }}
               >
                 Filtruj:
@@ -112,14 +112,16 @@ const Posts = props => {
                 onSuggestionSelected={(_, { suggestionValue }) =>
                   console.log("Wybrany: " + suggestionValue)
                 }
-                getSuggestionValue={suggestion => suggestion.title}
-                renderSuggestion={suggestion => <span>{suggestion.title}</span>}
+                getSuggestionValue={(suggestion) => suggestion.title}
+                renderSuggestion={(suggestion) => (
+                  <span>{suggestion.title}</span>
+                )}
                 inputProps={{
                   placeholder: "Wprowadź tytuł",
                   value: value,
                   onChange: (_, { newValue, method }) => {
                     setValue(newValue);
-                  }
+                  },
                 }}
                 highlightFirstSuggestion={true}
               />
@@ -138,7 +140,7 @@ const Posts = props => {
           style={{
             display: "flex",
             "flex-wrap": "wrap",
-            "justify-content": "space-between"
+            "justify-content": "space-between",
           }}
         >
           {data.map((date, index) => {

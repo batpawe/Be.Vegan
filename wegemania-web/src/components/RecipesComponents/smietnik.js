@@ -89,4 +89,12 @@
   
   <Paggination index={props.index} />
   </ContentContainer>
-  </ContainerRecipes>
+  </ContainerRecipes>    {/*}
+      <div style={{ width: "30%" }}>
+        <img
+          style={{ width: "100%", height: "80%", cursor: "pointer" }}
+          src={props.recipe.recipe_foto}
+        />
+        <p style={{ "font-size": "18px" }}>{props.recipe.recipe_name}</p>
+      </div>
+    {*/}

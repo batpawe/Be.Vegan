@@ -3,16 +3,22 @@
 }
 
 .react-autosuggest__input {
+  background: none;
   height: 35px;
   padding: 5px 5px;
-  width: 320px;
+  width: 40%;
+  margin: 1% auto 0 auto;
+  text-align: left;
+  font-size: 32px;
   font-family: Helvetica, sans-serif;
   font-weight: 300;
-  font-size: 22px;
-  border: 1px solid black;
+  border: none;
+  border-bottom: 1px solid black;
   border-radius: 4px;
 }
-
+.react-autosuggest__input::placeholder {
+  color: black;
+}
 .react-autosuggest__input--focused {
   outline: none;
 }

@@ -60,6 +60,7 @@ import RightPanel from "../GlobalComponents/RightPanel";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Image from "../../images/dinner.jpg";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import {
   SearchPanel,
   SearchInput,
@@ -81,9 +82,33 @@ import AutoSuggest from "react-autosuggest";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { green, orange } from "@material-ui/core/colors";
 import { NewLoginInfo } from "../../context/LoginInfo";
-
+import AddRecipeIcon from "../../icons/more.svg";
 import Pagination from "@material-ui/lab/Pagination";
-
+import {
+  ImageComponent,
+  ElementContainer,
+  HoverIcon,
+  HoverContainer,
+  HoverHeader,
+  HoverText,
+  ImageHoverComponent,
+} from "../../styles/TempRecipes";
+import {
+  HeaderRecipeContainer,
+  RecipeTimeContainer,
+  HeaderRecipeText,
+  RecipeTime,
+  IngredientsList,
+  IngredientsItem,
+  PreparationItem,
+  RecipeImage,
+  RateContainer,
+  RateHeader,
+  RateStars,
+} from "../../styles/RecipeStyle";
+import ReactStars from "react-stars";
+import "../../styles/SuggestStyle.css";
+import "../../styles/PaginationStyle.css";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > * + *": {
@@ -138,7 +163,8 @@ const Recipes = (props) => {
   };
   useEffect(() => {
     const fetchData = async () => {
-      await axios("https://veggiesapp.herokuapp.com/recipes/")
+      /* https://veggiesapp.herokuapp.com/recipes/*/
+      await axios("http://83.10.235.141:8181/recipes/")
         .then((res) => {
           setData(res.data);
           /*
@@ -166,8 +192,8 @@ const Recipes = (props) => {
             return tempArray;
           }, []);
           const tempResult = temp.reduce((acc, curr, i) => {
-            if (!(i % 6)) {
-              acc.push(temp.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
+            if (!(i % 7)) {
+              acc.push(temp.slice(i, i + 17)); // ..push a chunk of the original array to the accumulator
             }
             return acc;
           }, []);
@@ -318,6 +344,7 @@ const Recipes = (props) => {
     );
   };
   const ContentController = (props) => {
+    const [isHover, setIsHover] = useState(false);
     const [listIngredients, setListIngredients] = useState([]);
     useEffect(() => {
       {
@@ -341,16 +368,51 @@ const Recipes = (props) => {
       }
     }, []);
     return (
-      <div style={{ width: "30%" }}>
-        <img
-          style={{ width: "100%", height: "80%" }}
-          src={props.recipe.recipe_foto}
-        />
-        <p>{props.recipe.recipe_name}</p>
-      </div>
+      <ElementContainer
+        style={{ height: "15%" }}
+        onMouseEnter={() => {
+          setIsHover(true);
+        }}
+        onMouseLeave={() => {
+          setIsHover(false);
+        }}
+        onClick={() => props.historyProps.push(`/recipe/${props.index}`)}
+      >
+        <HoverContainer style={{ width: "100%" }}>
+          {isHover ? (
+            <div style={{ width: "100%" }}>
+              <ImageHoverComponent
+                style={{
+                  width: "100%",
+                  height: "220px",
+                  "border-radius": "4px",
+                }}
+                src={`${props.recipe.recipe_foto}`}
+              />
+
+              <HoverText>{props.recipe.id_user.username}</HoverText>
+              <HoverText>{props.recipe.time}</HoverText>
+            </div>
+          ) : (
+            <div style={{ width: "100%" }}>
+              <ImageComponent
+                style={{
+                  width: "100%",
+                  height: "220px",
+                  "border-radius": "4px",
+                }}
+                src={`${props.recipe.recipe_foto}`}
+              />
+            </div>
+          )}
+        </HoverContainer>
+        <p style={{ "text-align": "center", width: "100%" }}>
+          {props.recipe.recipe_name}
+        </p>
+      </ElementContainer>
     );
   };
-
+  const [isHover, setIsHover] = useState(false);
   return (
     <div
       style={{
@@ -361,10 +423,20 @@ const Recipes = (props) => {
         width: "75%",
       }}
     >
-      <div style={{ margin: "10% 0 0 0", width: "100%" }}>
-        <SearchPanel>
-          <div style={{ display: "flex", "flex-direction": "column" }}>
-            <div>
+      <div style={{ margin: "6% 0 2% 0", width: "100%" }}>
+        <SearchPanel
+          style={{
+            width: "100%",
+            "text-align": "center",
+            background: "none",
+            display: "flex",
+            "flex-direction": "column",
+            "justify-content": "center",
+            "align-items": "center",
+          }}
+        >
+          <div style={{ width: "100%" }}>
+            <div style={{ width: "100%" }}>
               <AutoSuggest
                 style={{ "font-size": 10 }}
                 suggestions={suggestionsName}
@@ -401,8 +473,8 @@ const Recipes = (props) => {
                       return tempArray;
                     }, []);
                     const tempResult = temp.reduce((acc, curr, i) => {
-                      if (!(i % 6)) {
-                        acc.push(temp.slice(i, i + 6)); // ..push a chunk of the original array to the accumulator
+                      if (!(i % 17)) {
+                        acc.push(temp.slice(i, i + 17)); // ..push a chunk of the original array to the accumulator
                       }
                       return acc;
                     }, []);
@@ -421,6 +493,7 @@ const Recipes = (props) => {
               />
             </div>
           </div>
+          {/*}
           <SearchButton
             to="/addrecipe"
             style={{
@@ -438,6 +511,7 @@ const Recipes = (props) => {
           >
             Dodaj przepis
           </SearchButton>
+          {*/}
         </SearchPanel>
       </div>
       <MainContainer
@@ -448,7 +522,122 @@ const Recipes = (props) => {
           "justify-content": "space-between",
         }}
       >
-        <Container style={{ margin: 0 }}>
+        <Container style={{ margin: 0, width: "100%" }}>
+          <div>
+            <ElementContainer
+              style={{
+                height: "15%",
+                width: "100%",
+                "flex-direction": "row",
+                margin: "0 0 2% 0",
+              }}
+              onClick={() =>
+                props.history.push(`/recipe/${recipes[current - 1][0].id}`)
+              }
+            >
+              <HoverContainer style={{ width: "100%", flex: "1" }}>
+                {console.log("test1")}
+
+                {recipes[current - 1] &&
+                  (isHover ? (
+                    <div style={{ width: "100%" }}>
+                      <ImageHoverComponent
+                        onMouseEnter={() => {
+                          setIsHover(true);
+                        }}
+                        onMouseLeave={() => {
+                          setIsHover(false);
+                        }}
+                        style={{
+                          width: "100%",
+
+                          "border-radius": "4px",
+                        }}
+                        src={`${recipes[current - 1][0].recipe_foto}`}
+                      />
+
+                      <HoverText>
+                        {recipes[current - 1][0].id_user.username}
+                      </HoverText>
+                      <HoverText>{recipes[current - 1][0].time}</HoverText>
+                    </div>
+                  ) : (
+                    <div style={{ width: "100%" }}>
+                      <ImageComponent
+                        onMouseEnter={() => {
+                          setIsHover(true);
+                        }}
+                        onMouseLeave={() => {
+                          setIsHover(false);
+                        }}
+                        style={{
+                          width: "100%",
+
+                          "border-radius": "4px",
+                        }}
+                        onClick={() =>
+                          props.history.push(
+                            `/recipe/${recipes[current - 1][0].id}`
+                          )
+                        }
+                        src={`${recipes[current - 1][0].recipe_foto}`}
+                      />
+                    </div>
+                  ))}
+              </HoverContainer>
+              <div
+                style={{
+                  "text-align": "center",
+                  width: "100%",
+                  flex: 2,
+                  "text-align": "left",
+                  margin: "0 0 0 2%",
+                }}
+              >
+                <p
+                  style={{
+                    "font-size": "22px",
+                    margin: "0 auto 0 auto",
+                    padding: 0,
+                    "text-align": "center",
+                    width: "80%",
+                    color: "#76a56e",
+                    "font-weight": "bold",
+                  }}
+                >
+                  Spróbuj tego!
+                </p>
+                <p
+                  style={{
+                    "font-size": "40px",
+                    "text-align": "center",
+                    "letter-spacing": "20px",
+                    padding: "8% 0 0 0",
+                    margin: "0 auto 0 auto",
+                    width: "80%",
+                    "border-bottom": "1px solid black",
+                  }}
+                >
+                  {recipes[current - 1] && recipes[current - 1][0].recipe_name}
+                </p>
+                <RateContainer style={{ width: "13%" }}>
+                  {console.log("PPP")}
+                  <RateStars style={{ width: "100%" }}>
+                    {recipes[current - 1] && (
+                      <ReactStars
+                        value={recipes[current - 1][0].rating}
+                        count={5}
+                        className="test"
+                        //onChange
+                        size={24}
+                        color2={"#4CAF50"}
+                      />
+                    )}
+                  </RateStars>
+                </RateContainer>
+              </div>
+            </ElementContainer>
+          </div>
           <div
             style={{
               display: "flex",
@@ -456,26 +645,44 @@ const Recipes = (props) => {
               justifyContent: "space-between",
             }}
           >
+            <Link style={{ width: "22%", height: "220px" }} to="/addrecipe">
+              <div
+                style={{
+                  height: "100%",
+                  display: "flex",
+                  border: "1px solid black",
+                  "border-radius": "4px",
+                  justifyContent: "center",
+                  "align-items": "center",
+                }}
+              >
+                <img style={{ width: "22%" }} src={AddRecipeIcon} />
+              </div>
+              <p
+                style={{
+                  "text-align": "center",
+                  "font-weight": "bold",
+                  color: "black",
+                  "text-decoration": "none",
+                }}
+              >
+                Dodaj przepis
+              </p>
+            </Link>
+
             {console.log("|||||")}
             {console.log(recipes)}
-
             {recipes[current - 1] &&
               recipes[current - 1].map((recipe, index) => {
-                {
-                  /*}
-              if (
-                recipe.recipe_name.includes(valueName) &&
-                recipe.ingredients.some((x) => x.name.includes(valueProduct))
-              )
-              {*/
+                if (index > 1) {
+                  return (
+                    <ContentController
+                      index={index}
+                      recipe={recipe}
+                      historyProps={props.history}
+                    />
+                  );
                 }
-                return (
-                  <ContentController
-                    index={index}
-                    recipe={recipe}
-                    historyProps={props.history}
-                  />
-                );
               })}
           </div>
           {console.log("||||||||")}
@@ -486,7 +693,7 @@ const Recipes = (props) => {
               display: "flex",
               textAlign: "center",
               "list-style-type": "none",
-              width: "40%",
+              width: "70%",
               justifyContent: "space-between",
             }}
           >
@@ -539,13 +746,18 @@ const Recipes = (props) => {
             {console.log(length)}
             <div
               style={{
-                background: "green",
+                width: "100%",
+                display: "flex",
+                "text-align": "center",
+                "align-items": "center",
+                justifyContent: "center",
                 padding: "5%",
                 margin: " 1% auto 1% auto",
                 "text-align": "center",
               }}
             >
               <Pagination
+                size="large"
                 count={length}
                 page={current}
                 onChange={(e, num) => {
@@ -555,8 +767,9 @@ const Recipes = (props) => {
             </div>
           </ul>
         </Container>
-
+        {/*}
         <RightPanel style={{ margin: 0 }} />
+  {*/}
       </MainContainer>
     </div>
   );

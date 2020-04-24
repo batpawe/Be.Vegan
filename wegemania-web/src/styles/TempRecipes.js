@@ -1,6 +1,6 @@
 import styled from "styled-components";
 export const Container = styled.div`
-  padding: 0 0.5% 0.5% 0.5%;
+  padding: 0.5% 0.5% 0.5% 0.5%;
   align-content: flex-start;
   font-size: 17px;
   display: flex;
@@ -56,7 +56,7 @@ export const PagginationContainer = styled.ul`
   margin: 0 0 1% 0;
 `;
 export const PagginationItem = styled.li`
-  background: ${props => (props.active ? "#00e849" : "#00a835")};
+  background: ${(props) => (props.active ? "#00e849" : "#00a835")};
   padding: 2%;
   color: white;
   width: 30px;
@@ -84,4 +84,53 @@ export const WayItem = styled.li`
   margin: 1% 0 0 0;
   font-size: 14px;
   color: black;
+`;
+export const ElementContainer = styled.div`
+  align-items: flex-start;
+  width: 22%;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+`;
+export const ImageComponent = styled.img`
+  width:100%:
+`;
+export const HoverIcon = styled.img`
+  width: 25px;
+  background: green;
+  position: absolute;
+  top: 0;
+  right: 0;
+  align-content: center;
+  padding: 1%;
+  z-index: 2;
+  filter: brightness(100%);
+`;
+
+export const HoverContainer = styled.div`
+  position: relative;
+  text-align: center;
+  color: White;
+`;
+export const HoverHeader = styled.h1`
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  border-bottom: 1px solid white;
+`;
+export const HoverText = styled.span`
+  font-size: 12px;
+  top: 10%;
+  text-align: justify;
+  width: 100%;
+  left: 0;
+  padding: 5%;
+  position: absolute;
+`;
+export const ImageHoverComponent = styled.img`
+  filter: brightness(50%);
+  width:100%:
 `;

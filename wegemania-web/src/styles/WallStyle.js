@@ -12,11 +12,14 @@ export const MainContainer = styled.div`
   width: 100vw;
 `;
 export const Container = styled.div`
-  padding: 0.5% 2% 2% 2%;
+  padding: 2% 2% 2% 2%;
   font-size: 17px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(244, 244, 244, 0.9);
   margin: 0 1% 0 1%;
-  width: 1000px;
+  width: 60%;
+  @media (min-width: 1400px) {
+    width: 70%;
+  }
   border-radius: 2px;
 `;
 export const UnorderedList = styled.ul`

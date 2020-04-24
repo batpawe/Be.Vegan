@@ -1,14 +1,23 @@
 import styled from "styled-components";
+
 export const Container = styled.div`
   background: white;
   padding: 1%;
-  min-width: 90%;
+  min-width: 82%;
   border-radius: 25px;
   border: 1px solid black;
-  margin: 10% auto auto auto;
   display: flex;
   flex-direction: column;
   font-size: 18px;
+  position: relative;
+  @media (max-width: 1400px) {
+    height: 500px;
+    margin: 8% auto auto auto;
+  }
+  @media (min-width: 1401px) {
+    margin: 10% auto auto auto;
+    height: 600px;
+  }
 `;
 export const Button = styled.button`
   padding: 1%;
@@ -189,4 +198,28 @@ export const AddRecipeFooterItem = styled.li`
   height: 25px;
   width: 25px;
   font-size: 0;
+  cursor: pointer;
+`;
+export const NewInputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+export const NewInputLabel = styled.label`
+  font-size: 20px;
+  margin: 0;
+`;
+export const NewColumnContainer = styled.div`
+  width: 100%;
+`;
+export const AddImageContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  border: 1px solid black;
+  border-radius: 10px;
+  @media (max-width: 1400px) {
+    height: 260px;
+  }
 `;

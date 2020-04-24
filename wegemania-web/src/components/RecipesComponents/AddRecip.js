@@ -22,6 +22,10 @@ import {
   ProductsContainer,
   HighlightText,
   AddRecipeFooterItem,
+  NewInputContainer,
+  NewInputLabel,
+  NewColumnContainer,
+  AddImageContainer,
 } from "../../styles/AddForms";
 import UploadImage from "../../images/upload.png";
 import "../../App.css";
@@ -31,6 +35,7 @@ import "../../styles/SuggestProducts.css";
 import { NewNotifyContext } from "../../context/Notify";
 import Back from "../../icons/back.svg";
 import Next from "../../icons/next.svg";
+import TimeIcon from "../../icons/ikonaCzasu.svg";
 const AddRecipt = () => {
   const [deleyedRedirect, setDeleyedRedirect] = useState(false);
   const notify = useContext(NewNotifyContext);
@@ -302,26 +307,70 @@ const AddRecipt = () => {
   }
   const [tempQuanity, setTempQuanity] = useState(0);
   return (
-    <Container
-      style={{ position: "relative", height: "600px", "min-width": "82%" }}
-    >
+    <Container>
       {deleyedRedirect && <Redirect to={`/recipes`} />}
-      <div style={{ width: "100%", bottom: 10 }}>
-        <div>
-          <InputLabel for="name" style={{ "font-size": "20px" }}>
-            Nazwa:
-          </InputLabel>
-          <TextInput
-            value={recipeName}
-            onChange={(e) => {
-              setRecipeName(e.target.value);
-            }}
-            type="text"
-            id="name"
-            placeholder="Wprowadź nazwę dania"
-          />
+      <div style={{ width: "100%", display: "flex" }}>
+        <div style={{ width: "50%", "border-right": "1px solid black" }}>
+          <NewColumnContainer style={{ padding: "0 2% 0 0" }}>
+            <NewInputContainer>
+              <NewInputLabel for="name">Nazwa przepisu</NewInputLabel>
+              <TextInput
+                style={{ width: "100%" }}
+                value={recipeName}
+                onChange={(e) => {
+                  setRecipeName(e.target.value);
+                }}
+                type="text"
+                id="name"
+                placeholder="Wprowadź nazwę dania"
+              />
+            </NewInputContainer>
+            <NewInputContainer>
+              <NewInputLabel for="time">Czas(w minutach)</NewInputLabel>
+              <div style={{ display: "flex" }}>
+                <img
+                  src={TimeIcon}
+                  style={{ width: "30px", margin: "0 10% 0 0" }}
+                />
+                <TextInput
+                  style={{ "text-align": "right", width: "13%" }}
+                  value={time == 0 ? null : time}
+                  onChange={(e) => {
+                    setTime(e.target.value);
+                  }}
+                  type="number"
+                  id="name"
+                  placeholder="10"
+                />
+              </div>
+            </NewInputContainer>
+            <NewInputContainer>
+              <NewInputLabel for="upload-image">Dodaj zdjęcie</NewInputLabel>
+              <AddImageContainer>
+                <div className="image-upload">
+                  <label for="file-input-0">
+                    {uploadFile[0].name ? (
+                      <Image style={{ width: "550px" }} src={file[0]} />
+                    ) : (
+                      <Image src={file[0]} />
+                    )}
+                  </label>
+                  <input
+                    id="file-input-0"
+                    type="file"
+                    onChange={(e) => handleChange(0, e)}
+                  />
+                </div>
+              </AddImageContainer>
+            </NewInputContainer>
+          </NewColumnContainer>
         </div>
-        <div style={{ position: "absolute", bottom: 10, width: "100%" }}>
+        <div style={{ width: "50%", "border-right": "1px solid black" }}>
+          <NewColumnContainer>
+            <div>lsl</div>
+          </NewColumnContainer>
+        </div>
+        <div style={{ position: "absolute", bottom: 10, width: "98%" }}>
           <ul
             style={{
               display: "flex",
