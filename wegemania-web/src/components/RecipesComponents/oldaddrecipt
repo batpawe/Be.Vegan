@@ -518,3 +518,14 @@ const AddRecipt = () => {
   );
 };
 export default AddRecipt;
+   <div style={{ width: "100%" }}>
+              <ImageComponent
+                style={{
+                  width: "100%",
+                  height: "220px",
+                  "border-radius": "4px",
+                }}
+                src={`${props.recipe.recipe_foto}`}
+              />
+            </div>
+                {*/} 

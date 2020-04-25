@@ -4,6 +4,7 @@ export const Container = styled.div`
   background: white;
   padding: 1%;
   min-width: 82%;
+  width: 82%;
   border-radius: 25px;
   border: 1px solid black;
   display: flex;
@@ -210,6 +211,10 @@ export const NewInputLabel = styled.label`
 `;
 export const NewColumnContainer = styled.div`
   width: 100%;
+  height: 90%;
+  @media (min-width: 1400px) {
+    height: 100%;
+  }
 `;
 export const AddImageContainer = styled.div`
   width: 100%;
@@ -222,4 +227,31 @@ export const AddImageContainer = styled.div`
   @media (max-width: 1400px) {
     height: 260px;
   }
+`;
+export const MainContainerAddRecip = styled.div`
+  width: 100%;
+  display: flex;
+  height: 95%;
+  @media (max-width: 1400px) {
+    height: 90%;
+  }
+`;
+export const ImageRecipeContainer = styled.div`
+  border: 1px solid black;
+  height: 300px;
+  margin: 4%;
+  @media (max-width: 1400px) {
+    height: 220px;
+  }
+`;
+export const SpanDescription = styled.span`
+  @media (max-width: 1400px) {
+    white-space: pre-line;
+  }
+  display: block;
+  white-space: pre;
+  line-height: 1em;
+  height: 100%;
+  overflow: auto;
+  padding: 1.5%;
 `;

@@ -1,0 +1,63 @@
+.n_react-autosuggest__container {
+  position: relative;
+}
+
+.n_react-autosuggest__input {
+  background: none;
+  height: 35px;
+  padding: 5px 5px;
+  width: 100%;
+  margin: 1% auto 0 auto;
+  text-align: left;
+  font-size: 20px;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  border: none;
+  border-bottom: 1px solid black;
+  border-radius: 4px;
+}
+.n_react-autosuggest__input::placeholder {
+  color: black;
+}
+.n_react-autosuggest__input--focused {
+  outline: none;
+}
+
+.n_react-autosuggest__input--open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.n_react-autosuggest__suggestions-container {
+  display: none;
+}
+
+.n_react-autosuggest__suggestions-container--open {
+  display: block;
+  position: absolute;
+  top: 51px;
+  width: 280px;
+  border: 1px solid #aaa;
+  background-color: #fff;
+  font-family: Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 2;
+}
+
+.n_react-autosuggest__suggestions-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.n_react-autosuggest__suggestion {
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.n_react-autosuggest__suggestion--highlighted {
+  background-color: #ddd;
+}

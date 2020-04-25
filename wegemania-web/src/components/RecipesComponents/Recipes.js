@@ -56,6 +56,8 @@ import {
   Item,
   WayItem,
 } from "../../styles/TempRecipes";
+import ClockIcon from "../../icons/white_clock.svg";
+import UserIcon from "../../icons/white_user.svg";
 import RightPanel from "../GlobalComponents/RightPanel";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Image from "../../images/dinner.jpg";
@@ -109,6 +111,10 @@ import {
 import ReactStars from "react-stars";
 import "../../styles/SuggestStyle.css";
 import "../../styles/PaginationStyle.css";
+import {
+  BigRateContainerRecipes,
+  SmallRateContainerRecipes,
+} from "../../styles/StarsStyle";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > * + *": {
@@ -164,7 +170,7 @@ const Recipes = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       /* https://veggiesapp.herokuapp.com/recipes/*/
-      await axios("http://83.10.235.141:8181/recipes/")
+      await axios("http://veggies.ddns.net:8181/recipes/")
         .then((res) => {
           setData(res.data);
           /*
@@ -192,8 +198,8 @@ const Recipes = (props) => {
             return tempArray;
           }, []);
           const tempResult = temp.reduce((acc, curr, i) => {
-            if (!(i % 7)) {
-              acc.push(temp.slice(i, i + 17)); // ..push a chunk of the original array to the accumulator
+            if (!(i % 18)) {
+              acc.push(temp.slice(i, i + 18)); // ..push a chunk of the original array to the accumulator
             }
             return acc;
           }, []);
@@ -376,11 +382,11 @@ const Recipes = (props) => {
         onMouseLeave={() => {
           setIsHover(false);
         }}
-        onClick={() => props.historyProps.push(`/recipe/${props.index}`)}
+        onClick={() => props.historyProps.push(`/recipe/${props.recipe.id}`)}
       >
         <HoverContainer style={{ width: "100%" }}>
           {isHover ? (
-            <div style={{ width: "100%" }}>
+            <div style={{ width: "100%", position: "relative" }}>
               <ImageHoverComponent
                 style={{
                   width: "100%",
@@ -390,8 +396,49 @@ const Recipes = (props) => {
                 src={`${props.recipe.recipe_foto}`}
               />
 
-              <HoverText>{props.recipe.id_user.username}</HoverText>
-              <HoverText>{props.recipe.time}</HoverText>
+              <HoverText
+                style={{
+                  "font-size": "16px",
+                  top: "20%",
+                  display: "flex",
+                  "justify-content": "space-between",
+                }}
+              >
+                <img src={UserIcon} style={{ width: "20px" }} />
+                <p style={{ margin: 0, color: "white" }}>
+                  {props.recipe.id_user.username}
+                </p>
+              </HoverText>
+              <HoverText
+                style={{
+                  "font-size": "16px",
+                  top: "65%",
+                  display: "flex",
+                  "justify-content": "space-between",
+                }}
+              >
+                <img src={ClockIcon} style={{ width: "20px" }} />
+                <p style={{ margin: 0, color: "white" }}>
+                  {props.recipe.time}min
+                </p>
+              </HoverText>
+              <div style={{ width: "100%", position: "absolute", top: 0 }}>
+                <SmallRateContainerRecipes>
+                  <RateStars style={{ width: "100%" }}>
+                    {recipes[current - 1] && (
+                      <ReactStars
+                        edit={false}
+                        value={props.recipe.rating}
+                        count={5}
+                        className="test"
+                        //onChange
+                        size={24}
+                        color2={"#4CAF50"}
+                      />
+                    )}
+                  </RateStars>
+                </SmallRateContainerRecipes>
+              </div>
             </div>
           ) : (
             <div style={{ width: "100%" }}>
@@ -406,9 +453,7 @@ const Recipes = (props) => {
             </div>
           )}
         </HoverContainer>
-        <p style={{ "text-align": "center", width: "100%" }}>
-          {props.recipe.recipe_name}
-        </p>
+        <p style={{ width: "100%" }}>{props.recipe.recipe_name}</p>
       </ElementContainer>
     );
   };
@@ -473,8 +518,8 @@ const Recipes = (props) => {
                       return tempArray;
                     }, []);
                     const tempResult = temp.reduce((acc, curr, i) => {
-                      if (!(i % 17)) {
-                        acc.push(temp.slice(i, i + 17)); // ..push a chunk of the original array to the accumulator
+                      if (!(i % 18)) {
+                        acc.push(temp.slice(i, i + 18)); // ..push a chunk of the original array to the accumulator
                       }
                       return acc;
                     }, []);
@@ -555,11 +600,44 @@ const Recipes = (props) => {
                         }}
                         src={`${recipes[current - 1][0].recipe_foto}`}
                       />
-
-                      <HoverText>
-                        {recipes[current - 1][0].id_user.username}
+                      <HoverText
+                        style={{
+                          "font-size": "16px",
+                          top: "20%",
+                          display: "flex",
+                          "justify-content": "space-between",
+                        }}
+                      >
+                        <img src={UserIcon} style={{ width: "30px" }} />
+                        <p
+                          style={{
+                            margin: 0,
+                            color: "white",
+                            "font-size": "20px",
+                          }}
+                        >
+                          {recipes[current - 1][0].id_user.username}
+                        </p>
                       </HoverText>
-                      <HoverText>{recipes[current - 1][0].time}</HoverText>
+                      <HoverText
+                        style={{
+                          "font-size": "16px",
+                          top: "65%",
+                          display: "flex",
+                          "justify-content": "space-between",
+                        }}
+                      >
+                        <img src={ClockIcon} style={{ width: "30px" }} />
+                        <p
+                          style={{
+                            margin: 0,
+                            color: "white",
+                            "font-size": "20px",
+                          }}
+                        >
+                          {recipes[current - 1][0].time}min
+                        </p>
+                      </HoverText>
                     </div>
                   ) : (
                     <div style={{ width: "100%" }}>
@@ -601,7 +679,7 @@ const Recipes = (props) => {
                     padding: 0,
                     "text-align": "center",
                     width: "80%",
-                    color: "#76a56e",
+                    color: "#4CAF50",
                     "font-weight": "bold",
                   }}
                 >
@@ -620,11 +698,12 @@ const Recipes = (props) => {
                 >
                   {recipes[current - 1] && recipes[current - 1][0].recipe_name}
                 </p>
-                <RateContainer style={{ width: "13%" }}>
+                <BigRateContainerRecipes>
                   {console.log("PPP")}
                   <RateStars style={{ width: "100%" }}>
                     {recipes[current - 1] && (
                       <ReactStars
+                        edit={false}
                         value={recipes[current - 1][0].rating}
                         count={5}
                         className="test"
@@ -634,7 +713,7 @@ const Recipes = (props) => {
                       />
                     )}
                   </RateStars>
-                </RateContainer>
+                </BigRateContainerRecipes>
               </div>
             </ElementContainer>
           </div>

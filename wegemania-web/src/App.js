@@ -51,6 +51,7 @@ const GlobalStyle = createGlobalStyle`
 
 const App = (props) => {
   const notify = useContext(NewNotifyContext);
+
   const user = useContext(NewLoginInfo);
   return (
     <Container>

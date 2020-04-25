@@ -1,9 +1,9 @@
 import React, { useState, createContext } from "react";
 const NotifyContext = createContext();
-export const NotifyProvider = props => {
+export const NotifyProvider = (props) => {
   const [notify, setNotify] = useState("");
   const [onMargin, setOnMargin] = useState(false);
-  const initNotify = name => {
+  const initNotify = (name) => {
     setNotify(name);
     setTimeout(resetNotify, 4000);
   };
@@ -21,7 +21,7 @@ export const NotifyProvider = props => {
         val: notify,
         set: initNotify,
         onMargin: onMargin,
-        changeMargin: changeMargin
+        changeMargin: changeMargin,
       }}
     >
       {children}
