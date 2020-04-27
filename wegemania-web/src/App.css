@@ -24,7 +24,7 @@
   display: none;
 }
 .test {
-  background: rgba(255, 255, 255, 0.6);
+  background: none;
   position: absolute;
   width: 100%;
   padding: 2%;

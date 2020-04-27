@@ -87,11 +87,13 @@ import {
   RateContainer,
   RateHeader,
   RateStars,
+  BigRateContaiener,
 } from "../../styles/RecipeStyle";
 import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
 import "../../App.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import ClockIcon from "../../icons/white_clock.svg";
 import { NewNotifyContext } from "../../context/Notify";
 const Recipe = (props) => {
   const qs = require("querystring");
@@ -300,69 +302,124 @@ const Recipe = (props) => {
   return (
     <MainContainer>
       <Container style={{ position: "relative" }}>
-        <div>
-          <UserActionsContainer>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => {
-                handleClickOpen();
+        {recipe.recipe && user.userInfo.id === recipe.recipe.id_user.id && (
+          <div>
+            <UserActionsContainer>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => {
+                  handleClickOpen();
+                }}
+              >
+                <Icon src={DeleteIcon} />
+              </Button>
+            </UserActionsContainer>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Usunięcie posta"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Czy chcesz usunąć przepis ?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Nie
+                </Button>
+                <Button
+                  onClick={() => {
+                    deletePost(props.data.idPosty);
+                  }}
+                  color="primary"
+                  autoFocus
+                >
+                  Tak
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        )}
+        <div style={{ display: "flex" }}>
+          <RecipeImage
+            style={{ width: "40%", margin: "0" }}
+            src={recipe.recipe && recipe.recipe.recipe_foto}
+          />
+          <div style={{ width: "60%" }}>
+            <p
+              style={{
+                "text-align": "center",
+                "font-size": "40px",
+                "letter-spacing": "20px",
+                padding: "8% 0 0 0",
+                width: "80%",
+                margin: "0 auto",
+                "border-bottom": "1px solid black",
               }}
             >
-              <Icon src={DeleteIcon} />
-            </Button>
-          </UserActionsContainer>
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {"Usunięcie posta"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                Czy chcesz usunąć przepis ?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Nie
-              </Button>
-              <Button
-                onClick={() => {
-                  deletePost(props.data.idPosty);
+              {recipe.recipe && recipe.recipe.recipe_name}
+            </p>
+            <p
+              style={{
+                "text-align": "center",
+                color: "#4CAF50",
+                "font-size": "30px",
+                "font-weight": "bold",
+              }}
+            >
+              {recipe.recipe && recipe.recipe.id_user.username}
+            </p>
+            <div
+              style={{
+                display: "flex",
+                "align-items": "center",
+                "justify-content": "center",
+                "font-size": "20px",
+              }}
+            >
+              <p style={{ margin: "0 5% 0 0", "font-size": "36px" }}>
+                {recipe.recipe && recipe.recipe.time} minut
+              </p>
+              <img
+                src={ClockIcon}
+                style={{
+                  width: "60px",
+                  height: "60px",
+                  "border-radius": "50%",
+                  background: "rgb(76,175,80)",
+                  padding: "1%",
                 }}
-                color="primary"
-                autoFocus
-              >
-                Tak
-              </Button>
-            </DialogActions>
-          </Dialog>
+              />
+            </div>
+            <BigRateContaiener>
+              <RateStars>
+                <ReactStars
+                  edit={false}
+                  value={recipe.recipe ? recipe.recipe.rating : 0}
+                  count={5}
+                  className="test"
+                  //onChange
+                  size={24}
+                  color2={"#4CAF50"}
+                />
+              </RateStars>
+            </BigRateContaiener>
+          </div>
         </div>
         <OrderedList>
           <UnorderedList>
-            <HeaderRecipeContainer
-              style={{
-                background: "#00a835",
-                width: "40%",
-                "font-size": "24px",
-                color: "white",
-                "font-weight": "bold",
-                margin: "1% auto 1% auto",
-                "border-radius": "25px",
-              }}
-            >
-              <HeaderRecipeText style={{ color: "white" }}>
-                {recipe.recipe && recipe.recipe.recipe_name}
-              </HeaderRecipeText>
-            </HeaderRecipeContainer>
             <ColumnContainer>
               <div>
                 <Item>
-                  <BorderText>Składniki: </BorderText>
+                  <BorderText style={{ width: "100%", "text-align": "center" }}>
+                    Składniki:{" "}
+                  </BorderText>
                 </Item>
                 <IngredientsList
                   styles={{
@@ -385,14 +442,12 @@ const Recipe = (props) => {
                       );
                     })}
                 </IngredientsList>
-                <RecipeImage
-                  style={{ width: "90%", margin: "3% 0 0 0" }}
-                  src={recipe.recipe && recipe.recipe.recipe_foto}
-                />
               </div>
-              <PreparingMethod>
+              <PreparingMethod style={{ width: "50%" }}>
                 <Item>
-                  <BorderText>Sposób przygotowania: </BorderText>
+                  <BorderText style={{ width: "100%", "text-align": "center" }}>
+                    Sposób przygotowania:
+                  </BorderText>
                 </Item>
                 <UnorderedListIn>
                   <PreparationItem style={{ "white-space": "pre-wrap" }}>
@@ -404,19 +459,7 @@ const Recipe = (props) => {
                 </UnorderedListIn>
               </PreparingMethod>
             </ColumnContainer>
-            <RateContainer>
-              <RateHeader>Ocena</RateHeader>
-              <RateStars>
-                <ReactStars
-                  value={recipe.recipe ? recipe.recipe.rating : 0}
-                  count={5}
-                  className="test"
-                  //onChange
-                  size={24}
-                  color2={"#4CAF50"}
-                />
-              </RateStars>
-            </RateContainer>
+
             <HeaderText>Komentarze:</HeaderText>
             <UnorderedListComments>
               {recipe.rating &&
@@ -429,8 +472,10 @@ const Recipe = (props) => {
                       <CommentContent>
                         {rate.user_comment || "testowy komentarz"}
                       </CommentContent>
-                      <RateStars style={{ width: "14%" }}>
+                      <RateStars style={{ width: "18%" }}>
                         <ReactStars
+                          style={{ background: "none" }}
+                          edit={false}
                           value={rate.rating}
                           count={5}
                           className="test"
@@ -458,8 +503,15 @@ const Recipe = (props) => {
                   type="text"
                   placeholder="Wprowadź treść komentarza"
                 />
-                <RateStars style={{ width: "42%", margin: "1% auto" }}>
+                <RateStars
+                  style={{
+                    width: "52%",
+                    margin: "1% auto",
+                    background: "none",
+                  }}
+                >
                   <ReactStars
+                    style={{ background: "none" }}
                     value={myRate}
                     count={5}
                     className="test"
@@ -482,7 +534,7 @@ const Recipe = (props) => {
           </UnorderedList>
         </OrderedList>
       </Container>
-      <RightPanel recommend={recipe.recommend} />
+      {/*<RightPanel recommend={recipe.recommend} />*/}
     </MainContainer>
   );
 };

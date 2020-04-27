@@ -81,3 +81,14 @@ export const RateStars = styled.li`
   padding: 0;
   margin: 0;
 `;
+export const BigRateContaiener = styled.ul`
+  list-style-type: none;
+  text-align: center;
+  @media (min-width: 1400px) {
+    width: 14%;
+  }
+  width: 23%;
+  padding: 0;
+  margin: 5% auto 1% auto;
+  position: relative;
+`;
