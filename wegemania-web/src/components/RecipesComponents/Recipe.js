@@ -489,7 +489,7 @@ const Recipe = (props) => {
                 })}
 
               <CommentContainer
-                style={{ "flex-direction": "column", width: "30%" }}
+                style={{ "flex-direction": "column", width: "100%" }}
               >
                 <TextInput
                   value={descriptionComment}
@@ -497,7 +497,9 @@ const Recipe = (props) => {
                     setDescriptionComment(e.target.value);
                   }}
                   style={{
-                    width: "100%",
+                    "min-width": "0",
+                    width: "40%",
+                    margin: "1% 0 0 0",
                     background: "rgba(255,255,255,0.7)",
                   }}
                   type="text"
@@ -506,7 +508,7 @@ const Recipe = (props) => {
                 <RateStars
                   style={{
                     width: "52%",
-                    margin: "1% auto",
+                    margin: "0",
                     background: "none",
                   }}
                 >
@@ -521,7 +523,7 @@ const Recipe = (props) => {
                   />
                 </RateStars>
                 <SubmitCommentButton
-                  style={{ width: "100%" }}
+                  style={{ width: "40%" }}
                   type="submit"
                   onClick={() => {
                     AddComment();
