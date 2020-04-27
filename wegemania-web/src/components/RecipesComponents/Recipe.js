@@ -74,6 +74,17 @@ import {
 } from "../../styles/GlobalStyle";
 import "../../styles/MenuLoginStyle.css";
 import ReactStars from "react-stars";
+
+import UserIcon from "../../icons/white_user.svg";
+import {
+  ImageComponent,
+  ElementContainer,
+  HoverIcon,
+  HoverContainer,
+  HoverHeader,
+  HoverText,
+  ImageHoverComponent,
+} from "../../styles/TempRecipes";
 import { Redirect } from "react-router-dom";
 import {
   HeaderRecipeContainer,
@@ -88,14 +99,125 @@ import {
   RateHeader,
   RateStars,
   BigRateContaiener,
+  SmallRateContainer,
 } from "../../styles/RecipeStyle";
 import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
 import "../../App.css";
 import { Link } from "react-router-dom";
+import {
+  BigRateContainerRecipes,
+  SmallRateContainerRecipes,
+} from "../../styles/StarsStyle";
 import axios from "axios";
 import ClockIcon from "../../icons/white_clock.svg";
 import { NewNotifyContext } from "../../context/Notify";
+
 const Recipe = (props) => {
+  const RecommendElements = (props) => {
+    const [isHover, setIsHover] = useState(false);
+    return (
+      <ElementContainer
+        style={{ width: "18%", height: "100%", padding: "1% 0 0 0" }}
+        onMouseEnter={() => {
+          setIsHover(true);
+        }}
+        onMouseLeave={() => {
+          setIsHover(false);
+        }}
+        onClick={() => props.historyProps.push(`/recipe/${props.recommend.id}`)}
+      >
+        <HoverContainer style={{ width: "100%" }}>
+          {isHover ? (
+            <div style={{ width: "100%", position: "relative" }}>
+              <ImageHoverComponent
+                style={{
+                  width: "100%",
+                  height: "220px",
+                  "border-radius": "4px",
+                }}
+                src={`${props.recommend.recipe_foto}`}
+              />
+
+              <HoverText
+                style={{
+                  "font-size": "16px",
+                  top: "0",
+                  display: "flex",
+                  "justify-content": "center",
+                }}
+              >
+                <img
+                  src={UserIcon}
+                  style={{ width: "25px", height: "25px", margin: "0 5% 0 0" }}
+                />
+                <p style={{ margin: 0, color: "white" }}>
+                  {props.recommend.id_user.username}
+                </p>
+              </HoverText>
+              <HoverText
+                style={{
+                  "font-size": "16px",
+                  top: "15%",
+                  display: "flex",
+                  "justify-content": "center",
+                }}
+              >
+                <img
+                  src={ClockIcon}
+                  style={{ width: "25px", height: "25px", margin: "0 5% 0 0" }}
+                />
+                <p style={{ margin: 0, color: "white" }}>
+                  {props.recommend.time}min
+                </p>
+              </HoverText>
+              <div
+                style={{
+                  width: "100%",
+                  position: "absolute",
+                  top: "25%",
+                  left: "25%",
+                }}
+              >
+                <SmallRateContainer>
+                  <RateStars
+                    style={{
+                      left: "20%",
+                      width: "100%",
+                      margin: "0 auto 0 auto",
+                      "text-align": "center",
+                      display: "block",
+                    }}
+                  >
+                    <ReactStars
+                      edit={false}
+                      value={props.recommend.rating}
+                      count={5}
+                      className="test"
+                      //onChange
+                      size={24}
+                      color2={"#4CAF50"}
+                    />
+                  </RateStars>
+                </SmallRateContainer>
+              </div>
+            </div>
+          ) : (
+            <div style={{ width: "100%" }}>
+              <ImageComponent
+                style={{
+                  width: "100%",
+                  height: "220px",
+                  "border-radius": "4px",
+                }}
+                src={`${props.recommend.recipe_foto}`}
+              />
+            </div>
+          )}
+        </HoverContainer>
+        <p style={{ width: "100%" }}>{props.recommend.recipe_name}</p>
+      </ElementContainer>
+    );
+  };
   const qs = require("querystring");
 
   const [deleyedRedirect, setDeleyedRedirect] = useState(false);
@@ -150,7 +272,7 @@ const Recipe = (props) => {
 
     axios({
       method: "post",
-      url: "https://veggiesapp.herokuapp.com/recipe/rating/",
+      url: "http://veggies.ddns.net:8181/recipe/rating/",
       data: qs.stringify({
         id_recipe: parseInt(props.match.params.id, 10),
         user_comment: descriptionComment,
@@ -275,11 +397,11 @@ const Recipe = (props) => {
   };
   useEffect(() => {
     console.log(
-      `https://veggiesapp.herokuapp.com/recipes/${props.match.params.id}`
+      `http://veggies.ddns.net:8181/recipes/${props.match.params.id}`
     );
     const fetchData = async () => {
       await axios(
-        `https://veggiesapp.herokuapp.com/recipes/${props.match.params.id}`
+        `http://veggies.ddns.net:8181/recipes/${props.match.params.id}`
       )
         .then((res) => {
           setRecipe(res.data);
@@ -288,7 +410,7 @@ const Recipe = (props) => {
         })
         .catch((err) => console.log(err));
       await axios(
-        `https://veggiesapp.herokuapp.com/recipes/list/${props.match.params.id}/`
+        `http://veggies.ddns.net:8181/recipes/list/${props.match.params.id}/`
       )
         .then((res) => {
           setListIngredients(res.data);
@@ -348,7 +470,7 @@ const Recipe = (props) => {
         )}
         <div style={{ display: "flex" }}>
           <RecipeImage
-            style={{ width: "40%", margin: "0" }}
+            style={{ width: "40%", margin: "0", "border-radius": "4px" }}
             src={recipe.recipe && recipe.recipe.recipe_foto}
           />
           <div style={{ width: "60%" }}>
@@ -370,6 +492,7 @@ const Recipe = (props) => {
                 "text-align": "center",
                 color: "#4CAF50",
                 "font-size": "30px",
+                margin: "3% 0 3% 0",
                 "font-weight": "bold",
               }}
             >
@@ -383,21 +506,21 @@ const Recipe = (props) => {
                 "font-size": "20px",
               }}
             >
-              <p style={{ margin: "0 5% 0 0", "font-size": "36px" }}>
-                {recipe.recipe && recipe.recipe.time} minut
-              </p>
               <img
                 src={ClockIcon}
                 style={{
-                  width: "60px",
-                  height: "60px",
+                  margin: "0 2% 0 0",
+                  width: "30px",
+                  height: "30px",
                   "border-radius": "50%",
                   background: "rgb(76,175,80)",
-                  padding: "1%",
                 }}
               />
+              <p style={{ margin: "0 3% 0 0", "font-size": "24px" }}>
+                {recipe.recipe && recipe.recipe.time} minut
+              </p>
             </div>
-            <BigRateContaiener>
+            <BigRateContaiener style={{ width: "100%", left: "32%" }}>
               <RateStars>
                 <ReactStars
                   edit={false}
@@ -405,7 +528,7 @@ const Recipe = (props) => {
                   count={5}
                   className="test"
                   //onChange
-                  size={24}
+                  size={56}
                   color2={"#4CAF50"}
                 />
               </RateStars>
@@ -418,7 +541,7 @@ const Recipe = (props) => {
               <div>
                 <Item>
                   <BorderText style={{ width: "100%", "text-align": "center" }}>
-                    Składniki:{" "}
+                    Składniki
                   </BorderText>
                 </Item>
                 <IngredientsList
@@ -443,24 +566,40 @@ const Recipe = (props) => {
                     })}
                 </IngredientsList>
               </div>
-              <PreparingMethod style={{ width: "50%" }}>
+              <PreparingMethod style={{ width: "58%", "max-width": "unset" }}>
                 <Item>
                   <BorderText style={{ width: "100%", "text-align": "center" }}>
-                    Sposób przygotowania:
+                    Sposób przygotowania
                   </BorderText>
                 </Item>
                 <UnorderedListIn>
                   <PreparationItem style={{ "white-space": "pre-wrap" }}>
                     {recipe.recipe &&
                       recipe.recipe.recipe_decription
-                        .replace("\r\n\r\n", "\n")
-                        .replace("\r\n", "\n")}
+                        .replace("/\r\n/", "d")
+                        .replace("/\r\n\r\n/", "\n")}
                   </PreparationItem>
                 </UnorderedListIn>
               </PreparingMethod>
             </ColumnContainer>
-
-            <HeaderText>Komentarze:</HeaderText>
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                "justify-content": "space-between",
+              }}
+            >
+              {recipe.recommend &&
+                recipe.recommend.map((recp) => {
+                  return (
+                    <RecommendElements
+                      recommend={recp}
+                      historyProps={props.history}
+                    />
+                  );
+                })}
+            </div>
+            <HeaderText>Komentarze</HeaderText>
             <UnorderedListComments>
               {recipe.rating &&
                 recipe.rating.map((rate) => {
@@ -469,10 +608,12 @@ const Recipe = (props) => {
                       <HighlightItem>
                         {rate.id_user.username || "mateuszklimek"}
                       </HighlightItem>
-                      <CommentContent>
+                      <CommentContent style={{ "font-size": "14px" }}>
                         {rate.user_comment || "testowy komentarz"}
                       </CommentContent>
-                      <RateStars style={{ width: "18%" }}>
+                      <RateStars
+                        style={{ width: "18%", margin: 0, padding: 0 }}
+                      >
                         <ReactStars
                           style={{ background: "none" }}
                           edit={false}
@@ -497,7 +638,6 @@ const Recipe = (props) => {
                     setDescriptionComment(e.target.value);
                   }}
                   style={{
-                    "min-width": "0",
                     width: "40%",
                     margin: "1% 0 0 0",
                     background: "rgba(255,255,255,0.7)",
@@ -509,11 +649,16 @@ const Recipe = (props) => {
                   style={{
                     width: "52%",
                     margin: "0",
+                    padding: "0 0 1% 0",
                     background: "none",
                   }}
                 >
                   <ReactStars
-                    style={{ background: "none" }}
+                    style={{
+                      background: "none",
+                      margin: 0,
+                      padding: "0 0 1% 0",
+                    }}
                     value={myRate}
                     count={5}
                     className="test"

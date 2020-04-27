@@ -408,7 +408,11 @@ const AddRecipt = () => {
               <NewInputContainer>
                 <NewInputLabel for="name">Nazwa przepisu</NewInputLabel>
                 <TextInput
-                  style={{ width: "100%" }}
+                  style={{
+                    width: "100%",
+                    border: "none",
+                    "border-bottom": "1px solid black",
+                  }}
                   value={recipeName}
                   onChange={(e) => {
                     setRecipeName(e.target.value);
@@ -426,7 +430,12 @@ const AddRecipt = () => {
                     style={{ width: "30px", margin: "0 3.5% 0 0" }}
                   />
                   <TextInput
-                    style={{ "text-align": "right", width: "13%" }}
+                    style={{
+                      "text-align": "center",
+                      width: "13%",
+                      border: "none",
+                      "border-bottom": "1px solid black",
+                    }}
                     value={time == 0 ? null : time}
                     onChange={(e) => {
                       setTime(e.target.value);
@@ -439,17 +448,27 @@ const AddRecipt = () => {
               </NewInputContainer>
               <NewInputContainer style={{ height: "100%" }}>
                 <NewInputLabel for="upload-image">Dodaj zdjęcie</NewInputLabel>
-                <AddImageContainer style={{ height: "65%" }}>
-                  <div className="image-upload">
-                    <label for="file-input-0">
-                      <Image src={UploadImage} />
-                      {/*}
-                    {uploadFile[0].name ? (
-                      <Image style={{ width: "550px" }} src={file[0]} />
-                    ) : (
-                      <Image src={file[0]} />
-                    )}
-                    {*/}
+                <AddImageContainer
+                  style={{ height: "65%", width: "80%", margin: "0 auto" }}
+                >
+                  <div className="image-upload" style={{ height: "100%" }}>
+                    <label
+                      for="file-input-0"
+                      style={{
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        "align-items": "center",
+                      }}
+                    >
+                      {uploadFile[0].name ? (
+                        <Image
+                          style={{ width: "100%", height: "100%" }}
+                          src={file[0]}
+                        />
+                      ) : (
+                        <Image style={{ margin: "0 auto" }} src={file[0]} />
+                      )}
                     </label>
                     <input
                       id="file-input-0"
@@ -463,6 +482,7 @@ const AddRecipt = () => {
           </div>
           <div
             style={{
+              height: "100%",
               width: "50%",
               padding: "1% 1% 0 1%",
             }}
@@ -474,18 +494,18 @@ const AddRecipt = () => {
                 height: "100%",
               }}
             >
-              <div style={{ margin: "1%" }}>
+              <div style={{ margin: "1%", height: "100%" }}>
                 <p>Każdy dobry przepis wymaga dobrej nazwy.</p>
-                <p>{recipeName || "Nazwa przepisu"}</p>
+                <p>{"Veggan Brownie"}</p>
                 <p>Ważnym elementem jest również czas wykonania.</p>
-                {time ? <p>{`${time} minut`}</p> : <p>Czas w minutach</p>}
-                <ImageRecipeContainer>
-                  {uploadFile[0].name && (
-                    <Image
-                      style={{ width: "100%", height: "100%" }}
-                      src={file[0]}
-                    />
-                  )}
+                <p>{"30 minut"}</p>
+                <ImageRecipeContainer
+                  style={{ height: "60%", width: "60%", margin: "0 auto" }}
+                >
+                  <Image
+                    style={{ width: "100%", height: "100%" }}
+                    src="https://cloud-cube-eu.s3.amazonaws.com/mgtu0qz8fwtg/public/images/recipe_fotos/Przepis_1.jpg?AWSAccessKeyId=AKIA37SVVXBHZZZ2PQ2T&Signature=XR3CjXSe%2FEbxybeD99sLA49dHEU%3D&Expires=1588010659"
+                  />
                 </ImageRecipeContainer>
               </div>
             </NewColumnContainer>

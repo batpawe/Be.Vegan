@@ -29,10 +29,44 @@ import AutoSuggest from "react-autosuggest";
 import "../../styles/SuggestStyle.css";
 import ImageRestaurant from "../../images/restaurant.jpg";
 const Element = (props) => {
+  var moment = require("moment");
   const [isHover, setIsHover] = useState(false);
   console.log("||||||||||||||");
   console.log(props.index);
   return (
+    <div style={{ width: "100%" }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <p style={{ color: "#27ae60", "font-size": "26px" }}>
+          {props.post.author.username}
+        </p>
+        <p style={{ "font-size": "28px", "font-weight": "bold" }}>
+          {props.post.title}
+        </p>
+        <p style={{ "font-size": "26px" }}>
+          {moment(props.post.data_stamp).format("YYYY-MM-D HH:mm:ss")}
+        </p>
+      </div>
+      <p style={{ "font-size": "24px" }}>{props.post.description}</p>
+      <div
+        style={{
+          width: "100%",
+          margin: "auto",
+          cursor: "pointer",
+          height: "60%",
+        }}
+        onClick={() => props.historyProps.push(`/post/${props.index}`)}
+      >
+        <img
+          src={props.post.foto}
+          style={{
+            width: "80%",
+            margin: "0 auto",
+            display: "block",
+            height: "100%",
+          }}
+        />
+      </div>
+      {/*}
     <ElementContainer
       onMouseEnter={() => {
         setIsHover(true);
@@ -56,6 +90,8 @@ const Element = (props) => {
         )}
       </HoverContainer>
     </ElementContainer>
+        {*/}
+    </div>
   );
 };
 const Posts = (props) => {
@@ -86,54 +122,47 @@ const Posts = (props) => {
     fetchData();
   }, []);
   return (
-    <MainContainer>
+    <MainContainer
+      style={{
+        display: "flex",
+        "flex-direction": "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{ width: "100%", "text-align": "center", margin: "0 0 2% 0" }}
+      >
+        <AutoSuggest
+          suggestions={suggestions}
+          onSuggestionsClearRequested={() => setSuggestions([])}
+          onSuggestionsFetchRequested={({ value }) => {
+            console.log(value);
+            setValue(value);
+            setSuggestions(getSuggestions(value));
+          }}
+          onSuggestionSelected={(_, { suggestionValue }) =>
+            console.log("Wybrany: " + suggestionValue)
+          }
+          getSuggestionValue={(suggestion) => suggestion.title}
+          renderSuggestion={(suggestion) => <span>{suggestion.title}</span>}
+          inputProps={{
+            placeholder: "Wprowadź tytuł",
+            value: value,
+            onChange: (_, { newValue, method }) => {
+              setValue(newValue);
+            },
+          }}
+          highlightFirstSuggestion={true}
+        />
+      </div>
       <Container>
-        <AddPostPageContainer>
-          <SearchContainer>
-            <div>
-              <p
-                style={{
-                  margin: 0,
-                  padding: 0,
-                  "font-weight": "bold",
-                  color: "#27ae60",
-                }}
-              >
-                Filtruj:
-              </p>
-              <AutoSuggest
-                suggestions={suggestions}
-                onSuggestionsClearRequested={() => setSuggestions([])}
-                onSuggestionsFetchRequested={({ value }) => {
-                  console.log(value);
-                  setValue(value);
-                  setSuggestions(getSuggestions(value));
-                }}
-                onSuggestionSelected={(_, { suggestionValue }) =>
-                  console.log("Wybrany: " + suggestionValue)
-                }
-                getSuggestionValue={(suggestion) => suggestion.title}
-                renderSuggestion={(suggestion) => (
-                  <span>{suggestion.title}</span>
-                )}
-                inputProps={{
-                  placeholder: "Wprowadź tytuł",
-                  value: value,
-                  onChange: (_, { newValue, method }) => {
-                    setValue(newValue);
-                  },
-                }}
-                highlightFirstSuggestion={true}
-              />
-            </div>
-            {/*<SearchInput placeholder="Wpisz tytuł lub tag"></SearchInput>*/}
-            {/* <SearchButton>Wyszukaj</SearchButton> */}
-          </SearchContainer>
+        <AddPostPageContainer style={{ background: "none" }}>
           <AddPostPageLink
-            style={{ width: "200px", "font-size": "18px" }}
+            style={{ width: "100%", "font-size": "32px" }}
             to="/addpost"
           >
-            Dodaj post
+            Utwórz swojego posta
           </AddPostPageLink>
         </AddPostPageContainer>
         <div
@@ -163,7 +192,7 @@ const Posts = (props) => {
         <Element key={1} />
         {*/}
       </Container>
-      <RightPanel />
+      {/*<RightPanel />*/}
     </MainContainer>
   );
 };

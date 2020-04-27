@@ -384,7 +384,7 @@ const Recipes = (props) => {
         }}
         onClick={() => props.historyProps.push(`/recipe/${props.recipe.id}`)}
       >
-        <HoverContainer style={{ width: "100%" }}>
+        <HoverContainer style={{ width: "100%", pointer: "cursor" }}>
           {isHover ? (
             <div style={{ width: "100%", position: "relative" }}>
               <ImageHoverComponent
@@ -399,30 +399,43 @@ const Recipes = (props) => {
               <HoverText
                 style={{
                   "font-size": "16px",
-                  top: "20%",
+                  top: "0",
                   display: "flex",
-                  "justify-content": "space-between",
+                  "justify-content": "center",
                 }}
               >
-                <img src={UserIcon} style={{ width: "20px" }} />
-                <p style={{ margin: 0, color: "white" }}>
+                <img
+                  src={UserIcon}
+                  style={{ width: "22px", margin: "0 5% 0 0" }}
+                />
+                <p style={{ margin: 0, color: "white", "font-size": "18px" }}>
                   {props.recipe.id_user.username}
                 </p>
               </HoverText>
               <HoverText
                 style={{
                   "font-size": "16px",
-                  top: "65%",
+                  top: "18%",
                   display: "flex",
-                  "justify-content": "space-between",
+                  "justify-content": "center",
                 }}
               >
-                <img src={ClockIcon} style={{ width: "20px" }} />
-                <p style={{ margin: 0, color: "white" }}>
+                <img
+                  src={ClockIcon}
+                  style={{ width: "22px", margin: "0 5% 0 0" }}
+                />
+                <p style={{ margin: 0, color: "white", "font-size": "18px" }}>
                   {props.recipe.time}min
                 </p>
               </HoverText>
-              <div style={{ width: "100%", position: "absolute", top: 0 }}>
+              <div
+                style={{
+                  width: "100%",
+                  position: "absolute",
+                  top: "33%",
+                  left: "4%",
+                }}
+              >
                 <SmallRateContainerRecipes>
                   <RateStars style={{ width: "100%" }}>
                     {recipes[current - 1] && (
@@ -580,7 +593,9 @@ const Recipes = (props) => {
                 props.history.push(`/recipe/${recipes[current - 1][0].id}`)
               }
             >
-              <HoverContainer style={{ width: "100%", flex: "1" }}>
+              <HoverContainer
+                style={{ width: "100%", flex: "1", cursor: "pointer" }}
+              >
                 {console.log("test1")}
 
                 {recipes[current - 1] &&
@@ -602,13 +617,16 @@ const Recipes = (props) => {
                       />
                       <HoverText
                         style={{
-                          "font-size": "16px",
-                          top: "20%",
+                          "font-size": "22px",
+                          top: "0",
                           display: "flex",
-                          "justify-content": "space-between",
+                          "justify-content": "center",
                         }}
                       >
-                        <img src={UserIcon} style={{ width: "30px" }} />
+                        <img
+                          src={UserIcon}
+                          style={{ width: "30px", margin: "0 5% 0 0" }}
+                        />
                         <p
                           style={{
                             margin: 0,
@@ -621,13 +639,16 @@ const Recipes = (props) => {
                       </HoverText>
                       <HoverText
                         style={{
-                          "font-size": "16px",
-                          top: "65%",
+                          "font-size": "22px",
+                          top: "15%",
                           display: "flex",
-                          "justify-content": "space-between",
+                          "justify-content": "center",
                         }}
                       >
-                        <img src={ClockIcon} style={{ width: "30px" }} />
+                        <img
+                          src={ClockIcon}
+                          style={{ width: "30px", margin: "0 5% 0 0" }}
+                        />
                         <p
                           style={{
                             margin: 0,
@@ -698,17 +719,18 @@ const Recipes = (props) => {
                 >
                   {recipes[current - 1] && recipes[current - 1][0].recipe_name}
                 </p>
-                <BigRateContainerRecipes>
+                <BigRateContainerRecipes style={{ width: "100%", left: "37%" }}>
                   {console.log("PPP")}
                   <RateStars style={{ width: "100%" }}>
                     {recipes[current - 1] && (
                       <ReactStars
+                        style={{ top: "40%" }}
                         edit={false}
                         value={recipes[current - 1][0].rating}
                         count={5}
                         className="test"
                         //onChange
-                        size={24}
+                        size={56}
                         color2={"#4CAF50"}
                       />
                     )}
