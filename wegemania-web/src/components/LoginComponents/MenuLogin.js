@@ -97,12 +97,15 @@ const Header = (props) => {
   return (
     <div>
       {user.userInfo === undefined ? (
-        <header className="header">
+        <header
+          className="header"
+          style={{ "justify-content": "space-between" }}
+        >
           <MenuListLink to="/">
-            <img style={{ width: 50, height: 50 }} src={LogoVeggies} />
+            <img style={{ width: 100, height: 50 }} src={LogoVeggies} />
           </MenuListLink>
           <nav style={{ width: "70%" }}>
-            <MenuUnorderedList>
+            <MenuUnorderedList style={{ justifyContent: "flex-end" }}>
               <MenuList>
                 <MenuListLink to="/">Zaloguj</MenuListLink>
               </MenuList>
