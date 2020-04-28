@@ -197,7 +197,7 @@ class PostIdView(viewsets.GenericViewSet):
             return Response(status=404)
 
     def list(self, request):
-        post = Main_Post.objects.all()
+        post = Main_Post.objects.all().order_by('-data_stamp')
         if post:
             post = PostSerializer(post, many=True)
             return Response(post.data)
