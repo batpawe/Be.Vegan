@@ -44,6 +44,7 @@ import {
   UserActionsContainer,
   Icon,
 } from "../../styles/ContainerStyles";
+import "../../styles/Rate.css";
 import {
   RecipesName,
   HeaderText,
@@ -392,6 +393,7 @@ const Recipes = (props) => {
                   width: "100%",
                   height: "220px",
                   "border-radius": "4px",
+                  "object-fit": "cover",
                 }}
                 src={`${props.recipe.recipe_foto}`}
               />
@@ -443,7 +445,7 @@ const Recipes = (props) => {
                         edit={false}
                         value={props.recipe.rating}
                         count={5}
-                        className="test"
+                        className="recipes_rate"
                         //onChange
                         size={24}
                         color2={"#4CAF50"}
@@ -460,6 +462,7 @@ const Recipes = (props) => {
                   width: "100%",
                   height: "220px",
                   "border-radius": "4px",
+                  "object-fit": "cover",
                 }}
                 src={`${props.recipe.recipe_foto}`}
               />
@@ -671,7 +674,7 @@ const Recipes = (props) => {
                         }}
                         style={{
                           width: "100%",
-
+                          "object-fit": "cover",
                           "border-radius": "4px",
                         }}
                         onClick={() =>
@@ -719,16 +722,15 @@ const Recipes = (props) => {
                 >
                   {recipes[current - 1] && recipes[current - 1][0].recipe_name}
                 </p>
-                <BigRateContainerRecipes style={{ width: "100%", left: "37%" }}>
+                <BigRateContainerRecipes style={{ width: "100%" }}>
                   {console.log("PPP")}
                   <RateStars style={{ width: "100%" }}>
                     {recipes[current - 1] && (
                       <ReactStars
-                        style={{ top: "40%" }}
                         edit={false}
                         value={recipes[current - 1][0].rating}
                         count={5}
-                        className="test"
+                        className="recipes_rate"
                         //onChange
                         size={56}
                         color2={"#4CAF50"}

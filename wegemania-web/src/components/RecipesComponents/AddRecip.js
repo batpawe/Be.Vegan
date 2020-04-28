@@ -138,6 +138,7 @@ const AddRecipt = () => {
   const [mySuggestion, setMySuggestion] = useState({});
   const [time, setTime] = useState(0);
   const [current, setCurrent] = useState(1);
+  const [defaultRecipe, setDefaultRecipe] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       await axios("https://veggiesapp.herokuapp.com/ingredients/")
@@ -148,6 +149,9 @@ const AddRecipt = () => {
         .catch((err) => {
           console.log(err);
         });
+      await axios("http://veggiesapp.herokuapp.com/recipes/51/").then((res) => {
+        setDefaultRecipe(res.data);
+      });
     };
     fetchData();
   }, []);
@@ -449,7 +453,12 @@ const AddRecipt = () => {
               <NewInputContainer style={{ height: "100%" }}>
                 <NewInputLabel for="upload-image">Dodaj zdjęcie</NewInputLabel>
                 <AddImageContainer
-                  style={{ height: "65%", width: "80%", margin: "0 auto" }}
+                  style={{
+                    height: "65%",
+                    width: "80%",
+                    margin: "0 auto",
+                    border: "none",
+                  }}
                 >
                   <div className="image-upload" style={{ height: "100%" }}>
                     <label
@@ -463,11 +472,18 @@ const AddRecipt = () => {
                     >
                       {uploadFile[0].name ? (
                         <Image
-                          style={{ width: "100%", height: "100%" }}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            "object-fit": "cover",
+                          }}
                           src={file[0]}
                         />
                       ) : (
-                        <Image style={{ margin: "0 auto" }} src={file[0]} />
+                        <Image
+                          style={{ margin: "0 auto", "object-fit": "cover" }}
+                          src={file[0]}
+                        />
                       )}
                     </label>
                     <input
@@ -499,14 +515,16 @@ const AddRecipt = () => {
                 <p>{"Veggan Brownie"}</p>
                 <p>Ważnym elementem jest również czas wykonania.</p>
                 <p>{"30 minut"}</p>
-                <ImageRecipeContainer
-                  style={{ height: "60%", width: "60%", margin: "0 auto" }}
-                >
-                  <Image
-                    style={{ width: "100%", height: "100%" }}
-                    src="https://cloud-cube-eu.s3.amazonaws.com/mgtu0qz8fwtg/public/images/recipe_fotos/Przepis_1.jpg?AWSAccessKeyId=AKIA37SVVXBHZZZ2PQ2T&Signature=XR3CjXSe%2FEbxybeD99sLA49dHEU%3D&Expires=1588010659"
-                  />
-                </ImageRecipeContainer>
+                <Image
+                  style={{
+                    width: "60%",
+                    height: "50%",
+                    "object-fit": "cover",
+                    display: "block",
+                    margin: "0 auto",
+                  }}
+                  src={defaultRecipe.recipe && defaultRecipe.recipe.recipe_foto}
+                />
               </div>
             </NewColumnContainer>
           </div>

@@ -102,6 +102,7 @@ import {
   SmallRateContainer,
 } from "../../styles/RecipeStyle";
 import { AddPostPageContainer, AddPostPageLink } from "../../styles/PostStyle";
+import "../../styles/Rate.css";
 import "../../App.css";
 import { Link } from "react-router-dom";
 import {
@@ -134,13 +135,14 @@ const Recipe = (props) => {
                   width: "100%",
                   height: "220px",
                   "border-radius": "4px",
+                  "object-fit": "cover",
                 }}
                 src={`${props.recommend.recipe_foto}`}
               />
 
               <HoverText
                 style={{
-                  "font-size": "16px",
+                  "font-size": "14px",
                   top: "0",
                   display: "flex",
                   "justify-content": "center",
@@ -148,7 +150,7 @@ const Recipe = (props) => {
               >
                 <img
                   src={UserIcon}
-                  style={{ width: "25px", height: "25px", margin: "0 5% 0 0" }}
+                  style={{ width: "20px", height: "20px", margin: "0 1% 0 0" }}
                 />
                 <p style={{ margin: 0, color: "white" }}>
                   {props.recommend.id_user.username}
@@ -175,13 +177,11 @@ const Recipe = (props) => {
                   width: "100%",
                   position: "absolute",
                   top: "25%",
-                  left: "25%",
                 }}
               >
                 <SmallRateContainer>
                   <RateStars
                     style={{
-                      left: "20%",
                       width: "100%",
                       margin: "0 auto 0 auto",
                       "text-align": "center",
@@ -192,7 +192,7 @@ const Recipe = (props) => {
                       edit={false}
                       value={props.recommend.rating}
                       count={5}
-                      className="test"
+                      className="recipes_rate"
                       //onChange
                       size={24}
                       color2={"#4CAF50"}
@@ -208,6 +208,7 @@ const Recipe = (props) => {
                   width: "100%",
                   height: "220px",
                   "border-radius": "4px",
+                  "object-fit": "cover",
                 }}
                 src={`${props.recommend.recipe_foto}`}
               />
@@ -423,7 +424,7 @@ const Recipe = (props) => {
   }, [props.match.params.id, deleyedRedirect]);
   return (
     <MainContainer>
-      <Container style={{ position: "relative" }}>
+      <Container style={{ position: "relative", width: "80%" }}>
         {recipe.recipe && user.userInfo.id === recipe.recipe.id_user.id && (
           <div>
             <UserActionsContainer>
@@ -470,7 +471,12 @@ const Recipe = (props) => {
         )}
         <div style={{ display: "flex" }}>
           <RecipeImage
-            style={{ width: "40%", margin: "0", "border-radius": "4px" }}
+            style={{
+              width: "40%",
+              margin: "0",
+              "border-radius": "4px",
+              "object-fit": "cover",
+            }}
             src={recipe.recipe && recipe.recipe.recipe_foto}
           />
           <div style={{ width: "60%" }}>
@@ -520,13 +526,13 @@ const Recipe = (props) => {
                 {recipe.recipe && recipe.recipe.time} minut
               </p>
             </div>
-            <BigRateContaiener style={{ width: "100%", left: "32%" }}>
+            <BigRateContaiener style={{ width: "100%" }}>
               <RateStars>
                 <ReactStars
                   edit={false}
                   value={recipe.recipe ? recipe.recipe.rating : 0}
                   count={5}
-                  className="test"
+                  className="recipes_rate"
                   //onChange
                   size={56}
                   color2={"#4CAF50"}
