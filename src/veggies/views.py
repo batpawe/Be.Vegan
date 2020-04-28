@@ -89,9 +89,9 @@ class SubstituteNVeganView(APIView):
     def get(self, request, format=None):
         prefix = request.GET.get('prefix', '')
         if r'{}'.format(prefix):
-            food = Food_To_Substitute.objects.filter(food_name__regex=r'{}'.format(prefix))
+            food = Food_To_Substitute.objects.filter(food_name__iregex=r'{}'.format(prefix))
         else:
-            food = Food_To_Substitute.objects.filter(food_name__regex=r'^{}'.format(prefix))
+            food = Food_To_Substitute.objects.filter(food_name__iregex=r'^{}'.format(prefix))
         if food:
             serializer = SubstituteSerializer(food, many=True)
             return Response(serializer.data)
@@ -228,9 +228,9 @@ class IngredientsView(APIView):
     def get(self, request, format=None):
         prefix = request.GET.get('prefix', '')
         if r'{}'.format(prefix):
-            food = Ingredient.objects.filter(name__regex=r'{}'.format(prefix))
+            food = Ingredient.objects.filter(name__iregex=r'{}'.format(prefix))
         else:
-            food = Ingredient.objects.filter(name__regex=r'^{}'.format(prefix))
+            food = Ingredient.objects.filter(name__iregex=r'^{}'.format(prefix))
         if food:
             food = IngredientSerializer(food, many=True)
             return Response(food.data)
@@ -243,8 +243,8 @@ class RestaurantView(viewsets.ViewSet):
     def list(self, request, format=None):
         if "city" in request.GET:
             prefix = str(request.GET.get("city", ''))
-            if Restaurant.objects.filter(city__regex=r'^{}'.format(prefix)):
-                res = Restaurant.objects.filter(city__regex=r'^{}'.format(prefix))
+            if Restaurant.objects.filter(city__iregex=r'^{}'.format(prefix)):
+                res = Restaurant.objects.filter(city__iregex=r'^{}'.format(prefix))
                 res = RestaurantSerializer(res, many=True)
                 return Response(res.data)
             else:
@@ -258,8 +258,8 @@ class RestaurantView(viewsets.ViewSet):
             return Response(res.data)
         elif 'prefix' in request.GET:
             prefix = str(request.GET.get("prefix", ''))
-            if Restaurant.objects.filter(name__regex=r'{}'.format(prefix)):
-                res = Restaurant.objects.filter(name__regex=r'{}'.format(prefix))
+            if Restaurant.objects.filter(name__iregex=r'{}'.format(prefix)):
+                res = Restaurant.objects.filter(name__iregex=r'{}'.format(prefix))
                 res = RestaurantSerializer(res, many=True)
             return Response(res.data)
         else:
@@ -387,9 +387,9 @@ class RecipeView(viewsets.ViewSet):
         prefix = request.GET.get('prefix', '')
         ingredients = request.GET.get('ingredients', False)
         if r'{}'.format(prefix):
-            recipes = Recipe.objects.filter(recipe_name__regex=r'{}'.format(prefix))
+            recipes = Recipe.objects.filter(recipe_name__iregex=r'{}'.format(prefix))
         else:
-            recipes = Recipe.objects.filter(recipe_name__regex=r'^{}'.format(prefix))
+            recipes = Recipe.objects.filter(recipe_name__iregex=r'^{}'.format(prefix))
         if ingredients:
             ingredients = ingredients.split(',')
             recipes_list = Ingredient_List.objects.filter(id_ingredient__name__in=ingredients)
@@ -526,10 +526,11 @@ class RecipeRatingView(viewsets.ViewSet):
             return Response({"detail": "błędne zapytanie." , "seriializer": serializer.errors},status=400)
 
     def destroy(self, request, pk=None):
+        #return Response(data={"detail": "print"})
         rating = Rating_Recipe.objects.get(id_user=request.user, id_recipe=pk)
-        if request.user.id == rating.id_user_id:
+        if request.user == rating.id_user:
             rating.delete()
-            return Response("Deleted")
+            return Response(data={"detail": "Deleted"})
         else:
             return Response(status=401)
 
