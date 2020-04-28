@@ -141,7 +141,7 @@ const AddRecipt = () => {
   const [defaultRecipe, setDefaultRecipe] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      await axios("https://veggiesapp.herokuapp.com/ingredients/")
+      await axios("http://veggies.ddns.net:8181/ingredients/")
         .then((res) => {
           setData(res.data);
           setSuggestions(res.data.map((date) => date.name));
@@ -149,7 +149,7 @@ const AddRecipt = () => {
         .catch((err) => {
           console.log(err);
         });
-      await axios("http://veggiesapp.herokuapp.com/recipes/51/").then((res) => {
+      await axios("http://veggies.ddns.net:8181/recipes/51/").then((res) => {
         setDefaultRecipe(res.data);
       });
     };
@@ -187,7 +187,7 @@ const AddRecipt = () => {
       body: data,
     };
     console.log([...data]);
-    await fetch("https://veggiesapp.herokuapp.com/recipes/", config)
+    await fetch("http://veggies.ddns.net:8181/recipes/", config)
       .then((res) => {
         if (res.status === 200) {
           console.log(
@@ -209,7 +209,7 @@ const AddRecipt = () => {
                     body: dataProduct,
                   };
                   fetch(
-                    `https://veggiesapp.herokuapp.com/recipes/list/${result.id}/`,
+                    `http://veggies.ddns.net:8181/recipes/list/${result.id}/`,
                     configProduct
                   )
                     .then((resProduct) => {
@@ -387,17 +387,37 @@ const AddRecipt = () => {
     indents.push(<span>Witaj</span>);
   }
   const [tempQuanity, setTempQuanity] = useState(0);
-  let tempDescription = JSON.parse(
-    JSON.stringify(
-      "Przykładowy przepis\r\nWypróbuj te miękkie brownies bez nabiału i jajek. Są idealne dla\r\nwegan i osób stosujących dietę bezmleczną. Smakują bosko!\r\n\r\nSposób przygotowania:\r\n1. Rozgrzej piekarnik do 170C. Nasmaruj blaszkę i wyłóż w niej\r\npergamin do pieczenia. Połącz siemię lniane z 6 łyżkami wody\r\ni odstaw na 5 minut.\r\n\r\n2. W rondelku rozpuść 120g czekolady, kawy i margaryny z\r\n60ml wody (na małym ogniu). Pozostaw do ostygnięcia.\r\n\r\n3. Dodaj do miski mąkę, migdały, kakao, proszek do pieczenia,\r\n¼ łyżeczki soli i wymieszaj, aby usunąć grudki. Za pomocą\r\nręcznej trzepaczki wymieszaj cukier z roztopioną czekoladą i\r\ndobrze ubijaj, aż będzie gładka i błyszcząca, upewniając się, że\r\ncały cukier dobrze się rozpuści. Wymieszaj mieszankę\r\nsiemienia lnianego, ekstrakt waniliowy i pozostałą czekoladę,\r\na następnie mieszaninę mąki. Przełóż do blaszki.\r\n\r\n4. Piec przez 35-45 minut. Pozostawić do całkowitego\r\nostygnięcia w blaszce, a następnie pokroić w kwadraty.\r\nPrzechowywać w szczelnym pojemniku i jeść w ciągu trzech\r\ndni.".replace(
-        "\r\n",
-        "\n"
-      )
-    )
-  );
+  let tempDescription = defaultRecipe.recipe_decription;
+
   const classes = useStyles();
   return (
     <Container>
+      {current < 3 && (
+        <img
+          src={Next}
+          style={{
+            width: "25px",
+            position: "absolute",
+            top: "45%",
+            right: 0,
+            cursor: "pointer",
+          }}
+          onClick={() => setCurrent((c) => c + 1)}
+        />
+      )}
+      {current > 1 && (
+        <img
+          src={Back}
+          style={{
+            width: "25px",
+            position: "absolute",
+            top: "45%",
+            left: 0,
+            cursor: "pointer",
+          }}
+          onClick={() => setCurrent((c) => c - 1)}
+        />
+      )}
       {deleyedRedirect && <Redirect to={`/recipes`} />}{" "}
       {current === 1 && (
         <MainContainerAddRecip>
@@ -454,7 +474,7 @@ const AddRecipt = () => {
                 <NewInputLabel for="upload-image">Dodaj zdjęcie</NewInputLabel>
                 <AddImageContainer
                   style={{
-                    height: "65%",
+                    height: "60%",
                     width: "80%",
                     margin: "0 auto",
                     border: "none",
@@ -473,9 +493,10 @@ const AddRecipt = () => {
                       {uploadFile[0].name ? (
                         <Image
                           style={{
-                            width: "100%",
-                            height: "100%",
+                            width: "80%",
+                            height: "80%",
                             "object-fit": "cover",
+                            "border-radius": "4px",
                           }}
                           src={file[0]}
                         />
@@ -511,17 +532,45 @@ const AddRecipt = () => {
               }}
             >
               <div style={{ margin: "1%", height: "100%" }}>
-                <p>Każdy dobry przepis wymaga dobrej nazwy.</p>
-                <p>{"Veggan Brownie"}</p>
-                <p>Ważnym elementem jest również czas wykonania.</p>
-                <p>{"30 minut"}</p>
+                <p
+                  style={{
+                    "text-align": "center",
+                    margin: "0 auto",
+                    "font-size": "24px",
+                    width: "100%",
+                  }}
+                >
+                  Przykład
+                </p>
+                <p
+                  style={{
+                    margin: "3% 0 0 0",
+                    "text-align": "center",
+                    "font-size": "32px",
+                    "font-weight": "bold",
+                    color: "#388c38",
+                  }}
+                >
+                  {"Vegan Brownies"}
+                </p>
+                <p
+                  style={{
+                    "text-align": "center",
+                    "font-size": "20px",
+                    margin: "2% 0 0 0",
+                    color: "#388c38",
+                  }}
+                >
+                  {"30 minut"}
+                </p>
                 <Image
                   style={{
                     width: "60%",
                     height: "50%",
                     "object-fit": "cover",
                     display: "block",
-                    margin: "0 auto",
+                    margin: "10% auto 0 auto",
+                    "border-radius": "4px",
                   }}
                   src={defaultRecipe.recipe && defaultRecipe.recipe.recipe_foto}
                 />
@@ -594,10 +643,9 @@ const AddRecipt = () => {
               }}
             >
               <div style={{ margin: "1%" }} style={{ height: "100%" }}>
-                <SpanDescription>
-                  {description
-                    ? `Opis dla przepisu: ${recipeName}\n\n${description}`
-                    : tempDescription}
+                <SpanDescription style={{ "white-space": "pre-wrap" }}>
+                  {defaultRecipe.recipe &&
+                    defaultRecipe.recipe.recipe_decription}
                 </SpanDescription>
               </div>
             </NewColumnContainer>
@@ -696,6 +744,8 @@ const AddRecipt = () => {
                       width: "16%",
                       height: "50px",
                       padding: 0,
+                      "text-align": "center",
+                      border: "none",
                       margin: 0,
                     }}
                     placeholder="Wprowadź ilość"
@@ -712,6 +762,8 @@ const AddRecipt = () => {
                       "text-align": "center",
                       padding: 0,
                       margin: 0,
+                      "text-align": "center",
+                      border: "none",
                       display: "flex",
                       "align-items": "center",
                       "justify-content": "center",
@@ -737,7 +789,7 @@ const AddRecipt = () => {
                       tempArray.push(temp);
                       setSuggestions([]);
                       setProducts([...tempArray]);
-                      setTempQuanity("");
+                      setTempQuanity("0");
                       setValue("");
                       setMySuggestion("");
                     }}
@@ -757,32 +809,49 @@ const AddRecipt = () => {
                               display: "flex",
                               margin: "1% auto 1% auto",
                               width: "100%",
-                              "justify-content": "space-between",
+                              "font-size": "24px",
                             }}
                           >
                             <div
                               style={{
+                                width: "50%",
                                 "text-align": "left",
+                                "font-size": "24px",
                               }}
                             >
                               {product.name}
                             </div>
                             <div
                               style={{
+                                width: "30%",
                                 "text-align": "center",
+                                "font-size": "24px",
                               }}
                             >
                               {product.number}
                             </div>
-                            <img
-                              style={{ width: 15 }}
-                              src={CloseImage}
-                              onClick={() => {
-                                let temp = products;
-                                temp.splice(index, 1);
-                                setProducts([...temp]);
+                            <div
+                              style={{
+                                "text-align": "center",
+                                width: "10%",
+                                "font-size": "24px",
                               }}
-                            />
+                            >
+                              gram
+                            </div>
+                            <div
+                              style={{ width: "10%", "text-align": "center" }}
+                            >
+                              <img
+                                style={{ width: 15 }}
+                                src={CloseImage}
+                                onClick={() => {
+                                  let temp = products;
+                                  temp.splice(index, 1);
+                                  setProducts([...temp]);
+                                }}
+                              />
+                            </div>
                           </div>
                         );
                       }

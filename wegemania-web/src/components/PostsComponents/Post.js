@@ -224,34 +224,72 @@ const Post = (props) => {
         {post[0] && (
           <OrderedList>
             <UnorderedList>
-              <HeaderPostsContainer>
-                <HeaderPostsItem>
-                  <HeaderPostsText>{post[0] && post[0].title}</HeaderPostsText>
-                </HeaderPostsItem>
-                <div style={{ "text-align": "left" }}>
-                  <p style={{ margin: 0, padding: 0 }}>
-                    {post[0] &&
-                      moment(post[0].data_stamp).format("YYYY-MM-D HH:mm:ss")}
-                  </p>
-                  <HighlightItem to={`/users/${post[0].author.id}`}>
-                    {post[0].author.username}
-                  </HighlightItem>
-                </div>
-              </HeaderPostsContainer>
               <div
                 style={{
-                  background: "rgba(255,255,255,0.6)",
-                  "border-radius": "5px",
-                  margin: "1% 0 1% 0",
-                  padding: "1%",
-                  "font-size": "20px",
+                  width: "100%",
+                  padding: "2% 0 3% 0",
+                  "border-bottom": "1px solid black",
                 }}
+                onClick={() =>
+                  props.historyProps.push(`/post/${post[0].index}`)
+                }
               >
-                <ColumnContainer>
-                  <div>{post[0] && post[0].description}</div>
-                </ColumnContainer>
-
-                <Image src={post[0] && post[0].foto} />
+                <div style={{ display: "flex", width: "100%" }}>
+                  <p
+                    style={{
+                      color: "#27ae60",
+                      "font-size": "26px",
+                      width: "26%",
+                    }}
+                  >
+                    {post[0].author.username}
+                  </p>
+                  <p
+                    style={{
+                      "font-size": "28px",
+                      "font-weight": "bold",
+                      width: "48%",
+                      "text-align": "center",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      props.historyProps.push(`/post/${post[0].index}`)
+                    }
+                  >
+                    {post[0].title}
+                  </p>
+                  <p
+                    style={{
+                      "font-size": "26px",
+                      width: "26%",
+                      "text-align": "right",
+                    }}
+                  >
+                    {moment(post[0].data_stamp).format("YYYY-MM-D")}
+                  </p>
+                </div>
+                <p style={{ "font-size": "24px" }}>{post[0].description}</p>
+                {post[0] && post[0].foto && (
+                  <div
+                    style={{
+                      width: "100%",
+                      margin: "auto",
+                      cursor: "pointer",
+                      height: "60%",
+                    }}
+                  >
+                    <img
+                      src={post[0].foto}
+                      style={{
+                        "object-fit": "contain",
+                        width: "60%",
+                        margin: "0 auto",
+                        display: "block",
+                        height: "80%",
+                      }}
+                    />
+                  </div>
+                )}
               </div>
               <HeaderText>Komentarze:</HeaderText>
 
@@ -259,21 +297,28 @@ const Post = (props) => {
                 {post[1].map((comment) => {
                   return (
                     <UnorderedListCommentsIn>
-                      <HighlightItem to={`/users/${comment.author.id}`}>
+                      <HighlightItem
+                        to={`/users/${comment.author.id}`}
+                        style={{ "font-size": "20px" }}
+                      >
                         {comment.author.username}
                       </HighlightItem>
 
-                      <p style={{ "font-size": 12 }}>
+                      <p style={{ "font-size": "16px" }}>
                         {post[0] &&
                           moment(comment.data_stamp).format(
                             "YYYY-MM-D HH:mm:ss"
                           )}
                       </p>
-                      <CommentContent style={{ "font-size": 14 }}>
+                      <CommentContent style={{ "font-size": "18px" }}>
                         {comment.description}
                       </CommentContent>
                       <img
-                        style={{ width: 120, margin: "1% 0 0 0" }}
+                        style={{
+                          width: 240,
+                          margin: "1% 0 0 0",
+                          "border-radius": "4px",
+                        }}
                         src={comment.foto}
                       />
                     </UnorderedListCommentsIn>
@@ -343,8 +388,6 @@ const Post = (props) => {
           </OrderedList>
         )}
       </Container>
-
-      <RightPanel />
     </MainContainer>
   );
 };

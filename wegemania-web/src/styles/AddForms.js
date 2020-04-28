@@ -206,7 +206,9 @@ export const NewInputContainer = styled.div`
   flex-direction: column;
 `;
 export const NewInputLabel = styled.label`
-  font-size: 20px;
+  font-size: 22px;
+  color: #388c38;
+  font-weight: bold;
   margin: 0;
 `;
 export const NewColumnContainer = styled.div`

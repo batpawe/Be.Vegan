@@ -34,38 +34,57 @@ const Element = (props) => {
   console.log("||||||||||||||");
   console.log(props.index);
   return (
-    <div style={{ width: "100%" }}>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <p style={{ color: "#27ae60", "font-size": "26px" }}>
+    <div
+      style={{
+        width: "100%",
+        padding: "2% 0 0 0",
+        "border-bottom": "1px solid black",
+      }}
+      onClick={() => props.historyProps.push(`/post/${props.index}`)}
+    >
+      <div style={{ display: "flex", width: "100%" }}>
+        <p style={{ color: "#27ae60", "font-size": "26px", width: "26%" }}>
           {props.post.author.username}
         </p>
-        <p style={{ "font-size": "28px", "font-weight": "bold" }}>
+        <p
+          style={{
+            "font-size": "28px",
+            "font-weight": "bold",
+            width: "48%",
+            "text-align": "center",
+            cursor: "pointer",
+          }}
+          onClick={() => props.historyProps.push(`/post/${props.index}`)}
+        >
           {props.post.title}
         </p>
-        <p style={{ "font-size": "26px" }}>
-          {moment(props.post.data_stamp).format("YYYY-MM-D HH:mm:ss")}
+        <p style={{ "font-size": "26px", width: "26%", "text-align": "right" }}>
+          {moment(props.post.data_stamp).format("YYYY-MM-D")}
         </p>
       </div>
       <p style={{ "font-size": "24px" }}>{props.post.description}</p>
-      <div
-        style={{
-          width: "100%",
-          margin: "auto",
-          cursor: "pointer",
-          height: "60%",
-        }}
-        onClick={() => props.historyProps.push(`/post/${props.index}`)}
-      >
-        <img
-          src={props.post.foto}
+      {props.post && props.post.foto && (
+        <div
           style={{
-            width: "80%",
-            margin: "0 auto",
-            display: "block",
-            height: "100%",
+            width: "100%",
+            margin: "auto",
+            cursor: "pointer",
+            height: "60%",
           }}
-        />
-      </div>
+        >
+          <img
+            src={props.post.foto}
+            style={{
+              "object-fit": "contain",
+              width: "80%",
+              margin: "0 auto",
+              display: "block",
+              height: "100%",
+            }}
+          />
+        </div>
+      )}
+
       {/*}
     <ElementContainer
       onMouseEnter={() => {
@@ -108,7 +127,7 @@ const Posts = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios("https://veggiesapp.herokuapp.com/posts/")
+      await axios("http://veggies.ddns.net:8181/posts/")
         .then((res) => {
           console.log(res.data);
           setData(res.data);
@@ -128,10 +147,11 @@ const Posts = (props) => {
         "flex-direction": "column",
         justifyContent: "center",
         alignItems: "center",
+        margin: 0,
       }}
     >
       <div
-        style={{ width: "100%", "text-align": "center", margin: "0 0 2% 0" }}
+        style={{ width: "100%", "text-align": "center", margin: "6% 0 2% 0" }}
       >
         <AutoSuggest
           suggestions={suggestions}
@@ -157,7 +177,9 @@ const Posts = (props) => {
         />
       </div>
       <Container>
-        <AddPostPageContainer style={{ background: "none" }}>
+        <AddPostPageContainer
+          style={{ background: "none", padding: "2% 0 2% 0" }}
+        >
           <AddPostPageLink
             style={{ width: "100%", "font-size": "32px" }}
             to="/addpost"
