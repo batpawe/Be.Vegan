@@ -92,6 +92,7 @@ import ImageRestaurant from "../../images/restaurant.jpg";
 import { NewNotifyContext } from "../../context/Notify";
 var moment = require("moment");
 const Post = (props) => {
+  const [visible, setVisible] = useState(true);
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -269,7 +270,7 @@ const Post = (props) => {
                   </p>
                 </div>
                 <p style={{ "font-size": "24px" }}>{post[0].description}</p>
-                {post[0] && post[0].foto && (
+                {post[0] && post[0].foto && visible && (
                   <div
                     style={{
                       width: "100%",
@@ -286,6 +287,9 @@ const Post = (props) => {
                         margin: "0 auto",
                         display: "block",
                         height: "80%",
+                      }}
+                      onError={() => {
+                        setVisible(false);
                       }}
                     />
                   </div>
@@ -324,13 +328,15 @@ const Post = (props) => {
                     </UnorderedListCommentsIn>
                   );
                 })}
-                <CommentContainer
-                  style={{ "flex-direction": "column", width: "500px" }}
-                >
+                <CommentContainer check={file[0].name}>
                   <TextInput
                     style={{
-                      background: "rgba(255,255,255,0.2)",
-                      width: "500px",
+                      background: "rgba(255,255,255,0.9)",
+                      "border-radius": "4px",
+                      height: "20%",
+                      width: "100%",
+                      border: "none",
+                      "font-size": "20px",
                     }}
                     type="text"
                     placeholder="Wprowadź treść komentarza"
@@ -339,49 +345,61 @@ const Post = (props) => {
                     }}
                   />
                   <div
-                    style={{
-                      display: "flex",
-                      "justify-content": "space-between",
-                      width: "100%",
-                      "align-items": "center",
-                    }}
+                    class="image-upload"
+                    style={{ width: "100%", height: "70%" }}
                   >
-                    {console.log(file[0])}
-                    <div class="image-upload">
-                      <label for="file-input-0">
-                        {file[0].name ? (
-                          <ImageForUpload
-                            style={{ width: "350px" }}
-                            src={
-                              file[0].name
-                                ? URL.createObjectURL(file[0])
-                                : file[0]
-                            }
-                          />
-                        ) : (
-                          <ImageForUpload
-                            src={
-                              file[0].name
-                                ? URL.createObjectURL(file[0])
-                                : file[0]
-                            }
-                          />
-                        )}
-                      </label>
-                      <input
-                        id="file-input-0"
-                        type="file"
-                        onChange={(e) => setFile([e.target.files[0]])}
-                      />
-                    </div>
-                    <SubmitCommentButton
-                      onClick={() => {
-                        AddComment();
+                    <label
+                      for="file-input-0"
+                      style={{
+                        width: "100%",
+                        "text-align": "center",
+                        height: "100%",
                       }}
                     >
-                      Dodaj komentarz
-                    </SubmitCommentButton>
+                      {file[0].name ? (
+                        <ImageForUpload
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            "object-fit": "cover",
+                            "text-align": "center",
+                          }}
+                          src={
+                            file[0].name
+                              ? URL.createObjectURL(file[0])
+                              : file[0]
+                          }
+                        />
+                      ) : (
+                        <ImageForUpload
+                          style={{ width: "100px", "text-align": "center" }}
+                          src={
+                            file[0].name
+                              ? URL.createObjectURL(file[0])
+                              : file[0]
+                          }
+                        />
+                      )}
+                    </label>
+                    <input
+                      id="file-input-0"
+                      type="file"
+                      onChange={(e) => setFile([e.target.files[0]])}
+                    />
                   </div>
+                  <SubmitCommentButton
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      padding: "1%",
+                      "font-size": "28px",
+                    }}
+                    onClick={() => {
+                      AddComment();
+                    }}
+                  >
+                    Dodaj komentarz
+                  </SubmitCommentButton>
                 </CommentContainer>
               </UnorderedListComments>
             </UnorderedList>

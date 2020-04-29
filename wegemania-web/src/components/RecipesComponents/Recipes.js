@@ -44,6 +44,7 @@ import {
   UserActionsContainer,
   Icon,
 } from "../../styles/ContainerStyles";
+import { defaultTheme } from "react-autosuggest/dist/theme";
 import "../../styles/Rate.css";
 import {
   RecipesName,
@@ -112,6 +113,7 @@ import {
 import ReactStars from "react-stars";
 import "../../styles/SuggestStyle.css";
 import "../../styles/PaginationStyle.css";
+
 import {
   BigRateContainerRecipes,
   SmallRateContainerRecipes,
@@ -125,6 +127,80 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Recipes = (props) => {
+  const useStyles = makeStyles({
+    n_react_autosuggest_container: {
+      position: "relative",
+      width: "60%",
+      margin: "0 auto",
+    },
+
+    n_react_autosuggest_input: {
+      background: "none",
+      padding: "5px 5px",
+      width: "100%",
+      margin: "1% auto 0 auto",
+      "text-align": "left",
+      "font-size": "24px",
+      "font-family": "Helvetica, sans-serif",
+      "font-weight": 300,
+      border: "none",
+      "border-bottom": "1px solid black",
+      "&::placeholder": {
+        color: "black",
+      },
+    },
+    n_react_autosuggest__input__focused: {
+      outline: "none",
+    },
+    /*
+  n_react_autosuggest__input::placeholder: {
+    color: black;
+  }
+  n_react-autosuggest__input--focused :{
+    outline: none;
+  }
+  */
+    n_react_autosuggest__input__open: {
+      "border-bottom-left-radius": 0,
+      "border-bottom-right-radius": 0,
+    },
+
+    n_react_autosuggest__suggestions_container: {
+      display: "none",
+    },
+
+    n_react_autosuggest__suggestions_container__open: {
+      display: "block",
+      position: "absolute",
+      top: "51px",
+      width: "100%",
+      height: "400%",
+      overflow: "auto",
+      border: "1px solid #aaa",
+      "background-color": "#fff",
+      "font-family": "Helvetica, sans-serif",
+      "font-weight": 300,
+      "font-size": "22px",
+      "border-bottom-left-radius": "4px",
+      "border-bottom-right-radius": "4px",
+      "z-index": 2,
+    },
+
+    n_react_autosuggest__suggestions_list: {
+      margin: 0,
+      padding: 0,
+      "list-style-type": "none",
+    },
+
+    n_react_autosuggest__suggestion: {
+      cursor: "pointer",
+      padding: "10px 20px",
+    },
+
+    n_react_autosuggest__suggestion__highlighted: {
+      "background-color": "#ddd",
+    },
+  });
   const [current, setCurrent] = useState(1);
   const [length, setLength] = useState(0);
   const [products, setProducts] = useState([]);
@@ -168,6 +244,7 @@ const Recipes = (props) => {
     }, []);
     return temp[0].filter((prod) => prod.name.includes(value.trim()));
   };
+  const classes = useStyles();
   useEffect(() => {
     const fetchData = async () => {
       /* https://veggiesapp.herokuapp.com/recipes/*/
@@ -480,81 +557,85 @@ const Recipes = (props) => {
         display: "flex",
         "flex-direction": "column",
         "align-items": "center",
-        margin: "0 auto",
+        margin: "2% auto",
         width: "75%",
       }}
     >
-      <div style={{ margin: "6% 0 2% 0", width: "100%" }}>
-        <SearchPanel
-          style={{
-            width: "100%",
-            "text-align": "center",
-            background: "none",
-            display: "flex",
-            "flex-direction": "column",
-            "justify-content": "center",
-            "align-items": "center",
+      <div
+        style={{
+          width: "100%",
+          "text-align": "center",
+          margin: "6% 0 2% 0",
+        }}
+      >
+        <AutoSuggest
+          theme={{
+            ...defaultTheme,
+            container: classes.n_react_autosuggest_container,
+            input: classes.n_react_autosuggest_input,
+            inputOpen: classes.n_react_autosuggest__input__open,
+            inputFocused: classes.n_react_autosuggest__input__focused,
+            suggestionsContainer:
+              classes.n_react_autosuggest__suggestions_container,
+            suggestionsContainerOpen:
+              classes.n_react_autosuggest__suggestions_container__open,
+            suggestionsList: classes.n_react_autosuggest__suggestions_list,
+            suggestion: classes.n_react_autosuggest__suggestion,
+            suggestionHighlighted:
+              classes.n_react_autosuggest__suggestion__highlighted,
           }}
-        >
-          <div style={{ width: "100%" }}>
-            <div style={{ width: "100%" }}>
-              <AutoSuggest
-                style={{ "font-size": 10 }}
-                suggestions={suggestionsName}
-                onSuggestionsClearRequested={() => setSuggestionsName([])}
-                onSuggestionsFetchRequested={({ value }) => {
-                  console.log(value);
-                  setValueName(value);
-                  setSuggestionsName(getSuggestionName(value));
-                }}
-                onSuggestionSelected={(_, { suggestionValue }) =>
-                  console.log("Wybrany: " + suggestionValue)
+          suggestions={suggestionsName}
+          onSuggestionsClearRequested={() => setSuggestionsName([])}
+          onSuggestionsFetchRequested={({ value }) => {
+            console.log(value);
+            setValueName(value);
+            setSuggestionsName(getSuggestionName(value));
+          }}
+          onSuggestionSelected={(_, { suggestionValue }) =>
+            console.log("Wybrany: " + suggestionValue)
+          }
+          getSuggestionValue={(suggestion) => suggestion}
+          renderSuggestion={(suggestion) => <span>{suggestion}</span>}
+          inputProps={{
+            placeholder: "Znajdź przepis",
+            value: valueName,
+            onChange: (_, { newValue, method }) => {
+              setCurrent(1);
+
+              var tempArray = [];
+              if (newValue === "") {
+                console.log("START");
+              }
+              const temp = data.reduce((acc, curr, i) => {
+                if (
+                  curr.recipe_name.includes(newValue) &&
+                  curr.ingredients.some((x) => x.name.includes(valueProduct))
+                ) {
+                  tempArray.push(curr);
                 }
-                getSuggestionValue={(suggestion) => suggestion}
-                renderSuggestion={(suggestion) => <span>{suggestion}</span>}
-                inputProps={{
-                  placeholder: "Znajdź przepis",
-                  value: valueName,
-                  onChange: (_, { newValue, method }) => {
-                    setCurrent(1);
+                return tempArray;
+              }, []);
+              const tempResult = temp.reduce((acc, curr, i) => {
+                if (!(i % 18)) {
+                  acc.push(temp.slice(i, i + 18)); // ..push a chunk of the original array to the accumulator
+                }
+                return acc;
+              }, []);
+              console.log("STARTEMP");
+              console.log(temp);
+              console.log(tempResult);
+              console.log("STOPTEMP");
 
-                    var tempArray = [];
-                    if (newValue === "") {
-                      console.log("START");
-                    }
-                    const temp = data.reduce((acc, curr, i) => {
-                      if (
-                        curr.recipe_name.includes(newValue) &&
-                        curr.ingredients.some((x) =>
-                          x.name.includes(valueProduct)
-                        )
-                      ) {
-                        tempArray.push(curr);
-                      }
-                      return tempArray;
-                    }, []);
-                    const tempResult = temp.reduce((acc, curr, i) => {
-                      if (!(i % 18)) {
-                        acc.push(temp.slice(i, i + 18)); // ..push a chunk of the original array to the accumulator
-                      }
-                      return acc;
-                    }, []);
-                    console.log("STARTEMP");
-                    console.log(temp);
-                    console.log(tempResult);
-                    console.log("STOPTEMP");
+              setLength(tempResult.length);
+              setRecipes([...tempResult]);
 
-                    setLength(tempResult.length);
-                    setRecipes([...tempResult]);
-
-                    setValueName(newValue);
-                  },
-                }}
-                highlightFirstSuggestion={true}
-              />
-            </div>
-          </div>
-          {/*}
+              setValueName(newValue);
+            },
+          }}
+          highlightFirstSuggestion={true}
+        />
+      </div>
+      {/*}
           <SearchButton
             to="/addrecipe"
             style={{
@@ -573,8 +654,7 @@ const Recipes = (props) => {
             Dodaj przepis
           </SearchButton>
           {*/}
-        </SearchPanel>
-      </div>
+
       <MainContainer
         style={{
           margin: 0,

@@ -44,8 +44,8 @@ export const ListImage = styled.li`
 
 export const ListPostOptions = styled.li`
   padding: 0.4em 0.4em 0.4em 0;
-  display: ${props => props.flex && "flex"};
-  align-items: ${props => props.flex && "center"};
+  display: ${(props) => props.flex && "flex"};
+  align-items: ${(props) => props.flex && "center"};
 `;
 export const StarContent = styled.div`
   display: flex;
@@ -57,7 +57,7 @@ export const Image = styled.img`
   transition: content 1s;
   /*
   :hover {
-    content: url(${props => props.name});
+    content: url(${(props) => props.name});
   }
   */
 `;

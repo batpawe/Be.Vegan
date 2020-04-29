@@ -27,8 +27,12 @@ import {
 import axios from "axios";
 import AutoSuggest from "react-autosuggest";
 import "../../styles/SuggestStyle.css";
+import { makeStyles } from "@material-ui/core/styles";
 import ImageRestaurant from "../../images/restaurant.jpg";
+import { defaultTheme } from "react-autosuggest/dist/theme";
 const Element = (props) => {
+  const [visible, setVisible] = useState(true);
+
   var moment = require("moment");
   const [isHover, setIsHover] = useState(false);
   console.log("||||||||||||||");
@@ -63,7 +67,7 @@ const Element = (props) => {
         </p>
       </div>
       <p style={{ "font-size": "24px" }}>{props.post.description}</p>
-      {props.post && props.post.foto && (
+      {props.post.foto && visible && (
         <div
           style={{
             width: "100%",
@@ -80,6 +84,9 @@ const Element = (props) => {
               margin: "0 auto",
               display: "block",
               height: "100%",
+            }}
+            onError={() => {
+              setVisible(false);
             }}
           />
         </div>
@@ -114,6 +121,81 @@ const Element = (props) => {
   );
 };
 const Posts = (props) => {
+  const useStyles = makeStyles({
+    n_react_autosuggest_container: {
+      position: "relative",
+      width: "60%",
+      margin: "0 auto",
+    },
+
+    n_react_autosuggest_input: {
+      background: "none",
+      padding: "5px 5px",
+      width: "100%",
+      margin: "1% auto 0 auto",
+      "text-align": "left",
+      "font-size": "24px",
+      "font-family": "Helvetica, sans-serif",
+      "font-weight": 300,
+      border: "none",
+      "border-bottom": "1px solid black",
+      "&::placeholder": {
+        color: "black",
+      },
+    },
+    n_react_autosuggest__input__focused: {
+      outline: "none",
+    },
+    /*
+  n_react_autosuggest__input::placeholder: {
+    color: black;
+  }
+  n_react-autosuggest__input--focused :{
+    outline: none;
+  }
+  */
+    n_react_autosuggest__input__open: {
+      "border-bottom-left-radius": 0,
+      "border-bottom-right-radius": 0,
+    },
+
+    n_react_autosuggest__suggestions_container: {
+      display: "none",
+    },
+
+    n_react_autosuggest__suggestions_container__open: {
+      display: "block",
+      position: "absolute",
+      top: "51px",
+      width: "100%",
+      height: "400%",
+      overflow: "auto",
+      border: "1px solid #aaa",
+      "background-color": "#fff",
+      "font-family": "Helvetica, sans-serif",
+      "font-weight": 300,
+      "font-size": "22px",
+      "border-bottom-left-radius": "4px",
+      "border-bottom-right-radius": "4px",
+      "z-index": 2,
+    },
+
+    n_react_autosuggest__suggestions_list: {
+      margin: 0,
+      padding: 0,
+      "list-style-type": "none",
+    },
+
+    n_react_autosuggest__suggestion: {
+      cursor: "pointer",
+      padding: "10px 20px",
+    },
+
+    n_react_autosuggest__suggestion__highlighted: {
+      "background-color": "#ddd",
+    },
+  });
+  const classes = useStyles();
   const [suggestions, setSuggestions] = useState([]);
   const [value, setValue] = useState("");
   const [data, setData] = useState([]);
@@ -145,15 +227,30 @@ const Posts = (props) => {
       style={{
         display: "flex",
         "flex-direction": "column",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: 0,
+        "align-items": "center",
+        margin: "2% auto",
+        width: "75%",
       }}
     >
       <div
         style={{ width: "100%", "text-align": "center", margin: "6% 0 2% 0" }}
       >
         <AutoSuggest
+          theme={{
+            ...defaultTheme,
+            container: classes.n_react_autosuggest_container,
+            input: classes.n_react_autosuggest_input,
+            inputOpen: classes.n_react_autosuggest__input__open,
+            inputFocused: classes.n_react_autosuggest__input__focused,
+            suggestionsContainer:
+              classes.n_react_autosuggest__suggestions_container,
+            suggestionsContainerOpen:
+              classes.n_react_autosuggest__suggestions_container__open,
+            suggestionsList: classes.n_react_autosuggest__suggestions_list,
+            suggestion: classes.n_react_autosuggest__suggestion,
+            suggestionHighlighted:
+              classes.n_react_autosuggest__suggestion__highlighted,
+          }}
           suggestions={suggestions}
           onSuggestionsClearRequested={() => setSuggestions([])}
           onSuggestionsFetchRequested={({ value }) => {
@@ -176,7 +273,7 @@ const Posts = (props) => {
           highlightFirstSuggestion={true}
         />
       </div>
-      <Container>
+      <Container style={{ width: "100%" }}>
         <AddPostPageContainer
           style={{ background: "none", padding: "2% 0 2% 0" }}
         >

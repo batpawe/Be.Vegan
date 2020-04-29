@@ -130,11 +130,13 @@ export const SubmitCommentButton = styled.button`
   cursor: pointer;
 `;
 export const CommentContainer = styled.div`
-  display: flex;
+  flex-direction: column;
+  width: 40%;
+  border: none;
+  height: ${(props) => (props.check ? "50vh" : "27vh")};
   margin: 3% 0 0 0;
   justify-content: space-between;
   align-items: baseline;
-  border-top: 1px solid black;
 `;
 export const PreparingMethod = styled.div`
   max-width: 400px;
