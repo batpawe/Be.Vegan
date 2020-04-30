@@ -50,11 +50,89 @@ import Image from "../../images/restaurant.jpg";
 import { withRouter } from "react-router";
 import AutoSuggest from "react-autosuggest";
 import "../../styles/SuggestStyle.css";
+import { makeStyles } from "@material-ui/core/styles";
+import { defaultTheme } from "react-autosuggest/dist/theme";
 import ikonaCzasuActive from "../../icons/ikonaCzasuactive.svg";
 import ikonaMapyActive from "../../icons/ikonaMapyactive.svg";
 import ikonaCzasu from "../../icons/ikonaCzasu.svg";
 import ikonaMapy from "../../icons/ikonaMapy.svg";
 const Restaurants = (props) => {
+  const [result, setResult] = useState([]);
+  const useStyles = makeStyles({
+    n_react_autosuggest_container: {
+      position: "relative",
+      width: "60%",
+      margin: "0 auto",
+    },
+
+    n_react_autosuggest_input: {
+      background: "none",
+      padding: "5px 5px",
+      width: "100%",
+      margin: "1% auto 0 auto",
+      "text-align": "left",
+      "font-size": "24px",
+      "font-family": "Helvetica, sans-serif",
+      "font-weight": 300,
+      border: "none",
+      "border-bottom": "1px solid black",
+      "&::placeholder": {
+        color: "black",
+      },
+    },
+    n_react_autosuggest__input__focused: {
+      outline: "none",
+    },
+    /*
+n_react_autosuggest__input::placeholder: {
+  color: black;
+}
+n_react-autosuggest__input--focused :{
+  outline: none;
+}
+*/
+    n_react_autosuggest__input__open: {
+      "border-bottom-left-radius": 0,
+      "border-bottom-right-radius": 0,
+    },
+
+    n_react_autosuggest__suggestions_container: {
+      display: "none",
+    },
+
+    n_react_autosuggest__suggestions_container__open: {
+      display: "block",
+      position: "absolute",
+      top: "51px",
+      width: "100%",
+      height: "400%",
+      overflow: "auto",
+      border: "1px solid #aaa",
+      "background-color": "#fff",
+      "font-family": "Helvetica, sans-serif",
+      "font-weight": 300,
+      "font-size": "22px",
+      "border-bottom-left-radius": "4px",
+      "border-bottom-right-radius": "4px",
+      "z-index": 2,
+    },
+
+    n_react_autosuggest__suggestions_list: {
+      margin: 0,
+      padding: 0,
+      "list-style-type": "none",
+    },
+
+    n_react_autosuggest__suggestion: {
+      cursor: "pointer",
+      padding: "10px 20px",
+    },
+
+    n_react_autosuggest__suggestion__highlighted: {
+      "background-color": "#ddd",
+    },
+  });
+  const classes = useStyles();
   const [restaurants, setRestaurants] = useState([]);
   let tempSearch = {
     restaurant: "",
@@ -272,7 +350,34 @@ const Restaurants = (props) => {
     return restaurant;
   });
   const getSuggestionsRestaurants = (value) => {
-    return restaurantsName.filter((name) => name.name.includes(value.trim()));
+    console.log("value");
+    console.log(value);
+    const temp = value.split(",");
+    if (temp.length == 1) {
+      const array_name = restaurantsName.filter((name) =>
+        name.name.includes(temp[0].trim())
+      );
+      const array_city = restaurantsName.filter((name) =>
+        name.city.includes(temp[0].trim())
+      );
+
+      if (array_name.length > array_city.length) {
+        setResult([...array_name]);
+        return array_name;
+      } else {
+        setResult([...array_city]);
+        return array_city;
+      }
+    } else {
+      const tempArray = restaurantsName.filter((name) => {
+        return name.name.includes(temp[0].trim());
+      });
+      const nextArray = tempArray.filter((name) => {
+        return name.city.includes(temp[1].trim());
+      });
+      setResult([...nextArray]);
+      return nextArray;
+    }
   };
   const [suggestionsCity, setSuggestionsCity] = useState([]);
   const restaurantsCity = restaurants.map((restaurant) => {
@@ -295,9 +400,8 @@ const Restaurants = (props) => {
         .then((res) => {
           console.log(res.data);
           setRestaurants(res.data);
-          setSuggestionsRestaurants([
-            ...new Map(res.data.map((item) => [item["name"], item])).values(),
-          ]);
+          //setResult(res.data);
+          setSuggestionsRestaurants(res.data);
           setSuggestionsCity([
             ...new Map(res.data.map((item) => [item["city"], item])).values(),
           ]);
@@ -310,165 +414,147 @@ const Restaurants = (props) => {
     fetchData();
   }, []);
   return (
-    <MainContainer>
-      <Container>
-        <AddPostPageContainer>
-          <div
-            style={{
-              display: "flex",
-              "justify-content": "space-between",
-              width: "100%",
-            }}
-          >
-            <div>
-              <p style={{ "font-weight": "bold", color: "#27ae60" }}>
-                Filtruj:
-              </p>
-              <div style={{ display: "flex" }}>
-                {radio == "restaurant" ? (
-                  <AutoSuggest
-                    style={{ "font-size": 10 }}
-                    suggestions={suggestionsRestaurants}
-                    onSuggestionsClearRequested={() =>
-                      setSuggestionsRestaurants([])
-                    }
-                    onSuggestionsFetchRequested={({ value }) => {
-                      console.log(value);
-                      setValueRestaurant(value);
-                      setSuggestionsRestaurants(
-                        getSuggestionsRestaurants(value)
-                      );
-                    }}
-                    onSuggestionSelected={(_, { suggestionValue }) =>
-                      console.log("Wybrany: " + suggestionValue)
-                    }
-                    getSuggestionValue={(suggestion) => suggestion.name}
-                    renderSuggestion={(suggestion) => (
-                      <span>{suggestion.name}</span>
-                    )}
-                    inputProps={{
-                      placeholder: "Wprowadź nazwę restauracji",
-                      value: valueRestaurant,
-                      onChange: (_, { newValue, method }) => {
-                        setValueRestaurant(newValue);
-                      },
-                    }}
-                    highlightFirstSuggestion={true}
-                  />
-                ) : (
-                  <AutoSuggest
-                    suggestions={suggestionsCity}
-                    onSuggestionsClearRequested={() => setSuggestionsCity([])}
-                    onSuggestionsFetchRequested={({ value }) => {
-                      console.log(value);
-                      setValueCity(value);
-                      setSuggestionsCity(getSuggestionsCity(value));
-                    }}
-                    onSuggestionSelected={(_, { suggestionValue }) =>
-                      console.log("Wybrany: " + suggestionValue)
-                    }
-                    getSuggestionValue={(suggestion) => suggestion.city}
-                    renderSuggestion={(suggestion) => (
-                      <span>{suggestion.city}</span>
-                    )}
-                    inputProps={{
-                      placeholder: "Wprowadź miasto",
-                      value: valueCity,
-                      onChange: (_, { newValue, method }) => {
-                        setValueCity(newValue);
-                      },
-                    }}
-                    highlightFirstSuggestion={true}
-                  />
-                )}
-              </div>
-              <FormControl component="fieldset">
-                <RadioGroup
-                  aria-label="search"
-                  name="search"
-                  value={radio}
-                  onChange={handleChange}
-                >
-                  <ThemeProvider theme={outerTheme}>
-                    <div
-                      style={{
-                        display: "flex",
-                        "justify-content": "space-between",
-                      }}
-                    >
-                      <FormControlLabel
-                        value="restaurant"
-                        control={<Radio />}
-                        label="Restauracja"
-                      />
-                      <FormControlLabel
-                        value="city"
-                        control={<Radio />}
-                        label="Miasto"
-                      />
-                    </div>
-                  </ThemeProvider>
-                </RadioGroup>
-              </FormControl>
-              <div>
-                <div
-                  style={{
-                    display: "flex",
-                    "justify-content": "space-between",
-                  }}
-                >
-                  <p>Miasto:</p>
-                  <p style={{ "font-weight": "bold" }}>{valueCity}</p>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    "justify-content": "space-between",
-                  }}
-                >
-                  <p>Restauracja:</p>
-                  <p style={{ "font-weight": "bold" }}>{valueRestaurant}</p>
-                </div>
-              </div>
-            </div>
-            <AddRestaurantLink
-              style={{
-                width: "200px",
-                "font-size": "18px",
-                "white-space": "nowrap",
-              }}
-              to="/validaterestaurant"
-            >
-              Zarządzaj restauracją
-            </AddRestaurantLink>
-          </div>
-        </AddPostPageContainer>
-        <div
+    <div
+      style={{
+        display: "flex",
+        "flex-direction": "column",
+        "align-items": "center",
+        margin: "2% auto",
+        width: "75%",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          "text-align": "center",
+          margin: "6% 0 2% 0",
+        }}
+      >
+        <AutoSuggest
+          theme={{
+            ...defaultTheme,
+            container: classes.n_react_autosuggest_container,
+            input: classes.n_react_autosuggest_input,
+            inputOpen: classes.n_react_autosuggest__input__open,
+            inputFocused: classes.n_react_autosuggest__input__focused,
+            suggestionsContainer:
+              classes.n_react_autosuggest__suggestions_container,
+            suggestionsContainerOpen:
+              classes.n_react_autosuggest__suggestions_container__open,
+            suggestionsList: classes.n_react_autosuggest__suggestions_list,
+            suggestion: classes.n_react_autosuggest__suggestion,
+            suggestionHighlighted:
+              classes.n_react_autosuggest__suggestion__highlighted,
+          }}
+          suggestions={suggestionsRestaurants}
+          onSuggestionsClearRequested={(value) => {
+            console.log(value);
+            console.log("CLEAR");
+            setSuggestionsRestaurants([]);
+          }}
+          onSuggestionsFetchRequested={({ value }) => {
+            console.log("FETCH");
+            console.log(value);
+            setValueRestaurant(value);
+            setSuggestionsRestaurants(getSuggestionsRestaurants(value));
+          }}
+          onSuggestionSelected={(_, { suggestionValue }) => {
+            console.log("sugestia");
+            console.log(suggestionValue);
+            const temp = suggestionValue.split(",");
+            console.log(restaurantsName);
+            if (temp.length == 1) {
+              const array_name = restaurantsName.filter((name) =>
+                name.name.includes(temp[0].trim())
+              );
+              const array_city = restaurantsName.filter((name) =>
+                name.city.includes(temp[0].trim())
+              );
+
+              if (array_name.length > array_city.length) {
+                setResult([...array_name]);
+              } else {
+                setResult([...array_city]);
+              }
+            } else {
+              console.log("temp");
+              console.log(temp);
+              const tempArray = restaurantsName.filter((name) => {
+                return name.name.includes(temp[0].trim());
+              });
+              console.log(tempArray);
+              const nextArray = tempArray.filter((name) => {
+                return name.city.includes(temp[1].trim());
+              });
+              console.log(nextArray);
+              setResult([...nextArray]);
+            }
+          }}
+          getSuggestionValue={(suggestion) => {
+            return suggestion.name + ", " + suggestion.city;
+          }}
+          renderSuggestion={(suggestion) => (
+            <span>{suggestion.name + ", " + suggestion.city}</span>
+          )}
+          inputProps={{
+            placeholder: "Nazwa restauracji, miasto",
+            value: valueRestaurant,
+            onChange: (_, { newValue, method }) => {
+              if (newValue === " " || newValue === "") {
+                setResult(restaurants);
+              }
+              setValueRestaurant(newValue);
+            },
+          }}
+          highlightFirstSuggestion={true}
+        />
+        <MainContainer
           style={{
+            margin: "2% 0 0 0",
+            width: "100%",
             display: "flex",
-            "flex-wrap": "wrap",
-            justifyContent: "space-around",
+            "justify-content": "space-between",
           }}
         >
-          {restaurants.length &&
-            restaurants.map((restaurant, index) => {
-              if (
-                restaurant.city.includes(valueCity) &&
-                restaurant.name.includes(valueRestaurant)
-              )
-                return (
-                  <ContentController
-                    index={restaurant.id}
-                    number={index}
-                    data={restaurant}
-                    historyProps={props.history}
-                  />
-                );
-            })}
-        </div>
-      </Container>
-      <RightPanel />
-    </MainContainer>
+          <Container style={{ margin: 0, width: "100%" }}>
+            <div
+              style={{
+                display: "flex",
+                "flex-wrap": "wrap",
+                justifyContent: "space-around",
+              }}
+            >
+              {console.log(result)}
+
+              {result.length > 0 &&
+                result.map((restaurant, index) => {
+                  return (
+                    <ContentController
+                      index={restaurant.id}
+                      number={index}
+                      data={restaurant}
+                      historyProps={props.history}
+                    />
+                  );
+                })}
+              {console.log("SUGGESTIONS")}
+              {console.log(suggestionsRestaurants)}
+              {result.length == 0 &&
+                restaurantsName.map((restaurant, index) => {
+                  return (
+                    <ContentController
+                      index={restaurant.id}
+                      number={index}
+                      data={restaurant}
+                      historyProps={props.history}
+                    />
+                  );
+                })}
+            </div>
+          </Container>
+        </MainContainer>
+      </div>
+    </div>
   );
 };
 export default withRouter(Restaurants);

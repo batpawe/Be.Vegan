@@ -119,7 +119,7 @@ const AddPost = () => {
     );
   });
   return (
-    <Container>
+    <Container style={{ height: "auto" }}>
       <h1
         style={{
           "font-size": 28,
@@ -128,7 +128,7 @@ const AddPost = () => {
           "font-weight": "bold",
         }}
       >
-        Dodaj post:
+        Dodaj post
       </h1>
       {deleyedRedirect && <Redirect to={`/posts`} />}
       <Formik
@@ -160,13 +160,14 @@ const AddPost = () => {
           <form style={{ with: "100%" }} onSubmit={handleSubmit}>
             <div>
               <FormContainer>
-                <TextContainer>
-                  <InputLabel for="title">
-                    <p style={{ margin: 0, "font-size": "26px" }}>Tytuł:</p>
-                  </InputLabel>
-                  <ErrorText>{errors.title}</ErrorText>
-                </TextContainer>
+                <ErrorText>{errors.title}</ErrorText>
+
                 <TextInput
+                  style={{
+                    "font-size": "24px",
+                    border: "none",
+                    "border-bottom": "1px solid black",
+                  }}
                   type="text"
                   id="title"
                   value={values.title}
@@ -206,61 +207,79 @@ const AddPost = () => {
         <AddHeader>Tagi:</AddHeader>
         <OrderedList>{TagsContent}</OrderedList>
       </div> {*/}
-              <FormContainer>
-                <TextContainer>
-                  <InputLabel for="content">
-                    <p style={{ margin: 0, "font-size": "26px" }}>Treść:</p>
-                  </InputLabel>
+              <div
+                style={{ display: "flex", height: "35vh", margin: "1% 0 3% 0" }}
+              >
+                <FormContainer style={{ width: "50%", height: "100%" }}>
                   <ErrorText>{errors.content}</ErrorText>
-                </TextContainer>
-                <TextArea
-                  id="content"
-                  placeholder="Wprowadź treść posta"
-                  value={values.content}
-                  /*
+
+                  <TextArea
+                    style={{ height: "100%", width: "100%" }}
+                    id="content"
+                    placeholder="Wprowadź treść posta"
+                    value={values.content}
+                    /*
               onChange={e => {
                 let temp = tempForm;
                 temp.description = e.target.value;
                 setTempForm({ ...temp });
               }}
               */
-                  onChange={handleChange("content")}
-                />
-              </FormContainer>
-              <ImagesContainer>
-                <p
+                    onChange={handleChange("content")}
+                  />
+                </FormContainer>
+                <ImagesContainer
                   style={{
-                    margin: 0,
-                    "font-size": "26px",
-                    "font-weight": "bold",
+                    width: "50%",
+                    height: "100%",
+                    margin: "0 auto 0 auto",
                   }}
                 >
-                  Dodaj zdjęcie:
-                </p>
-                <div class="image-upload">
-                  <label for="file-input-0">
-                    {file[0].name ? (
-                      <Image
-                        style={{ width: "550px" }}
-                        src={
-                          file[0].name ? URL.createObjectURL(file[0]) : file[0]
-                        }
-                      />
-                    ) : (
-                      <Image
-                        src={
-                          file[0].name ? URL.createObjectURL(file[0]) : file[0]
-                        }
-                      />
-                    )}
-                  </label>
-                  <input
-                    id="file-input-0"
-                    type="file"
-                    onChange={(e) => setFile([e.target.files[0]])}
-                  />
-                </div>
-              </ImagesContainer>
+                  <div
+                    class="image-upload"
+                    style={{ width: "100%", height: "100%" }}
+                  >
+                    <label
+                      for="file-input-0"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        "align-items": "center",
+                        "justify-content": "center",
+                      }}
+                    >
+                      {file[0].name ? (
+                        <Image
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            "object-fit": "contain",
+                          }}
+                          src={
+                            file[0].name
+                              ? URL.createObjectURL(file[0])
+                              : file[0]
+                          }
+                        />
+                      ) : (
+                        <Image
+                          src={
+                            file[0].name
+                              ? URL.createObjectURL(file[0])
+                              : file[0]
+                          }
+                        />
+                      )}
+                    </label>
+                    <input
+                      id="file-input-0"
+                      type="file"
+                      onChange={(e) => setFile([e.target.files[0]])}
+                    />
+                  </div>
+                </ImagesContainer>
+              </div>
               <Button type="submit">Dodaj post</Button>
             </div>
           </form>
