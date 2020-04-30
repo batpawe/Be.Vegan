@@ -75,7 +75,7 @@ const Replacements = (props) => {
   };
   useEffect(() => {
     const fetchData = async () => {
-      await axios(`https://veggiesapp.herokuapp.com/substitute/veg/`)
+      await axios(`http://veggies.ddns.net:8181/substitute/veg/`)
         .then((res) => {
           const newTemp = res.data.reduce((acc, obj) => {
             let nextLoop = false;

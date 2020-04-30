@@ -91,6 +91,43 @@ import "../../App.css";
 import ImageRestaurant from "../../images/restaurant.jpg";
 import { NewNotifyContext } from "../../context/Notify";
 var moment = require("moment");
+const CommentPostContainer = (props) => {
+  const [err, setErr] = useState(false);
+  return (
+    <UnorderedListCommentsIn>
+      <HighlightItem
+        to={`/users/${props.comment.author.id}`}
+        style={{ "font-size": "20px" }}
+      >
+        {props.comment.author.username}
+      </HighlightItem>
+
+      <p style={{ "font-size": "16px" }}>
+        {moment(props.comment.data_stamp).format("YYYY-MM-D HH:mm:ss")}
+      </p>
+      <CommentContent style={{ "font-size": "18px" }}>
+        {props.comment.description}
+      </CommentContent>
+      {err && (
+        <span style={{ color: "red" }}>Nie udało się załadować zdjęcia</span>
+      )}
+      {props.comment.foto && (
+        <img
+          style={{
+            width: 240,
+            margin: "1% 0 0 0",
+            "border-radius": "4px",
+          }}
+          src={props.comment.foto}
+          onError={(e) => {
+            setErr(true);
+            e.target.style.display = "none";
+          }}
+        />
+      )}
+    </UnorderedListCommentsIn>
+  );
+};
 const Post = (props) => {
   const [visible, setVisible] = useState(true);
   const [open, setOpen] = useState(false);
@@ -144,7 +181,7 @@ const Post = (props) => {
       body: data,
     };
     await fetch(
-      `https://veggiesapp.herokuapp.com/posts/${props.match.params.id}/`,
+      `http://veggies.ddns.net:8181/posts/${props.match.params.id}/`,
       config
     )
       .then((res) => {
@@ -172,9 +209,7 @@ const Post = (props) => {
     console.log(props.match.params);
     console.log(file[0]);
     const fetchData = async () => {
-      await axios(
-        `https://veggiesapp.herokuapp.com/posts/${props.match.params.id}`
-      )
+      await axios(`http://veggies.ddns.net:8181/posts/${props.match.params.id}`)
         .then((res) => {
           console.log(res.data);
           setPost({ ...res.data });
@@ -231,9 +266,7 @@ const Post = (props) => {
                   padding: "2% 0 3% 0",
                   "border-bottom": "1px solid black",
                 }}
-                onClick={() =>
-                  props.historyProps.push(`/post/${post[0].index}`)
-                }
+                onClick={() => props.history.push(`/post/${post[0].index}`)}
               >
                 <div style={{ display: "flex", width: "100%" }}>
                   <p
@@ -299,34 +332,7 @@ const Post = (props) => {
 
               <UnorderedListComments>
                 {post[1].map((comment) => {
-                  return (
-                    <UnorderedListCommentsIn>
-                      <HighlightItem
-                        to={`/users/${comment.author.id}`}
-                        style={{ "font-size": "20px" }}
-                      >
-                        {comment.author.username}
-                      </HighlightItem>
-
-                      <p style={{ "font-size": "16px" }}>
-                        {post[0] &&
-                          moment(comment.data_stamp).format(
-                            "YYYY-MM-D HH:mm:ss"
-                          )}
-                      </p>
-                      <CommentContent style={{ "font-size": "18px" }}>
-                        {comment.description}
-                      </CommentContent>
-                      <img
-                        style={{
-                          width: 240,
-                          margin: "1% 0 0 0",
-                          "border-radius": "4px",
-                        }}
-                        src={comment.foto}
-                      />
-                    </UnorderedListCommentsIn>
-                  );
+                  return <CommentPostContainer comment={comment} />;
                 })}
                 <CommentContainer check={file[0].name}>
                   <TextInput
@@ -351,6 +357,9 @@ const Post = (props) => {
                     <label
                       for="file-input-0"
                       style={{
+                        display: "flex",
+                        "align-items": "center",
+                        "justify-content": "center",
                         width: "100%",
                         "text-align": "center",
                         height: "100%",

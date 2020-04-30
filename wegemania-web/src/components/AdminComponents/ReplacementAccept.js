@@ -86,7 +86,7 @@ const ReplacementAccept = (props) => {
   const items = [];
   useEffect(() => {
     const fetchData = async () => {
-      await axios(`https://veggiesapp.herokuapp.com/moderate/`)
+      await axios(`http://veggies.ddns.net:8181/moderate/`)
         .then((res) => {
           console.log(res.data);
 
@@ -239,7 +239,7 @@ const ReplacementAccept = (props) => {
                             color="primary"
                             onClick={() => {
                               fetch(
-                                `https://veggiesapp.herokuapp.com/moderate/${veg.id}/`,
+                                `http://veggies.ddns.net:8181/moderate/${veg.id}/`,
                                 {
                                   method: "PATCH",
                                   body: JSON.stringify({
