@@ -397,7 +397,6 @@ n_react-autosuggest__input--focused :{
               props.restaurant.street_number}
           </p>
         </BigRateContainerRecipes>
-        <p></p>
       </div>
     );
   };
