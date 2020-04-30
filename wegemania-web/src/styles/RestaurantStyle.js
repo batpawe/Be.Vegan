@@ -135,3 +135,31 @@ export const AddRestaurantLink = styled(Link)`
     text-shadow: 0 0 1px white, 0 0 1px white;
   }
 `;
+export const SubscriptionRestaurantsContainer = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 37.2vh;
+  border-top: ${(props) => (props.index == 0 ? "1px solid black" : "none")};
+  border-bottom: 1px solid black;
+`;
+export const SubscriptionRestaurantImage = styled.img`
+  width: 20%;
+  height: 100%;
+  object-fit: contain;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+`;
+export const SubscriptionRestaurantSmallContainer = styled.div`
+  height: 100%;
+  width: 80%;
+`;
+export const SubscriptionHeaderParagraph = styled.p`
+  font-size: 28px;
+  margin: 0;
+  padding: 0;
+`;
+export const SubscriptionParagraph = styled.p`
+  font-size: 24px;
+  margin: 2% 0 1% 0;
+`;

@@ -55,7 +55,19 @@ import { defaultTheme } from "react-autosuggest/dist/theme";
 import ikonaCzasuActive from "../../icons/ikonaCzasuactive.svg";
 import ikonaMapyActive from "../../icons/ikonaMapyactive.svg";
 import ikonaCzasu from "../../icons/ikonaCzasu.svg";
+import ReactStars from "react-stars";
 import ikonaMapy from "../../icons/ikonaMapy.svg";
+import {
+  BigRateContainerRecipes,
+  SmallRateContainerRecipes,
+} from "../../styles/StarsStyle";
+import {
+  SubscriptionRestaurantsContainer,
+  SubscriptionRestaurantImage,
+  SubscriptionRestaurantSmallContainer,
+  SubscriptionHeaderParagraph,
+  SubscriptionParagraph,
+} from "../../styles/RestaurantStyle";
 const Restaurants = (props) => {
   const [result, setResult] = useState([]);
   const useStyles = makeStyles({
@@ -349,6 +361,125 @@ n_react-autosuggest__input--focused :{
   const restaurantsName = restaurants.map((restaurant) => {
     return restaurant;
   });
+  const RestaurationContainer = (props) => {
+    return (
+      <div style={{ width: "23%" }}>
+        <img
+          onClick={() =>
+            props.historyProps.push(`/restaurant/${props.restaurant.id}`)
+          }
+          style={{
+            width: "100%",
+            height: "45%",
+            "object-fit": "contain",
+            cursor: "pointer",
+          }}
+          src={props.restaurant.foto}
+        />
+        <p style={{ padding: 0, margin: 0 }}>{props.restaurant.name}</p>
+        <BigRateContainerRecipes style={{ width: "100%", margin: "0 auto" }}>
+          <RateStars style={{ width: "100%" }}>
+            <ReactStars
+              edit={false}
+              value={props.restaurant.rating}
+              count={5}
+              className="recipes_rate"
+              //onChange
+              size={24}
+              color2={"#4CAF50"}
+            />
+          </RateStars>
+          <p>
+            {props.restaurant.city +
+              ", " +
+              props.restaurant.street +
+              " " +
+              props.restaurant.street_number}
+          </p>
+        </BigRateContainerRecipes>
+        <p></p>
+      </div>
+    );
+  };
+  const SubscriptionRestaurants = (props) => {
+    if (props.index == 0) {
+      return (
+        <SubscriptionRestaurantsContainer index={0}>
+          <SubscriptionRestaurantImage
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              props.historyProps.push(`/restaurant/${props.restaurant.id}`)
+            }
+            src={props.restaurant.foto}
+          />
+          <SubscriptionRestaurantSmallContainer>
+            <SubscriptionHeaderParagraph>
+              {props.restaurant.name}
+            </SubscriptionHeaderParagraph>
+            <BigRateContainerRecipes style={{ width: "100%", margin: "0" }}>
+              {console.log("PPP")}
+              <RateStars style={{ width: "100%" }}>
+                <ReactStars
+                  edit={false}
+                  value={props.restaurant.rating}
+                  count={5}
+                  className="recipes_rate"
+                  //onChange
+                  size={56}
+                  color2={"#4CAF50"}
+                />
+              </RateStars>
+            </BigRateContainerRecipes>
+            <SubscriptionParagraph>
+              {props.restaurant.city +
+                ", " +
+                props.restaurant.street +
+                " " +
+                props.restaurant.street_number}
+            </SubscriptionParagraph>
+          </SubscriptionRestaurantSmallContainer>
+        </SubscriptionRestaurantsContainer>
+      );
+    } else {
+      return (
+        <SubscriptionRestaurantsContainer index={2}>
+          <SubscriptionRestaurantSmallContainer>
+            <SubscriptionHeaderParagraph>
+              {props.restaurant.name}
+            </SubscriptionHeaderParagraph>
+            <BigRateContainerRecipes style={{ width: "100%", margin: "0" }}>
+              {console.log("PPP")}
+              <RateStars style={{ width: "100%" }}>
+                <ReactStars
+                  edit={false}
+                  value={props.restaurant.rating}
+                  count={5}
+                  className="recipes_rate"
+                  //onChange
+                  size={56}
+                  color2={"#4CAF50"}
+                />
+              </RateStars>
+            </BigRateContainerRecipes>
+            <SubscriptionParagraph>
+              {props.restaurant.city +
+                ", " +
+                props.restaurant.street +
+                " " +
+                props.restaurant.street_number}
+            </SubscriptionParagraph>
+          </SubscriptionRestaurantSmallContainer>
+          <SubscriptionRestaurantImage
+            src={props.restaurant.foto}
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              props.historyProps.push(`/restaurant/${props.restaurant.id}`)
+            }
+          />
+        </SubscriptionRestaurantsContainer>
+      );
+    }
+  };
   const getSuggestionsRestaurants = (value) => {
     console.log("value");
     console.log(value);
@@ -382,6 +513,14 @@ n_react-autosuggest__input--focused :{
   const [suggestionsCity, setSuggestionsCity] = useState([]);
   const restaurantsCity = restaurants.map((restaurant) => {
     return restaurant;
+  });
+  const tempMyArray = [];
+  const defaultMyArray = restaurants.map((restaurant) => {
+    tempMyArray.push(restaurant);
+    tempMyArray.push(restaurant);
+    tempMyArray.push(restaurant);
+    tempMyArray.push(restaurant);
+    tempMyArray.push(restaurant);
   });
   const getSuggestionsCity = (value) => {
     const temp = restaurantsCity.reduce((acc, current) => {
@@ -516,7 +655,7 @@ n_react-autosuggest__input--focused :{
             "justify-content": "space-between",
           }}
         >
-          <Container style={{ margin: 0, width: "100%" }}>
+          <Container style={{ margin: 0, width: "100%", padding: "1%" }}>
             <div
               style={{
                 display: "flex",
@@ -525,9 +664,51 @@ n_react-autosuggest__input--focused :{
               }}
             >
               {console.log(result)}
+              {restaurants.map((restaurant, index) => {
+                if (index < 2) {
+                  return (
+                    <SubscriptionRestaurants
+                      historyProps={props.history}
+                      restaurant={restaurant}
+                      index={index}
+                    />
+                  );
+                }
+              })}
 
+              <div
+                style={{ width: "100%", display: "flex", "flex-wrap": "wrap" }}
+              >
+                {restaurants.length < 6
+                  ? tempMyArray.map((restaurant) => (
+                      <RestaurationContainer
+                        historyProps={props.history}
+                        restaurant={restaurant}
+                      />
+                    ))
+                  : result.length > 0
+                  ? result.map((restaurant, index) => (
+                      <RestaurationContainer
+                        index={restaurant.id}
+                        number={index}
+                        data={restaurant}
+                        historyProps={props.history}
+                      />
+                    ))
+                  : restaurantsName.map((restaurant, index) => {
+                      return (
+                        <RestaurationContainer
+                          index={restaurant.id}
+                          number={index}
+                          data={restaurant}
+                          historyProps={props.history}
+                        />
+                      );
+                    })}
+              </div>
               {result.length > 0 &&
                 result.map((restaurant, index) => {
+                  /*
                   return (
                     <ContentController
                       index={restaurant.id}
@@ -536,12 +717,14 @@ n_react-autosuggest__input--focused :{
                       historyProps={props.history}
                     />
                   );
+                   */
                 })}
               {console.log("SUGGESTIONS")}
               {console.log(suggestionsRestaurants)}
               {result.length == 0 &&
                 restaurantsName.map((restaurant, index) => {
-                  return (
+                  /*
+                  return (null
                     <ContentController
                       index={restaurant.id}
                       number={index}
@@ -549,6 +732,7 @@ n_react-autosuggest__input--focused :{
                       historyProps={props.history}
                     />
                   );
+                    */
                 })}
             </div>
           </Container>
