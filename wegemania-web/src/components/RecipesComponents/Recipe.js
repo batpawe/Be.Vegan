@@ -397,22 +397,17 @@ const Recipe = (props) => {
       */
   };
   useEffect(() => {
-    console.log(
-      `http://veggies.ddns.net:8181/recipes/${props.match.params.id}`
-    );
+    user.openPanel(false);
+    console.log(`${user.Api}/recipes/${props.match.params.id}`);
     const fetchData = async () => {
-      await axios(
-        `http://veggies.ddns.net:8181/recipes/${props.match.params.id}`
-      )
+      await axios(`${user.Api}/recipes/${props.match.params.id}`)
         .then((res) => {
           setRecipe(res.data);
           console.log("!!!");
           console.log(res.data);
         })
         .catch((err) => console.log(err));
-      await axios(
-        `http://veggies.ddns.net:8181/recipes/list/${props.match.params.id}/`
-      )
+      await axios(`${user.Api}/recipes/list/${props.match.params.id}/`)
         .then((res) => {
           setListIngredients(res.data);
         })

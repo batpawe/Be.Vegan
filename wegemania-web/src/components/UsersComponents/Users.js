@@ -56,6 +56,7 @@ const Users = (props) => {
   const [userData, setUserData] = useState();
   let request;
   useEffect(() => {
+    user.openPanel(false);
     if (user.userInfo.id == props.match.params.id) {
       request = `${user.Api}/me/`;
     } else {

@@ -247,6 +247,7 @@ const Recipes = (props) => {
   };
   const classes = useStyles();
   useEffect(() => {
+    user.openPanel(false);
     const fetchData = async () => {
       /* https://veggiesapp.herokuapp.com/recipes/*/
       await axios(`${user.Api}/recipes/`)

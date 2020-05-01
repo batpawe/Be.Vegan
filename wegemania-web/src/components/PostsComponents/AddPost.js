@@ -28,6 +28,9 @@ import { NewNotifyContext } from "../../context/Notify";
 import * as Yup from "yup";
 import { Formik } from "formik";
 const AddPost = () => {
+  useEffect(() => {
+    user.openPanel(false);
+  }, []);
   const notify = useContext(NewNotifyContext);
   const user = useContext(NewLoginInfo);
   let temp = [UploadImage, UploadImage, UploadImage, UploadImage];

@@ -75,6 +75,7 @@ const Replacements = (props) => {
     return veganVegan.filter((name) => name.includes(value.trim()));
   };
   useEffect(() => {
+    user.openPanel(false);
     const fetchData = async () => {
       await axios(`${user.Api}/substitute/veg/`)
         .then((res) => {

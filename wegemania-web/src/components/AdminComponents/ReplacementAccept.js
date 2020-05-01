@@ -85,6 +85,7 @@ const ReplacementAccept = (props) => {
   const [selected, setSelected] = useState(0);
   const items = [];
   useEffect(() => {
+    user.openPanel(false);
     const fetchData = async () => {
       await axios(`${user.Api}/moderate/`)
         .then((res) => {

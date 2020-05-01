@@ -533,6 +533,7 @@ n_react-autosuggest__input--focused :{
     return temp.filter((city) => city.city.includes(value.trim()));
   };
   useEffect(() => {
+    user.openPanel(false);
     const fetchData = async () => {
       await axios(`${user.Api}/restaurants/`)
         .then((res) => {

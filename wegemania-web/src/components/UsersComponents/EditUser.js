@@ -29,6 +29,7 @@ const EditUser = () => {
   ];
 
   useEffect(() => {
+    user.openPanel(false);
     var request = `${user.Api}/me/`;
     const fetchData = async () => {
       const result = await axios.get(request, {

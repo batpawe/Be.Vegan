@@ -203,6 +203,7 @@ const Post = (props) => {
       });
   };
   useEffect(() => {
+    user.openPanel(false);
     console.log(props.match.params);
     console.log(file[0]);
     const fetchData = async () => {

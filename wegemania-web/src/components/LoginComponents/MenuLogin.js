@@ -30,6 +30,7 @@ const UserPanel = ({ click }) => {
     user.logout();
     return <Redirect to="/register" />;
   };
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get(`${user.Api}/me/`, {
@@ -48,18 +49,29 @@ const UserPanel = ({ click }) => {
       {clicked !== true ? (
         <li>
           {console.log("USER USER")}
-          <UserName onClick={userSettings}>{user.userInfo.name}</UserName>
+          <UserName
+            onClick={() => {
+              user.openPanel(!user.isOpen);
+            }}
+          >
+            {user.userInfo.name}
+          </UserName>
         </li>
       ) : (
         <li>
           {console.log("USER USER")}
-          <UserName style={{ background: "#27752e" }} onClick={userSettings}>
+          <UserName
+            style={{ background: "#27752e" }}
+            onClick={() => {
+              user.openPanel(!user.isOpen);
+            }}
+          >
             {user.userInfo.name}
           </UserName>
         </li>
       )}
 
-      {clicked === true && (
+      {user.isOpen === true && (
         <UserActions style={{ position: "absolute" }}>
           <UserOption>
             <HyperLink

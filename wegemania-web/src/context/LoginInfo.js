@@ -41,8 +41,8 @@ export const LoginInfoProvider = (props) => {
   const Api = "https://veggiesapp.herokuapp.com/";
 
   const [isOpen, setIsOpen] = useState(false);
-  const openPanel = () => {
-    setIsOpen((p) => !p);
+  const openPanel = (val) => {
+    setIsOpen(val);
   };
   if (localStorage.getItem("loginState")) {
     tempInfo = JSON.parse(localStorage.getItem("loginState"));

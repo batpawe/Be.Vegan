@@ -121,6 +121,7 @@ const Restaurant = (props) => {
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [tempRestaurants, setTempRestaurants] = useState([]);
   useEffect(() => {
+    user.openPanel(false);
     const fetchData = async () => {
       await axios(`${user.Api}/restaurants/${props.match.params.id}/`)
         .then((res) => {

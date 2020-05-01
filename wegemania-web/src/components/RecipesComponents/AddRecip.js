@@ -140,6 +140,7 @@ const AddRecipt = () => {
   const [current, setCurrent] = useState(1);
   const [defaultRecipe, setDefaultRecipe] = useState([]);
   useEffect(() => {
+    user.openPanel(false);
     const fetchData = async () => {
       await axios(`${user.Api}/ingredients/`)
         .then((res) => {

@@ -210,6 +210,7 @@ const Posts = (props) => {
   };
 
   useEffect(() => {
+    user.openPanel(false);
     const fetchData = async () => {
       await axios(`${user.Api}/posts/`)
         .then((res) => {

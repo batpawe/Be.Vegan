@@ -646,6 +646,7 @@ const Wall = (props) => {
   const [posts, setPosts] = useState([]);
   const [replacements, setReplacements] = useState([]);
   useEffect(() => {
+    user.openPanel(false);
     const fetchData = async () => {
       await axios(`${user.Api}/restaurants/`)
         .then((res) => {

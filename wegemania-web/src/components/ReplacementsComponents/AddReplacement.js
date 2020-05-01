@@ -62,6 +62,7 @@ const AddReplecement = () => {
     setSelectedOption(e.target.value);
   };
   useEffect(() => {
+    user.openPanel(false);
     console.log(file[0]);
   }, []);
   return (

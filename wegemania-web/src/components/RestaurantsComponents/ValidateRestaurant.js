@@ -77,6 +77,7 @@ const ValidateRestaurant = (props) => {
   const [number, setNumber] = useState(null);
   const [myRestaurant, setMyRestaurant] = useState([]);
   useEffect(() => {
+    user.openPanel(false);
     const getFile = async (path) => {
       let response = await fetch(path);
       let data = await response.blob();
@@ -263,30 +264,62 @@ const ValidateRestaurant = (props) => {
   };
   const Days = (props) => {
     if (props.i == 0) {
-      return <span>Poniedziałek:</span>;
+      return (
+        <span style={{ width: "40%", "text-align": "left" }}>
+          Poniedziałek:
+        </span>
+      );
     }
-    if (props.i == 1) return <span>Wtorek:</span>;
-    if (props.i == 2) return <span>Środa:</span>;
-    if (props.i == 3) return <span>Czwartek:</span>;
-    if (props.i == 4) return <span>Piątek:</span>;
-    if (props.i == 5) return <span>Sobota:</span>;
-    if (props.i == 6) return <span>Niedziela:</span>;
+    if (props.i == 1)
+      return (
+        <span style={{ width: "40%", "text-align": "left" }}>Wtorek:</span>
+      );
+    if (props.i == 2)
+      return <span style={{ width: "40%", "text-align": "left" }}>Środa:</span>;
+    if (props.i == 3)
+      return (
+        <span style={{ width: "40%", "text-align": "left" }}>Czwartek:</span>
+      );
+    if (props.i == 4)
+      return (
+        <span style={{ width: "40%", "text-align": "left" }}>Piątek:</span>
+      );
+    if (props.i == 5)
+      return (
+        <span style={{ width: "40%", "text-align": "left" }}>Sobota:</span>
+      );
+    if (props.i == 6)
+      return (
+        <span style={{ width: "40%", "text-align": "left" }}>Niedziela:</span>
+      );
   };
   const TimeFields = () => {
     const temp = [];
     for (var i = 0; i < 7; i++) {
       temp.push(
-        <SmallContainer style={{ width: "100%" }}>
+        <SmallContainer
+          style={{
+            width: "100%",
+            display: "flex",
+            "justify-content": "space-around",
+          }}
+        >
           <Days i={i} />
-          <SmallDiv>
+          <SmallDiv
+            style={{
+              width: "60%",
+              display: "flex",
+              "justify-content": "flex-end",
+            }}
+          >
             <Input key={`${i}p`} id={i} />
-            <TimeButton key={`${i}s`} id={i} close={isClosed[i]} />
+            {/*<TimeButton key={`${i}s`} id={i} close={isClosed[i]} />*/}
           </SmallDiv>
         </SmallContainer>
       );
     }
     return (
-      <div style={{ "text-align": "center" }}>
+      <div style={{ "text-align": "center", width: "50%" }}>
         <InputLabel for="times" style={{ "font-size": "22px" }}>
           Godziny otwarcia:{temp}
         </InputLabel>
@@ -395,7 +428,11 @@ const ValidateRestaurant = (props) => {
   };
   return (
     <div
-      style={{ margin: "7% auto 1% auto", background: "rgba(255,255,255,0.7)" }}
+      style={{
+        margin: "7% auto 1% auto",
+        background: "rgba(244,244,244,0.9)",
+        width: "80%",
+      }}
     >
       {console.log(myRestaurant)}
       <div style={{ margin: "3% 0 0 0 " }}>
@@ -409,7 +446,7 @@ const ValidateRestaurant = (props) => {
               "font-weight": "bold",
             }}
           >
-            Dodaj restaurację
+            Zarządzaj restauracją
           </h1>
           <div>
             <label
@@ -421,14 +458,15 @@ const ValidateRestaurant = (props) => {
                 "text-align": "center",
               }}
             >
-              <h2 style={{ "font-size": "26px" }}>Nazwa:</h2>
               <input
                 value={restaurantTitle}
                 onChange={(e) => setRestaurantTitle(e.target.value)}
                 style={{
                   margin: "1% auto",
-                  "font-size": "22px",
-                  border: "1px solid black",
+                  "font-size": "24px",
+                  background: "none",
+                  border: "none",
+                  "border-bottom": "1px solid black",
                   outline: "none",
                   padding: "1%",
                   width: "400px",
@@ -439,104 +477,169 @@ const ValidateRestaurant = (props) => {
               />
             </label>
           </div>
-          <div>
-            <label
-              for="description"
-              style={{
-                margin: "2% auto",
-                display: "flex",
-                "flex-direction": "column",
-                "text-align": "center",
-              }}
-            >
-              <h2 style={{ "font-size": "26px" }}>Opis:</h2>
-              <textarea
-                value={restaurantDescription}
-                onChange={(e) => setRestaurantDescription(e.target.value)}
+          <div style={{ display: "flex" }}>
+            <TimeFields />{" "}
+            <div style={{ width: "50%" }}>
+              <label
+                for="description"
                 style={{
-                  margin: "1% auto",
+                  height: "100%",
+                  margin: "2% auto",
+                  display: "flex",
+                  "flex-direction": "column",
+                  "text-align": "center",
+                }}
+              >
+                <h2 style={{ "font-size": "26px" }}>Opis:</h2>
+                <textarea
+                  value={restaurantDescription}
+                  onChange={(e) => setRestaurantDescription(e.target.value)}
+                  style={{
+                    margin: "1% auto",
+                    "font-size": "22px",
+                    border: "1px solid black",
+                    outline: "none",
+                    padding: "1%",
+                    width: "80%",
+                    resize: "none",
+                    padding: "1%",
+                    height: "100%",
+                  }}
+                  type="text"
+                  id="description"
+                  placeholder="Wprowadź opis restauracji"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div style={{ width: "100%", display: "flex", margin: "5% 0 5% 0" }}>
+          <ImagesContainer style={{ width: "50%", margin: "0" }}>
+            <div className="image-upload" style={{ width: "100%" }}>
+              <label
+                for="file-input-0"
+                style={{ width: "100%", height: "55vh" }}
+              >
+                {file[0].name ? (
+                  <Image
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      "object-fit": "contain",
+                    }}
+                    src={file[0].name ? URL.createObjectURL(file[0]) : file[0]}
+                  />
+                ) : (
+                  <Image
+                    src={file[0].name ? URL.createObjectURL(file[0]) : file[0]}
+                  />
+                )}
+              </label>
+              <input
+                id="file-input-0"
+                type="file"
+                onChange={(e) => handleChange(0, e)}
+              />
+            </div>
+          </ImagesContainer>
+          <div
+            style={{
+              width: "50%",
+              display: "flex",
+              margin: "2% 0 0 0",
+              "flex-direction": "column",
+            }}
+          >
+            <label
+              style={{
+                width: "100%",
+                display: "flex",
+                "align-items": "center",
+                justifyContent: "space-around",
+              }}
+              for="city"
+            >
+              <p style={{ margin: 0, "font-size": "18px", width: "30%" }}>
+                Miasto:
+              </p>
+              <input
+                onChange={(e) => {
+                  setCity(e.target.value);
+                }}
+                value={city}
+                id="city"
+                placeholder="Wprowadź nazwę miasta"
+                style={{
                   "font-size": "22px",
-                  border: "1px solid black",
+                  margin: "1%",
+                  border: "none",
+                  "border-bottom": "1px solid black",
                   outline: "none",
-                  padding: "1%",
-                  width: "80%",
-                  resize: "none",
                   padding: "1%",
                 }}
                 type="text"
-                id="description"
-                placeholder="Wprowadź opis restauracji"
+              />
+            </label>
+            <label
+              style={{
+                width: "100%",
+                display: "flex",
+                "align-items": "center",
+                justifyContent: "space-around",
+              }}
+              for="nameStreet"
+            >
+              <p style={{ margin: 0, "font-size": "18px", width: "30%" }}>
+                Nazwa uliczy:
+              </p>
+              <input
+                onChange={(e) => {
+                  setStreet(e.target.value);
+                }}
+                value={street}
+                id="nameStreet"
+                placeholder="Wprowadź nazwę ulicy"
+                style={{
+                  "font-size": "22px",
+                  margin: "1%",
+                  border: "none",
+                  "border-bottom": "1px solid black",
+                  outline: "none",
+                  padding: "1%",
+                }}
+                type="text"
+              />
+            </label>
+            <label
+              style={{
+                width: "100%",
+                display: "flex",
+                "align-items": "center",
+                justifyContent: "space-around",
+              }}
+              for="numberStreet"
+            >
+              <p style={{ margin: 0, "font-size": "18px", width: "30%" }}>
+                Numer ulicy:
+              </p>
+              <input
+                onChange={(e) => {
+                  setNumber(e.target.value);
+                }}
+                value={number}
+                placeholder="Wprowadź numer ulicy"
+                style={{
+                  "font-size": "22px",
+                  margin: "1%",
+                  border: "none",
+                  "border-bottom": "1px solid black",
+                  outline: "none",
+                  padding: "1%",
+                }}
+                type="text"
               />
             </label>
           </div>
-        </div>
-        <TimeFields />
-        <div style={{ width: "100%", display: "flex", margin: "2% 0 0 0" }}>
-          <label
-            style={{ width: "100%", display: "flex", "align-items": "center" }}
-            for="city"
-          >
-            <p style={{ margin: 0 }}>Miasto:</p>
-            <input
-              onChange={(e) => {
-                setCity(e.target.value);
-              }}
-              value={city}
-              id="city"
-              placeholder="Wprowadź nazwę miasta"
-              style={{
-                "font-size": "22px",
-                margin: "1%",
-                border: "1px solid black",
-                outline: "none",
-                padding: "1%",
-              }}
-              type="text"
-            />
-          </label>
-          <label
-            style={{ width: "100%", display: "flex", "align-items": "center" }}
-            for="nameStreet"
-          >
-            <p style={{ margin: 0 }}>Nazwa uliczy:</p>
-            <input
-              onChange={(e) => {
-                setStreet(e.target.value);
-              }}
-              value={street}
-              id="nameStreet"
-              placeholder="Wprowadź nazwę ulicy"
-              style={{
-                "font-size": "22px",
-                margin: "1%",
-                border: "1px solid black",
-                outline: "none",
-                padding: "1%",
-              }}
-              type="text"
-            />
-          </label>
-          <label
-            style={{ width: "100%", display: "flex", "align-items": "center" }}
-            for="numberStreet"
-          >
-            <p style={{ margin: 0 }}>Numer ulicy:</p>
-            <input
-              onChange={(e) => {
-                setNumber(e.target.value);
-              }}
-              value={number}
-              placeholder="Wprowadź numer ulicy"
-              style={{
-                "font-size": "22px",
-                margin: "1%",
-                border: "1px solid black",
-                outline: "none",
-                padding: "1%",
-              }}
-              type="text"
-            />
-          </label>
         </div>
         <Map
           id="map"
@@ -564,27 +667,7 @@ const ValidateRestaurant = (props) => {
             </Popup>
           </Marker>
         </Map>
-        <ImagesContainer>
-          <div className="image-upload">
-            <label for="file-input-0">
-              {file[0].name ? (
-                <Image
-                  style={{ width: "550px" }}
-                  src={file[0].name ? URL.createObjectURL(file[0]) : file[0]}
-                />
-              ) : (
-                <Image
-                  src={file[0].name ? URL.createObjectURL(file[0]) : file[0]}
-                />
-              )}
-            </label>
-            <input
-              id="file-input-0"
-              type="file"
-              onChange={(e) => handleChange(0, e)}
-            />
-          </div>
-        </ImagesContainer>
+
         <div style={{ width: "100%", "text-align": "center" }}>
           <button
             onClick={() => {
