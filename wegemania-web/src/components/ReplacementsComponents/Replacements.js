@@ -24,6 +24,8 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { green, orange } from "@material-ui/core/colors";
 import { NewLoginInfo } from "../../context/LoginInfo";
 import axios from "axios";
+import { makeStyles } from "@material-ui/core/styles";
+import { defaultTheme } from "react-autosuggest/dist/theme";
 /*
      <OuterUnorderedList>
                     <InnerUnorderedList>
@@ -39,6 +41,80 @@ import axios from "axios";
                 </UnorderedList>
                 */
 const Replacements = (props) => {
+  const useStyles = makeStyles({
+    n_react_autosuggest_container: {
+      position: "relative",
+      width: "60%",
+      margin: "0 auto",
+    },
+
+    n_react_autosuggest_input: {
+      background: "none",
+      padding: "5px 5px",
+      width: "100%",
+      margin: "1% auto 0 auto",
+      "text-align": "left",
+      "font-size": "24px",
+      "font-family": "Helvetica, sans-serif",
+      "font-weight": 300,
+      border: "none",
+      "border-bottom": "1px solid black",
+      "&::placeholder": {
+        color: "black",
+      },
+    },
+    n_react_autosuggest__input__focused: {
+      outline: "none",
+    },
+    /*
+n_react_autosuggest__input::placeholder: {
+color: black;
+}
+n_react-autosuggest__input--focused :{
+outline: none;
+}
+*/
+    n_react_autosuggest__input__open: {
+      "border-bottom-left-radius": 0,
+      "border-bottom-right-radius": 0,
+    },
+
+    n_react_autosuggest__suggestions_container: {
+      display: "none",
+    },
+
+    n_react_autosuggest__suggestions_container__open: {
+      display: "block",
+      position: "absolute",
+      top: "51px",
+      width: "100%",
+      height: "400%",
+      overflow: "auto",
+      border: "1px solid #aaa",
+      "background-color": "#fff",
+      "font-family": "Helvetica, sans-serif",
+      "font-weight": 300,
+      "font-size": "22px",
+      "border-bottom-left-radius": "4px",
+      "border-bottom-right-radius": "4px",
+      "z-index": 2,
+    },
+
+    n_react_autosuggest__suggestions_list: {
+      margin: 0,
+      padding: 0,
+      "list-style-type": "none",
+    },
+
+    n_react_autosuggest__suggestion: {
+      cursor: "pointer",
+      padding: "10px 20px",
+    },
+
+    n_react_autosuggest__suggestion__highlighted: {
+      "background-color": "#ddd",
+    },
+  });
   const user = useContext(NewLoginInfo);
   const outerTheme = createMuiTheme({
     palette: {
@@ -47,6 +123,7 @@ const Replacements = (props) => {
       },
     },
   });
+  const classes = useStyles();
   const [radio, setRadio] = useState("vegan");
   const [replacements, setReplacements] = useState([]);
   const [current, setCurrent] = useState([]);
@@ -72,7 +149,25 @@ const Replacements = (props) => {
     //return nameName.filter((name) => name.name.includes(value.trim()));
   };
   const getSuggestionVegan = (value) => {
-    return veganVegan.filter((name) => name.includes(value.trim()));
+    const tempVegan = [];
+    const tempNVegan = [];
+    replacements.map((data) => {
+      data.id_vegan.map((veg) => {
+        tempVegan.push(veg);
+      });
+
+      tempNVegan.push(data.id_food_to_substitute);
+    });
+
+    const VeganProducts = tempVegan.filter((name) =>
+      name.name.includes(value.trim())
+    );
+    const NVeganProducts = tempNVegan.filter((name) => {
+      console.log(name.food_name.includes(value.trim()));
+      return name.food_name.includes(value.trim());
+    });
+    console.log(tempNVegan);
+    return VeganProducts > NVeganProducts ? VeganProducts : NVeganProducts;
   };
   useEffect(() => {
     user.openPanel(false);
@@ -108,12 +203,12 @@ const Replacements = (props) => {
             tempNVegan.push(tmp.id_food_to_substitute.food_name);
           });
           setVegan(tempVegan);
-          console.log(tempVegan);
+
           setNVegan(tempNVegan);
-          console.log(tempNVegan);
+
           setReplacements(newTemp);
-          setCurrent(newTemp[0]);
           console.log(newTemp);
+          setCurrent(newTemp[0]);
         })
         .catch((err) => {
           console.log(err);
@@ -123,10 +218,16 @@ const Replacements = (props) => {
   }, []);
   replacements &&
     replacements.map((replacement, index) => {
-      if (
-        replacement.id_food_to_substitute.food_name.includes(valueNVegan) &&
-        replacement.id_vegan[0].name.includes(valueVegan)
-      )
+      let temp = false;
+      replacement.id_vegan.map((veg) => {
+        if (
+          veg.name.includes(valueVegan) ||
+          replacement.id_food_to_substitute.food_name.includes(valueVegan)
+        ) {
+          temp = true;
+        }
+      });
+      if (temp) {
         items.push(
           <Item
             id={index}
@@ -139,115 +240,65 @@ const Replacements = (props) => {
             {replacement.id_food_to_substitute.food_name}
           </Item>
         );
+      }
     });
 
   return (
-    <MainContainer>
-      <Container>
-        <SearchPanel>
-          <div>
-            {radio == "vegan" ? (
-              <AutoSuggest
-                style={{ "font-size": 10 }}
-                suggestions={suggestionsVegan}
-                onSuggestionsClearRequested={() => setSuggestionsVegan([])}
-                onSuggestionsFetchRequested={({ value }) => {
-                  console.log(value);
-                  setValueVegan(value);
-                  setSuggestionsVegan(getSuggestionVegan(value));
-                }}
-                onSuggestionSelected={(_, { suggestionValue }) =>
-                  console.log("Wybrany: " + suggestionValue)
-                }
-                getSuggestionValue={(suggestion) => suggestion}
-                renderSuggestion={(suggestion) => <span>{suggestion}</span>}
-                inputProps={{
-                  placeholder: "Produkt Wegański",
-                  value: valueVegan,
-                  onChange: (_, { newValue, method }) => {
-                    setValueVegan(newValue);
-                  },
-                }}
-                highlightFirstSuggestion={true}
-              />
-            ) : (
-              <AutoSuggest
-                suggestions={suggestionsNVegan}
-                onSuggestionsClearRequested={() => setSuggestionsNVegan([])}
-                onSuggestionsFetchRequested={({ value }) => {
-                  console.log(value);
-                  setValueNVegan(value);
-                  setSuggestionsNVegan(getSuggestionNVegan(value));
-                }}
-                onSuggestionSelected={(_, { suggestionValue }) =>
-                  console.log("Wybrany: " + suggestionValue)
-                }
-                getSuggestionValue={(suggestion) => suggestion}
-                renderSuggestion={(suggestion) => <span>{suggestion}</span>}
-                inputProps={{
-                  placeholder: "Produkt niewegański",
-                  value: valueNVegan,
-                  onChange: (_, { newValue, method }) => {
-                    setValueNVegan(newValue);
-                  },
-                }}
-                highlightFirstSuggestion={true}
-              />
-            )}
-            <FormControl component="fieldset">
-              <RadioGroup
-                aria-label="search"
-                name="search"
-                value={radio}
-                onChange={handleChange}
-              >
-                <ThemeProvider theme={outerTheme}>
-                  <div
-                    style={{
-                      display: "flex",
-                      "justify-content": "space-between",
-                    }}
-                  >
-                    <FormControlLabel
-                      value="vegan"
-                      control={<Radio />}
-                      label="Produkt wegański"
-                    />
-                    <FormControlLabel
-                      value="nvegan"
-                      control={<Radio />}
-                      label="Produkt niewegański"
-                    />
-                  </div>
-                </ThemeProvider>
-              </RadioGroup>
-            </FormControl>
-            <div>
-              <div style={{ display: "flex" }}>
-                <p style={{ "font-weight": "bold" }}>Produkt wegański:</p>
-                <p>{valueVegan}</p>
-              </div>
-              <div style={{ display: "flex" }}>
-                <p style={{ "font-weight": "bold" }}>Produkt niewegański:</p>
-                <p>{valueNVegan}</p>
-              </div>
-            </div>
-          </div>
-          <AddPostPageLink
-            style={{
-              width: "250px",
-              display: "flex",
-              "align-items": "center",
-              "justify-content": "center",
-              "font-size": "18px",
-              height: "50px",
-            }}
-            to="/addreplacement"
-          >
-            Zasugeruj zamiennik
-          </AddPostPageLink>
-        </SearchPanel>
-        <ReplacementsContainer>
+    <MainContainer
+      style={{
+        display: "flex",
+        "flex-direction": "column",
+        "justify-content": "center",
+        width: "100%",
+        height: "100vh",
+        margin: "8% auto 2% auto",
+      }}
+    >
+      <AutoSuggest
+        theme={{
+          ...defaultTheme,
+          container: classes.n_react_autosuggest_container,
+          input: classes.n_react_autosuggest_input,
+          inputOpen: classes.n_react_autosuggest__input__open,
+          inputFocused: classes.n_react_autosuggest__input__focused,
+          suggestionsContainer:
+            classes.n_react_autosuggest__suggestions_container,
+          suggestionsContainerOpen:
+            classes.n_react_autosuggest__suggestions_container__open,
+          suggestionsList: classes.n_react_autosuggest__suggestions_list,
+          suggestion: classes.n_react_autosuggest__suggestion,
+          suggestionHighlighted:
+            classes.n_react_autosuggest__suggestion__highlighted,
+        }}
+        style={{ "font-size": 10 }}
+        suggestions={suggestionsVegan}
+        onSuggestionsClearRequested={() => setSuggestionsVegan([])}
+        onSuggestionsFetchRequested={({ value }) => {
+          console.log(value);
+          setValueVegan(value);
+          setSuggestionsVegan(getSuggestionVegan(value));
+        }}
+        onSuggestionSelected={(_, { suggestionValue }) =>
+          console.log("Wybrany: " + suggestionValue)
+        }
+        getSuggestionValue={(suggestion) =>
+          suggestion.name || suggestion.food_name
+        }
+        renderSuggestion={(suggestion) => (
+          <span>{suggestion.name || suggestion.food_name}</span>
+        )}
+        inputProps={{
+          placeholder: "Nazwa produktu",
+          value: valueVegan,
+          onChange: (_, { newValue, method }) => {
+            setValueVegan(newValue);
+          },
+        }}
+        highlightFirstSuggestion={true}
+      />
+      {/*addreplacement*/}
+      <Container style={{ margin: "2% auto 0 auto", height: "80%" }}>
+        <ReplacementsContainer style={{ height: "100%" }}>
           <ul
             style={{
               "list-style-type": "none",
@@ -385,7 +436,6 @@ const Replacements = (props) => {
           </ul>
         </ReplacementsContainer>
       </Container>
-      <RightPanel />
     </MainContainer>
   );
 };

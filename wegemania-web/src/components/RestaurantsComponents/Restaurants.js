@@ -485,10 +485,10 @@ n_react-autosuggest__input--focused :{
     const temp = value.split(",");
     if (temp.length == 1) {
       const array_name = restaurantsName.filter((name) =>
-        name.name.includes(temp[0].trim())
+        name.name.toLowerCase().includes(temp[0].trim().toLowerCase())
       );
       const array_city = restaurantsName.filter((name) =>
-        name.city.includes(temp[0].trim())
+        name.city.toLowerCase().includes(temp[0].trim().toLowerCase())
       );
 
       if (array_name.length > array_city.length) {
@@ -500,10 +500,10 @@ n_react-autosuggest__input--focused :{
       }
     } else {
       const tempArray = restaurantsName.filter((name) => {
-        return name.name.includes(temp[0].trim());
+        return name.name.toLowerCase().includes(temp[0].trim().toLowerCase());
       });
       const nextArray = tempArray.filter((name) => {
-        return name.city.includes(temp[1].trim());
+        return name.city.toLowerCase().includes(temp[1].trim().toLowerCase());
       });
       setResult([...nextArray]);
       return nextArray;

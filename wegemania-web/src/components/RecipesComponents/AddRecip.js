@@ -41,7 +41,8 @@ import Next from "../../icons/next.svg";
 import TimeIcon from "../../icons/ikonaCzasu.svg";
 import { defaultTheme } from "react-autosuggest/dist/theme";
 import { makeStyles } from "@material-ui/core/styles";
-const AddRecipt = () => {
+import CloseIcon from "../../icons/signs.svg";
+const AddRecipt = (props) => {
   const useStyles = makeStyles({
     n_react_autosuggest_container: {
       position: "relative",
@@ -161,9 +162,13 @@ const AddRecipt = () => {
   });
   const getSuggestions = (value) => {
     setMySuggestion(
-      productName.filter((name) => name.name.includes(value.trim()))
+      productName.filter((name) =>
+        name.name.toLowerCase().includes(value.trim().toLowerCase())
+      )
     );
-    return productName.filter((name) => name.name.includes(value.trim()));
+    return productName.filter((name) =>
+      name.name.toLowerCase().includes(value.trim().toLowerCase())
+    );
   };
   const sendRequest = async () => {
     console.log(recipeName);
@@ -389,7 +394,20 @@ const AddRecipt = () => {
 
   const classes = useStyles();
   return (
-    <Container>
+    <Container style={{ position: "relative" }}>
+      <img
+        src={CloseIcon}
+        style={{
+          width: "20px",
+          position: "absolute",
+          top: 8,
+          right: 8,
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          props.history.push("/");
+        }}
+      />
       {current < 3 && (
         <img
           src={Next}

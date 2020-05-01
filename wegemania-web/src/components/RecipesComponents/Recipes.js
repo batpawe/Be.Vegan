@@ -230,8 +230,14 @@ const Recipes = (props) => {
   });
   const [suggestionsProduct, setSuggestionsProduct] = useState([]);
   const getSuggestionName = (value) => {
-    console.log(nameName.filter((name) => name.includes(value.trim())));
-    return nameName.filter((name) => name.includes(value.trim()));
+    console.log(
+      nameName.filter((name) =>
+        name.toLowerCase().includes(value.trim().toLowerCase())
+      )
+    );
+    return nameName.filter((name) =>
+      name.toLowerCase().includes(value.trim().toLowerCase())
+    );
     //return nameName.filter((name) => name.name.includes(value.trim()));
   };
   const getSuggestionProduct = (value) => {

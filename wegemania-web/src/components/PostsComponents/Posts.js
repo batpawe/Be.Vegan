@@ -206,7 +206,9 @@ const Posts = (props) => {
     return date;
   });
   const getSuggestions = (value) => {
-    return titleName.filter((title) => title.title.includes(value.trim()));
+    return titleName.filter((title) =>
+      title.title.toLowerCase().includes(value.trim().toLowerCase())
+    );
   };
 
   useEffect(() => {
