@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   LocalContainer,
   UnorderedList,
@@ -7,13 +7,15 @@ import {
   Image,
   BoldText,
 } from "../../styles/GlobalStyle";
+import { NewLoginInfo } from "../../context/LoginInfo";
 import DinnerImage from "../../images/dinner.jpg";
 import axios from "axios";
 export const RecommendedRecipt = () => {
+  const user = useContext(NewLoginInfo);
   const [recipes, setRecipes] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      await axios("https://veggiesapp.herokuapp.com/recipes/")
+      await axios("${user.Api}/recipes/")
         .then((res) => {
           //console.log(res.data);
           //setRecipes(res.data);

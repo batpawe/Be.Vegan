@@ -122,9 +122,7 @@ const Restaurant = (props) => {
   const [tempRestaurants, setTempRestaurants] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      await axios(
-        `https://veggiesapp.herokuapp.com/restaurants/${props.match.params.id}/`
-      )
+      await axios(`${user.Api}/restaurants/${props.match.params.id}/`)
         .then((res) => {
           setRestaurant(res.data);
           const tempTime = res.data.restaurant.hours.split("\r\n");
@@ -143,7 +141,7 @@ const Restaurant = (props) => {
         .catch((err) => {
           console.log(err);
         });
-      await axios("http://veggies.ddns.net:8181/restaurants")
+      await axios(`${user.Api}/restaurants`)
         .then((res) => {
           let tempArray = res.data.reduce(function (
             res,
@@ -213,7 +211,7 @@ const Restaurant = (props) => {
 
     axios({
       method: "post",
-      url: "https://veggiesapp.herokuapp.com/restaurants/rating/",
+      url: `${user.Api}/restaurants/rating/`,
       data: qs.stringify({
         id_restaurant: parseInt(props.match.params.id, 10),
         user_comment: descriptionComment,

@@ -1,5 +1,6 @@
 import { users } from "../../temp/users";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { NewLoginInfo } from "../../context/LoginInfo";
 import {
   LocalContainer,
   UnorderedList,
@@ -9,10 +10,11 @@ import {
 } from "../../styles/GlobalStyle";
 import axios from "axios";
 export const RecommendedTip = () => {
+  const user = useContext(NewLoginInfo);
   const [curiosities, setCuriosities] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      await axios("https://veggiesapp.herokuapp.com/curiosities/")
+      await axios(`${user.Api}/curiosities/`)
         .then((res) => {
           let temp = [];
           let randArray = [];

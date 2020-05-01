@@ -87,9 +87,7 @@ const EditRestaurant = (props) => {
       return file;
     };
     const fetchData = async () => {
-      await axios(
-        `https://veggiesapp.herokuapp.com/restaurants/${props.match.params.id}/`
-      )
+      await axios(`${user.Api}/restaurants/${props.match.params.id}/`)
         .then((res) => {
           res.data.map((date) => {
             setMyRestaurant(date);

@@ -534,7 +534,7 @@ n_react-autosuggest__input--focused :{
   };
   useEffect(() => {
     const fetchData = async () => {
-      await axios("https://veggiesapp.herokuapp.com/restaurants/")
+      await axios(`${user.Api}/restaurants/`)
         .then((res) => {
           console.log(res.data);
           setRestaurants(res.data);

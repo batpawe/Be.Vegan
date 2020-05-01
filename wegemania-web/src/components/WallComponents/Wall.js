@@ -640,13 +640,14 @@ const Replacements = (props) => {
   );
 };
 const Wall = (props) => {
+  const user = useContext(NewLoginInfo);
   const [recipes, setRecipes] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [posts, setPosts] = useState([]);
   const [replacements, setReplacements] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      await axios("https://veggiesapp.herokuapp.com/restaurants/")
+      await axios(`${user.Api}/restaurants/`)
         .then((res) => {
           console.log(res.data);
           setRestaurants(res.data);
@@ -656,7 +657,7 @@ const Wall = (props) => {
           console.log(err);
           console.log(err.response);
         });
-      await axios("https://veggiesapp.herokuapp.com/posts/")
+      await axios(`${user.Api}/posts/`)
         .then((res) => {
           console.log(res.data);
           setPosts(res.data);
@@ -665,12 +666,12 @@ const Wall = (props) => {
           console.log(err);
           console.log(err.response);
         });
-      await axios("http://veggiesapp.herokuapp.com/recommend")
+      await axios(`${user.Api}/recommend`)
         .then((res) => {
           setRecipes(res.data);
         })
         .catch((err) => console.log(err));
-      await axios("https://veggiesapp.herokuapp.com/substitute/veg/")
+      await axios(`${user.Api}/substitute/veg/`)
         .then((res) => {
           setReplacements(res.data);
         })

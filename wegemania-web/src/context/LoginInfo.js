@@ -35,8 +35,15 @@ const useStateWithLocalStorage = localStorageKey => {
   return [userInfo, setUserInfo];
 };
 */
+
 export const LoginInfoProvider = (props) => {
   let tempInfo;
+  const Api = "https://veggiesapp.herokuapp.com/";
+
+  const [isOpen, setIsOpen] = useState(false);
+  const openPanel = () => {
+    setIsOpen((p) => !p);
+  };
   if (localStorage.getItem("loginState")) {
     tempInfo = JSON.parse(localStorage.getItem("loginState"));
   } else {
@@ -61,11 +68,14 @@ export const LoginInfoProvider = (props) => {
   return (
     <LoginInfo.Provider
       value={{
+        isOpen: isOpen,
+        openPanel: openPanel,
         login: login,
         isStaff: isStaff,
         setStaff: setStaff,
         logout: logout,
         userInfo: userInfo,
+        Api: Api,
       }}
     >
       {children}

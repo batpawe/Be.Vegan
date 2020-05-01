@@ -11,14 +11,14 @@ import {
   PagginationContainer,
   PagginationItem,
   Item,
-  WayItem
+  WayItem,
 } from "../../styles/TempRecipes";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import PostsIcon from "../../icons/VeganAppIcons/posts.svg";
 import {
   RestaurantName,
   ContainerRestaurant,
-  ImageRestaurant
+  ImageRestaurant,
 } from "../../styles/TempRestaurants";
 import {
   ImageComponent,
@@ -27,7 +27,7 @@ import {
   HoverContainer,
   HoverHeader,
   HoverText,
-  ImageHoverComponent
+  ImageHoverComponent,
 } from "../../styles/TempStyle";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -51,16 +51,16 @@ import ikonaTresciPrzepisu from "../../icons/ikonaTresciprzepisu.svg";
 import {
   MainContainer,
   Container,
-  ReplacementsContainer
+  ReplacementsContainer,
 } from "../../styles/WallStyle";
 import ReplacementsIcon from "../../icons/VeganAppIcons/replacements.svg";
 import RestaurantIcon from "../../icons/VeganAppIcons/restaurants.svg";
-const Recipes = props => {
+const Recipes = (props) => {
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
-  const Paggination = props => {
+  const Paggination = (props) => {
     let no = props.no || 2;
-    const handlePage = k => {
+    const handlePage = (k) => {
       let tmp = page;
       console.log(k);
       if (k == 1) {
@@ -125,7 +125,7 @@ const Recipes = props => {
           "border-top": "1px solid black",
           position: "absolute",
           bottom: 0,
-          width: "100%"
+          width: "100%",
         }}
       >
         {paggin}
@@ -143,7 +143,7 @@ const Recipes = props => {
         style={{
           position: "relative",
           width: "100%",
-          background: "rgba(255,255,255,0.6)"
+          background: "rgba(255,255,255,0.6)",
         }}
       >
         <img
@@ -152,7 +152,7 @@ const Recipes = props => {
             position: "absolute",
             top: 0,
             right: 0,
-            background: "green"
+            background: "green",
           }}
           src={RecipesIcon}
         />
@@ -167,7 +167,7 @@ const Recipes = props => {
                   padding: 0,
                   width: "100%",
                   display: "flex",
-                  "justify-content": "space-between"
+                  "justify-content": "space-between",
                 }}
               >
                 <Item>Jakiś produkt</Item>
@@ -179,7 +179,7 @@ const Recipes = props => {
                   padding: 0,
                   width: "100%",
                   display: "flex",
-                  "justify-content": "space-between"
+                  "justify-content": "space-between",
                 }}
               >
                 <Item>Jakiś produkt</Item>
@@ -191,7 +191,7 @@ const Recipes = props => {
                   padding: 0,
                   width: "100%",
                   display: "flex",
-                  "justify-content": "space-between"
+                  "justify-content": "space-between",
                 }}
               >
                 <Item>Jakiś produkt</Item>
@@ -203,7 +203,7 @@ const Recipes = props => {
                   padding: 0,
                   width: "100%",
                   display: "flex",
-                  "justify-content": "space-between"
+                  "justify-content": "space-between",
                 }}
               >
                 <Item>Jakiś produkt</Item>
@@ -216,13 +216,13 @@ const Recipes = props => {
                 "justify-content": "space-evenly",
                 width: "100%",
                 margin: "6% 0 0 0",
-                "font-size": "18px"
+                "font-size": "18px",
               }}
             >
               <p
                 style={{
                   color: "#4CAF50",
-                  "font-weight": "bold"
+                  "font-weight": "bold",
                 }}
               >
                 Czas przygotowania:
@@ -247,13 +247,13 @@ const Recipes = props => {
     </ContainerRecipes>
   );
 };
-const Restaurants = props => {
+const Restaurants = (props) => {
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
 
-  const Paggination = props => {
+  const Paggination = (props) => {
     let no = props.no || 2;
-    const handlePage = k => {
+    const handlePage = (k) => {
       let tmp = page;
       console.log(k);
       if (k == 1) {
@@ -318,7 +318,7 @@ const Restaurants = props => {
           "border-top": "1px solid black",
           position: "absolute",
           bottom: 0,
-          width: "100%"
+          width: "100%",
         }}
       >
         {paggin}
@@ -328,14 +328,8 @@ const Restaurants = props => {
   console.log("|||");
   console.log(props.number);
   const tempTime = props.data.hours.split("\r\n");
-  const time = tempTime.map(time => {
-    return [
-      time.split(":", 1).toString(),
-      time
-        .split(":")
-        .slice(1)
-        .join(":")
-    ];
+  const time = tempTime.map((time) => {
+    return [time.split(":", 1).toString(), time.split(":").slice(1).join(":")];
   });
   return (
     <ContainerRestaurant style={{ height: "300px", width: "40%" }}>
@@ -349,7 +343,7 @@ const Restaurants = props => {
         style={{
           width: "100%",
           position: "relative",
-          background: "rgba(255,255,255,0.6)"
+          background: "rgba(255,255,255,0.6)",
         }}
       >
         <img
@@ -358,7 +352,7 @@ const Restaurants = props => {
             background: "green",
             position: "absolute",
             top: 0,
-            right: 0
+            right: 0,
           }}
           src={RestaurantIcon}
         />
@@ -375,10 +369,10 @@ const Restaurants = props => {
                 "justify-content": "flex-start",
                 "flex-direction": "column",
                 "max-height": "200px",
-                "align-items": "flex-start"
+                "align-items": "flex-start",
               }}
             >
-              {time.map(t => {
+              {time.map((t) => {
                 return (
                   <Item
                     style={{
@@ -386,7 +380,7 @@ const Restaurants = props => {
                       "justify-content": "space-between",
                       margin: 0,
                       padding: 0,
-                      width: "100%"
+                      width: "100%",
                     }}
                   >
                     <p style={{ margin: 0 }}>{t[0]}:</p>
@@ -415,7 +409,7 @@ const Restaurants = props => {
                 width: 160,
                 height: 170,
                 margin: "1% auto 1% auto",
-                "z-index": 0
+                "z-index": 0,
               }}
             >
               <TileLayer
@@ -437,7 +431,7 @@ const Restaurants = props => {
     </ContainerRestaurant>
   );
 };
-const Posts = props => {
+const Posts = (props) => {
   const [isHover, setIsHover] = useState(false);
   console.log("||||||||||||||");
   console.log(props.index);
@@ -476,7 +470,7 @@ const Posts = props => {
     </ElementContainer>
   );
 };
-const Replacements = props => {
+const Replacements = (props) => {
   return (
     <div>
       <ul
@@ -487,7 +481,7 @@ const Replacements = props => {
           margin: 0,
           overflow: "auto",
           "max-height": "100%",
-          width: "100%"
+          width: "100%",
         }}
       >
         <ul
@@ -495,7 +489,7 @@ const Replacements = props => {
             "border-bottom": "1px solid black",
             margin: "2% 0 2% 0",
             padding: 0,
-            "list-style-type": "none"
+            "list-style-type": "none",
           }}
         >
           <li
@@ -509,7 +503,7 @@ const Replacements = props => {
               "font-weight": "bold",
               margin: "1% auto 1% auto",
               "border-radius": "25px",
-              color: "white"
+              color: "white",
             }}
           >
             Nazwa
@@ -525,7 +519,7 @@ const Replacements = props => {
           style={{
             margin: "5% 0 5% 0",
             padding: 0,
-            "list-style-type": "none"
+            "list-style-type": "none",
           }}
         >
           <li
@@ -539,7 +533,7 @@ const Replacements = props => {
               "font-weight": "bold",
               margin: "1% auto 1% auto",
               "border-radius": "25px",
-              color: "white"
+              color: "white",
             }}
           >
             Nazwa
@@ -548,7 +542,7 @@ const Replacements = props => {
             style={{
               display: "flex",
               width: "100%",
-              "justify-content": "space-evenly"
+              "justify-content": "space-evenly",
             }}
           >
             <p style={{ width: "20%" }}>Kaloryczność:</p>
@@ -558,7 +552,7 @@ const Replacements = props => {
             style={{
               display: "flex",
               width: "100%",
-              "justify-content": "space-evenly"
+              "justify-content": "space-evenly",
             }}
           >
             <p style={{ width: "20%" }}>Proteiny:</p>
@@ -568,7 +562,7 @@ const Replacements = props => {
             style={{
               display: "flex",
               width: "100%",
-              "justify-content": "space-evenly"
+              "justify-content": "space-evenly",
             }}
           >
             <p style={{ width: "20%" }}>Tłuszcz:</p>
@@ -578,7 +572,7 @@ const Replacements = props => {
             style={{
               display: "flex",
               width: "100%",
-              "justify-content": "space-evenly"
+              "justify-content": "space-evenly",
             }}
           >
             <p style={{ width: "20%" }}>Węglowodany:</p>
@@ -588,7 +582,7 @@ const Replacements = props => {
             style={{
               display: "flex",
               width: "100%",
-              "justify-content": "space-evenly"
+              "justify-content": "space-evenly",
             }}
           >
             <p style={{ width: "20%" }}>Celuloza:</p>
@@ -599,7 +593,7 @@ const Replacements = props => {
               style={{
                 width: "330px",
                 margin: "1% auto 1% auto",
-                display: "block"
+                display: "block",
               }}
               src={Image}
             />
@@ -609,7 +603,7 @@ const Replacements = props => {
           style={{
             margin: "5% 0 5% 0",
             padding: 0,
-            "list-style-type": "none"
+            "list-style-type": "none",
           }}
         >
           <li
@@ -623,7 +617,7 @@ const Replacements = props => {
               margin: "1% auto 1% auto",
               "font-weight": "bold",
               "border-radius": "25px",
-              color: "white"
+              color: "white",
             }}
           >
             Nazwa
@@ -632,7 +626,7 @@ const Replacements = props => {
             style={{
               display: "flex",
               width: "100%",
-              "justify-content": "space-evenly"
+              "justify-content": "space-evenly",
             }}
           >
             <p style={{ width: "20%" }}>Kaloryczność:</p>
@@ -642,7 +636,7 @@ const Replacements = props => {
             style={{
               display: "flex",
               width: "100%",
-              "justify-content": "space-evenly"
+              "justify-content": "space-evenly",
             }}
           >
             <p style={{ width: "20%" }}>Proteiny:</p>
@@ -652,7 +646,7 @@ const Replacements = props => {
             style={{
               display: "flex",
               width: "100%",
-              "justify-content": "space-evenly"
+              "justify-content": "space-evenly",
             }}
           >
             <p style={{ width: "20%" }}>Tłuszcz:</p>
@@ -662,7 +656,7 @@ const Replacements = props => {
             style={{
               display: "flex",
               width: "100%",
-              "justify-content": "space-evenly"
+              "justify-content": "space-evenly",
             }}
           >
             <p style={{ width: "20%" }}>Węglowodany:</p>
@@ -672,7 +666,7 @@ const Replacements = props => {
             style={{
               display: "flex",
               width: "100%",
-              "justify-content": "space-evenly"
+              "justify-content": "space-evenly",
             }}
           >
             <p style={{ width: "20%" }}>Celuloza:</p>
@@ -683,7 +677,7 @@ const Replacements = props => {
               style={{
                 width: "330px",
                 margin: "1% auto 1% auto",
-                display: "block"
+                display: "block",
               }}
               src={Image}
             />
@@ -693,28 +687,29 @@ const Replacements = props => {
     </div>
   );
 };
-const Contents = props => {
+const Contents = (props) => {
   const [recipes, setRecipes] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [posts, setPosts] = useState([]);
+  const user = useContext(NewLoginInfo);
   useEffect(() => {
     const fetchData = async () => {
-      await axios("https://veggiesapp.herokuapp.com/restaurants/")
-        .then(res => {
+      await axios(`${user.Api}/restaurants/`)
+        .then((res) => {
           console.log(res.data);
           setRestaurants(res.data);
           console.log(res.data[0]);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           console.log(err.response);
         });
-      await axios("https://veggiesapp.herokuapp.com/posts/")
-        .then(res => {
+      await axios(`${user.Api}/posts/`)
+        .then((res) => {
           console.log(res.data);
           setPosts(res.data);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           console.log(err.response);
         });
@@ -729,7 +724,7 @@ const Contents = props => {
           display: "flex",
           "flex-wrap": "wrap",
           height: "100%",
-          padding: "1%"
+          padding: "1%",
         }}
       >
         <Recipes style={{ width: "40%", position: "relative" }} index={0} />
@@ -755,7 +750,7 @@ const Contents = props => {
           style={{
             background: "rgba(255,255,255,0.6)",
             height: "50%",
-            width: "40%"
+            width: "40%",
           }}
         >
           <div style={{ position: "relative" }}>
@@ -765,7 +760,7 @@ const Contents = props => {
                 width: "35px",
                 background: "green",
                 right: 0,
-                top: 0
+                top: 0,
               }}
               src={ReplacementsIcon}
             />
@@ -773,7 +768,7 @@ const Contents = props => {
               style={{
                 color: "black",
                 "font-size": "18px",
-                "text-align": "center"
+                "text-align": "center",
               }}
             >
               Zamienniki

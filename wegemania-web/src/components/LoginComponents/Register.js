@@ -5,14 +5,14 @@ import {
   LoginPage,
   LoginForm,
   InputWrapper,
-  LoginFlex
+  LoginFlex,
 } from "../../styles/LoginStyle";
 import {
   StyleLink,
   Image,
   TextField,
   FormArea,
-  FormButton
+  FormButton,
 } from "../../styles/RegisterStyle";
 import { NewLoginInfo } from "../../context/LoginInfo";
 import "../../styles/MenuLoginStyle.css";
@@ -32,21 +32,21 @@ const Register = () => {
   const [tempRegister, addTempRegister] = useState([]);
   const [isError, setError] = useState(undefined);
 
-  const validateEmail = email => {
+  const validateEmail = (email) => {
     //eslint-disable-next-line
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   };
-  const addTempLogin = event => {
+  const addTempLogin = (event) => {
     addTempRegister({ ...tempRegister, login: event.target.value });
   };
-  const addTempPassword = event => {
+  const addTempPassword = (event) => {
     addTempRegister({ ...tempRegister, password: event.target.value });
   };
-  const addTempRePassword = event => {
+  const addTempRePassword = (event) => {
     addTempRegister({ ...tempRegister, repassword: event.target.value });
   };
-  const addTempMail = event => {
+  const addTempMail = (event) => {
     addTempRegister({ ...tempRegister, mail: event.target.value });
   };
 
@@ -60,15 +60,15 @@ const Register = () => {
       const newUser = {
         username: tempRegister.login,
         email: tempRegister.mail,
-        password: tempRegister.password
+        password: tempRegister.password,
       };
 
       await axios
-        .post("https://veggiesapp.herokuapp.com/users/", newUser)
-        .then(res => {
+        .post(`${user.Api}/users/`, newUser)
+        .then((res) => {
           setError(false);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           console.log(error.response.data);
           setError(true);
@@ -78,7 +78,7 @@ const Register = () => {
     addTempRegister({
       username: "",
       email: "",
-      password: ""
+      password: "",
     });
   };
   const user = useContext(NewLoginInfo);

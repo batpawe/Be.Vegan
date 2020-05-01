@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { MainContainer, Container } from "../../styles/WallStyle";
 import RightPanel from "../GlobalComponents/RightPanel";
 import Image from "../../images/restaurant.jpg";
@@ -29,6 +29,7 @@ import AutoSuggest from "react-autosuggest";
 import "../../styles/SuggestStyle.css";
 import { makeStyles } from "@material-ui/core/styles";
 import ImageRestaurant from "../../images/restaurant.jpg";
+import { NewLoginInfo } from "../../context/LoginInfo";
 import { defaultTheme } from "react-autosuggest/dist/theme";
 const Element = (props) => {
   const [visible, setVisible] = useState(true);
@@ -121,6 +122,7 @@ const Element = (props) => {
   );
 };
 const Posts = (props) => {
+  const user = useContext(NewLoginInfo);
   const useStyles = makeStyles({
     n_react_autosuggest_container: {
       position: "relative",
@@ -209,7 +211,7 @@ const Posts = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios("http://veggies.ddns.net:8181/posts/")
+      await axios(`${user.Api}/posts/`)
         .then((res) => {
           console.log(res.data);
           setData(res.data);

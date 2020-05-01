@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { MainContainer, Container } from "../../styles/WallStyle";
 import { ReplacementsContainer, Item } from "../../styles/ReplacementsStyle";
 import { Scrollbars } from "react-custom-scrollbars";
@@ -39,6 +39,7 @@ import axios from "axios";
                 </UnorderedList>
                 */
 const Replacements = (props) => {
+  const user = useContext(NewLoginInfo);
   const outerTheme = createMuiTheme({
     palette: {
       secondary: {
@@ -75,7 +76,7 @@ const Replacements = (props) => {
   };
   useEffect(() => {
     const fetchData = async () => {
-      await axios(`http://veggies.ddns.net:8181/substitute/veg/`)
+      await axios(`${user.Api}/substitute/veg/`)
         .then((res) => {
           const newTemp = res.data.reduce((acc, obj) => {
             let nextLoop = false;

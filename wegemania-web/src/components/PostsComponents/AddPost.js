@@ -55,7 +55,7 @@ const AddPost = () => {
     };
     console.log(file[0]);
 
-    await fetch("https://veggiesapp.herokuapp.com/posts/", config)
+    await fetch(`${user.Api}/posts/`, config)
       .then((res) => {
         res
           .text()

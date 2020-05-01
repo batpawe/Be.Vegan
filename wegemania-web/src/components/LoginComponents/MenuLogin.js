@@ -32,7 +32,7 @@ const UserPanel = ({ click }) => {
   };
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get(`http://veggiesapp.herokuapp.com/me/`, {
+      const result = await axios.get(`${user.Api}/me/`, {
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
           authorization: `Token ${user.userInfo.token}`,

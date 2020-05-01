@@ -141,7 +141,7 @@ const AddRecipt = () => {
   const [defaultRecipe, setDefaultRecipe] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      await axios("http://veggies.ddns.net:8181/ingredients/")
+      await axios(`${user.Api}/ingredients/`)
         .then((res) => {
           setData(res.data);
           setSuggestions(res.data.map((date) => date.name));
@@ -149,7 +149,7 @@ const AddRecipt = () => {
         .catch((err) => {
           console.log(err);
         });
-      await axios("http://veggies.ddns.net:8181/recipes/51/").then((res) => {
+      await axios(`${user.Api}/recipes/51/`).then((res) => {
         setDefaultRecipe(res.data);
       });
     };
@@ -187,7 +187,7 @@ const AddRecipt = () => {
       body: data,
     };
     console.log([...data]);
-    await fetch("http://veggies.ddns.net:8181/recipes/", config)
+    await fetch(`${user.Api}/recipes/`, config)
       .then((res) => {
         if (res.status === 200) {
           console.log(
@@ -208,10 +208,7 @@ const AddRecipt = () => {
                     },
                     body: dataProduct,
                   };
-                  fetch(
-                    `http://veggies.ddns.net:8181/recipes/list/${result.id}/`,
-                    configProduct
-                  )
+                  fetch(`${user.Api}/recipes/list/${result.id}/`, configProduct)
                     .then((resProduct) => {
                       console.log(resProduct);
                       console.log(resProduct);

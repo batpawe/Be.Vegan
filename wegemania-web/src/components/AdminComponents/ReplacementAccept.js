@@ -86,7 +86,7 @@ const ReplacementAccept = (props) => {
   const items = [];
   useEffect(() => {
     const fetchData = async () => {
-      await axios(`http://veggies.ddns.net:8181/moderate/`)
+      await axios(`${user.Api}/moderate/`)
         .then((res) => {
           console.log(res.data);
 
@@ -238,21 +238,18 @@ const ReplacementAccept = (props) => {
                             variant="outlined"
                             color="primary"
                             onClick={() => {
-                              fetch(
-                                `http://veggies.ddns.net:8181/moderate/${veg.id}/`,
-                                {
-                                  method: "PATCH",
-                                  body: JSON.stringify({
-                                    id: veg.id,
-                                    show_on_view: true,
-                                  }),
-                                  headers: {
-                                    Authorization: `Token ${user.userInfo.token}`,
-                                    "Content-type":
-                                      "application/json; charset=UTF-8",
-                                  },
-                                }
-                              )
+                              fetch(`${user.Api}/moderate/${veg.id}/`, {
+                                method: "PATCH",
+                                body: JSON.stringify({
+                                  id: veg.id,
+                                  show_on_view: true,
+                                }),
+                                headers: {
+                                  Authorization: `Token ${user.userInfo.token}`,
+                                  "Content-type":
+                                    "application/json; charset=UTF-8",
+                                },
+                              })
                                 .then((res) => {
                                   notify.set("Pomyślnie dodano zamiennik.");
                                   setTimeout(() => {
@@ -288,17 +285,14 @@ const ReplacementAccept = (props) => {
                             </Button>
                             <Button
                               onClick={() => {
-                                fetch(
-                                  `https://veggiesapp.herokuapp.com/moderate/${veg.id}/`,
-                                  {
-                                    method: "DELETE",
-                                    headers: {
-                                      Authorization: `Token ${user.userInfo.token}`,
-                                      "Content-type":
-                                        "application/json; charset=UTF-8",
-                                    },
-                                  }
-                                )
+                                fetch(`${user.Api}/moderate/${veg.id}/`, {
+                                  method: "DELETE",
+                                  headers: {
+                                    Authorization: `Token ${user.userInfo.token}`,
+                                    "Content-type":
+                                      "application/json; charset=UTF-8",
+                                  },
+                                })
                                   .then((res) => {
                                     notify.set("Pomyślnie usunięto zamiennik.");
                                     setTimeout(() => {

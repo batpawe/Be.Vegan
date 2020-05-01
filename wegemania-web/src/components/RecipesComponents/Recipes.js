@@ -1,5 +1,5 @@
 //props.match.params
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import DeleteIcon from "../../icons/bin_delete.svg";
 import EditIcon from "../../icons/edit.svg";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -127,6 +127,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Recipes = (props) => {
+  const user = useContext(NewLoginInfo);
   const useStyles = makeStyles({
     n_react_autosuggest_container: {
       position: "relative",
@@ -248,7 +249,7 @@ const Recipes = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       /* https://veggiesapp.herokuapp.com/recipes/*/
-      await axios("http://veggies.ddns.net:8181/recipes/")
+      await axios(`${user.Api}/recipes/`)
         .then((res) => {
           setData(res.data);
           /*

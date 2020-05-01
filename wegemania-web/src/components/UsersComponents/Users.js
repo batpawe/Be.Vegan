@@ -9,7 +9,7 @@ import {
   UnorderedFlexList,
   EditProfileButton,
   UserName,
-  Header
+  Header,
 } from "../../styles/UserProfile";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import {
@@ -26,12 +26,12 @@ import {
   HyperLink,
   TextInput,
   SubmitCommentButton,
-  CommentContainer
+  CommentContainer,
 } from "../../styles/WallStyle";
 import PostImage from "../../images/postimage.jpg";
 import axios from "axios";
 import { NewLoginInfo } from "../../context/LoginInfo";
-const ActivityText = props => {
+const ActivityText = (props) => {
   let temp;
   if (props.activity == 0) {
     temp =
@@ -51,22 +51,22 @@ const ActivityText = props => {
   }
   return <p>{temp}</p>;
 };
-const Users = props => {
+const Users = (props) => {
   const user = useContext(NewLoginInfo);
   const [userData, setUserData] = useState();
   let request;
   useEffect(() => {
     if (user.userInfo.id == props.match.params.id) {
-      request = "https://veggiesapp.herokuapp.com/me/";
+      request = `${user.Api}/me/`;
     } else {
-      request = `https://veggiesapp.herokuapp.com/users/${props.match.params.id}`;
+      request = `${user.Api}/users/${props.match.params.id}`;
     }
     const fetchData = async () => {
       const result = await axios.get(request, {
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
-          authorization: `Token ${user.userInfo.token}`
-        }
+          authorization: `Token ${user.userInfo.token}`,
+        },
       });
       console.log(result.data);
       setUserData(result.data);
@@ -83,7 +83,7 @@ const Users = props => {
               display: "flex",
               justifyContent: "space-between",
               "align-items": "center",
-              margin: "3% 0 0 0"
+              margin: "3% 0 0 0",
             }}
           >
             <Header>
@@ -91,7 +91,7 @@ const Users = props => {
                 style={{
                   "border-radius": "20px",
                   "font-size": "20px",
-                  padding: "10%"
+                  padding: "10%",
                 }}
               >
                 {userData.username}

@@ -180,10 +180,7 @@ const Post = (props) => {
       },
       body: data,
     };
-    await fetch(
-      `http://veggies.ddns.net:8181/posts/${props.match.params.id}/`,
-      config
-    )
+    await fetch(`${user.Api}/posts/${props.match.params.id}/`, config)
       .then((res) => {
         res.text().then((text) => {
           let json = JSON.parse(text);
@@ -209,7 +206,7 @@ const Post = (props) => {
     console.log(props.match.params);
     console.log(file[0]);
     const fetchData = async () => {
-      await axios(`http://veggies.ddns.net:8181/posts/${props.match.params.id}`)
+      await axios(`${user.Api}/posts/${props.match.params.id}`)
         .then((res) => {
           console.log(res.data);
           setPost({ ...res.data });

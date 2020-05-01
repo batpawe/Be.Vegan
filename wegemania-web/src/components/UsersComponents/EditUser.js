@@ -7,7 +7,7 @@ import {
   Button,
   InputsContainer,
   InputContainer,
-  NumberInput
+  NumberInput,
 } from "../../styles/UserProfile";
 import { NewLoginInfo } from "../../context/LoginInfo";
 import axios from "axios";
@@ -25,17 +25,17 @@ const EditUser = () => {
     "Mała aktywność, aktywności sportowe zdarzają się bardzo rzadko, do pracy chodzę pieszo, w pracy wykonuję lekką aktywność fizyczną",
     "Średnia aktywność, aktywność sportowa co najmniej raz w tygodniu, staram się być aktywnym przy codziennych obowiązkach (praca, sklep), w pracy wykonuje lekką aktywność fizyczną",
     " Duża aktywność, aktywność sportowa co najmniej 3 razy w tygodniu, aktywny przy codziennych obowiązkach, w pracy przerwy na rozciąganie i rozgrzewanie ciała",
-    "Bardzo duża aktywność, aktywność sportowa codziennie, aktywny przy każdej możliwej okazji, w trakcie pracy aktywny lub robi przerwy na aktywność fizyczną"
+    "Bardzo duża aktywność, aktywność sportowa codziennie, aktywny przy każdej możliwej okazji, w trakcie pracy aktywny lub robi przerwy na aktywność fizyczną",
   ];
 
   useEffect(() => {
-    var request = "https://veggiesapp.herokuapp.com/me/";
+    var request = `${user.Api}/me/`;
     const fetchData = async () => {
       const result = await axios.get(request, {
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
-          authorization: `Token ${user.userInfo.token}`
-        }
+          authorization: `Token ${user.userInfo.token}`,
+        },
       });
       setUserInfo({ ...result.data });
     };
@@ -47,9 +47,9 @@ const EditUser = () => {
       setDeleyedRedirect(true);
     }, 2000);
   };
-  const sendRequest = val => {
+  const sendRequest = (val) => {
     const fetchData = async () => {
-      var request = "https://veggiesapp.herokuapp.com/me/";
+      var request = `${user.Api}/me/`;
       axios
         .put(
           request,
@@ -59,19 +59,19 @@ const EditUser = () => {
             weight: val.weight,
             height: val.height,
             age: val.age,
-            activity: val.activity
+            activity: val.activity,
           },
           {
             headers: {
               "content-type": "application/x-www-form-urlencoded",
-              authorization: `Token ${user.userInfo.token}`
-            }
+              authorization: `Token ${user.userInfo.token}`,
+            },
           }
         )
-        .then(res => {
+        .then((res) => {
           handleSuccess();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           console.log(err.response);
         });
@@ -91,9 +91,9 @@ const EditUser = () => {
             height: userInfo.height || 0,
             weight: userInfo.weight || 0,
             age: userInfo.age || 0,
-            activity: userInfo.activity || 0
+            activity: userInfo.activity || 0,
           }}
-          onSubmit={values => sendRequest(values)}
+          onSubmit={(values) => sendRequest(values)}
           validationSchema={Yup.object().shape({
             username: Yup.string()
               .min(5, "Podana nazwa użytkownika jest za krótka.")
@@ -117,7 +117,7 @@ const EditUser = () => {
               .max(250, "Podany wiek jest niepoprawny"),
             activity: Yup.number()
               .min(0, "Liczba powinna być przedziale od 0 do 100")
-              .max(100, "Liczba powinna być przedziale od 0 do 100")
+              .max(100, "Liczba powinna być przedziale od 0 do 100"),
           })}
         >
           {({
@@ -127,7 +127,7 @@ const EditUser = () => {
             setFieldTouched,
             touched,
             isValid,
-            handleSubmit
+            handleSubmit,
           }) => (
             <form style={{ width: "100%" }} onSubmit={handleSubmit}>
               {errors && <div>{errors[Object.keys(errors)[0]]}</div>}
@@ -205,7 +205,7 @@ const EditUser = () => {
                   style={{
                     display: "flex",
                     "flex-direction": "column",
-                    width: "46%"
+                    width: "46%",
                   }}
                 >
                   <label for="activity">Aktywność:</label>

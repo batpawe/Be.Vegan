@@ -87,7 +87,7 @@ const ValidateRestaurant = (props) => {
       return file;
     };
     const fetchData = async () => {
-      await axios("https://veggiesapp.herokuapp.com/restaurants/")
+      await axios(`${user.Api}/restaurants/`)
         .then((res) => {
           res.data.map((date) => {
             if (date.id_moderator === user.userInfo.id) {
@@ -325,7 +325,7 @@ const ValidateRestaurant = (props) => {
     }
     console.log(JSON.stringify(tempTimeText));
     let userIndex = null;
-    await axios("https://veggiesapp.herokuapp.com/users/")
+    await axios(`${user.Api}/users/`)
       .then((res) => {
         let i = 0;
         res.data.map((date) => {
@@ -363,7 +363,7 @@ const ValidateRestaurant = (props) => {
       body: data,
     };
 
-    await fetch("http://veggiesapp.herokuapp.com/restaurant/change/", config)
+    await fetch(`${user.Api}/restaurant/change/`, config)
       .then((res) => {
         console.log(res);
         res

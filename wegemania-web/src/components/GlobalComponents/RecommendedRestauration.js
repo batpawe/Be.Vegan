@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { NewLoginInfo } from "../../context/LoginInfo";
 import {
   LocalContainer,
   UnorderedList,
@@ -13,10 +14,11 @@ import RestaurantImage from "../../images/restaurant.jpg";
 import axios from "axios";
 var moment = require("moment");
 export const RecommendedRestauration = () => {
+  const user = useContext(NewLoginInfo);
   const [restaurations, setRestaurations] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      await axios("https://veggiesapp.herokuapp.com/restaurants/")
+      await axios(`${user.Api}/restaurants/`)
         .then((res) => {
           //setRestaurations(res.data);
           let temp = [];
