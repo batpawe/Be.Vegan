@@ -233,3 +233,13 @@ export const ReplacementsContainer = styled.div`
     max-height: 200px;
   }
 `;
+export const PostContainer = styled.div`
+  background-image: ${(props) =>
+    props.myimg !== null
+      ? ` linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),url(${props.myimg})`
+      : "none"};
+  color: ${(props) => (props.myimg === null ? "black" : "white")};
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover;
+`;

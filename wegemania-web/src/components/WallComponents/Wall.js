@@ -38,7 +38,24 @@ import FormLabel from "@material-ui/core/FormLabel";
 import { green, orange } from "@material-ui/core/colors";
 import Image from "../../images/dinner.jpg";
 import RightPanel from "../GlobalComponents/RightPanel";
+import {
+  BigRateContainerRecipes,
+  SmallRateContainerRecipes,
+} from "../../styles/StarsStyle";
 import axios from "axios";
+import {
+  HeaderRecipeContainer,
+  RecipeTimeContainer,
+  HeaderRecipeText,
+  RecipeTime,
+  IngredientsList,
+  IngredientsItem,
+  PreparationItem,
+  RecipeImage,
+  RateContainer,
+  RateHeader,
+  RateStars,
+} from "../../styles/RecipeStyle";
 import RecipesIcon from "../../icons/VeganAppIcons/recipes.svg";
 import ikonaCzasuActive from "../../icons/ikonaCzasuactive.svg";
 import ikonaMapyActive from "../../icons/ikonaMapyactive.svg";
@@ -53,6 +70,9 @@ import {
   Container,
   ReplacementsContainer,
 } from "../../styles/WallStyle";
+import ReactStars from "react-stars";
+import ClockIcon from "../../icons/white_clock.svg";
+import UserIcon from "../../icons/white_user.svg";
 import ReplacementsIcon from "../../icons/VeganAppIcons/replacements.svg";
 import RestaurantIcon from "../../icons/VeganAppIcons/restaurants.svg";
 import {
@@ -64,6 +84,7 @@ import {
   ScrollContainer,
   TextContainer,
 } from "../../styles/MobileStyles";
+import { PostContainer } from "../../styles/WallStyle";
 const Recipes = (props) => {
   let recipe = props.recipe;
   const [listIngredients, setListIngredients] = useState([]);
@@ -167,124 +188,102 @@ const Recipes = (props) => {
       </PagginationContainer>
     );
   };
+  const [isHover, setIsHover] = useState(false);
   return (
-    <ElementContainerMobile>
-      {recipe && (
-        <MobileContainer>
-          <ImageElement
-            src={recipe.recipe_foto}
-            onClick={() => props.historyProps.push(`/recipe/${recipe.id}`)}
-          />
-          <ContentContainer
-            style={{
-              position: "relative",
-              width: "100%",
-              background: "rgba(255,255,255,0.6)",
-            }}
-          >
-            <img
+    <ElementContainer
+      style={{ height: "15%", width: "22%", "flex-direction": "column" }}
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
+      onClick={() => props.historyProps.push(`/recipe/${props.recipe.id}`)}
+    >
+      <HoverContainer style={{ width: "100%", pointer: "cursor" }}>
+        {isHover ? (
+          <div style={{ width: "100%", position: "relative" }}>
+            <ImageHoverComponent
               style={{
-                width: "35px",
-                position: "absolute",
-                top: 0,
-                right: 0,
-                background: "green",
+                width: "100%",
+                height: "220px",
+                "border-radius": "4px",
+                "object-fit": "cover",
               }}
-              src={RecipesIcon}
+              src={`${props.recipe.recipe_foto}`}
             />
-            <RecipesName style={{ "font-size": "14px", width: "80%" }}>
-              {recipe.recipe_name}
-            </RecipesName>
-            {page[props.index] == 0 ? (
-              <div>
-                <HeaderText>Składniki:</HeaderText>
-                <UnorderedList
-                  style={{
-                    "max-height": "140px",
-                    overflow: "auto",
-                    margin: 0,
-                    padding: 0,
-                    width: "100%",
-                  }}
-                >
-                  {listIngredients.map((ingredient) => {
-                    return (
-                      <ul
-                        style={{
-                          "font-size": 10,
-                          margin: "4% 0 0 0",
-                          padding: 0,
-                          width: "100%",
-                          display: "flex",
-                          "justify-content": "space-between",
-                          "align-items": "flex-end",
-                        }}
-                      >
-                        <Item
-                          style={{
-                            "font-size": 10,
-                            "max-width": "50%",
-                            "text-align": "left",
-                            "white-space": "normal",
-                            padding: 0,
-                            margin: 0,
-                          }}
-                        >
-                          {ingredient.name}
-                        </Item>
-                        <Item
-                          style={{
-                            "font-size": 10,
-                            "max-width": "50%",
-                            "text-align": "left",
-                            "white-space": "normal",
-                            padding: 0,
-                            margin: 0,
-                          }}
-                        >
-                          {ingredient.amount}
-                        </Item>
-                      </ul>
-                    );
-                  })}
-                </UnorderedList>
-                <TextContainer>
-                  <p
-                    style={{
-                      color: "#4CAF50",
-                      "font-weight": "bold",
-                    }}
-                  >
-                    Czas przygotowania:
-                  </p>
-                  <p
-                    style={{ "font-weight": "bold" }}
-                  >{`${recipe.time} minut`}</p>
-                </TextContainer>
-              </div>
-            ) : (
-              <div>
-                <HeaderText>Sposób przyrządzenia:</HeaderText>
-                <UnorderedList
-                  style={{
-                    overflow: "auto",
-                    "max-height": "180px",
-                    width: "100%",
-                    margin: 0,
-                    padding: 0,
-                  }}
-                >
-                  <WayItem style={{ "white-space": "pre-line", width: "96%" }}>
-                    {JSON.parse(text)}
-                  </WayItem>
-                </UnorderedList>
-              </div>
-            )}
-            <Paggination index={props.index} />
-          </ContentContainer>
-        </MobileContainer>
-      )}
-    </ElementContainerMobile>
+
+            <HoverText
+              style={{
+                "font-size": "16px",
+                top: "0",
+                display: "flex",
+                "justify-content": "center",
+              }}
+            >
+              <img
+                src={UserIcon}
+                style={{ width: "22px", margin: "0 5% 0 0" }}
+              />
+              <p style={{ margin: 0, color: "white", "font-size": "18px" }}>
+                {props.recipe.id_user.username}
+              </p>
+            </HoverText>
+            <HoverText
+              style={{
+                "font-size": "16px",
+                top: "18%",
+                display: "flex",
+                "justify-content": "center",
+              }}
+            >
+              <img
+                src={ClockIcon}
+                style={{ width: "22px", margin: "0 5% 0 0" }}
+              />
+              <p style={{ margin: 0, color: "white", "font-size": "18px" }}>
+                {props.recipe.time}min
+              </p>
+            </HoverText>
+            <div
+              style={{
+                width: "100%",
+                position: "absolute",
+                top: "33%",
+                left: "4%",
+              }}
+            >
+              <SmallRateContainerRecipes>
+                <RateStars style={{ width: "100%" }}>
+                  <ReactStars
+                    edit={false}
+                    value={props.recipe.rating}
+                    count={5}
+                    className="recipes_rate"
+                    //onChange
+                    size={24}
+                    color2={"#4CAF50"}
+                  />
+                </RateStars>
+              </SmallRateContainerRecipes>
+            </div>
+          </div>
+        ) : (
+          <div style={{ width: "100%" }}>
+            <ImageComponent
+              style={{
+                width: "100%",
+                height: "220px",
+                "border-radius": "4px",
+                "object-fit": "cover",
+              }}
+              src={`${props.recipe.recipe_foto}`}
+            />
+          </div>
+        )}
+      </HoverContainer>
+      <p style={{ width: "100%" }}>{props.recipe.recipe_name}</p>
+    </ElementContainer>
   );
 };
 const Restaurants = (props) => {
@@ -372,146 +371,76 @@ const Restaurants = (props) => {
     return [time.split(":", 1).toString(), time.split(":").slice(1).join(":")];
   });
   return (
-    <ElementContainerMobile>
-      <MobileContainer>
-        {/*ttt*/}
-        <ImageElement
-          src={props.data.foto}
-          onClick={() => props.historyProps.push(`/restaurant/${props.index}`)}
-        />
-        <ContentContainer
-          style={{
-            width: "100%",
-            position: "relative",
-            background: "rgba(255,255,255,0.6)",
-          }}
-        >
-          <img
-            style={{
-              width: "35px",
-              background: "green",
-              position: "absolute",
-              top: 0,
-              right: 0,
-            }}
-            src={RestaurantIcon}
+    <div style={{ width: "23%" }}>
+      <img
+        onClick={() =>
+          props.historyProps.push(`/restaurant/${props.restaurant.id}`)
+        }
+        style={{
+          width: "100%",
+          height: "45%",
+          "object-fit": "contain",
+          cursor: "pointer",
+        }}
+        src={props.restaurant.foto}
+      />
+      <p style={{ padding: 0, margin: 0, "text-align": "center" }}>
+        {props.restaurant.name}
+      </p>
+      <BigRateContainerRecipes style={{ width: "100%", margin: "0 auto" }}>
+        <RateStars style={{ width: "100%" }}>
+          <ReactStars
+            edit={false}
+            value={props.restaurant.rating}
+            count={5}
+            className="recipes_rate"
+            //onChange
+            size={24}
+            color2={"#4CAF50"}
           />
-          <RestaurantName>{props.data.name}</RestaurantName>
-          {console.log(page[props.index])}
-          {page[props.number] == 0 || page[props.number] == undefined ? (
-            <div style={{ margin: "10% 0 0 0" }}>
-              <HeaderText>Godziny otwarcia:</HeaderText>
-              <UnorderedList
-                style={{
-                  "font-size": "14px",
-                  width: "100%",
-                  margin: "0",
-                  padding: "0",
-                  "justify-content": "flex-start",
-                  "flex-direction": "column",
-                  "max-height": "200px",
-                  "align-items": "flex-start",
-                }}
-              >
-                {time.map((t) => {
-                  return (
-                    <Item
-                      style={{
-                        "align-items": "flex-start",
-                        width: "100%",
-                        "justify-content": "space-between",
-                        margin: 0,
-                        padding: 0,
-                        width: "100%",
-                      }}
-                    >
-                      <p style={{ margin: 0 }}>{t[0]}:</p>
-                      <p style={{ margin: 0 }}>{t[1]}</p>
-                    </Item>
-                  );
-                })}
-                {/*}
-              <Item>Poniedziałek: 10:00 - 20:00</Item>
-              <Item>Poniedziałek: 10:00 - 20:00</Item>
-              <Item>Poniedziałek: 10:00 - 20:00</Item>
-              <Item>Poniedziałek: 10:00 - 20:00</Item>
-              <Item>Poniedziałek: 10:00 - 20:00</Item>
-              <Item>Poniedziałek: 10:00 - 20:00</Item>
-              {*/}
-              </UnorderedList>
-            </div>
-          ) : (
-            <div>
-              <HeaderText>Lokalizacja:</HeaderText>
-              <Map
-                id="mapid"
-                center={[props.data.latX, props.data.longY]}
-                zoom={17}
-                style={{
-                  width: 160,
-                  height: 170,
-                  margin: "1% auto 1% auto",
-                  "z-index": 0,
-                }}
-              >
-                <TileLayer
-                  style={{ "font-size": 4 }}
-                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={[props.data.latX, props.data.longY]}>
-                  <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                  </Popup>
-                </Marker>
-              </Map>
-            </div>
-          )}
-
-          <Paggination index={props.number} />
-        </ContentContainer>
-      </MobileContainer>
-    </ElementContainerMobile>
+        </RateStars>
+        <p>
+          {props.restaurant.city +
+            ", " +
+            props.restaurant.street +
+            " " +
+            props.restaurant.street_number}
+        </p>
+      </BigRateContainerRecipes>
+    </div>
   );
 };
 const Posts = (props) => {
   const [isHover, setIsHover] = useState(false);
+  const [error, setError] = useState(false);
+
   console.log("||||||||||||||");
   console.log(props.index);
   return (
-    <ElementContainerMobile style={{ cursor: "pointer" }}>
-      <PostsContainer
-        onMouseEnter={() => {
-          setIsHover(true);
+    <PostContainer
+      myimg={error ? null : props.post.foto}
+      style={{
+        width: "40%",
+        padding: "5%",
+        cursor: "pointer",
+        margin: "2% 0 2% 0",
+      }}
+      onClick={() => props.historyProps.push(`/post/${props.index}`)}
+    >
+      <img
+        src={props.post.foto}
+        style={{ display: "none" }}
+        onError={() => {
+          setError(true);
         }}
-        onMouseLeave={() => {
-          setIsHover(false);
-        }}
-        onClick={() => props.historyProps.push(`/post/${props.index}`)}
-      >
-        <HoverContainer>
-          {isHover ? (
-            <div>
-              <ImageHoverComponent
-                style={{ width: "100%" }}
-                src={`${props.post.foto}`}
-              />
-              <HoverHeader> {props.post.title}</HoverHeader>
-              <HoverText>{props.post.description}</HoverText>
-              <Icon style={{ width: "35px" }} src={PostsIcon} />
-            </div>
-          ) : (
-            <div>
-              <ImageComponent
-                style={{ width: "100%" }}
-                src={`${props.post.foto}`}
-              />
-              <Icon style={{ width: "35px" }} src={PostsIcon} />
-            </div>
-          )}
-        </HoverContainer>
-      </PostsContainer>
-    </ElementContainerMobile>
+      />
+      <p style={{ "font-size": "18px", "text-align": "center" }}>
+        {props.post.title}
+      </p>
+      <p style={{ "font-size": "16px" }}>
+        {props.post.description.slice(0, 30)}
+      </p>
+    </PostContainer>
   );
 };
 const Replacements = (props) => {
@@ -683,28 +612,41 @@ const Wall = (props) => {
     fetchData();
   }, []);
   return (
-    <MainContainer>
+    <div
+      style={{
+        width: "80%",
+        margin: "10% auto",
+        background: "rgba(244,244,244,0.9)",
+      }}
+    >
       <WallContainer>
         {recipes[0] &&
           recipes.map((recipe) => (
             <Recipes index={0} recipe={recipe} historyProps={props.history} />
           ))}
-        {restaurants[0] && (
-          <Restaurants
-            index={restaurants[0].id}
-            number={0}
-            data={restaurants[0]}
-            historyProps={props.history}
-          />
-        )}
-        {posts[0] && (
-          <Posts
-            key={posts[0].id}
-            index={posts[0].id}
-            post={posts[0]}
-            historyProps={props.history}
-          />
-        )}
+        {restaurants.map((res) => {
+          return (
+            <Restaurants
+              index={restaurants[0].id}
+              number={0}
+              restaurant={res}
+              data={restaurants[0]}
+              historyProps={props.history}
+            />
+          );
+        })}
+        {posts.map((res) => {
+          return (
+            <Posts
+              key={posts[0].id}
+              index={posts[0].id}
+              post={res}
+              historyProps={props.history}
+            />
+          );
+        })}
+
+        {/*}
         <div
           style={{
             background: "rgba(255,255,255,0.6)",
@@ -737,9 +679,9 @@ const Wall = (props) => {
             </ScrollContainer>
           </div>
         </div>
+          {*/}
       </WallContainer>
-      <RightPanel />
-    </MainContainer>
+    </div>
   );
 };
 //miejsca + posty
