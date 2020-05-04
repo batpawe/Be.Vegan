@@ -284,8 +284,8 @@ const Recipes = (props) => {
             return tempArray;
           }, []);
           const tempResult = temp.reduce((acc, curr, i) => {
-            if (!(i % 18)) {
-              acc.push(temp.slice(i, i + 18)); // ..push a chunk of the original array to the accumulator
+            if (!(i % 17)) {
+              acc.push(temp.slice(i, i + 17)); // ..push a chunk of the original array to the accumulator
             }
             return acc;
           }, []);
@@ -624,8 +624,8 @@ const Recipes = (props) => {
                 return tempArray;
               }, []);
               const tempResult = temp.reduce((acc, curr, i) => {
-                if (!(i % 18)) {
-                  acc.push(temp.slice(i, i + 18)); // ..push a chunk of the original array to the accumulator
+                if (!(i % 17)) {
+                  acc.push(temp.slice(i, i + 17)); // ..push a chunk of the original array to the accumulator
                 }
                 return acc;
               }, []);

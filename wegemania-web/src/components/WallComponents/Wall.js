@@ -85,6 +85,7 @@ import {
   TextContainer,
 } from "../../styles/MobileStyles";
 import { PostContainer } from "../../styles/WallStyle";
+import { defineLocale } from "moment";
 const Recipes = (props) => {
   let recipe = props.recipe;
   const [listIngredients, setListIngredients] = useState([]);
@@ -570,11 +571,26 @@ const Replacements = (props) => {
 };
 const Wall = (props) => {
   const user = useContext(NewLoginInfo);
+  const [firstRand, setFirstRand] = useState([]);
+  const [secondRand, setSecondRand] = useState([]);
+  const [thirdRand, setThirdRand] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [posts, setPosts] = useState([]);
   const [replacements, setReplacements] = useState([]);
+  const [defaultArrayPosts, setDefaultArrayPosts] = useState([]);
+  const [defaultArrayRestaurants, setDefaultArrayRestaurants] = useState([]);
+  const [defaultArrayRecipe, setDefaultArrayRecipe] = useState([]);
   useEffect(() => {
+    const getRanArr = (lngth) => {
+      let arr = [];
+      do {
+        let ran = Math.floor(Math.random() * lngth);
+        arr = arr.indexOf(ran) > -1 ? arr : arr.concat(ran);
+      } while (arr.length < lngth);
+
+      return arr;
+    };
     user.openPanel(false);
     const fetchData = async () => {
       await axios(`${user.Api}/restaurants/`)
@@ -582,6 +598,42 @@ const Wall = (props) => {
           console.log(res.data);
           setRestaurants(res.data);
           console.log(res.data[0]);
+          let temp = [];
+          let newRestaurants = [];
+          res.data.map((restaurant) => {
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+            temp.push(restaurant);
+          });
+          if (res.data.length >= 12) {
+            newRestaurants = res.data.slice(0, 12).reduce((acc, curr, i) => {
+              if (!(i % 4)) {
+                acc.push(res.data.slice(i, i + 4)); // ..push a chunk of the original array to the accumulator
+              }
+              return acc;
+            }, []);
+          } else {
+            newRestaurants = temp.slice(0, 12).reduce((acc, curr, i) => {
+              if (!(i % 4)) {
+                acc.push(temp.slice(i, i + 4)); // ..push a chunk of the original array to the accumulator
+              }
+              return acc;
+            }, []);
+          }
+          setDefaultArrayRecipe([...newRestaurants]);
         })
         .catch((err) => {
           console.log(err);
@@ -591,6 +643,41 @@ const Wall = (props) => {
         .then((res) => {
           console.log(res.data);
           setPosts(res.data);
+          let temp = [];
+          let newPosts = [];
+          res.data.map((post) => {
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+            temp.push(post);
+          });
+          if (res.data.length >= 12) {
+            newPosts = res.data.slice(0, 12).reduce((acc, curr, i) => {
+              if (!(i % 4)) {
+                acc.push(res.data.slice(i, i + 4)); // ..push a chunk of the original array to the accumulator
+              }
+              return acc;
+            }, []);
+          } else {
+            newPosts = temp.slice(0, 12).reduce((acc, curr, i) => {
+              if (!(i % 4)) {
+                acc.push(temp.slice(i, i + 4)); // ..push a chunk of the original array to the accumulator
+              }
+              return acc;
+            }, []);
+          }
+          setDefaultArrayPosts([...newPosts]);
         })
         .catch((err) => {
           console.log(err);
@@ -599,6 +686,40 @@ const Wall = (props) => {
       await axios(`${user.Api}/recommend`)
         .then((res) => {
           setRecipes(res.data);
+          let temp = [];
+          let newRecipes = [];
+          res.data.map((recipe) => {
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+            temp.push(recipe);
+          });
+          if (res.data.length >= 12) {
+            newRecipes = res.data.slice(0, 12).reduce((acc, curr, i) => {
+              if (!(i % 4)) {
+                acc.push(res.data.slice(i, i + 4)); // ..push a chunk of the original array to the accumulator
+              }
+              return acc;
+            }, []);
+          } else {
+            newRecipes = temp.slice(0, 12).reduce((acc, curr, i) => {
+              if (!(i % 4)) {
+                acc.push(temp.slice(i, i + 4)); // ..push a chunk of the original array to the accumulator
+              }
+              return acc;
+            }, []);
+          }
+          setDefaultArrayRecipe([...newRecipes]);
         })
         .catch((err) => console.log(err));
       await axios(`${user.Api}/substitute/veg/`)
@@ -608,9 +729,17 @@ const Wall = (props) => {
         .catch((err) => {
           console.log(err);
         });
+
+      /*-*/
+
+      /*-*/
     };
+    setFirstRand(getRanArr(3));
+    setSecondRand(getRanArr(3));
+    setThirdRand(getRanArr(3));
     fetchData();
   }, []);
+
   return (
     <div
       style={{
@@ -620,6 +749,188 @@ const Wall = (props) => {
       }}
     >
       <WallContainer>
+        {firstRand.map((rand) => {
+          if (rand == 0) {
+            return (
+              defaultArrayRecipe[0] &&
+              defaultArrayRecipe[0].map((recipe) => {
+                return (
+                  <Recipes
+                    index={0}
+                    recipe={recipe}
+                    historyProps={props.history}
+                  />
+                );
+              })
+            );
+          } else if (rand == 1) {
+            return (
+              defaultArrayPosts[0] &&
+              defaultArrayPosts[0].map((post) => {
+                return (
+                  <Posts
+                    key={post.id}
+                    index={post.id}
+                    post={post}
+                    historyProps={props.history}
+                  />
+                );
+              })
+            );
+          } else if (rand == 2) {
+            defaultArrayRestaurants[0] &&
+              defaultArrayRestaurants[0].map((restaurant) => {
+                return (
+                  <Restaurants
+                    index={restaurants.id}
+                    number={0}
+                    restaurant={restaurant}
+                    data={restaurant}
+                    historyProps={props.history}
+                  />
+                );
+              });
+          }
+        })}
+        {secondRand.map((rand) => {
+          if (rand == 0) {
+            return (
+              defaultArrayRecipe[0] &&
+              defaultArrayRecipe[0].map((recipe) => {
+                return (
+                  <Recipes
+                    index={0}
+                    recipe={recipe}
+                    historyProps={props.history}
+                  />
+                );
+              })
+            );
+          } else if (rand == 1) {
+            return (
+              defaultArrayPosts[0] &&
+              defaultArrayPosts[0].map((post) => {
+                return (
+                  <Posts
+                    key={post.id}
+                    index={post.id}
+                    post={post}
+                    historyProps={props.history}
+                  />
+                );
+              })
+            );
+          } else if (rand == 2) {
+            defaultArrayRestaurants[0] &&
+              defaultArrayRestaurants[0].map((restaurant) => {
+                return (
+                  <Restaurants
+                    index={restaurants.id}
+                    number={0}
+                    restaurant={restaurant}
+                    data={restaurant}
+                    historyProps={props.history}
+                  />
+                );
+              });
+          }
+        })}
+        {thirdRand.map((rand) => {
+          if (rand == 0) {
+            return (
+              defaultArrayRecipe[0] &&
+              defaultArrayRecipe[0].map((recipe) => {
+                return (
+                  <Recipes
+                    index={0}
+                    recipe={recipe}
+                    historyProps={props.history}
+                  />
+                );
+              })
+            );
+          } else if (rand == 1) {
+            return (
+              defaultArrayPosts[0] &&
+              defaultArrayPosts[0].map((post) => {
+                return (
+                  <Posts
+                    key={post.id}
+                    index={post.id}
+                    post={post}
+                    historyProps={props.history}
+                  />
+                );
+              })
+            );
+          } else if (rand == 2) {
+            defaultArrayRestaurants[0] &&
+              defaultArrayRestaurants[0].map((restaurant) => {
+                return (
+                  <Restaurants
+                    index={restaurants.id}
+                    number={0}
+                    restaurant={restaurant}
+                    data={restaurant}
+                    historyProps={props.history}
+                  />
+                );
+              });
+          }
+        })}
+        {/*firstRand.map((rand) => {
+          defaultArrayRecipe[0] &&
+            defaultArrayRecipe[0].map((recipe) => {
+              {
+                console.log(recipe);
+              }
+              return (
+                <Recipes
+                  index={0}
+                  recipe={recipe}
+                  historyProps={props.history}
+                />
+              );
+            });
+          rand === 1 &&
+            defaultArrayRecipe[0] &&
+            defaultArrayRecipe[0].map((recipe) => {
+              return (
+                <Recipes
+                  index={0}
+                  recipe={recipe}
+                  historyProps={props.history}
+                />
+              );
+            });
+          rand === 2 &&
+            defaultArrayPosts[0] &&
+            defaultArrayPosts[0].map((post) => {
+              return (
+                <Posts
+                  key={post.id}
+                  index={post.id}
+                  post={post}
+                  historyProps={props.history}
+                />
+              );
+            });
+          rand === 3 &&
+            defaultArrayRestaurants[0] &&
+            defaultArrayRestaurants[0].map((restaurant) => {
+              return (
+                <Restaurants
+                  index={restaurants.id}
+                  number={0}
+                  restaurant={restaurant}
+                  data={restaurant}
+                  historyProps={props.history}
+                />
+              );
+            });
+        })}
+            {*/}
+        {/*}
         {recipes[0] &&
           recipes.map((recipe) => (
             <Recipes index={0} recipe={recipe} historyProps={props.history} />
@@ -645,7 +956,7 @@ const Wall = (props) => {
             />
           );
         })}
-
+{*/}
         {/*}
         <div
           style={{
