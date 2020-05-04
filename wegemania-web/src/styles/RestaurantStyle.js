@@ -144,9 +144,9 @@ export const SubscriptionRestaurantsContainer = styled.div`
   border-bottom: 1px solid black;
 `;
 export const SubscriptionRestaurantImage = styled.img`
-  width: 20%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  width: 35%;
   border-left: 1px solid black;
   border-right: 1px solid black;
 `;
@@ -158,6 +158,10 @@ export const SubscriptionHeaderParagraph = styled.p`
   font-size: 28px;
   margin: 0;
   padding: 0;
+  margin: 4.5% 0 0 0;
+  text-align: center;
+  font-size: 50px;
+  letter-spacing: 7px;
 `;
 export const SubscriptionParagraph = styled.p`
   font-size: 24px;

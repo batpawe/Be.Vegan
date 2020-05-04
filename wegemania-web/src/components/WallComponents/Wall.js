@@ -283,7 +283,9 @@ const Recipes = (props) => {
           </div>
         )}
       </HoverContainer>
-      <p style={{ width: "100%" }}>{props.recipe.recipe_name}</p>
+      <p style={{ width: "100%", "font-size": "20px" }}>
+        {props.recipe.recipe_name}
+      </p>
     </ElementContainer>
   );
 };
@@ -372,7 +374,8 @@ const Restaurants = (props) => {
     return [time.split(":", 1).toString(), time.split(":").slice(1).join(":")];
   });
   return (
-    <div style={{ width: "23%" }}>
+    <div style={{ margin: "5% 0 3% 0", width: "25%" }}>
+      {console.log("WAZNEWCHODZI")}
       <img
         onClick={() =>
           props.historyProps.push(`/restaurant/${props.restaurant.id}`)
@@ -385,7 +388,14 @@ const Restaurants = (props) => {
         }}
         src={props.restaurant.foto}
       />
-      <p style={{ padding: 0, margin: 0, "text-align": "center" }}>
+      <p
+        style={{
+          padding: 0,
+          margin: 0,
+          "text-align": "center",
+          "font-size": "22px",
+        }}
+      >
         {props.restaurant.name}
       </p>
       <BigRateContainerRecipes style={{ width: "100%", margin: "0 auto" }}>
@@ -422,8 +432,8 @@ const Posts = (props) => {
       myimg={error ? null : props.post.foto}
       style={{
         width: "40%",
-        padding: "5%",
         cursor: "pointer",
+        height: "22vh",
         margin: "2% 0 2% 0",
       }}
       onClick={() => props.historyProps.push(`/post/${props.index}`)}
@@ -435,10 +445,10 @@ const Posts = (props) => {
           setError(true);
         }}
       />
-      <p style={{ "font-size": "18px", "text-align": "center" }}>
+      <p style={{ "font-size": "30px", "text-align": "center" }}>
         {props.post.title}
       </p>
-      <p style={{ "font-size": "16px" }}>
+      <p style={{ "font-size": "16px", padding: "1%" }}>
         {props.post.description.slice(0, 30)}
       </p>
     </PostContainer>
@@ -633,7 +643,9 @@ const Wall = (props) => {
               return acc;
             }, []);
           }
-          setDefaultArrayRecipe([...newRestaurants]);
+          console.log("powazny test");
+          console.log(newRestaurants);
+          setDefaultArrayRestaurants([...newRestaurants]);
         })
         .catch((err) => {
           console.log(err);
@@ -734,8 +746,8 @@ const Wall = (props) => {
 
       /*-*/
     };
-    setFirstRand(getRanArr(3));
-    setSecondRand(getRanArr(3));
+    setFirstRand(getRanArr(2));
+    setSecondRand(getRanArr(2));
     setThirdRand(getRanArr(3));
     fetchData();
   }, []);
@@ -749,21 +761,20 @@ const Wall = (props) => {
       }}
     >
       <WallContainer>
+        {defaultArrayRecipe[0] &&
+          defaultArrayRecipe[0].map((recipe) => {
+            return (
+              <Recipes index={0} recipe={recipe} historyProps={props.history} />
+            );
+          })}
+        {defaultArrayRecipe[1] &&
+          defaultArrayRecipe[1].map((recipe) => {
+            return (
+              <Recipes index={0} recipe={recipe} historyProps={props.history} />
+            );
+          })}
         {firstRand.map((rand) => {
           if (rand == 0) {
-            return (
-              defaultArrayRecipe[0] &&
-              defaultArrayRecipe[0].map((recipe) => {
-                return (
-                  <Recipes
-                    index={0}
-                    recipe={recipe}
-                    historyProps={props.history}
-                  />
-                );
-              })
-            );
-          } else if (rand == 1) {
             return (
               defaultArrayPosts[0] &&
               defaultArrayPosts[0].map((post) => {
@@ -777,8 +788,11 @@ const Wall = (props) => {
                 );
               })
             );
-          } else if (rand == 2) {
-            defaultArrayRestaurants[0] &&
+          } else if (rand == 1) {
+            console.log("Wchodzi");
+            console.log(defaultArrayRestaurants[0]);
+            return (
+              defaultArrayRestaurants[0] &&
               defaultArrayRestaurants[0].map((restaurant) => {
                 return (
                   <Restaurants
@@ -789,27 +803,15 @@ const Wall = (props) => {
                     historyProps={props.history}
                   />
                 );
-              });
+              })
+            );
           }
         })}
         {secondRand.map((rand) => {
           if (rand == 0) {
             return (
-              defaultArrayRecipe[0] &&
-              defaultArrayRecipe[0].map((recipe) => {
-                return (
-                  <Recipes
-                    index={0}
-                    recipe={recipe}
-                    historyProps={props.history}
-                  />
-                );
-              })
-            );
-          } else if (rand == 1) {
-            return (
-              defaultArrayPosts[0] &&
-              defaultArrayPosts[0].map((post) => {
+              defaultArrayPosts[1] &&
+              defaultArrayPosts[1].map((post) => {
                 return (
                   <Posts
                     key={post.id}
@@ -820,9 +822,12 @@ const Wall = (props) => {
                 );
               })
             );
-          } else if (rand == 2) {
-            defaultArrayRestaurants[0] &&
-              defaultArrayRestaurants[0].map((restaurant) => {
+          } else if (rand == 1) {
+            console.log("Wchodzi");
+            console.log(defaultArrayRestaurants[0]);
+            return (
+              defaultArrayRestaurants[1] &&
+              defaultArrayRestaurants[1].map((restaurant) => {
                 return (
                   <Restaurants
                     index={restaurants.id}
@@ -832,14 +837,21 @@ const Wall = (props) => {
                     historyProps={props.history}
                   />
                 );
-              });
+              })
+            );
           }
         })}
         {thirdRand.map((rand) => {
+          {
+            console.log(defaultArrayRestaurants);
+          }
+          {
+            console.log(rand);
+          }
           if (rand == 0) {
             return (
-              defaultArrayRecipe[0] &&
-              defaultArrayRecipe[0].map((recipe) => {
+              defaultArrayRecipe[2] &&
+              defaultArrayRecipe[2].map((recipe) => {
                 return (
                   <Recipes
                     index={0}
@@ -851,8 +863,8 @@ const Wall = (props) => {
             );
           } else if (rand == 1) {
             return (
-              defaultArrayPosts[0] &&
-              defaultArrayPosts[0].map((post) => {
+              defaultArrayPosts[2] &&
+              defaultArrayPosts[2].map((post) => {
                 return (
                   <Posts
                     key={post.id}
@@ -864,8 +876,11 @@ const Wall = (props) => {
               })
             );
           } else if (rand == 2) {
-            defaultArrayRestaurants[0] &&
-              defaultArrayRestaurants[0].map((restaurant) => {
+            console.log("Wchodzi");
+            console.log(defaultArrayRestaurants[0]);
+            return (
+              defaultArrayRestaurants[2] &&
+              defaultArrayRestaurants[2].map((restaurant) => {
                 return (
                   <Restaurants
                     index={restaurants.id}
@@ -875,7 +890,8 @@ const Wall = (props) => {
                     historyProps={props.history}
                   />
                 );
-              });
+              })
+            );
           }
         })}
         {/*firstRand.map((rand) => {

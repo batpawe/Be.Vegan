@@ -73,6 +73,8 @@ const Restaurants = (props) => {
   const useStyles = makeStyles({
     n_react_autosuggest_container: {
       position: "relative",
+      background: "rgba(255,255,255,.9)",
+      "border-radius": "6px",
       width: "60%",
       margin: "0 auto",
     },
@@ -81,15 +83,14 @@ const Restaurants = (props) => {
       background: "none",
       padding: "5px 5px",
       width: "100%",
-      margin: "1% auto 0 auto",
+      margin: "1% auto 1% auto",
       "text-align": "left",
       "font-size": "24px",
       "font-family": "Helvetica, sans-serif",
       "font-weight": 300,
       border: "none",
-      "border-bottom": "1px solid black",
       "&::placeholder": {
-        color: "black",
+        color: "grey",
       },
     },
     n_react_autosuggest__input__focused: {
@@ -363,20 +364,24 @@ n_react-autosuggest__input--focused :{
   });
   const RestaurationContainer = (props) => {
     return (
-      <div style={{ width: "23%" }}>
+      <div style={{ width: "25%", margin: "2% 0 2% 0" }}>
         <img
           onClick={() =>
             props.historyProps.push(`/restaurant/${props.restaurant.id}`)
           }
           style={{
             width: "100%",
-            height: "45%",
+            height: "55%",
+            "max-height": "286px",
+            "border-radius": "4px",
             "object-fit": "contain",
             cursor: "pointer",
           }}
           src={props.restaurant.foto}
         />
-        <p style={{ padding: 0, margin: 0 }}>{props.restaurant.name}</p>
+        <p style={{ padding: 0, margin: 0, "font-size": "24px" }}>
+          {props.restaurant.name}
+        </p>
         <BigRateContainerRecipes style={{ width: "100%", margin: "0 auto" }}>
           <RateStars style={{ width: "100%" }}>
             <ReactStars
@@ -677,7 +682,12 @@ n_react-autosuggest__input--focused :{
               })}
 
               <div
-                style={{ width: "100%", display: "flex", "flex-wrap": "wrap" }}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  "flex-wrap": "wrap",
+                  "justify-content": "space-around",
+                }}
               >
                 {restaurants.length < 6
                   ? tempMyArray.map((restaurant) => (

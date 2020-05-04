@@ -131,6 +131,8 @@ const Recipes = (props) => {
   const useStyles = makeStyles({
     n_react_autosuggest_container: {
       position: "relative",
+      background: "rgba(255,255,255,.9)",
+      "border-radius": "6px",
       width: "60%",
       margin: "0 auto",
     },
@@ -139,28 +141,27 @@ const Recipes = (props) => {
       background: "none",
       padding: "5px 5px",
       width: "100%",
-      margin: "1% auto 0 auto",
+      margin: "1% auto 1% auto",
       "text-align": "left",
       "font-size": "24px",
       "font-family": "Helvetica, sans-serif",
       "font-weight": 300,
       border: "none",
-      "border-bottom": "1px solid black",
       "&::placeholder": {
-        color: "black",
+        color: "grey",
       },
     },
     n_react_autosuggest__input__focused: {
       outline: "none",
     },
     /*
-  n_react_autosuggest__input::placeholder: {
-    color: black;
-  }
-  n_react-autosuggest__input--focused :{
-    outline: none;
-  }
-  */
+n_react_autosuggest__input::placeholder: {
+  color: black;
+}
+n_react-autosuggest__input--focused :{
+  outline: none;
+}
+*/
     n_react_autosuggest__input__open: {
       "border-bottom-left-radius": 0,
       "border-bottom-right-radius": 0,

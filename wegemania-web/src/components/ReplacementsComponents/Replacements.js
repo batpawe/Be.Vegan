@@ -44,6 +44,8 @@ const Replacements = (props) => {
   const useStyles = makeStyles({
     n_react_autosuggest_container: {
       position: "relative",
+      background: "rgba(255,255,255,.9)",
+      "border-radius": "6px",
       width: "60%",
       margin: "0 auto",
     },
@@ -52,15 +54,14 @@ const Replacements = (props) => {
       background: "none",
       padding: "5px 5px",
       width: "100%",
-      margin: "1% auto 0 auto",
+      margin: "1% auto 1% auto",
       "text-align": "left",
       "font-size": "24px",
       "font-family": "Helvetica, sans-serif",
       "font-weight": 300,
       border: "none",
-      "border-bottom": "1px solid black",
       "&::placeholder": {
-        color: "black",
+        color: "grey",
       },
     },
     n_react_autosuggest__input__focused: {
@@ -68,10 +69,10 @@ const Replacements = (props) => {
     },
     /*
 n_react_autosuggest__input::placeholder: {
-color: black;
+  color: black;
 }
 n_react-autosuggest__input--focused :{
-outline: none;
+  outline: none;
 }
 */
     n_react_autosuggest__input__open: {
@@ -250,8 +251,7 @@ outline: none;
         "flex-direction": "column",
         "justify-content": "center",
         width: "100%",
-        height: "100vh",
-        margin: "8% auto 2% auto",
+        margin: "6% auto 0 auto",
       }}
     >
       <AutoSuggest
@@ -297,7 +297,7 @@ outline: none;
         highlightFirstSuggestion={true}
       />
       {/*addreplacement*/}
-      <Container style={{ margin: "2% auto 0 auto", height: "80%" }}>
+      <Container style={{ margin: "2% auto 0 auto", height: "70vh" }}>
         <ReplacementsContainer style={{ height: "100%" }}>
           <ul
             style={{

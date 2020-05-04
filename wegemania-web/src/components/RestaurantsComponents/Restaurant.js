@@ -475,13 +475,108 @@ const Restaurant = (props) => {
             </UnorderedList>
           </OrderedList>
         {*/}
+          <div style={{ display: "flex" }}>
+            <div style={{ width: "50%" }}>
+              {" "}
+              <div style={{ width: "100%" }}>
+                <p
+                  style={{
+                    "text-align": "center",
+                    "font-size": "50px",
+                    padding: 0,
+                    margin: 0,
+                    "letter-spacing": "10px",
+                    "border-bottom": "1px solid black",
+                  }}
+                >
+                  {restaurant.restaurant.name}
+                </p>
+                <BigRateContainerRecipes
+                  style={{ width: "100%", margin: 0, padding: 0 }}
+                >
+                  <RateStars>
+                    <ReactStars
+                      edit={false}
+                      value={restaurant.restaurant.rating}
+                      count={5}
+                      className="recipes_rate"
+                      //onChange
+                      size={56}
+                      color2={"#4CAF50"}
+                    />
+                  </RateStars>
+                </BigRateContainerRecipes>
+                <p style={{ "font-size": "25px", "text-align": "center" }}>
+                  {restaurant.restaurant.city +
+                    ", " +
+                    restaurant.restaurant.street +
+                    " " +
+                    restaurant.restaurant.street_number}
+                </p>
+              </div>{" "}
+              <p
+                style={{
+                  "font-size": "26px",
+                  margin: "10% 0 0 0",
+                  "white-space": "pre-wrap",
+                }}
+              >
+                {description}
+              </p>
+            </div>{" "}
+            <div style={{ width: "50%" }}>
+              <img
+                style={{ margin: "0 auto", display: "block", width: "90%" }}
+                src={restaurant.restaurant.foto}
+              />{" "}
+              <ul
+                style={{
+                  margin: "0 auto",
+                  "font-size": "28px",
+                  padding: 0,
+                  width: "90%",
+                }}
+              >
+                {hours.map((h) => {
+                  return (
+                    <RestaurantOpenItem
+                      style={{
+                        display: "flex",
+                        width: "100%",
+                        "list-style-type": "none",
+                      }}
+                    >
+                      <p
+                        style={{ margin: 0, padding: 0, width: "50%" }}
+                      >{`${h[0]}: `}</p>
+                      <p
+                        style={{
+                          margin: 0,
+                          padding: 0,
+                          width: "50%",
+                          "text-align": "right",
+                        }}
+                      >
+                        {h[1]}
+                      </p>
+                    </RestaurantOpenItem>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+          {/*}p
           <div style={{ display: "flex", height: "100%", height: "40vh" }}>
-            <img
-              style={{ width: "70%", height: "100%", "object-fit": "contain" }}
-              src={restaurant.restaurant.foto}
-            />
             <div style={{ width: "50%", "text-align": "center" }}>
-              <p style={{ margin: 0, padding: 0, "font-size": "28px" }}>
+              <p
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  "font-size": "50px",
+                  margin: "4% 0 0 0",
+                  "letter-spacing": "14px",
+                }}
+              >
                 {restaurant.restaurant.name}
               </p>
               <BigRateContainerRecipes style={{ width: "100%", margin: "0" }}>
@@ -505,10 +600,32 @@ const Restaurant = (props) => {
                   " " +
                   restaurant.restaurant.street_number}
               </p>
-            </div>
+            </div>{" "}
+            <img
+              style={{ width: "48%", height: "100%", "object-fit": "contain" }}
+              src={restaurant.restaurant.foto}
+            />
           </div>
           <div>
             <ColumnContainer style={{ width: "100%" }}>
+              <div
+                style={{
+                  width: "50%",
+                  margin: "2%",
+                }}
+              >
+                <p
+                  style={{
+                    background: "rgba(255,255,255,0.6)",
+                    padding: "2%",
+                    "white-space": "pre-wrap",
+                    "font-size": "22px",
+                    "border-radius": "15px",
+                  }}
+                >
+                  {description}
+                </p>
+              </div>
               <div style={{ width: "50%", padding: "2%", "font-size": "22px" }}>
                 <UnorderedListIn
                   style={{
@@ -536,27 +653,10 @@ const Restaurant = (props) => {
                   })}
                 </UnorderedListIn>
               </div>
-              <div
-                style={{
-                  width: "50%",
-                  margin: "2%",
-                }}
-              >
-                <p
-                  style={{
-                    background: "rgba(255,255,255,0.6)",
-                    padding: "2%",
-                    "white-space": "pre-wrap",
-                    "font-size": "22px",
-                    "border-radius": "15px",
-                  }}
-                >
-                  {description}
-                </p>
-              </div>
             </ColumnContainer>
           </div>
-          <div style={{ height: "80vh" }}>
+          {*/}
+          <div style={{ height: "80vh", margin: "5% 0 0 0" }}>
             <Map
               id="mapid"
               center={[restaurant.restaurant.latX, restaurant.restaurant.longY]}
@@ -688,13 +788,13 @@ const Restaurant = (props) => {
                   );
                 })}
           </div>
-          <div style={{ width: "100%", margin: "2% 0 0 2%" }}>
+          <div style={{ width: "100%", margin: "2% 0 2% 0" }}>
             <HeaderText>Komentarze</HeaderText>
             <UnorderedListComments>
               {restaurant.rating &&
                 restaurant.rating.map((rate) => {
                   return (
-                    <UnorderedListCommentsIn>
+                    <UnorderedListCommentsIn style={{ width: "40%" }}>
                       <HighlightItem>
                         {rate.id_user.username || "mateuszklimek"}
                       </HighlightItem>
@@ -702,7 +802,7 @@ const Restaurant = (props) => {
                         {rate.user_comment || "testowy komentarz"}
                       </CommentContent>
                       <RateStars
-                        style={{ width: "18%", margin: 0, padding: 0 }}
+                        style={{ width: "100%", margin: 0, padding: 0 }}
                       >
                         <ReactStars
                           style={{ background: "none" }}
