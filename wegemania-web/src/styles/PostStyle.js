@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Background from "../images/webNOWY.png";
+import Background from "../images/web.png";
 export const ContainerPosts = styled.div`
   width: 80%;
   background: rgba(255, 255, 255, 0.3);

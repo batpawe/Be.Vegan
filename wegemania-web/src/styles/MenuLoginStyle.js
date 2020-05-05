@@ -136,7 +136,7 @@ export const UserName = styled.button`
   border: none;
   color: white;
   border-top-left-radius: 15px;
-  background: none;
+  background: ${(props) => (props.clicked ? "#27752e" : "none")};
   transition: border-radius 0.7s;
   transition: background 0.7s;
   :focus {

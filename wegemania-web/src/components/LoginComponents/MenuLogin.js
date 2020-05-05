@@ -50,6 +50,7 @@ const UserPanel = ({ click }) => {
         <li>
           {console.log("USER USER")}
           <UserName
+            clicked={user.isOpen}
             onClick={() => {
               user.openPanel(!user.isOpen);
             }}
@@ -61,7 +62,7 @@ const UserPanel = ({ click }) => {
         <li>
           {console.log("USER USER")}
           <UserName
-            style={{ background: "#27752e" }}
+            clicked={user.isOpen}
             onClick={() => {
               user.openPanel(!user.isOpen);
             }}

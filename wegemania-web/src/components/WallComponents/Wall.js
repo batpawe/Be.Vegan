@@ -192,7 +192,7 @@ const Recipes = (props) => {
   const [isHover, setIsHover] = useState(false);
   return (
     <ElementContainer
-      style={{ height: "15%", width: "22%", "flex-direction": "column" }}
+      style={{ height: "15%", width: "22%", "flex-direction": "column","margin":"2% 0 2% 0" }}
       onMouseEnter={() => {
         setIsHover(true);
       }}
@@ -374,7 +374,7 @@ const Restaurants = (props) => {
     return [time.split(":", 1).toString(), time.split(":").slice(1).join(":")];
   });
   return (
-    <div style={{ margin: "5% 0 3% 0", width: "25%" }}>
+    <div style={{ margin: "2% 0 2% 0", width: "25%" }}>
       {console.log("WAZNEWCHODZI")}
       <img
         onClick={() =>
@@ -776,17 +776,26 @@ const Wall = (props) => {
         {firstRand.map((rand) => {
           if (rand == 0) {
             return (
-              defaultArrayPosts[0] &&
-              defaultArrayPosts[0].map((post) => {
-                return (
-                  <Posts
-                    key={post.id}
-                    index={post.id}
-                    post={post}
-                    historyProps={props.history}
-                  />
-                );
-              })
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  width: "100%",
+                  "flex-wrap": "wrap",
+                }}
+              >
+                {defaultArrayPosts[0] &&
+                  defaultArrayPosts[0].map((post) => {
+                    return (
+                      <Posts
+                        key={post.id}
+                        index={post.id}
+                        post={post}
+                        historyProps={props.history}
+                      />
+                    );
+                  })}
+              </div>
             );
           } else if (rand == 1) {
             console.log("Wchodzi");
@@ -810,17 +819,26 @@ const Wall = (props) => {
         {secondRand.map((rand) => {
           if (rand == 0) {
             return (
-              defaultArrayPosts[1] &&
-              defaultArrayPosts[1].map((post) => {
-                return (
-                  <Posts
-                    key={post.id}
-                    index={post.id}
-                    post={post}
-                    historyProps={props.history}
-                  />
-                );
-              })
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  width: "100%",
+                  "flex-wrap": "wrap",
+                }}
+              >
+                {defaultArrayPosts[1] &&
+                  defaultArrayPosts[1].map((post) => {
+                    return (
+                      <Posts
+                        key={post.id}
+                        index={post.id}
+                        post={post}
+                        historyProps={props.history}
+                      />
+                    );
+                  })}
+              </div>
             );
           } else if (rand == 1) {
             console.log("Wchodzi");
@@ -863,17 +881,26 @@ const Wall = (props) => {
             );
           } else if (rand == 1) {
             return (
-              defaultArrayPosts[2] &&
-              defaultArrayPosts[2].map((post) => {
-                return (
-                  <Posts
-                    key={post.id}
-                    index={post.id}
-                    post={post}
-                    historyProps={props.history}
-                  />
-                );
-              })
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  width: "100%",
+                  "flex-wrap": "wrap",
+                }}
+              >
+                {defaultArrayPosts[2] &&
+                  defaultArrayPosts[2].map((post) => {
+                    return (
+                      <Posts
+                        key={post.id}
+                        index={post.id}
+                        post={post}
+                        historyProps={props.history}
+                      />
+                    );
+                  })}
+              </div>
             );
           } else if (rand == 2) {
             console.log("Wchodzi");

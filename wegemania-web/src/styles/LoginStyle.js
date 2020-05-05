@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Background from "../images/webNOWY.png";
+import Background from "../images/web.png";
 import { Link } from "react-router-dom";
 export const FormArea = styled.div`
   background: rgba(255, 255, 255);

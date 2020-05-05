@@ -130,7 +130,7 @@ const Restaurant = (props) => {
           const time = tempTime.map((time) => {
             return [
               time.split(":", 1).toString(),
-              time.split(":").slice(1).join(":"),
+              time.split(":").slice(1).join(":").trim().replace(" ", " - "),
             ];
           });
           const desc = res.data.restaurant.description
