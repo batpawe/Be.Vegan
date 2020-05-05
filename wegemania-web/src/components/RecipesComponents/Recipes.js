@@ -208,6 +208,8 @@ n_react-autosuggest__input--focused :{
   const [products, setProducts] = useState([]);
   const [names, setNames] = useState([]);
   const [data, setData] = useState([]);
+  const [globalRecipes, setGlobalRecipes] = useState([]);
+  const [findValue, setFindValue] = useState(["", ""]);
   const outerTheme = createMuiTheme({
     palette: {
       secondary: {
@@ -219,6 +221,7 @@ n_react-autosuggest__input--focused :{
   const handleChange = (e) => {
     setRadio(e.target.value);
   };
+  const [fullRecipes, setFullRecipes] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [suggestionsName, setSuggestionsName] = useState([]);
   const [valueName, setValueName] = useState("");
@@ -293,7 +296,15 @@ n_react-autosuggest__input--focused :{
           console.log("PPP");
           console.log(temp);
           console.log(tempResult);
+          let tempFullRecipes = res.data.reduce((acc, curr, i) => {
+            if (!(i % 17)) {
+              acc.push(temp.slice(i, i + 17)); // ..push a chunk of the original array to the accumulator
+            }
+            return acc;
+          }, []);
+          setFullRecipes(tempFullRecipes);
           setLength(tempResult.length);
+          setGlobalRecipes(res.data);
           setRecipes(tempResult);
           let tempProducts = [];
           let tempNames = [];
@@ -610,7 +621,28 @@ n_react-autosuggest__input--focused :{
             value: valueName,
             onChange: (_, { newValue, method }) => {
               setCurrent(1);
+              setFindValue(newValue.slice(","));
+              let resultArray = [];
+              const temp = globalRecipes.filter((recipe) => {
+                if (
+                  recipe.recipe_name
+                    .toLowerCase()
+                    .includes(newValue.toLowerCase())
+                ) {
+                  return recipe;
+                }
+              });
 
+              console.log("|||");
+              console.log(temp);
+              const tempResult = temp.reduce((acc, curr, i) => {
+                if (!(i % 17)) {
+                  acc.push(temp.slice(i, i + 17)); // ..push a chunk of the original array to the accumulator
+                }
+                return acc;
+              }, []);
+              setFullRecipes([...tempResult]);
+              /*
               var tempArray = [];
               if (newValue === "") {
                 console.log("START");
@@ -637,7 +669,7 @@ n_react-autosuggest__input--focused :{
 
               setLength(tempResult.length);
               setRecipes([...tempResult]);
-
+*/
               setValueName(newValue);
             },
           }}
@@ -682,7 +714,7 @@ n_react-autosuggest__input--focused :{
                 margin: "0 0 2% 0",
               }}
               onClick={() =>
-                props.history.push(`/recipe/${recipes[current - 1][0].id}`)
+                props.history.push(`/recipe/${fullRecipes[current - 1][0].id}`)
               }
             >
               <HoverContainer
@@ -690,7 +722,7 @@ n_react-autosuggest__input--focused :{
               >
                 {console.log("test1")}
 
-                {recipes[current - 1] &&
+                {fullRecipes[current - 1] &&
                   (isHover ? (
                     <div style={{ width: "100%" }}>
                       <ImageHoverComponent
@@ -705,7 +737,7 @@ n_react-autosuggest__input--focused :{
 
                           "border-radius": "4px",
                         }}
-                        src={`${recipes[current - 1][0].recipe_foto}`}
+                        src={`${fullRecipes[current - 1][0].recipe_foto}`}
                       />
                       <HoverText
                         style={{
@@ -726,7 +758,7 @@ n_react-autosuggest__input--focused :{
                             "font-size": "20px",
                           }}
                         >
-                          {recipes[current - 1][0].id_user.username}
+                          {fullRecipes[current - 1][0].id_user.username}
                         </p>
                       </HoverText>
                       <HoverText
@@ -748,7 +780,7 @@ n_react-autosuggest__input--focused :{
                             "font-size": "20px",
                           }}
                         >
-                          {recipes[current - 1][0].time}min
+                          {fullRecipes[current - 1][0].time}min
                         </p>
                       </HoverText>
                     </div>
@@ -768,10 +800,10 @@ n_react-autosuggest__input--focused :{
                         }}
                         onClick={() =>
                           props.history.push(
-                            `/recipe/${recipes[current - 1][0].id}`
+                            `/recipe/${fullRecipes[current - 1][0].id}`
                           )
                         }
-                        src={`${recipes[current - 1][0].recipe_foto}`}
+                        src={`${fullRecipes[current - 1][0].recipe_foto}`}
                       />
                     </div>
                   ))}
@@ -809,15 +841,16 @@ n_react-autosuggest__input--focused :{
                     "border-bottom": "1px solid black",
                   }}
                 >
-                  {recipes[current - 1] && recipes[current - 1][0].recipe_name}
+                  {fullRecipes[current - 1] &&
+                    fullRecipes[current - 1][0].recipe_name}
                 </p>
                 <BigRateContainerRecipes style={{ width: "100%" }}>
                   {console.log("PPP")}
                   <RateStars style={{ width: "100%" }}>
-                    {recipes[current - 1] && (
+                    {fullRecipes[current - 1] && (
                       <ReactStars
                         edit={false}
-                        value={recipes[current - 1][0].rating}
+                        value={fullRecipes[current - 1][0].rating}
                         count={5}
                         className="recipes_rate"
                         //onChange
@@ -864,8 +897,8 @@ n_react-autosuggest__input--focused :{
 
             {console.log("|||||")}
             {console.log(recipes)}
-            {recipes[current - 1] &&
-              recipes[current - 1].map((recipe, index) => {
+            {fullRecipes[current - 1] &&
+              fullRecipes[current - 1].map((recipe, index) => {
                 if (index > 1) {
                   return (
                     <ContentController
