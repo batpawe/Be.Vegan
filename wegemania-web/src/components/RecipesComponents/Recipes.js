@@ -97,6 +97,7 @@ import {
   HoverText,
   ImageHoverComponent,
 } from "../../styles/TempRecipes";
+import { RecipesContainerView } from "../../styles/RecipeStyle";
 import {
   HeaderRecipeContainer,
   RecipeTimeContainer,
@@ -863,13 +864,7 @@ n_react-autosuggest__input--focused :{
               </div>
             </ElementContainer>
           </div>
-          <div
-            style={{
-              display: "flex",
-              "flex-wrap": "wrap",
-              justifyContent: "space-between",
-            }}
-          >
+          <RecipesContainerView>
             <Link style={{ width: "22%", height: "220px" }} to="/addrecipe">
               <div
                 style={{
@@ -894,7 +889,6 @@ n_react-autosuggest__input--focused :{
                 Dodaj przepis
               </p>
             </Link>
-
             {console.log("|||||")}
             {console.log(recipes)}
             {fullRecipes[current - 1] &&
@@ -909,7 +903,10 @@ n_react-autosuggest__input--focused :{
                   );
                 }
               })}
-          </div>
+            <i aria-hidden="true" style={{ width: "22%", height: "15%" }}></i>
+            <i aria-hidden="true" style={{ width: "22%", height: "15%" }}></i>
+            <i aria-hidden="true" style={{ width: "22%", height: "15%" }}></i>
+          </RecipesContainerView>
           {console.log("||||||||")}
           {console.log(length)}
           <ul

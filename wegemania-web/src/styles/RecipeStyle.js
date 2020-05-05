@@ -104,3 +104,8 @@ export const SmallRateContainer = styled.ul`
   margin: 5% auto 1% auto;
   position: relative;
 `;
+export const RecipesContainerView = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+`;
