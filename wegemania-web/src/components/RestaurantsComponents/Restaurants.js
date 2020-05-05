@@ -147,6 +147,8 @@ n_react-autosuggest__input--focused :{
   });
   const classes = useStyles();
   const [restaurants, setRestaurants] = useState([]);
+  const [fullRestaurants, setFullRestaurants] = useState([]);
+  const [globalRestaurants, setGlobalRestaurants] = useState([]);
   let tempSearch = {
     restaurant: "",
     city: "",
@@ -543,6 +545,8 @@ n_react-autosuggest__input--focused :{
       await axios(`${user.Api}/restaurants/`)
         .then((res) => {
           console.log(res.data);
+          setGlobalRestaurants(res.data);
+          setFullRestaurants(res.data);
           setRestaurants(res.data);
           //setResult(res.data);
           setSuggestionsRestaurants(res.data);
