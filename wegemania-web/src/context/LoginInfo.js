@@ -38,7 +38,8 @@ const useStateWithLocalStorage = localStorageKey => {
 
 export const LoginInfoProvider = (props) => {
   let tempInfo;
-  const Api = "https://veggiesapp.herokuapp.com/";
+  //https://veggiesapp.herokuapp.com/
+  const Api = "http://veggies.ddns.net:8181";
 
   const [isOpen, setIsOpen] = useState(false);
   const openPanel = (val) => {

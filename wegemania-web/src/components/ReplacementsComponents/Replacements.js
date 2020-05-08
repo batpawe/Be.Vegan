@@ -5,6 +5,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import RightPanel from "../GlobalComponents/RightPanel";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import Image from "../../images/dinner.jpg";
+import AddReplacementButton from "../../icons/more.svg";
 import { withRouter } from "react-router";
 import {
   SearchPanel,
@@ -297,8 +298,28 @@ n_react-autosuggest__input--focused :{
         highlightFirstSuggestion={true}
       />
       {/*addreplacement*/}
-      <Container style={{ margin: "2% auto 0 auto", height: "70vh" }}>
-        <ReplacementsContainer style={{ height: "100%" }}>
+      <Container
+        style={{
+          margin: "2% auto 0 auto",
+          height: "70vh",
+          position: "relative",
+        }}
+      >
+        <img
+          style={{
+            width: "25px",
+            height: "25px",
+            position: "absolute",
+            top: 5,
+            right: 5,
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            props.history.push("/addreplacement");
+          }}
+          src={AddReplacementButton}
+        />
+        <ReplacementsContainer style={{ height: "100%", margin: "2% 0 0 0" }}>
           <ul
             style={{
               "list-style-type": "none",

@@ -24,9 +24,15 @@ import UploadImage from "../../images/upload.png";
 import "../../App.css";
 import CloseImage from "../../images/close.svg";
 import AutoSuggest from "react-autosuggest";
+import { NewNotifyContext } from "../../context/Notify";
 import { makeStyles } from "@material-ui/core/styles";
 import { defaultTheme } from "react-autosuggest/dist/theme";
 const AddReplecement = () => {
+  const qs = require("querystring");
+  const notify = useContext(NewNotifyContext);
+  const [veganResult, setVeganResult] = useState([]);
+  const [nVeganResult, setNveganResult] = useState([]);
+  const [deleyedRedirect, setDeleyedRedirect] = useState(false);
   const useStyles = makeStyles({
     n_react_autosuggest_container: {
       position: "relative",
@@ -188,8 +194,91 @@ outline: none;
       name.food_name.toLowerCase().includes(value.trim().toLowerCase())
     );
   };
+  const Add = async () => {
+    /*
+    const data = new FormData();
+    data.append("id_restaurant", props.match.params.id);
+    data.append("user_comment", descriptionComment);
+    data.append("rating", myRate);
+    const config = {
+      method: "POST",
+      headers: {
+        Accept: "application/json; charset=UTF-8",
+        Authorization: `Token ${user.userInfo.token}`,
+      },
+      body: data,
+    };
+    await fetch(`https://veggiesapp.herokuapp.com/restaurants/rating/`, config)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        if (res.status === 200) {
+          res.text().then((text) => {
+            let json = JSON.parse(text);
+            console.log(json);
+            if (json.id_restaurant) {
+              notify.set("Pomyślnie dodano komentarz.");
+              setTimeout(() => {
+                setDeleyedRedirect(true);
+              }, 2000);
+            } else {
+              console.log(res);
+              console.log(res.response);
+              notify.set("Wystąpił nieoczekiwany błąd!");
+            }
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+        console.log(err.response.data);
+        notify.set("Wystąpił nieoczekiwany błąd!");
+      });
+      */
+    /*
+    const params = new URLSearchParams();
+    params.append("id_food_to_substitute", props.match.params.id);
+    params.append("show_on_view", false);
+    params.append("id_vegan", myRate);
+*/
+    console.log(nvegan[0].id);
+    console.log(vegan[0].id);
+    axios({
+      method: "post",
+      url: `${user.Api}/addsubstitute/`,
+      data: qs.stringify({
+        id_food_to_substitute: nVeganResult[0].id,
+        user_comment: false,
+        id_vegan: veganResult[0].id,
+      }),
+      headers: {
+        "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        Authorization: `Token ${user.userInfo.token}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          notify.set("Pomyślnie dodano zamiennik.");
+          setTimeout(() => {
+            setDeleyedRedirect(true);
+          }, 2000);
+        } else {
+          notify.set("Wystąpił nieoczekiwany błąd");
+        }
+        console.log(res.data.data);
+        console.log(res.body);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
+  };
   return (
     <Container>
+      {" "}
+      {deleyedRedirect && <Redirect to={`/replacements`} />}
       <div
         style={{
           display: "flex",
@@ -235,6 +324,13 @@ outline: none;
             placeholder: "Nazwa produktu nieweganskiego",
             value: nvegan,
             onChange: (_, { newValue, method }) => {
+              const temp = allNVeganItems.filter((name) =>
+                name.food_name
+                  .toLowerCase()
+                  .includes(newValue.trim().toLowerCase())
+              );
+              setNveganResult(temp);
+              console.log(temp);
               setNVegan(newValue);
             },
           }}
@@ -278,6 +374,11 @@ outline: none;
             placeholder: "Nazwa produktu weganskiego",
             value: vegan,
             onChange: (_, { newValue, method }) => {
+              const temp = allVeganItems.filter((name) =>
+                name.name.toLowerCase().includes(newValue.trim().toLowerCase())
+              );
+              setVeganResult(temp);
+              console.log(temp);
               setVegan(newValue);
             },
           }}
@@ -387,7 +488,13 @@ outline: none;
       </div>
             {*/}
       </div>
-      <Button>Dodaj zamiennik</Button>
+      <Button
+        onClick={() => {
+          Add();
+        }}
+      >
+        Dodaj zamiennik
+      </Button>
     </Container>
   );
 };
