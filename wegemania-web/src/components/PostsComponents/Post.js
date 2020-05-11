@@ -168,10 +168,12 @@ const Post = (props) => {
   const [deleyedRedirect, setDeleyedRedirect] = useState(false);
   const [tempContent, setTempContent] = useState("");
   const AddComment = async () => {
+    console.log(file[0].file ? true : false);
+
     const data = new FormData();
     data.append("title", "");
     data.append("description", tempContent);
-    data.append("foto", file[0]);
+    data.append("foto", file[0].file ? file[0] : "");
     const config = {
       method: "POST",
       headers: {
@@ -180,21 +182,19 @@ const Post = (props) => {
       },
       body: data,
     };
+
     await fetch(`${user.Api}/posts/${props.match.params.id}/`, config)
       .then((res) => {
-        res.text().then((text) => {
-          let json = JSON.parse(text);
-          if (json.author) {
-            notify.set("Pomyślnie dodano komentarz.");
-            setTimeout(() => {
-              setDeleyedRedirect(true);
-            }, 2000);
-          } else {
-            console.log(res);
-            console.log(res.response);
-            notify.set("Wystąpił nieoczekiwany błąd!");
-          }
-        });
+        if (res.status === 200) {
+          console.log("KWKEKWK");
+          notify.set("Pomyślnie dodano komentarz");
+          setTempContent("");
+          setTimeout(() => {
+            setDeleyedRedirect(true);
+          }, 2000);
+        } else {
+          notify.set("Wystąpił nieoczekiwany błąd");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -218,11 +218,10 @@ const Post = (props) => {
         });
     };
     fetchData();
-  }, [props.match.params.id]);
+  }, [props.match.params.id, deleyedRedirect]);
 
   return (
     <MainContainer margin={notify.onMargin}>
-      {deleyedRedirect && <Redirect to={`/posts`} />}
       <Container style={{ position: "relative" }}>
         <div>
           <Dialog
@@ -343,6 +342,7 @@ const Post = (props) => {
                       "font-size": "20px",
                     }}
                     type="text"
+                    value={tempContent}
                     placeholder="Wprowadź treść komentarza"
                     onChange={(e) => {
                       setTempContent(e.target.value);

@@ -365,6 +365,8 @@ n_react-autosuggest__input--focused :{
     return restaurant;
   });
   const RestaurationContainer = (props) => {
+    console.log("}}}}}}}}");
+    console.log(props.restaurant);
     return (
       <div style={{ width: "25%", margin: "2% 0 2% 0" }}>
         <img
@@ -656,6 +658,7 @@ n_react-autosuggest__input--focused :{
           }}
           highlightFirstSuggestion={true}
         />
+
         <MainContainer
           style={{
             margin: "2% 0 0 0",
@@ -673,6 +676,7 @@ n_react-autosuggest__input--focused :{
               }}
             >
               {console.log(result)}
+
               {restaurants.map((restaurant, index) => {
                 if (index < 2) {
                   return (
@@ -693,36 +697,43 @@ n_react-autosuggest__input--focused :{
                   "justify-content": "space-around",
                 }}
               >
+                {console.log(restaurants.length)}
+
                 {restaurants.length < 6
-                  ? tempMyArray.map((restaurant) => (
-                      <RestaurationContainer
-                        historyProps={props.history}
-                        restaurant={restaurant}
-                      />
-                    ))
+                  ? tempMyArray.map((restaurant) => {
+                      return (
+                        <RestaurationContainer
+                          historyProps={props.history}
+                          restaurant={restaurant}
+                        />
+                      );
+                    })
                   : result.length > 0
-                  ? result.map((restaurant, index) => (
-                      <RestaurationContainer
-                        index={restaurant.id}
-                        number={index}
-                        data={restaurant}
-                        historyProps={props.history}
-                      />
-                    ))
+                  ? result.map((restaurant, index) => {
+                      return (
+                        <RestaurationContainer
+                          index={restaurant.id}
+                          number={index}
+                          restaurant={restaurant}
+                          historyProps={props.history}
+                        />
+                      );
+                    })
                   : restaurantsName.map((restaurant, index) => {
                       return (
                         <RestaurationContainer
                           index={restaurant.id}
                           number={index}
-                          data={restaurant}
+                          restaurant={restaurant}
                           historyProps={props.history}
                         />
                       );
                     })}
               </div>
+              {/*}
               {result.length > 0 &&
                 result.map((restaurant, index) => {
-                  /*
+                 
                   return (
                     <ContentController
                       index={restaurant.id}
@@ -731,8 +742,9 @@ n_react-autosuggest__input--focused :{
                       historyProps={props.history}
                     />
                   );
-                   */
+                   
                 })}
+                {*/}
               {console.log("SUGGESTIONS")}
               {console.log(suggestionsRestaurants)}
               {result.length == 0 &&

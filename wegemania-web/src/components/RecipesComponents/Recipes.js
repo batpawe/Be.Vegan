@@ -978,14 +978,16 @@ n_react-autosuggest__input--focused :{
                 "text-align": "center",
               }}
             >
-              <Pagination
-                size="large"
-                count={length}
-                page={current}
-                onChange={(e, num) => {
-                  setCurrent(num);
-                }}
-              />
+              {fullRecipes.length > 2 && (
+                <Pagination
+                  size="large"
+                  count={length}
+                  page={current}
+                  onChange={(e, num) => {
+                    setCurrent(num);
+                  }}
+                />
+              )}
             </div>
           </ul>
         </Container>
