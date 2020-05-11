@@ -27,6 +27,7 @@ import { NewLoginInfo } from "../../context/LoginInfo";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { defaultTheme } from "react-autosuggest/dist/theme";
+import { replace } from "formik";
 /*
      <OuterUnorderedList>
                     <InnerUnorderedList>
@@ -171,6 +172,8 @@ n_react-autosuggest__input--focused :{
     console.log(tempNVegan);
     return VeganProducts > NVeganProducts ? VeganProducts : NVeganProducts;
   };
+  const [newSelected, setNewSelected] = useState(0);
+  const [newCurrent, setNewCurrent] = useState([]);
   useEffect(() => {
     user.openPanel(false);
     const fetchData = async () => {
@@ -209,15 +212,37 @@ n_react-autosuggest__input--focused :{
           setNVegan(tempNVegan);
 
           setReplacements(newTemp);
+          let newValueTest = false;
+          newTemp &&
+            newTemp.map((replacement, index) => {
+              console.log("DDDDDDDDDDD");
+              console.log(valueVegan);
+              let temp = false;
+              replacement.id_vegan.map((veg) => {
+                if (
+                  veg.name.includes(valueVegan) ||
+                  replacement.id_food_to_substitute.food_name.includes(
+                    valueVegan
+                  )
+                ) {
+                  if (newValueTest == false) {
+                    newValueTest = true;
+                    setNewSelected(index);
+                    setNewCurrent(replacement);
+                    console.log(index);
+                    console.log(replacement);
+                  }
+                }
+              });
+            });
           console.log(newTemp);
-          setCurrent(newTemp[0]);
         })
         .catch((err) => {
           console.log(err);
         });
     };
     fetchData();
-  }, []);
+  }, [valueVegan]);
   replacements &&
     replacements.map((replacement, index) => {
       let temp = false;
@@ -234,10 +259,10 @@ n_react-autosuggest__input--focused :{
           <Item
             id={index}
             onClick={(e) => {
-              setSelected(e.target.id);
-              setCurrent(replacement);
+              setNewSelected(e.target.id);
+              setNewCurrent(replacement);
             }}
-            select={selected == index}
+            select={newSelected == index}
           >
             {replacement.id_food_to_substitute.food_name}
           </Item>
@@ -367,16 +392,16 @@ n_react-autosuggest__input--focused :{
                   color: "white",
                 }}
               >
-                {current.id_food_to_substitute &&
-                  current.id_food_to_substitute.food_name}
+                {newCurrent.id_food_to_substitute &&
+                  newCurrent.id_food_to_substitute.food_name}
               </li>
               <li style={{ padding: "2%" }}>
-                {current.id_food_to_substitute &&
-                  current.id_food_to_substitute.description}
+                {newCurrent.id_food_to_substitute &&
+                  newCurrent.id_food_to_substitute.description}
               </li>
             </ul>
-            {current.id_vegan &&
-              current.id_vegan.map((veg) => {
+            {newCurrent.id_vegan &&
+              newCurrent.id_vegan.map((veg) => {
                 return (
                   <ul
                     style={{
