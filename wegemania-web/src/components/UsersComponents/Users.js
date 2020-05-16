@@ -49,7 +49,7 @@ const ActivityText = (props) => {
     temp =
       "Bardzo duża aktywność, aktywność sportowa codziennie, aktywny przy każdej możliwej okazji, w trakcie pracy aktywny lub robi przerwy na aktywność fizyczną";
   }
-  return <p>{temp}</p>;
+  return <p style={{ width: "50%" }}>{temp}</p>;
 };
 const Users = (props) => {
   const user = useContext(NewLoginInfo);
@@ -76,7 +76,7 @@ const Users = (props) => {
   }, []);
 
   return (
-    <Container style={{ background: "rgba(255,255,255,0.7)" }}>
+    <Container style={{ background: "rgba(244,244,244,0.9)" }}>
       {userData && (
         <div>
           <div
@@ -90,9 +90,12 @@ const Users = (props) => {
             <Header>
               <UserName
                 style={{
+                  background: "none",
                   "border-radius": "20px",
                   "font-size": "20px",
                   padding: "10%",
+                  color: "#27ae60",
+                  "font-weight": "bold",
                 }}
               >
                 {userData.username}
@@ -113,31 +116,40 @@ const Users = (props) => {
               <UnorderedFlexList
                 style={{ border: "none", background: "rgba(255,255,255,0.8)" }}
               >
-                <UserProfileItemRow>
-                  <BorderText>Adres e-mail:</BorderText>{" "}
-                  {userData.email || "nie podano"}
+                <UserProfileItemRow style={{ display: "flex" }}>
+                  <BorderText style={{ width: "50%" }}>
+                    Adres e-mail:
+                  </BorderText>{" "}
+                  <p style={{ width: "50%" }}>
+                    {userData.email || "nie podano"}
+                  </p>
                 </UserProfileItemRow>
-                <UserProfileItemRow>
-                  <BorderText>Wzrost:</BorderText>{" "}
-                  {(userData.height || "nie podano") + " cm"}
+                <UserProfileItemRow style={{ display: "flex" }}>
+                  <BorderText style={{ width: "50%" }}>Wzrost:</BorderText>{" "}
+                  <p style={{ width: "50%" }}>
+                    {(userData.height || "nie podano") + " cm"}
+                  </p>
                 </UserProfileItemRow>
-                <UserProfileItemRow>
-                  <BorderText>Wiek:</BorderText> {userData.age || "nie podano"}
+                <UserProfileItemRow style={{ display: "flex" }}>
+                  <BorderText style={{ width: "50%" }}>Wiek:</BorderText>
+                  <p style={{ width: "50%" }}>{userData.age || "nie podano"}</p>
                 </UserProfileItemRow>
-                <UserProfileItemRow>
-                  <BorderText>Waga:</BorderText>
-                  {userData.weight || "nie podano"}
+                <UserProfileItemRow style={{ display: "flex" }}>
+                  <BorderText style={{ width: "50%" }}>Waga:</BorderText>
+                  <p style={{ width: "50%" }}>
+                    {userData.weight || "nie podano"}
+                  </p>
                 </UserProfileItemRow>
                 {userData.activity ? (
-                  <UserProfileItemRow>
-                    <BorderText>Aktywność:</BorderText>
+                  <UserProfileItemRow style={{ display: "flex" }}>
+                    <BorderText style={{ width: "50%" }}>Aktywność:</BorderText>
                     <ActivityText activity={userData.activity} />
                     {/*<ProgressBar striped variant="success" now={60} />{*/}
                   </UserProfileItemRow>
                 ) : (
-                  <UserProfileItemRow>
-                    <BorderText>Aktywność:</BorderText>
-                    Nie podano.
+                  <UserProfileItemRow style={{ display: "flex" }}>
+                    <BorderText style={{ width: "50%" }}>Aktywność:</BorderText>
+                    <p>Nie podano.</p>
                   </UserProfileItemRow>
                 )}
               </UnorderedFlexList>

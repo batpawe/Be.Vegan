@@ -368,7 +368,7 @@ n_react-autosuggest__input--focused :{
     console.log("}}}}}}}}");
     console.log(props.restaurant);
     return (
-      <div style={{ width: "25%", margin: "2% 0 2% 0" }}>
+      <div style={{ width: "23%", margin: "2% 0 2% 0" }}>
         <img
           onClick={() =>
             props.historyProps.push(`/restaurant/${props.restaurant.id}`)
@@ -656,7 +656,7 @@ n_react-autosuggest__input--focused :{
               setValueRestaurant(newValue);
             },
           }}
-          highlightFirstSuggestion={true}
+          highlightFirstSuggestion={false}
         />
 
         <MainContainer
@@ -698,37 +698,58 @@ n_react-autosuggest__input--focused :{
                 }}
               >
                 {console.log(restaurants.length)}
-
-                {restaurants.length < 6
-                  ? tempMyArray.map((restaurant) => {
-                      return (
-                        <RestaurationContainer
-                          historyProps={props.history}
-                          restaurant={restaurant}
-                        />
-                      );
-                    })
-                  : result.length > 0
-                  ? result.map((restaurant, index) => {
-                      return (
-                        <RestaurationContainer
-                          index={restaurant.id}
-                          number={index}
-                          restaurant={restaurant}
-                          historyProps={props.history}
-                        />
-                      );
-                    })
-                  : restaurantsName.map((restaurant, index) => {
-                      return (
-                        <RestaurationContainer
-                          index={restaurant.id}
-                          number={index}
-                          restaurant={restaurant}
-                          historyProps={props.history}
-                        />
-                      );
-                    })}
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    "flex-wrap": "wrap",
+                    margin: "1% 0 10% 0",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  {restaurants.length < 6
+                    ? tempMyArray.map((restaurant) => {
+                        return (
+                          <RestaurationContainer
+                            historyProps={props.history}
+                            restaurant={restaurant}
+                          />
+                        );
+                      })
+                    : result.length > 0
+                    ? result.map((restaurant, index) => {
+                        return (
+                          <RestaurationContainer
+                            index={restaurant.id}
+                            number={index}
+                            restaurant={restaurant}
+                            historyProps={props.history}
+                          />
+                        );
+                      })
+                    : restaurantsName.map((restaurant, index) => {
+                        return (
+                          <RestaurationContainer
+                            index={restaurant.id}
+                            number={index}
+                            restaurant={restaurant}
+                            historyProps={props.history}
+                          />
+                        );
+                      })}
+                  <i
+                    aria-hidden="true"
+                    style={{ width: "23%", height: "15%" }}
+                  ></i>
+                  <i
+                    aria-hidden="true"
+                    style={{ width: "23%", height: "15%" }}
+                  ></i>
+                  <i
+                    aria-hidden="true"
+                    style={{ width: "23%", height: "15%" }}
+                  ></i>
+                </div>
               </div>
               {/*}
               {result.length > 0 &&

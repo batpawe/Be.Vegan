@@ -270,7 +270,7 @@ n_react-autosuggest__input--focused :{
           getSuggestionValue={(suggestion) => suggestion.title}
           renderSuggestion={(suggestion) => <span>{suggestion.title}</span>}
           inputProps={{
-            placeholder: "Wprowadź tytuł",
+            placeholder: "Wyszukaj",
             value: value,
             onChange: (_, { newValue, method }) => {
               setValue(newValue);

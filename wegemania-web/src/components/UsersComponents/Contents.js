@@ -1,18 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { NewLoginInfo } from "../../context/LoginInfo";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import {
-  RecipesName,
-  HeaderText,
-  ContainerRecipes,
-  ImageRecipes,
-  ContentContainer,
-  UnorderedList,
-  PagginationContainer,
-  PagginationItem,
-  Item,
-  WayItem,
-} from "../../styles/TempRecipes";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import PostsIcon from "../../icons/VeganAppIcons/posts.svg";
 import {
@@ -38,7 +26,24 @@ import FormLabel from "@material-ui/core/FormLabel";
 import { green, orange } from "@material-ui/core/colors";
 import Image from "../../images/dinner.jpg";
 import RightPanel from "../GlobalComponents/RightPanel";
+import {
+  BigRateContainerRecipes,
+  SmallRateContainerRecipes,
+} from "../../styles/StarsStyle";
 import axios from "axios";
+import {
+  HeaderRecipeContainer,
+  RecipeTimeContainer,
+  HeaderRecipeText,
+  RecipeTime,
+  IngredientsList,
+  IngredientsItem,
+  PreparationItem,
+  RecipeImage,
+  RateContainer,
+  RateHeader,
+  RateStars,
+} from "../../styles/RecipeStyle";
 import RecipesIcon from "../../icons/VeganAppIcons/recipes.svg";
 import ikonaCzasuActive from "../../icons/ikonaCzasuactive.svg";
 import ikonaMapyActive from "../../icons/ikonaMapyactive.svg";
@@ -53,9 +58,63 @@ import {
   Container,
   ReplacementsContainer,
 } from "../../styles/WallStyle";
+import ReactStars from "react-stars";
+import ClockIcon from "../../icons/white_clock.svg";
+import UserIcon from "../../icons/white_user.svg";
 import ReplacementsIcon from "../../icons/VeganAppIcons/replacements.svg";
 import RestaurantIcon from "../../icons/VeganAppIcons/restaurants.svg";
+import {
+  WallContainer,
+  ElementContainerMobile,
+  ImageElement,
+  PostsContainer,
+  MobileContainer,
+  ScrollContainer,
+  TextContainer,
+} from "../../styles/MobileStyles";
+import { PostContainer } from "../../styles/WallStyle";
+import { defineLocale } from "moment";
+
+import {
+  RecipesName,
+  HeaderText,
+  ContainerRecipes,
+  ImageRecipes,
+  ContentContainer,
+  UnorderedList,
+  PagginationContainer,
+  PagginationItem,
+  Item,
+  WayItem,
+} from "../../styles/TempRecipes";
+
 const Recipes = (props) => {
+  let recipe = props.recipe;
+  const [listIngredients, setListIngredients] = useState([]);
+
+  let text =
+    recipe.recipe_decription &&
+    recipe.recipe_decription.replace("\r\n\r\n", "\n").replace("\r\n", "\n");
+
+  useEffect(() => {
+    {
+      /*}
+    const fetchData = async () => {
+      await axios(`https://veggiesapp.herokuapp.com/recipes/list/${recipe.id}/`)
+        .then((res) => {
+          console.log(res.data);
+          setListIngredients(res.data);
+          console.log(res.data[0]);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(err.response);
+        });
+    };
+    fetchData();
+  {*/
+    }
+  }, []);
   let temp = [0, 0, 0];
   const [page, setPage] = useState(temp);
   const Paggination = (props) => {
@@ -132,119 +191,133 @@ const Recipes = (props) => {
       </PagginationContainer>
     );
   };
+  const [isHover, setIsHover] = useState(false);
   return (
-    <ContainerRecipes style={{ height: "300px", margin: 0, width: "40%" }}>
-      <ImageRecipes
-        src={Image}
-        style={{ width: "300px", cursor: "pointer" }}
-        onClick={() => props.historyProps.push("/recipe")}
-      />
-      <ContentContainer
-        style={{
-          position: "relative",
-          width: "100%",
-          background: "rgba(255,255,255,0.6)",
-        }}
-      >
-        <img
-          style={{
-            width: "35px",
-            position: "absolute",
-            top: 0,
-            right: 0,
-            background: "green",
-          }}
-          src={RecipesIcon}
-        />
-        <RecipesName style={{ "font-size": "19px" }}>Przepis</RecipesName>
-        {page[props.index] == 0 ? (
-          <div>
-            <HeaderText>Składniki:</HeaderText>{" "}
-            <UnorderedList>
-              <ul
-                style={{
-                  margin: 0,
-                  padding: 0,
-                  width: "100%",
-                  display: "flex",
-                  "justify-content": "space-between",
-                }}
-              >
-                <Item>Jakiś produkt</Item>
-                <Item>10g</Item>
-              </ul>
-              <ul
-                style={{
-                  margin: 0,
-                  padding: 0,
-                  width: "100%",
-                  display: "flex",
-                  "justify-content": "space-between",
-                }}
-              >
-                <Item>Jakiś produkt</Item>
-                <Item>10g</Item>
-              </ul>
-              <ul
-                style={{
-                  margin: 0,
-                  padding: 0,
-                  width: "100%",
-                  display: "flex",
-                  "justify-content": "space-between",
-                }}
-              >
-                <Item>Jakiś produkt</Item>
-                <Item>10g</Item>
-              </ul>
-              <ul
-                style={{
-                  margin: 0,
-                  padding: 0,
-                  width: "100%",
-                  display: "flex",
-                  "justify-content": "space-between",
-                }}
-              >
-                <Item>Jakiś produkt</Item>
-                <Item>10g</Item>
-              </ul>
-            </UnorderedList>
-            <div
+    <ElementContainer
+      style={{
+        height: "20vh",
+        width: "100%",
+        "flex-direction": "column",
+        margin: "20% 0 2% 0",
+      }}
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false); //!
+      }}
+      onClick={() => props.historyProps.push(`/recipe/${props.recipe.id}`)}
+    >
+      <HoverContainer style={{ width: "100%", pointer: "cursor" }}>
+        {isHover ? (
+          <div style={{ width: "100%", position: "relative" }}>
+            <ImageHoverComponent
               style={{
-                display: "flex",
-                "justify-content": "space-evenly",
                 width: "100%",
-                margin: "6% 0 0 0",
-                "font-size": "18px",
+                height: "220px",
+                "border-radius": "4px",
+                "object-fit": "cover",
+              }}
+              src={`${props.recipe.recipe_foto}`}
+            />
+
+            <HoverText
+              style={{
+                "font-size": "16px",
+                top: "0",
+                padding: 0,
+                display: "flex",
+                width: "25%",
+                margin: 0,
+                left: "42%",
+                "justify-content": "center",
               }}
             >
+              <img
+                src={UserIcon}
+                style={{ width: "22px", margin: "0 5% 0 0" }}
+              />
               <p
                 style={{
-                  color: "#4CAF50",
-                  "font-weight": "bold",
+                  margin: 0,
+                  color: "white",
+                  "font-size": "18px",
+                  width: "60%",
+                  textAlign: "right",
                 }}
               >
-                Czas przygotowania:
+                {props.recipe.id_user.username}
               </p>
-              <p style={{ "font-weight": "bold" }}>0s</p>
+            </HoverText>
+            <HoverText
+              style={{
+                "font-size": "16px",
+                top: "20%",
+                padding: 0,
+                display: "flex",
+                width: "25%",
+                margin: 0,
+                left: "42%",
+                "justify-content": "center",
+              }}
+            >
+              <img
+                src={ClockIcon}
+                style={{ width: "22px", margin: "0 5% 0 0" }}
+              />
+              <p
+                style={{
+                  margin: 0,
+                  color: "white",
+                  "font-size": "18px",
+                  width: "60%",
+                  textAlign: "right",
+                }}
+              >
+                {props.recipe.time}min
+              </p>
+            </HoverText>
+            <div
+              style={{
+                width: "100%",
+                position: "absolute",
+                top: "33%",
+                left: "4%",
+              }}
+            >
+              <SmallRateContainerRecipes>
+                <RateStars style={{ width: "100%" }}>
+                  <ReactStars
+                    edit={false}
+                    value={props.recipe.rating}
+                    count={5}
+                    className="recipes_rate"
+                    //onChange
+                    size={24}
+                    color2={"#4CAF50"}
+                  />
+                </RateStars>
+              </SmallRateContainerRecipes>
             </div>
           </div>
         ) : (
-          <div>
-            <HeaderText>Sposób przyrządzenia:</HeaderText>
-            <UnorderedList>
-              <WayItem>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s...
-              </WayItem>
-            </UnorderedList>
+          <div style={{ width: "100%" }}>
+            <ImageComponent
+              style={{
+                width: "100%",
+                height: "220px",
+                "border-radius": "4px",
+                "object-fit": "cover",
+              }}
+              src={`${props.recipe.recipe_foto}`}
+            />
           </div>
         )}
-        <Paggination index={props.index} />
-      </ContentContainer>
-    </ContainerRecipes>
+      </HoverContainer>
+      <p style={{ width: "100%", "font-size": "20px" }}>
+        {props.recipe.recipe_name}
+      </p>
+    </ElementContainer>
   );
 };
 const Restaurants = (props) => {
@@ -332,373 +405,227 @@ const Restaurants = (props) => {
     return [time.split(":", 1).toString(), time.split(":").slice(1).join(":")];
   });
   return (
-    <ContainerRestaurant style={{ height: "300px", width: "40%" }}>
-      {/*ttt*/}
-      <ImageRestaurant
-        src={props.data.foto}
-        style={{ width: "300px", cursor: "pointer" }}
-        onClick={() => props.historyProps.push(`/restaurant/${props.index}`)}
-      />
-      <ContentContainer
+    <div style={{ margin: "2% 0 2% 0", width: "100%" }}>
+      <img
+        onClick={() =>
+          props.historyProps.push(`/restaurant/${props.restaurant.id}`)
+        }
         style={{
           width: "100%",
-          position: "relative",
-          background: "rgba(255,255,255,0.6)",
+          height: "40vh",
+          "object-fit": "contain",
+          cursor: "pointer",
+        }}
+        src={props.restaurant.foto}
+      />
+      <p
+        style={{
+          padding: 0,
+          margin: 0,
+          "text-align": "center",
+          "font-size": "22px",
         }}
       >
-        <img
-          style={{
-            width: "35px",
-            background: "green",
-            position: "absolute",
-            top: 0,
-            right: 0,
-          }}
-          src={RestaurantIcon}
-        />
-        <RestaurantName>{props.data.name}</RestaurantName>
-        {console.log(page[props.index])}
-        {page[props.number] == 0 || page[props.number] == undefined ? (
-          <div>
-            <HeaderText>Godziny otwarcia:</HeaderText>
-            <UnorderedList
-              style={{
-                "font-size": "14px",
-                margin: "0",
-                padding: "0",
-                "justify-content": "flex-start",
-                "flex-direction": "column",
-                "max-height": "200px",
-                "align-items": "flex-start",
-              }}
-            >
-              {time.map((t) => {
-                return (
-                  <Item
-                    style={{
-                      "align-items": "flex-start",
-                      "justify-content": "space-between",
-                      margin: 0,
-                      padding: 0,
-                      width: "100%",
-                    }}
-                  >
-                    <p style={{ margin: 0 }}>{t[0]}:</p>
-                    <p style={{ margin: 0 }}>{t[1]}</p>
-                  </Item>
-                );
-              })}
-              {/*}
-                <Item>Poniedziałek: 10:00 - 20:00</Item>
-                <Item>Poniedziałek: 10:00 - 20:00</Item>
-                <Item>Poniedziałek: 10:00 - 20:00</Item>
-                <Item>Poniedziałek: 10:00 - 20:00</Item>
-                <Item>Poniedziałek: 10:00 - 20:00</Item>
-                <Item>Poniedziałek: 10:00 - 20:00</Item>
-                {*/}
-            </UnorderedList>
-          </div>
-        ) : (
-          <div>
-            <HeaderText>Lokalizacja:</HeaderText>
-            <Map
-              id="mapid"
-              center={[props.data.latX, props.data.longY]}
-              zoom={17}
-              style={{
-                width: 160,
-                height: 170,
-                margin: "1% auto 1% auto",
-                "z-index": 0,
-              }}
-            >
-              <TileLayer
-                style={{ "font-size": 4 }}
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[props.data.latX, props.data.longY]}>
-                <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-              </Marker>
-            </Map>
-          </div>
-        )}
-
-        <Paggination index={props.number} />
-      </ContentContainer>
-    </ContainerRestaurant>
+        {props.restaurant.name}
+      </p>
+      <BigRateContainerRecipes style={{ width: "100%", margin: "0 auto" }}>
+        <RateStars style={{ width: "100%" }}>
+          <ReactStars
+            edit={false}
+            value={props.restaurant.rating}
+            count={5}
+            className="recipes_rate"
+            //onChange
+            size={24}
+            color2={"#4CAF50"}
+          />
+        </RateStars>
+        <p>
+          {props.restaurant.city +
+            ", " +
+            props.restaurant.street +
+            " " +
+            props.restaurant.street_number}
+        </p>
+      </BigRateContainerRecipes>
+    </div>
   );
 };
 const Posts = (props) => {
   const [isHover, setIsHover] = useState(false);
+  const [error, setError] = useState(false);
+
   console.log("||||||||||||||");
   console.log(props.index);
   return (
-    <ElementContainer
-      style={{ width: "40%", "justify-content": "flex-start", margin: 0 }}
-      onMouseEnter={() => {
-        setIsHover(true);
-      }}
-      onMouseLeave={() => {
-        setIsHover(false);
+    <PostContainer
+      myimg={error ? null : props.post.foto}
+      style={{
+        width: "100%",
+        cursor: "pointer",
+        height: "22vh",
+        margin: "2% 0 2% 0",
       }}
       onClick={() => props.historyProps.push(`/post/${props.index}`)}
     >
-      <HoverContainer>
-        {isHover ? (
-          <div>
-            <ImageHoverComponent
-              style={{ width: "100%" }}
-              src={`${props.post.foto}`}
-            />
-            <HoverHeader> {props.post.title}</HoverHeader>
-            <HoverText>{props.post.description}</HoverText>
-            <Icon style={{ width: "35px" }} src={PostsIcon} />
-          </div>
-        ) : (
-          <div>
-            <ImageComponent
-              style={{ width: "100%" }}
-              src={`${props.post.foto}`}
-            />
-            <Icon style={{ width: "35px" }} src={PostsIcon} />
-          </div>
-        )}
-      </HoverContainer>
-    </ElementContainer>
+      <img
+        src={props.post.foto}
+        style={{ display: "none" }}
+        onError={() => {
+          setError(true);
+        }}
+      />
+      <p style={{ "font-size": "30px", "text-align": "center" }}>
+        {props.post.title}
+      </p>
+      <p style={{ "font-size": "16px", padding: "1%" }}>
+        {props.post.description.slice(0, 30)}
+      </p>
+    </PostContainer>
   );
 };
 const Replacements = (props) => {
+  console.log(props.replacements);
+  let replacements = props.replacements && props.replacements[0];
   return (
     <div>
-      <ul
-        style={{
-          "list-style-type": "none",
-          "font-size": "20px",
-          padding: 0,
-          margin: 0,
-          overflow: "auto",
-          "max-height": "100%",
-          width: "100%",
-        }}
-      >
+      {replacements && (
         <ul
           style={{
-            "border-bottom": "1px solid black",
-            margin: "2% 0 2% 0",
-            padding: 0,
             "list-style-type": "none",
+            "font-size": "20px",
+            padding: 0,
+            margin: 0,
+            overflow: "auto",
+            "max-height": "100%",
+            width: "100%",
           }}
         >
-          <li
+          <ul
             style={{
-              padding: "1%",
-              "text-align": "center",
+              "border-bottom": "1px solid black",
+              margin: "2% 0 2% 0",
+              padding: 0,
+              "list-style-type": "none",
+            }}
+          >
+            <li
+              style={{
+                padding: "1%",
+                "text-align": "center",
+                "font-size": "15px",
+                display: "block",
+                background: "#00a835",
+                width: "40%",
+                "font-weight": "bold",
+                margin: "1% auto 1% auto",
+                "border-radius": "25px",
+                color: "white",
+              }}
+            >
+              {replacements.id_food_to_substitute.food_name}
+            </li>
+            <li style={{ padding: "2%", "font-size": "17px" }}>
+              {replacements.id_food_to_substitute.description}
+            </li>
+          </ul>
+          <ul
+            style={{
+              margin: "5% 0 5% 0",
+              padding: 0,
               "font-size": "15px",
-              display: "block",
-              background: "#00a835",
-              width: "40%",
-              "font-weight": "bold",
-              margin: "1% auto 1% auto",
-              "border-radius": "25px",
-              color: "white",
+              "list-style-type": "none",
             }}
           >
-            Nazwa
-          </li>
-          <li style={{ padding: "2%" }}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled
-          </li>
-        </ul>
-        <ul
-          style={{
-            margin: "5% 0 5% 0",
-            padding: 0,
-            "list-style-type": "none",
-          }}
-        >
-          <li
-            style={{
-              padding: "1%",
-              "text-align": "center",
-              "font-size": "13px",
-              display: "block",
-              background: "#00a835",
-              width: "30%",
-              "font-weight": "bold",
-              margin: "1% auto 1% auto",
-              "border-radius": "25px",
-              color: "white",
-            }}
-          >
-            Nazwa
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly",
-            }}
-          >
-            <p style={{ width: "20%" }}>Kaloryczność:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly",
-            }}
-          >
-            <p style={{ width: "20%" }}>Proteiny:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly",
-            }}
-          >
-            <p style={{ width: "20%" }}>Tłuszcz:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly",
-            }}
-          >
-            <p style={{ width: "20%" }}>Węglowodany:</p>
-            <p style={{ width: "10%" }}> 100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly",
-            }}
-          >
-            <p style={{ width: "20%" }}>Celuloza:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li>
-            <img
+            <li
               style={{
-                width: "330px",
-                margin: "1% auto 1% auto",
+                padding: "1%",
+                "text-align": "center",
+                "font-size": "13px",
                 display: "block",
+                background: "#00a835",
+                width: "30%",
+                "font-weight": "bold",
+                margin: "1% auto 1% auto",
+                "border-radius": "25px",
+                color: "white",
               }}
-              src={Image}
-            />
-          </li>
-        </ul>
-        <ul
-          style={{
-            margin: "5% 0 5% 0",
-            padding: 0,
-            "list-style-type": "none",
-          }}
-        >
-          <li
-            style={{
-              padding: "1%",
-              "text-align": "center",
-              "font-size": "13px",
-              display: "block",
-              background: "#00a835",
-              width: "30%",
-              margin: "1% auto 1% auto",
-              "font-weight": "bold",
-              "border-radius": "25px",
-              color: "white",
-            }}
-          >
-            Nazwa
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly",
-            }}
-          >
-            <p style={{ width: "20%" }}>Kaloryczność:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly",
-            }}
-          >
-            <p style={{ width: "20%" }}>Proteiny:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly",
-            }}
-          >
-            <p style={{ width: "20%" }}>Tłuszcz:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly",
-            }}
-          >
-            <p style={{ width: "20%" }}>Węglowodany:</p>
-            <p style={{ width: "10%" }}> 100</p>
-          </li>
-          <li
-            style={{
-              display: "flex",
-              width: "100%",
-              "justify-content": "space-evenly",
-            }}
-          >
-            <p style={{ width: "20%" }}>Celuloza:</p>
-            <p style={{ width: "10%" }}>100</p>
-          </li>
-          <li>
-            <img
+            >
+              {replacements.id_vegan.name}
+            </li>
+            <li
               style={{
-                width: "330px",
-                margin: "1% auto 1% auto",
-                display: "block",
+                display: "flex",
+                width: "100%",
+                "justify-content": "space-evenly",
               }}
-              src={Image}
-            />
-          </li>
+            >
+              <p style={{ width: "20%" }}>Kaloryczność:</p>
+              <p style={{ width: "10%" }}>{replacements.id_vegan.kcal}</p>
+            </li>
+            <li
+              style={{
+                display: "flex",
+                width: "100%",
+                "justify-content": "space-evenly",
+              }}
+            >
+              <p style={{ width: "20%" }}>Proteiny:</p>
+              <p style={{ width: "10%" }}>{replacements.id_vegan.protein}</p>
+            </li>
+            <li
+              style={{
+                display: "flex",
+                width: "100%",
+                "justify-content": "space-evenly",
+              }}
+            >
+              <p style={{ width: "20%" }}>Tłuszcz:</p>
+              <p style={{ width: "10%" }}>{replacements.id_vegan.fat}</p>
+            </li>
+            <li
+              style={{
+                display: "flex",
+                width: "100%",
+                "justify-content": "space-evenly",
+              }}
+            >
+              <p style={{ width: "20%" }}>Węglowodany:</p>
+              <p style={{ width: "10%" }}>{replacements.id_vegan.carbs}</p>
+            </li>
+            <li
+              style={{
+                display: "flex",
+                width: "100%",
+                "justify-content": "space-evenly",
+              }}
+            >
+              <p style={{ width: "20%" }}>Celuloza:</p>
+              <p style={{ width: "10%" }}>{replacements.id_vegan.cellulose}</p>
+            </li>
+          </ul>
         </ul>
-      </ul>
+      )}
     </div>
   );
 };
 const Contents = (props) => {
-  const [recipes, setRecipes] = useState([]);
-  const [restaurants, setRestaurants] = useState([]);
-  const [posts, setPosts] = useState([]);
   const user = useContext(NewLoginInfo);
+  const [restaurants, setRestaurants] = useState([]);
+  const [recipes, setRecipes] = useState([]);
+  const [posts, setPosts] = useState([]);
   useEffect(() => {
+    console.log("USER");
+    console.log(user);
     const fetchData = async () => {
       await axios(`${user.Api}/restaurants/`)
         .then((res) => {
           console.log(res.data);
-          setRestaurants(res.data);
-          console.log(res.data[0]);
+          const temp = res.data.filter((data) => {
+            return data.id_moderator === user.userInfo.id;
+          });
+
+          setRestaurants(temp);
         })
         .catch((err) => {
           console.log(err);
@@ -706,8 +633,22 @@ const Contents = (props) => {
         });
       await axios(`${user.Api}/posts/`)
         .then((res) => {
-          console.log(res.data);
-          setPosts(res.data);
+          const temp = res.data.filter((data) => {
+            return data.author.id === user.userInfo.id;
+          });
+
+          setPosts(temp);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(err.response);
+        });
+      await axios(`${user.Api}/recipes/`)
+        .then((res) => {
+          const temp = res.data.filter((data) => {
+            return data.id_user.id === user.userInfo.id;
+          });
+          setRecipes(temp);
         })
         .catch((err) => {
           console.log(err);
@@ -717,67 +658,30 @@ const Contents = (props) => {
     fetchData();
   }, []);
   return (
-    <MainContainer style={{ width: "80%", margin: "1% auto 1% auto" }}>
-      <div
-        style={{
-          justifyContent: "space-between",
-          display: "flex",
-          "flex-wrap": "wrap",
-          height: "100%",
-          padding: "1%",
-        }}
-      >
-        <Recipes style={{ width: "40%", position: "relative" }} index={0} />
+    <MainContainer
+      style={{ width: "100%", margin: "1% auto 1% auto", height: "140vh" }}
+    >
+      <div style={{ width: "100%" }}>
         {restaurants[0] && (
           <Restaurants
-            style={{ width: "40%", position: "relative" }}
-            index={restaurants[0].id}
+            index={restaurants.id}
             number={0}
+            restaurant={restaurants[0]}
             data={restaurants[0]}
             historyProps={props.history}
           />
         )}
         {posts[0] && (
           <Posts
-            style={{ width: "40%", position: "relative" }}
             key={posts[0].id}
             index={posts[0].id}
             post={posts[0]}
             historyProps={props.history}
           />
         )}
-        <div
-          style={{
-            background: "rgba(255,255,255,0.6)",
-            height: "50%",
-            width: "40%",
-          }}
-        >
-          <div style={{ position: "relative" }}>
-            <img
-              style={{
-                position: "absolute",
-                width: "35px",
-                background: "green",
-                right: 0,
-                top: 0,
-              }}
-              src={ReplacementsIcon}
-            />
-            <h1
-              style={{
-                color: "black",
-                "font-size": "18px",
-                "text-align": "center",
-              }}
-            >
-              Zamienniki
-            </h1>
-            <ReplacementsContainer style={{ margin: 0 }}>
-              <Replacements />
-            </ReplacementsContainer>
-          </div>
-        </div>
+        {recipes[0] && (
+          <Recipes index={0} recipe={recipes[0]} historyProps={props.history} />
+        )}
       </div>
     </MainContainer>
   );

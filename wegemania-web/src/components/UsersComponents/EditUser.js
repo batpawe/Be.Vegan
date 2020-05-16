@@ -80,7 +80,7 @@ const EditUser = () => {
     fetchData();
   };
   return (
-    <EditProfileContainer>
+    <EditProfileContainer style={{ background: "rgba(244,244,244,0.9)" }}>
       {deleyedRedirect && <Redirect to={`/users/${user.userInfo.id}`} />}
       {userInfo.username && (
         <Formik
@@ -163,7 +163,7 @@ const EditUser = () => {
                   />
                 </InputContainer>
                 <InputContainer>
-                  <label for="repeatPassword">Potwórz hasło:</label>
+                  <label for="repeatPassword">Powtórz hasło:</label>
                   <InputText
                     id="repeatPassword"
                     type="password"

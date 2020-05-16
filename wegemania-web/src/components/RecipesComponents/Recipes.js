@@ -289,8 +289,8 @@ n_react-autosuggest__input--focused :{
             return tempArray;
           }, []);
           const tempResult = temp.reduce((acc, curr, i) => {
-            if (!(i % 17)) {
-              acc.push(temp.slice(i, i + 17)); // ..push a chunk of the original array to the accumulator
+            if (!(i % 16)) {
+              acc.push(temp.slice(i, i + 16)); // ..push a chunk of the original array to the accumulator
             }
             return acc;
           }, []);
@@ -298,8 +298,8 @@ n_react-autosuggest__input--focused :{
           console.log(temp);
           console.log(tempResult);
           let tempFullRecipes = res.data.reduce((acc, curr, i) => {
-            if (!(i % 17)) {
-              acc.push(temp.slice(i, i + 17)); // ..push a chunk of the original array to the accumulator
+            if (!(i % 16)) {
+              acc.push(temp.slice(i, i + 16)); // ..push a chunk of the original array to the accumulator
             }
             return acc;
           }, []);
@@ -624,6 +624,7 @@ n_react-autosuggest__input--focused :{
               setCurrent(1);
               setFindValue(newValue.slice(","));
               let resultArray = [];
+              console.log(newValue);
               const temp = globalRecipes.filter((recipe) => {
                 if (
                   recipe.recipe_name
@@ -634,11 +635,11 @@ n_react-autosuggest__input--focused :{
                 }
               });
 
-              console.log("|||");
+              console.log("|||?");
               console.log(temp);
               const tempResult = temp.reduce((acc, curr, i) => {
-                if (!(i % 17)) {
-                  acc.push(temp.slice(i, i + 17)); // ..push a chunk of the original array to the accumulator
+                if (!(i % 16)) {
+                  acc.push(temp.slice(i, i + 16)); // ..push a chunk of the original array to the accumulator
                 }
                 return acc;
               }, []);
@@ -674,7 +675,7 @@ n_react-autosuggest__input--focused :{
               setValueName(newValue);
             },
           }}
-          highlightFirstSuggestion={true}
+          highlightFirstSuggestion={false}
         />
       </div>
       {/*}
@@ -893,7 +894,7 @@ n_react-autosuggest__input--focused :{
             {console.log(recipes)}
             {fullRecipes[current - 1] &&
               fullRecipes[current - 1].map((recipe, index) => {
-                if (index > 1) {
+                if (index > 0) {
                   return (
                     <ContentController
                       index={index}

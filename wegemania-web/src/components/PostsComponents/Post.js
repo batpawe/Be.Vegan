@@ -168,39 +168,42 @@ const Post = (props) => {
   const [deleyedRedirect, setDeleyedRedirect] = useState(false);
   const [tempContent, setTempContent] = useState("");
   const AddComment = async () => {
-    console.log(file[0].file ? true : false);
+    if (tempContent !== "") {
+      console.log(file[0].file ? true : false);
+      const data = new FormData();
+      data.append("title", "");
+      data.append("description", tempContent);
+      data.append("foto", file[0].file ? file[0] : "");
+      const config = {
+        method: "POST",
+        headers: {
+          Accept: "application/json; charset=UTF-8",
+          Authorization: `Token ${user.userInfo.token}`,
+        },
+        body: data,
+      };
 
-    const data = new FormData();
-    data.append("title", "");
-    data.append("description", tempContent);
-    data.append("foto", file[0].file ? file[0] : "");
-    const config = {
-      method: "POST",
-      headers: {
-        Accept: "application/json; charset=UTF-8",
-        Authorization: `Token ${user.userInfo.token}`,
-      },
-      body: data,
-    };
-
-    await fetch(`${user.Api}/posts/${props.match.params.id}/`, config)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log("KWKEKWK");
-          notify.set("Pomyślnie dodano komentarz");
-          setTempContent("");
-          setTimeout(() => {
-            setDeleyedRedirect(true);
-          }, 2000);
-        } else {
-          notify.set("Wystąpił nieoczekiwany błąd");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(err.response);
-        notify.set("Wystąpił nieoczekiwany błąd!");
-      });
+      await fetch(`${user.Api}/posts/${props.match.params.id}/`, config)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log("KWKEKWK");
+            notify.set("Pomyślnie dodano komentarz");
+            setTempContent("");
+            setTimeout(() => {
+              setDeleyedRedirect(true);
+            }, 2000);
+          } else {
+            notify.set("Wystąpił nieoczekiwany błąd");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(err.response);
+          notify.set("Wystąpił nieoczekiwany błąd!");
+        });
+    } else {
+      notify.set("Treść komentarza jest wymagana");
+    }
   };
   useEffect(() => {
     user.openPanel(false);

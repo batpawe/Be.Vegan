@@ -561,7 +561,7 @@ const Recipe = (props) => {
                           }}
                         >
                           <p>{ingredient.name}</p>
-                          <p>{ingredient.amount}</p>
+                          <p>{ingredient.amount} gram</p>
                         </IngredientsItem>
                       );
                     })}
@@ -591,7 +591,7 @@ const Recipe = (props) => {
               }}
             >
               {recipe.recommend &&
-                recipe.recommend.map((recp) => {
+                recipe.recommend.slice(0, 5).map((recp) => {
                   return (
                     <RecommendElements
                       recommend={recp}

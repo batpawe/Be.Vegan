@@ -434,7 +434,7 @@ n_react-autosuggest__input--focused :{
                       }}
                     >
                       <p style={{ width: "20%" }}>Kaloryczność:</p>
-                      <p style={{ width: "10%" }}>{veg.kcal}</p>
+                      <p style={{ width: "20%" }}>{veg.kcal} kcal</p>
                     </li>
                     <li
                       style={{
@@ -444,7 +444,7 @@ n_react-autosuggest__input--focused :{
                       }}
                     >
                       <p style={{ width: "20%" }}>Proteiny:</p>
-                      <p style={{ width: "10%" }}>{veg.protein}</p>
+                      <p style={{ width: "20%" }}>{veg.protein} gram</p>
                     </li>
                     <li
                       style={{
@@ -454,7 +454,7 @@ n_react-autosuggest__input--focused :{
                       }}
                     >
                       <p style={{ width: "20%" }}>Tłuszcz:</p>
-                      <p style={{ width: "10%" }}>{veg.fat}</p>
+                      <p style={{ width: "20%" }}>{veg.fat} gram</p>
                     </li>
                     <li
                       style={{
@@ -464,7 +464,7 @@ n_react-autosuggest__input--focused :{
                       }}
                     >
                       <p style={{ width: "20%" }}>Węglowodany:</p>
-                      <p style={{ width: "10%" }}> 100</p>
+                      <p style={{ width: "20%" }}>{veg.carbs} gram</p>
                     </li>
                     <li
                       style={{
@@ -474,7 +474,7 @@ n_react-autosuggest__input--focused :{
                       }}
                     >
                       <p style={{ width: "20%" }}>Celuloza:</p>
-                      <p style={{ width: "10%" }}>{veg.celulose}</p>
+                      <p style={{ width: "20%" }}>{veg.cellulose} gram</p>
                     </li>
                   </ul>
                 );
