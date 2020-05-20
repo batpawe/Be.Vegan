@@ -192,7 +192,11 @@ const Recipes = (props) => {
   const [isHover, setIsHover] = useState(false);
   return (
     <ElementContainer
-      style={{ height: "15%", width: "22%", "flex-direction": "column","margin":"2% 0 2% 0" }}
+      style={{
+        width: "100%",
+        "flex-direction": "column",
+        margin: "2% 0 2% 0",
+      }}
       onMouseEnter={() => {
         setIsHover(true);
       }}
@@ -374,7 +378,7 @@ const Restaurants = (props) => {
     return [time.split(":", 1).toString(), time.split(":").slice(1).join(":")];
   });
   return (
-    <div style={{ margin: "2% 0 2% 0", width: "25%" }}>
+    <div style={{ margin: "2% 0 2% 0", width: "100%" }}>
       {console.log("WAZNEWCHODZI")}
       <img
         onClick={() =>
@@ -431,7 +435,7 @@ const Posts = (props) => {
     <PostContainer
       myimg={error ? null : props.post.foto}
       style={{
-        width: "40%",
+        width: "100%",
         cursor: "pointer",
         height: "22vh",
         margin: "2% 0 2% 0",
@@ -760,6 +764,52 @@ const Wall = (props) => {
         background: "rgba(244,244,244,0.9)",
       }}
     >
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "space-around",
+        }}
+      >
+        <div style={{ width: "24%", display: "flex", "flex-wrap": "wrap" }}>
+          {recipes[0] &&
+            recipes.map((recipe) => {
+              return (
+                <Recipes
+                  index={0}
+                  recipe={recipe}
+                  historyProps={props.history}
+                />
+              );
+            })}
+        </div>
+        <div style={{ width: "24%" }}>
+          {restaurants.map((res) => {
+            return (
+              <Restaurants
+                index={restaurants[0].id}
+                number={0}
+                restaurant={res}
+                data={restaurants[0]}
+                historyProps={props.history}
+              />
+            );
+          })}
+        </div>
+        <div style={{ width: "49%" }}>
+          {posts.map((res) => {
+            return (
+              <Posts
+                key={posts[0].id}
+                index={posts[0].id}
+                post={res}
+                historyProps={props.history}
+              />
+            );
+          })}
+        </div>
+      </div>
+      {/*}
       <WallContainer>
         {defaultArrayRecipe[0] &&
           defaultArrayRecipe[0].map((recipe) => {
@@ -973,7 +1023,7 @@ const Wall = (props) => {
             });
         })}
             {*/}
-        {/*}
+      {/*}
         {recipes[0] &&
           recipes.map((recipe) => (
             <Recipes index={0} recipe={recipe} historyProps={props.history} />
@@ -1000,7 +1050,7 @@ const Wall = (props) => {
           );
         })}
 {*/}
-        {/*}
+      {/*}
         <div
           style={{
             background: "rgba(255,255,255,0.6)",
@@ -1034,7 +1084,8 @@ const Wall = (props) => {
           </div>
         </div>
           {*/}
-      </WallContainer>
+      {/*}</WallContainer>
+          {*/}
     </div>
   );
 };
