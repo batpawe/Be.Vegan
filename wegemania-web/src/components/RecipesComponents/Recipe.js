@@ -270,134 +270,142 @@ const Recipe = (props) => {
     params.append("id_recipe", props.match.params.id);
     params.append("user_comment", descriptionComment);
     params.append("rating", myRate);
-
-    axios({
-      method: "post",
-      url: "http://veggies.ddns.net:8181/recipe/rating/",
-      data: qs.stringify({
-        id_recipe: parseInt(props.match.params.id, 10),
-        user_comment: descriptionComment,
-        rating: myRate,
-      }),
-      headers: {
-        "content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        Authorization: `Token ${user.userInfo.token}`,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          notify.set("Pomyślnie dodano komentarz.");
-          setTimeout(() => {
-            setDeleyedRedirect(true);
-          }, 2000);
-        } else if (res.data.detail) {
-          notify.set("Przepis został już przez Ciebie oceniony.");
-        } else {
-          notify.set("Wystąpił nieoczekiwany błąd");
-        }
-        console.log(res.data.data);
-        console.log(res.body);
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(err.response);
-      });
-    /*
-    const data = new FormData();
-    data.append("id_restaurant", props.match.params.id);
-    data.append("user_comment", descriptionComment);
-    data.append("rating", parseInt(myRate, 10));
-    console.log([...data]);
-    const config = {
-      method: "POST",
-      headers: {
-        Accept: "application/json; charset=UTF-8",
-        Authorization: `Token ${user.userInfo.token}`,
-      },
-      body: data,
-    };
-    */
-    /*
-    const params = new URLSearchParams();
-    params.append("id_recipe", props.match.params.id);
-    params.append("user_comment", descriptionComment);
-    params.append("rating", myRate);
-
-    axios({
-      method: "post",
-      url: "https://veggiesapp.herokuapp.com/recipe/rating/",
-      data: qs.stringify({
-        id_restaurant: parseInt(props.match.params.id, 10),
-        user_comment: descriptionComment,
-        rating: myRate,
-      }),
-      headers: {
-        "content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        Authorization: `Token ${user.userInfo.token}`,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        console.log(res.data.data);
-        console.log(res.body);
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(err.response);
-      });
-      */
-    /*
-    await axios
-      .post("https://veggiesapp.herokuapp.com/recipe/rating/", params, {
+    if (myRate < 1) {
+      notify.set("Wprowadź ocenę");
+    } else if (descriptionComment == "") {
+      notify.set("Wprowadź treść komentarza");
+    } else {
+      axios({
+        method: "post",
+        url: "http://veggies.ddns.net:8181/recipe/rating/",
+        data: qs.stringify({
+          id_recipe: parseInt(props.match.params.id, 10),
+          user_comment: descriptionComment,
+          rating: myRate,
+        }),
         headers: {
-          Authorization: `Token ${user.userInfo.token}`,
           "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+          Authorization: `Token ${user.userInfo.token}`,
         },
       })
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.body);
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(err.response);
-        console.log(err.response.data);
-      });
-*/
-    /*
-    await fetch(`https://veggiesapp.herokuapp.com/restaurants/rating/`, config)
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          res.text().then((text) => {
-            let json = JSON.parse(text);
-            console.log(json);
-            if (json.id_restaurant) {
-              notify.set("Pomyślnie dodano komentarz.");
-              setTimeout(() => {
-                setDeleyedRedirect(true);
-              }, 2000);
-            } else if (json.detail) {
-              notify.set("Ocena już istnieje");
-            } else {
-              console.log(res);
-              console.log(res.response);
-              notify.set("Wystąpił nieoczekiwany błąd!");
-            }
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(err.response);
-        notify.set("Wystąpił nieoczekiwany błąd!");
-      });
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            notify.set("Pomyślnie dodano komentarz.");
+            setTimeout(() => {
+              setDeleyedRedirect(true);
+            }, 2000);
+          } else if (res.data.detail) {
+            notify.set("Przepis został już przez Ciebie oceniony.");
+          } else {
+            notify.set("Wystąpił nieoczekiwany błąd");
+          }
+          console.log(res.data.data);
+          console.log(res.body);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(err.response);
+        });
+      /*
+      const data = new FormData();
+      data.append("id_restaurant", props.match.params.id);
+      data.append("user_comment", descriptionComment);
+      data.append("rating", parseInt(myRate, 10));
+      console.log([...data]);
+      const config = {
+        method: "POST",
+        headers: {
+          Accept: "application/json; charset=UTF-8",
+          Authorization: `Token ${user.userInfo.token}`,
+        },
+        body: data,
+      };
       */
+      /*
+      const params = new URLSearchParams();
+      params.append("id_recipe", props.match.params.id);
+      params.append("user_comment", descriptionComment);
+      params.append("rating", myRate);
+  
+      axios({
+        method: "post",
+        url: "https://veggiesapp.herokuapp.com/recipe/rating/",
+        data: qs.stringify({
+          id_restaurant: parseInt(props.match.params.id, 10),
+          user_comment: descriptionComment,
+          rating: myRate,
+        }),
+        headers: {
+          "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+          Authorization: `Token ${user.userInfo.token}`,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          console.log(res.data.data);
+          console.log(res.body);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(err.response);
+        });
+        */
+      /*
+      await axios
+        .post("https://veggiesapp.herokuapp.com/recipe/rating/", params, {
+          headers: {
+            Authorization: `Token ${user.userInfo.token}`,
+            "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          console.log(res.data);
+          console.log(res.body);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(err.response);
+          console.log(err.response.data);
+        });
+  */
+      /*
+      await fetch(`https://veggiesapp.herokuapp.com/restaurants/rating/`, config)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            res.text().then((text) => {
+              let json = JSON.parse(text);
+              console.log(json);
+              if (json.id_restaurant) {
+                notify.set("Pomyślnie dodano komentarz.");
+                setTimeout(() => {
+                  setDeleyedRedirect(true);
+                }, 2000);
+              } else if (json.detail) {
+                notify.set("Ocena już istnieje");
+              } else {
+                console.log(res);
+                console.log(res.response);
+                notify.set("Wystąpił nieoczekiwany błąd!");
+              }
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(err.response);
+          notify.set("Wystąpił nieoczekiwany błąd!");
+        });
+        */ setDescriptionComment(
+        ""
+      );
+    }
   };
   useEffect(() => {
     user.openPanel(false);
+    setDescriptionComment("");
     console.log(`${user.Api}/recipes/${props.match.params.id}`);
     const fetchData = async () => {
       await axios(`${user.Api}/recipes/${props.match.params.id}`)

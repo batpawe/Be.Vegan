@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NewLoginInfo } from "../context/LoginInfo";
 import {
   Container,
@@ -18,16 +18,25 @@ import {
   TextInput,
   SubmitCommentButton,
   CommentContainer,
-  MainContainer
+  MainContainer,
 } from "../styles/WallStyle";
 import PostImage from "../images/postimage.jpg";
 import RightPanel from "./GlobalComponents/RightPanel";
 import "../styles/MenuLoginStyle.css";
+import axios from "axios";
 import { Text } from "../styles/AboutStyle";
 const About = () => {
+  const [tips, setTips] = useState([]);
+  useEffect(() => {
+    axios("http://veggies.ddns.net:8181/curiosities/")
+      .then((res) => {
+        setTips(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
-    <MainContainer>
-      <Container>
+    <MainContainer style={{ width: "100%" }}>
+      <Container style={{ width: "80%" }}>
         <Text>
           Contrary to popular belief, Lorem Ipsum is not simply random text. It
           has roots in a piece of classical Latin literature from 45 BC, making
@@ -42,8 +51,13 @@ const About = () => {
           of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in
           section 1.10.32.
         </Text>
+        <Text>
+          <h1 style={{ "font-size": "24px" }}>Ciekawostki</h1>
+          {tips.map((tip) => {
+            return <p>{tip.text}</p>;
+          })}
+        </Text>
       </Container>
-      <RightPanel />
     </MainContainer>
   );
 };

@@ -195,7 +195,7 @@ const Recipes = (props) => {
       style={{
         width: "100%",
         "flex-direction": "column",
-        margin: "2% 0 2% 0",
+        margin: "0 0 30% 0",
       }}
       onMouseEnter={() => {
         setIsHover(true);
@@ -360,7 +360,7 @@ const Restaurants = (props) => {
     return (
       <PagginationContainer
         style={{
-          padding: "4% 0 1% 0",
+          padding: "8% 0 1% 0",
           "border-top": "1px solid black",
           position: "absolute",
           bottom: 0,
@@ -378,7 +378,7 @@ const Restaurants = (props) => {
     return [time.split(":", 1).toString(), time.split(":").slice(1).join(":")];
   });
   return (
-    <div style={{ margin: "2% 0 2% 0", width: "100%" }}>
+    <div style={{ margin: "8% 0 30% 0", width: "100%" }}>
       {console.log("WAZNEWCHODZI")}
       <img
         onClick={() =>
@@ -438,7 +438,7 @@ const Posts = (props) => {
         width: "100%",
         cursor: "pointer",
         height: "22vh",
-        margin: "2% 0 2% 0",
+        margin: "8% 0 30% 0",
       }}
       onClick={() => props.historyProps.push(`/post/${props.index}`)}
     >
@@ -759,7 +759,7 @@ const Wall = (props) => {
   return (
     <div
       style={{
-        width: "80%",
+        width: "90%",
         margin: "10% auto",
         background: "rgba(244,244,244,0.9)",
       }}
@@ -796,7 +796,7 @@ const Wall = (props) => {
             );
           })}
         </div>
-        <div style={{ width: "49%" }}>
+        <div style={{ width: "39%" }}>
           {posts.map((res) => {
             return (
               <Posts

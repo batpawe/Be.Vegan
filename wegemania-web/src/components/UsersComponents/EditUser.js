@@ -49,6 +49,7 @@ const EditUser = () => {
     }, 2000);
   };
   const sendRequest = (val) => {
+    console.log(val);
     const fetchData = async () => {
       var request = `${user.Api}/me/`;
       axios
@@ -70,7 +71,8 @@ const EditUser = () => {
           }
         )
         .then((res) => {
-          handleSuccess();
+          console.log(res);
+          // handleSuccess();
         })
         .catch((err) => {
           console.log(err);
@@ -131,7 +133,11 @@ const EditUser = () => {
             handleSubmit,
           }) => (
             <form style={{ width: "100%" }} onSubmit={handleSubmit}>
-              {errors && <div>{errors[Object.keys(errors)[0]]}</div>}
+              {errors && (
+                <div style={{ color: "red" }}>
+                  {errors[Object.keys(errors)[0]]}
+                </div>
+              )}
               <InputsContainer>
                 <InputContainer>
                   <label for="login">Login:</label>

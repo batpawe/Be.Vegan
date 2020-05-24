@@ -42,11 +42,17 @@ const AddPost = () => {
   });
   const handleAddPost = async (values) => {
     console.log(tempForm);
+    console.log("file");
     console.log(file);
+    console.log("file[0]");
+    console.log(file[0]);
+    console.log("file[0].file");
+    console.log(file[0].file);
+
     const data = new FormData();
     data.append("title", values.title);
     data.append("description", values.content);
-    data.append("foto", file[0]);
+    data.append("foto", file[0].size ? file[0] : "");
     const config = {
       method: "POST",
       headers: {

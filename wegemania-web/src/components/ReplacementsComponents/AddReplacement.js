@@ -241,39 +241,54 @@ outline: none;
     params.append("id_food_to_substitute", props.match.params.id);
     params.append("show_on_view", false);
     params.append("id_vegan", myRate);
-*/
-    console.log(nvegan[0].id);
-    console.log(vegan[0].id);
-    axios({
-      method: "post",
-      url: `${user.Api}/addsubstitute/`,
-      data: qs.stringify({
-        id_food_to_substitute: nVeganResult[0].id,
-        user_comment: false,
-        id_vegan: veganResult[0].id,
-      }),
-      headers: {
-        "content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        Authorization: `Token ${user.userInfo.token}`,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          notify.set("Pomyślnie dodano zamiennik.");
-          setTimeout(() => {
-            setDeleyedRedirect(true);
-          }, 2000);
-        } else {
-          notify.set("Wystąpił nieoczekiwany błąd");
-        }
-        console.log(res.data.data);
-        console.log(res.body);
+*/ console.log(
+      nVeganResult[0].id
+    );
+    //console.log(veganResult[0].id);
+    if (!nVeganResult[0]) {
+      notify.set("Wybierz produkt niewegański z listy");
+    } else if (!nVeganResult[0].id) {
+      notify.set("Wybierz produkt niewegański z listy");
+    } else if (!veganResult[0]) {
+      notify.set("Wybierz produkt wegański z listy");
+    } else if (!veganResult[0].id) {
+      notify.set("Wybierz produkt wegański z listy");
+    } else {
+      console.log(nvegan[0].id);
+      console.log(vegan[0].id);
+      axios({
+        method: "post",
+        url: `${user.Api}/addsubstitute/`,
+        data: qs.stringify({
+          id_food_to_substitute: nVeganResult[0].id,
+          user_comment: false,
+          id_vegan: veganResult[0].id,
+        }),
+        headers: {
+          "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+          Authorization: `Token ${user.userInfo.token}`,
+        },
       })
-      .catch((err) => {
-        console.log(err);
-        console.log(err.response);
-      });
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            notify.set(
+              "Twoja propozycja zamiennika została dodana do weryfikacji."
+            );
+            setTimeout(() => {
+              setDeleyedRedirect(true);
+            }, 2000);
+          } else {
+            notify.set("Wystąpił nieoczekiwany błąd");
+          }
+          console.log(res.data.data);
+          console.log(res.body);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(err.response);
+        });
+    }
   };
   return (
     <Container>
