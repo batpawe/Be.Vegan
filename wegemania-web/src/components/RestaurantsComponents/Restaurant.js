@@ -751,7 +751,7 @@ const Restaurant = (props) => {
                     <div style={{ width: "23%" }}>
                       <img
                         onClick={() =>
-                          props.historyProps.push(`/restaurant/${res.id}`)
+                          props.history.push(`/restaurant/${res.id}`)
                         }
                         style={{
                           width: "100%",
@@ -761,7 +761,15 @@ const Restaurant = (props) => {
                         }}
                         src={res.foto}
                       />
-                      <p style={{ padding: 0, margin: 0 }}>{res.name}</p>
+                      <p
+                        style={{
+                          padding: 0,
+                          margin: 0,
+                          "text-align": "center",
+                        }}
+                      >
+                        {res.name}
+                      </p>
                       <BigRateContainerRecipes
                         style={{ width: "100%", margin: "0 auto" }}
                       >

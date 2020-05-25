@@ -49,34 +49,42 @@ const EditUser = () => {
     }, 2000);
   };
   const sendRequest = (val) => {
-    console.log(val);
     const fetchData = async () => {
-      var request = `${user.Api}/me/`;
-      axios
+      console.log(val.activity);
+      console.log(parseInt(val.age));
+      console.log(parseInt(val.height));
+      console.log(parseInt(val.weight).toFixed(2));
+      console.log(parseInt(val.activity));
+      await axios
         .put(
-          request,
+          "http://veggies.ddns.net:8181/me/",
           {
-            username: "mateuszklimek",
-            password: userInfo.password,
-            weight: val.weight,
-            height: val.height,
-            age: val.age,
-            activity: val.activity,
+            age: parseInt(val.age, 10),
+            height: parseInt(val.height, 10),
+            weight: parseInt(val.weight).toFixed(2),
+            activity: parseInt(val.activity, 10),
           },
           {
             headers: {
-              "content-type": "application/x-www-form-urlencoded",
+              Accept: "application/json; charset=UTF-8",
               authorization: `Token ${user.userInfo.token}`,
+              // 'Content-Type': 'multipart/form-data',
             },
           }
         )
         .then((res) => {
           console.log(res);
-          // handleSuccess();
+
+          if (res.status == 200) {
+            handleSuccess();
+          } else {
+            notify.set("Wystąpił nieoczekiwany błąd");
+          }
         })
         .catch((err) => {
           console.log(err);
           console.log(err.response);
+          notify.set("Wystąpił nieoczekiwany błąd");
         });
     };
     fetchData();
@@ -96,7 +104,9 @@ const EditUser = () => {
             age: userInfo.age || 0,
             activity: userInfo.activity || 0,
           }}
-          onSubmit={(values) => sendRequest(values)}
+          onSubmit={(values) => {
+            sendRequest(values);
+          }}
           validationSchema={Yup.object().shape({
             username: Yup.string()
               .min(5, "Podana nazwa użytkownika jest za krótka.")
@@ -110,17 +120,17 @@ const EditUser = () => {
             ),
             email: Yup.string().email(),
             height: Yup.number()
-              .min(10, "Podana waga jest niepoprawna")
-              .max(400, "Poprawna waga jest niepoprawna"),
+              .min(10, "Podany wzrost jest niepoprawna")
+              .max(250, "Poprawny wzrost jest niepoprawna"),
             weight: Yup.number()
-              .min(10, "Podany wzrost jest niepoprawny")
-              .max(250, "Podany wzrost jest niepoprawny"),
+              .min(10, "Podana waga jest niepoprawna")
+              .max(400, "Podana waga jest niepoprawna"),
             age: Yup.number()
               .min(13, "Podany wiek jest niepoprawny")
-              .max(250, "Podany wiek jest niepoprawny"),
+              .max(120, "Podany wiek jest niepoprawny"),
             activity: Yup.number()
-              .min(0, "Liczba powinna być przedziale od 0 do 100")
-              .max(100, "Liczba powinna być przedziale od 0 do 100"),
+              .min(0, "Liczba powinna być przedziale od 0 do 4")
+              .max(4, "Liczba powinna być przedziale od 0 do 4"),
           })}
         >
           {({
@@ -147,20 +157,11 @@ const EditUser = () => {
                     value={values.username}
                     onChange={handleChange("username")}
                   />
-                </InputContainer>
+                </InputContainer>{" "}
                 <InputContainer>
-                  <label for="email">Mail:</label>
-                  <InputText
-                    id="email"
-                    type="text"
-                    value={values.email}
-                    onChange={handleChange("email")}
-                  />
-                </InputContainer>
-              </InputsContainer>
-              <InputsContainer>
-                <InputContainer>
-                  <label for="password">Wprowadź hasło:</label>
+                  <label for="password">
+                    Wprowadź aktualne hasło do weryfikacji:
+                  </label>
                   <InputText
                     id="password"
                     type="password"
@@ -168,28 +169,21 @@ const EditUser = () => {
                     onChange={handleChange("password")}
                   />
                 </InputContainer>
+              </InputsContainer>
+              <InputsContainer>
                 <InputContainer>
-                  <label for="repeatPassword">Powtórz hasło:</label>
+                  <label for="repeatPassword">
+                    Powtórz aktualne hasło do weryfikacji:
+                  </label>
                   <InputText
                     id="repeatPassword"
                     type="password"
                     value={values.repeatPassword}
                     onChange={handleChange("repeatPassword")}
                   />
-                </InputContainer>
-              </InputsContainer>
-              <InputsContainer>
+                </InputContainer>{" "}
                 <InputContainer>
-                  <label for="height">Waga:</label>
-                  <InputText
-                    id="height"
-                    type="text"
-                    value={values.height}
-                    onChange={handleChange("height")}
-                  />
-                </InputContainer>
-                <InputContainer>
-                  <label for="weight">Wzrost:</label>
+                  <label for="weight">Waga:</label>
                   <InputText
                     id="weight"
                     type="text"
@@ -200,6 +194,16 @@ const EditUser = () => {
               </InputsContainer>
               <InputsContainer>
                 <InputContainer>
+                  <label for="height">Wzrost:</label>
+                  <InputText
+                    id="height"
+                    type="text"
+                    value={values.height}
+                    onChange={handleChange("height")}
+                  />
+                </InputContainer>
+
+                <InputContainer>
                   <label for="age">Wiek:</label>
                   <NumberInput
                     id="age"
@@ -208,6 +212,8 @@ const EditUser = () => {
                     onChange={handleChange("age")}
                   />
                 </InputContainer>
+              </InputsContainer>
+              <InputsContainer>
                 <div
                   style={{
                     display: "flex",
@@ -229,13 +235,43 @@ const EditUser = () => {
                   <select
                     id="activity"
                     onChange={handleChange("activity")}
-                    style={{ width: 200 }}
+                    style={{ width: "100%" }}
                   >
-                    <option value={0}>Brak aktywności</option>
-                    <option value={1}>Mała aktywność</option>
-                    <option value={2}>Średnia aktywność</option>
-                    <option value={3}>Duża aktywność</option>
-                    <option value={4}>Bardzo duża aktywność</option>
+                    {userInfo.activity !== 0 ? (
+                      <option value={0}>Brak aktywności</option>
+                    ) : (
+                      <option value={0} selected="selected">
+                        Brak aktywności
+                      </option>
+                    )}
+                    {userInfo.activity !== 1 ? (
+                      <option value={1}>Mała aktywność</option>
+                    ) : (
+                      <option value={1} selected="selected">
+                        Mała aktywność
+                      </option>
+                    )}
+                    {userInfo.activity !== 2 ? (
+                      <option value={2}>Średnia aktywność</option>
+                    ) : (
+                      <option value={2} selected="selected">
+                        Średnia aktywność
+                      </option>
+                    )}
+                    {userInfo.activity !== 3 ? (
+                      <option value={3}>Duża aktywność</option>
+                    ) : (
+                      <option value={3} selected="selected">
+                        Duża aktywność
+                      </option>
+                    )}
+                    {userInfo.activity !== 4 ? (
+                      <option value={4}>Bardzo duża aktywność</option>
+                    ) : (
+                      <option value={4} selected="selected">
+                        Bardzo duża aktywność
+                      </option>
+                    )}
                   </select>
                   {/*}
                 <ProgressBar

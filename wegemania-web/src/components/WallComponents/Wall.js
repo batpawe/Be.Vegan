@@ -195,7 +195,9 @@ const Recipes = (props) => {
       style={{
         width: "100%",
         "flex-direction": "column",
-        margin: "0 0 30% 0",
+        margin: "8% 0 2% 0",
+
+        "justify-content": "flex-start",
       }}
       onMouseEnter={() => {
         setIsHover(true);
@@ -378,7 +380,7 @@ const Restaurants = (props) => {
     return [time.split(":", 1).toString(), time.split(":").slice(1).join(":")];
   });
   return (
-    <div style={{ margin: "8% 0 30% 0", width: "100%" }}>
+    <div style={{ margin: "8% 0 2% 0", width: "100%" }}>
       {console.log("WAZNEWCHODZI")}
       <img
         onClick={() =>
@@ -438,7 +440,7 @@ const Posts = (props) => {
         width: "100%",
         cursor: "pointer",
         height: "22vh",
-        margin: "8% 0 30% 0",
+        margin: "5% 0 5% 0",
       }}
       onClick={() => props.historyProps.push(`/post/${props.index}`)}
     >
@@ -453,7 +455,7 @@ const Posts = (props) => {
         {props.post.title}
       </p>
       <p style={{ "font-size": "16px", padding: "1%" }}>
-        {props.post.description.slice(0, 30)}
+        {props.post.description.split(" ").splice(0, 12).join(" ") + "..."}
       </p>
     </PostContainer>
   );
@@ -771,7 +773,9 @@ const Wall = (props) => {
           justifyContent: "space-around",
         }}
       >
-        <div style={{ width: "24%", display: "flex", "flex-wrap": "wrap" }}>
+        <div
+          style={{ width: "24%", display: "flex", "flex-direction": "column" }}
+        >
           {recipes[0] &&
             recipes.map((recipe) => {
               return (

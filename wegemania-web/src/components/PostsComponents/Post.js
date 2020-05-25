@@ -169,11 +169,11 @@ const Post = (props) => {
   const [tempContent, setTempContent] = useState("");
   const AddComment = async () => {
     if (tempContent !== "") {
-      console.log(file[0].file ? true : false);
+      console.log(file[0]);
       const data = new FormData();
       data.append("title", "");
       data.append("description", tempContent);
-      data.append("foto", file[0].file ? file[0] : "");
+      data.append("foto", file[0].size ? file[0] : "");
       const config = {
         method: "POST",
         headers: {
@@ -192,6 +192,7 @@ const Post = (props) => {
             setTimeout(() => {
               setDeleyedRedirect(true);
             }, 2000);
+            setFile(temp);
           } else {
             notify.set("Wystąpił nieoczekiwany błąd");
           }

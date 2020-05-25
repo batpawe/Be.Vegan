@@ -127,7 +127,7 @@ const Users = (props) => {
                 <UserProfileItemRow style={{ display: "flex" }}>
                   <BorderText style={{ width: "50%" }}>Wzrost:</BorderText>{" "}
                   <p style={{ width: "50%" }}>
-                    {(userData.height || "nie podano") + " cm"}
+                    {userData.height ? userData.height + "cm" : "nie podano"}
                   </p>
                 </UserProfileItemRow>
                 <UserProfileItemRow style={{ display: "flex" }}>
@@ -137,7 +137,7 @@ const Users = (props) => {
                 <UserProfileItemRow style={{ display: "flex" }}>
                   <BorderText style={{ width: "50%" }}>Waga:</BorderText>
                   <p style={{ width: "50%" }}>
-                    {userData.weight || "nie podano"}
+                    {userData.weight ? userData.weight + "kg" : "nie podano"}
                   </p>
                 </UserProfileItemRow>
                 {userData.activity ? (

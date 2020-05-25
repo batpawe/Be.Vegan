@@ -38,18 +38,26 @@ const About = () => {
     <MainContainer style={{ width: "100%" }}>
       <Container style={{ width: "80%" }}>
         <Text>
-          Contrary to popular belief, Lorem Ipsum is not simply random text. It
-          has roots in a piece of classical Latin literature from 45 BC, making
-          it over 2000 years old. Richard McClintock, a Latin professor at
-          Hampden-Sydney College in Virginia, looked up one of the more obscure
-          Latin words, consectetur, from a Lorem Ipsum passage, and going
-          through the cites of the word in classical literature, discovered the
-          undoubtable source. Lorem Ipsum comes from sections 1.10.32 and
-          1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and
-          Evil) by Cicero, written in 45 BC. This book is a treatise on the
-          theory of ethics, very popular during the Renaissance. The first line
-          of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in
-          section 1.10.32.
+          Początkowo przejaw weganizmu nazywany był głównie dietą. Weganie to
+          przede wszystkim osoby, które nie spożywają produktów pochodzenia
+          zwierzęcego. To oznacza, że w ich diecie nie pojawią się nie tylko
+          takie produkty jak np. mięso, ale również jajka, mleko, masło i tym
+          podobne. Jednakże, coraz częściej weganizm określany jest jako styl
+          życia. Weganie eliminują ze swojego życia nie tylko spożywcze produkty
+          pochodzenia zwierzęcego, ale starają się również wyeliminować takie
+          produkty jak ubrania, meble czy kosmetyki, które w fazie produkcji
+          mogły przyczynić się do nieetycznej eksploatacji zwierząt. Identyczna
+          zasada dotyczy wszelkich rozrywek czy hobby, które mogą wykorzystywać
+          zwierzęta. Takimi przykładami może być np. zoo, cyrk lub polowanie na
+          zwierzynę. Idea weganizmu staje się coraz bardziej popularna. Według
+          dziennika tvn24.pl
+          <a href="https://tvn24.pl/biznes/z-kraju/weganie-i-wegetarianie-w-polsce-coraz-wiecej-polakow-rezygnuje-z-miesa-ra973979-4508365">
+            https://tvn24.pl/biznes/z-kraju/weganie-i-wegetarianie-w-polsce-coraz-wiecej-polakow-rezygnuje-z-miesa-ra973979-4508365
+          </a>
+          liczba wegan oraz wegetarian w Polsce wynosi aż 1 milion. To ogromna
+          liczba, która z dnia na dzień staje się coraz większa. Osoby
+          decydujące się przejść na weganizm robią to najczęściej z pobudek
+          etycznych, zdrowotnych, religijnych oraz ekologicznych.
         </Text>
         <Text>
           <h1 style={{ "font-size": "24px" }}>Ciekawostki</h1>

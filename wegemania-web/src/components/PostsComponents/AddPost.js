@@ -150,11 +150,11 @@ const AddPost = () => {
           title: Yup.string()
             .required("To pole jest wymagane")
             .min(3, "Tytuł jest za krótki!")
-            .max(18, "Tytuł jest za długi"),
+            .max(34, "Tytuł jest za długi"),
           content: Yup.string()
             .required("To pole jest wymagane")
             .min(3, "Treść posta jest za krótka!")
-            .max(80, "Treść posta jest za długa!"),
+            .max(200, "Treść posta jest za długa!"),
         })}
       >
         {({
