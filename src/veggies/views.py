@@ -26,6 +26,7 @@ User = get_user_model()
 # zwraca listę poleconych recipes (lista id)
 # result = give_rec(51)
 
+
 # Create your views here.
 
 @api_view(['GET', 'UPDATE'])

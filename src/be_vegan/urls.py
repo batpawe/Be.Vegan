@@ -24,9 +24,15 @@ from rest_framework.views import APIView
 from django.http.response import HttpResponse
 from veggies import views 
 from veggies.views import CustomObtainAuthToken, UserViewSet
+from rest_framework.authtoken.views import obtain_auth_token
+
+
+
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,4 +40,5 @@ urlpatterns = [
     # url(r'^api-auth/', include('rest_framework.urls'))
     path('api-token-auth/', CustomObtainAuthToken.as_view(), name='api_token_auth'),
     path('', include('veggies.urls'))
+
 ]
