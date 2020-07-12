@@ -205,18 +205,15 @@ class PostIdView(viewsets.GenericViewSet):
             return Response(status=404)
 
     def update(self, request, pk):
-        req = QueryDict.copy(request.data)
-        req['id_post_int'] = pk
-        serializer = PostReplySerializer(data=req, many=False, partial=True)
+        serializer = PostReplySerializer(data=request.data, many=False, partial=True)
         if serializer.is_valid():
-            serializer.save(author_id=request.user.id)
+            serializer.save(author_id=request.user.id, id_post_int = pk)
             return Response(serializer.data)
         else:
             return Response(status=400)
 
     def create(self, request):
-        req = QueryDict.copy(request.data)
-        serializer = PostSerializer(data=req, many=False, partial=True)
+        serializer = PostSerializer(data=request.data, many=False, partial=True)
         if serializer.is_valid():
             serializer.save(author_id=request.user.id)
             return Response(serializer.data)
