@@ -2,3 +2,8 @@
 .idea
 src/be_vegan/config.py
 env*
+/env
+/nenv
+requirements
+start
+wegemania-web.rar
